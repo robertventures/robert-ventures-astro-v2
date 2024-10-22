@@ -1,0 +1,56 @@
+---
+import Image from "astro/components/Image.astro";
+
+
+---
+
+<style>
+    .herobox {
+        max-width: 1365px;
+        margin: 0 auto;
+    }
+
+    .herobox-container {
+        padding: 6rem 3rem;
+        display: flex;
+        gap: 4rem;
+    }
+
+    .herobox-container > div:nth-child(1) {
+        max-width: 714px;
+    }
+
+    .herobox-container > div:nth-child(2){
+        display: block;
+        margin-left: auto;
+    }
+    .herobox-container > div:nth-child(2) img{
+        display: block;
+    }
+
+
+    h1 span {
+        color: var(--accent);
+    }
+</style>
+
+<div class="herobox">
+    <div class="herobox-container">
+        <div>
+            <h1 id="title" class="title">
+                <span>Compound</span> Your <br /> Wealth <span>Passively</span>
+            </h1>
+            <p>Buy Robert Ventures fixed-rate bonds and experience the power of monthly passive income, backed by a combination of select real estate and innovative digital assets.</p>
+        </div>
+        <div>
+            <Image src="/images/Desktop-herobox-iphone.png" alt="herobox" width={300} height={512} />
+        </div>
+    </div>
+</div>
+
+<script>
+    const title = document.getElementById("title");
+    title.addEventListener("click", () => {
+        console.log("clicked");
+    });
+</script>
