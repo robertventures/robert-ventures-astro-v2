@@ -1,55 +1,349 @@
 ---
 import Image from "astro/components/Image.astro";
-
-
+import iphone from "../images/Desktop-herobox-iphone.png";
 ---
 
 <style>
-    .herobox {
-        max-width: 1365px;
-        margin: 0 auto;
-    }
-
     .herobox-container {
-        padding: 6rem 3rem;
-        display: flex;
-        gap: 4rem;
+        padding: 3rem 0.5rem;
+        padding-bottom: 0;
+        background-color: white;
+        margin: 0 0.5rem;
+        border-radius: 16px;
+
+        background: url("src/images/Herobox-mobile-bg.png");
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
-    .herobox-container > div:nth-child(1) {
-        max-width: 714px;
+    h1 {
+        font-size: clamp(2.925rem, -0.3537rem + 14.8936vw, 3.5rem);
+        /* max-width: 379px; */
+        margin-bottom: 1.5rem;
     }
-
-    .herobox-container > div:nth-child(2){
-        display: block;
-        margin-left: auto;
-    }
-    .herobox-container > div:nth-child(2) img{
-        display: block;
-    }
-
 
     h1 span {
         color: var(--accent);
+    }
+
+    p {
+        margin-bottom: 2rem;
+    }
+
+    .herobox-container > div:nth-child(1) {
+        padding-bottom: 3rem;
+    }
+
+    .herobox-container > div:nth-child(2) {
+        display: none;
+    }
+
+    /* FORM FORM FORM FORM FORM FORM */
+
+    .formkit-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .formkit-fields input::placeholder {
+        color: #a9b2bf;
+        font-family: "Satoshi", sans-serif;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    input,
+    button.formkit-submit {
+        width: 100%;
+        display: block;
+        box-sizing: border-box;
+
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        border: 1px solid #dbe2eb;
+
+        font-family: "Satoshi", sans-serif;
+
+        text-align: left;
+        position: relative;
+
+        height: 50px;
+
+        line-height: 1;
+    }
+
+    h1 span {
+        background: linear-gradient(120deg, #3c1fbf, #ff592c);
+        background-size: 400% 400%;
+        animation: gradient 0s ease infinite;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    button {
+        background: linear-gradient(90deg, #3c1fbf, #ff592c);
+        background-size: 400% 400%;
+        animation: gradient 0s ease infinite;
+
+        color: white;
+
+        font-family: "Satoshi", sans-serif;
+        font-size: 1.125rem;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    button .right-arrow {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* FORM FORM FORM FORM FORM FORM */
+
+    @media only screen and (min-width: 700px) {
+        .herobox-container {
+            display: flex;
+            gap: 2rem;
+            padding: 3rem 1rem;
+            padding-bottom: 0;
+
+            background: url("src/images/Herobox-tablet-bg.jpg");
+            background-size: contain;
+        }
+        .herobox-container > div:nth-child(2) {
+            display: block;
+        }
+
+        h1 {
+            font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem);
+        }
+
+        .herobox-container > div:nth-child(1) {
+            max-width: 420px;
+            min-width: 390px;
+        }
+
+        .herobox-container > div:nth-child(2) {
+            margin-left: auto;
+        }
+
+        .herobox-container > div:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .herobox-container > div:nth-child(2) img {
+            margin-left: auto;
+            width: 100%;
+            max-width: 340px;
+            min-width: 230px;
+            
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .herobox {
+            max-width: 1365px;
+            margin: 0 auto;
+        }
+
+        .herobox-container {
+            padding: 6rem 3rem 0rem 3rem;
+            display: flex;
+            gap: 4rem;
+
+            background: url("src/images/Herobox-desktop-bg.png");
+            background-size: cover;
+        }
+
+        .formkit-fields {
+            flex-direction: row;
+        }
+
+        .herobox-container > div:nth-child(1) {
+            max-width: 634px;
+            padding-bottom: 6rem;
+        }
+
+        h1{
+            margin-bottom: 2rem;
+        }
+
+        p{
+            margin-bottom: 2.25rem;
+        }
+
+        .herobox-container > div:nth-child(2) img {
+            display: block;
+            min-width: 299px;
+        }
+
+        button {
+            max-width: 180px;
+        }
+
+
+        .formkit-field {
+            width: 100%;
+        }
+
+        .formkit-fields{
+            /* max-width: 90%; */
+        }
+
+
+        .herobox-container > div:nth-child(2) img {
+            margin-left: auto;
+        }
     }
 </style>
 
 <div class="herobox">
     <div class="herobox-container">
         <div>
-            <h1 id="title" class="title">
-                <span>Compound</span> Your <br /> Wealth <span>Passively</span>
+            <h1 class="title">
+                <span class="alt-color">Compound</span> Your Wealth <span
+                    class="alt-color">Passively</span
+                >
             </h1>
-            <p>Buy Robert Ventures fixed-rate bonds and experience the power of monthly passive income, backed by a combination of select real estate and innovative digital assets.</p>
+            <p>
+                Buy Robert Ventures fixed-rate bonds and experience the power of
+                monthly passive income, backed by a combination of select real
+                estate and innovative digital assets.
+            </p>
+
+            <form
+                action="https://app.convertkit.com/forms/6905080/subscriptions"
+                class="seva-form formkit-form herobox-convertkit conversion_v1"
+                method="post"
+                data-sv-form="6905080"
+                data-uid="de0ce0c207"
+                data-format="inline"
+                data-version="6"
+                data-options='{"settings":{"after_subscribe":{"action":"redirect","success_message":"Success! Now check your email to confirm your subscription.","redirect_url":"https://go.joerobert.com/investpreneurs"},"analytics":{"google":null,"fathom":null,"facebook":null,"segment":null,"pinterest":null,"sparkloop":null,"googletagmanager":null},"modal":{"trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"powered_by":{"show":false,"url":"https://convertkit.com/features/forms?utm_campaign=poweredby&utm_content=form&utm_medium=referral&utm_source=dynamic"},"recaptcha":{"enabled":true},"return_visitor":{"action":"show","custom_content":""},"slide_in":{"display_in":"bottom_right","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"sticky_bar":{"display_in":"top","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15}},"version":"6"}'
+                min-width="400 500 600 700 800"
+            >
+                <div data-style="clean">
+                    <ul
+                        class="formkit-alert formkit-alert-error"
+                        data-element="errors"
+                        data-group="alert"
+                    >
+                    </ul>
+                    <div
+                        data-element="fields"
+                        data-stacked="true"
+                        class="seva-fields formkit-fields"
+                    >
+                        <div class="formkit-field">
+                            <input
+                                class="formkit-input"
+                                name="email_address"
+                                aria-label="Email Address"
+                                placeholder="Email Address"
+                                required=""
+                                type="email"
+                            />
+                        </div>
+                        <div class="formkit-field hidden">
+                            <input
+                                class="formkit-input"
+                                aria-label="UTM_CAMPAIGN"
+                                name="fields[utm_campaign]"
+                                placeholder="UTM_CAMPAIGN"
+                                type="hidden"
+                            />
+                        </div>
+                        <div class="formkit-field hidden">
+                            <input
+                                class="formkit-input"
+                                aria-label="UTM_CONTENT"
+                                name="fields[utm_content]"
+                                placeholder="UTM_CONTENT"
+                                type="hidden"
+                            />
+                        </div>
+                        <div class="formkit-field hidden">
+                            <input
+                                class="formkit-input"
+                                aria-label="UTM_MEDIUM"
+                                name="fields[utm_medium]"
+                                placeholder="UTM_MEDIUM"
+                                type="hidden"
+                            />
+                        </div>
+                        <div class="formkit-field hidden">
+                            <input
+                                class="formkit-input"
+                                aria-label="UTM_SOURCE"
+                                name="fields[utm_source]"
+                                placeholder="UTM_SOURCE"
+                                type="hidden"
+                            />
+                        </div>
+                        <div class="formkit-field hidden">
+                            <input
+                                class="formkit-input"
+                                aria-label="UTM_TERM"
+                                name="fields[utm_term]"
+                                placeholder="UTM_TERM"
+                                type="hidden"
+                            />
+                        </div>
+                        <button
+                            data-element="submit"
+                            class="formkit-submit formkit-submit"
+                        >
+                            <span class="">Get Started</span>
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 36 36"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="right-arrow"
+                            >
+                                <circle cx="18" cy="18" r="18" fill="#FEFEFE"
+                                ></circle>
+                                <path
+                                    d="M9.75 17.25H9V18.75H9.75V17.25ZM26.25 18.75C26.6642 18.75 27 18.4142 27 18C27 17.5858 26.6642 17.25 26.25 17.25V18.75ZM9.75 18.75H26.25V17.25H9.75V18.75Z"
+                                    fill="#3C1FBF"></path>
+                                <path
+                                    d="M19.5 11.25L26.25 18L19.5 24.75"
+                                    stroke="#3C1FBF"
+                                    stroke-width="1.5"
+                                    stroke-linecap="square"
+                                    stroke-linejoin="round"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div>
-            <Image src="/images/Desktop-herobox-iphone.png" alt="herobox" width={300} height={512} />
+            <Image src={iphone} alt="herobox" width={1200} height={512} />
         </div>
     </div>
 </div>
 
 <script>
-    const title = document.getElementById("title");
+    const title = document.querySelector(".title");
     title.addEventListener("click", () => {
         console.log("clicked");
     });
