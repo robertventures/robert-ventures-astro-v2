@@ -1,0 +1,325 @@
+---
+import Image from "astro/components/Image.astro";
+import investorsMobileBackground from "../images/investors-mobile-bg.jpg";
+---
+
+<style>
+    .section {
+        margin: 0 0.5rem;
+    }
+
+    .container {
+        margin: 0 0.5rem;
+
+        border-radius: 0.5rem;
+
+        max-width: 1365px;
+        margin: 0 auto;
+    }
+
+    .why-investors {
+        padding: 3rem 0.5rem;
+
+        border-radius: 0.5rem;
+
+        background: url(src/images/investors-mobile-bg.jpg);
+        background-size: cover;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .why-investors-container {
+        max-width: 360px;
+    }
+
+    h2 {
+        color: #fefefe;
+        margin-bottom: 4rem;
+    }
+
+    h2 span {
+        display: block;
+    }
+
+    h2 span svg {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50%;
+        max-width: 230px;
+    }
+    p {
+        color: #fff;
+    }
+
+    .blocks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .block {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: #fefefe;
+    }
+
+    .block-header {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .block-header h3 {
+        padding-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+
+    .blocks-container p {
+        color: #546071;
+        font-size: 0.875rem;
+    }
+
+    @media screen and (min-width: 700px) {
+        .why-investors {
+            background: url(src/images/investors-tablet-bg.jpg);
+            background-size: cover;
+        }
+
+        .blocks-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media screen and (min-width: 990px) {
+        .container {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .why-investors {
+            flex: 1;
+            max-width: 554px;
+            margin-bottom: 0;
+            padding: 3rem;
+        }
+
+        .why-investors-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .blocks-container {
+            flex: 2;
+        }
+
+        .block-header {
+            flex-direction: column;
+            align-items: start;
+        }
+    }
+</style>
+
+<div class="section">
+    <div class="container">
+        <div class="why-investors">
+            <div class="why-investors-container">
+                <h2>
+                    Why Investors
+                    <span>
+                        Choose
+                        <svg
+                            width="140"
+                            height="24"
+                            viewBox="0 0 220 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M1 10.875L0.25 10.875L0.25 12.375L1 12.375L1 10.875ZM218 12.375C218.414 12.375 218.75 12.0392 218.75 11.625C218.75 11.2108 218.414 10.875 218 10.875L218 12.375ZM1 12.375L218 12.375L218 10.875L1 10.875L1 12.375Z"
+                                fill="#FF592C"></path>
+                            <path
+                                d="M212 4.84375L219 11.625L212 18.4062"
+                                stroke="#FF592C"
+                                stroke-width="1.5"
+                                stroke-linecap="square"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                    </span>
+                    Robert Ventures
+                </h2>
+
+                <p>
+                    Robert Ventures' fixed-rate bonds are one of the few private
+                    offerings that drive diversification to this level
+                </p>
+            </div>
+        </div>
+        <div class="blocks-container">
+            <div class="block">
+                <div class="block-header">
+                    <svg
+                        width="64"
+                        height="64"
+                        viewBox="0 0 64 64"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M11 52V34H25"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="bevel"></path>
+                        <path
+                            d="M57 52H7"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="square"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M25 52V22H39"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="bevel"></path>
+                        <path
+                            d="M53 10H39V52H53V10Z"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="bevel"></path>
+                    </svg>
+                    <h3>Zero-Fee Structure</h3>
+                </div>
+                <p class="block-info">
+                    Discover a transparent investment experience with our
+                    zero-fee structure, empowering your investment yield.
+                </p>
+            </div>
+            <div class="block">
+                <div class="block-header">
+                    <svg
+                        width="64"
+                        height="64"
+                        viewBox="0 0 64 64"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M6 24H58L32 8L6 24Z"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="bevel"></path>
+                        <path
+                            d="M14 24V44"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M26 24V44"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M38 24V44"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M50 24V44"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M8 44H56"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="square"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M4 52H60"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="square"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                    <h3>IRA Tax-free</h3>
+                </div>
+                <p class="block-info">
+                    We proudly support Individual Retirement Accounts (IRAs)
+                    that provide you with tax advantages for your investments.
+                </p>
+            </div>
+            <div class="block">
+                <div class="block-header">
+                    <svg
+                        width="64"
+                        height="64"
+                        viewBox="0 0 64 64"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M32 56C45.2548 56 56 45.2548 56 32C56 18.7452 45.2548 8 32 8C18.7452 8 8 18.7452 8 32C8 45.2548 18.7452 56 32 56Z"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M32 32V8"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path
+                            d="M52.7919 20L11.2227 44"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+
+                    <h3>Balanced Portfolio</h3>
+                </div>
+                <p class="block-info">
+                    The best of both worlds: dynamic growth from innovative
+                    digital assets and real estate as an evergreen performer.
+                </p>
+            </div>
+            <div class="block">
+                <div class="block-header">
+                    <svg
+                        width="64"
+                        height="64"
+                        viewBox="0 0 64 64"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M10 54V12H56L44 27L56 42H10"
+                            stroke="#3C1FBF"
+                            stroke-width="3"
+                            stroke-linecap="square"
+                            stroke-linejoin="bevel"></path>
+                    </svg>
+                    <h3>20+ Years of Experience</h3>
+                </div>
+                <p class="block-info">
+                    Throughout various market cycles and economic shifts, our
+                    CEO has navigated the landscape with expertise.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script></script>
+</div>

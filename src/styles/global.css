@@ -76,7 +76,8 @@ h1 {
 }
 
 h2 {
-	font-size: clamp(1.5rem, 0.8571rem + 3.2143vw, 3.75rem);
+	/* font-size: clamp(1.5rem, 0.8571rem + 3.2143vw, 3.75rem); */
+	font-size: clamp(2rem, 1.1489rem + 4.2553vw, 2.25rem);
 }
 
 h3 {
