@@ -64,23 +64,34 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             const formData = new FormData(form);
 
             try {
+                // Fetch the IP address
+                const ipResponse = await fetch(
+                    "https://api64.ipify.org?format=json",
+                );
+                const ipData = await ipResponse.json();
+                const ipAddress = ipData.ip;
+
+                // Append IP address to FormData
+                formData.append("ip_address", ipAddress);
+
+                // Submit form with IP address included
                 const response = await fetch(form.action, {
                     method: form.method,
                     body: formData,
                 });
 
+                const result = await response.json();
+
                 if (!response.ok) {
-                    const error = await response.json();
-                    alert(`Signup failed: ${error.error}`);
+                    alert(`Signup failed: ${result.error}`);
                     return;
                 }
 
-                const result = await response.json();
-                console.log("Signup result:", result);
-
                 if (result.session) {
-                    // Store the session token securely in localStorage or cookies
-                    localStorage.setItem("supabase_token", result.session.access_token);
+                    localStorage.setItem(
+                        "supabase_token",
+                        result.session.access_token,
+                    );
                 }
 
                 alert("Signup successful!");
@@ -91,4 +102,3 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             }
         });
 </script>
-
