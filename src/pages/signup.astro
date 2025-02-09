@@ -7,98 +7,132 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <Header />
 
-        <main>
-            <h1>Sign up page</h1>
-            <br />
-            <br />
+<head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+</head>
 
-            <form id="signup-form" action="/api/signup" method="post">
-                <input
-                    type="text"
-                    name="first_name"
-                    placeholder="First Name"
-                    required
-                />
-                <input
-                    type="text"
-                    name="last_name"
-                    placeholder="Last Name"
-                    required
-                />
-                <input type="email" name="email" placeholder="Email" required />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    required
-                />
+<body>
+    <Header />
 
-                <select name="how_did_they_hear">
+    <main>
+        <h1>Sign up page</h1>
+        <br />
+        <br />
+
+        <form id="signup-form" action="/api/signup" method="post">
+            <input type="text" name="first_name" placeholder="First Name" required />
+            <input type="text" name="last_name" placeholder="Last Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+
+            <!-- <select name="how_did_they_hear">
                     <option selected hidden value="null">Select one</option>
                     <option value="facebook">Facebook</option>
                     <option value="instagram">Instagram</option>
                     <option value="friend">Friend</option>
                     <option value="newsletter">Newsletter</option>
                     <option value="google">Google</option>
-                </select>
-                <button type="submit">Sign Up</button>
-            </form>
-        </main>
-        <Footer />
-    </body>
+                </select> -->
+            <button type="submit">Sign Up</button>
+        </form>
+    </main>
+    <Footer />
+</body>
+
 </html>
 
 <script is:inline>
-    document
-        .getElementById("signup-form")
-        .addEventListener("submit", async (e) => {
-            e.preventDefault();
+    async function authenticateWithWealthBlock(formData) {
+        try {
+            const response = await fetch("/api/wealthblock", {
+                method: "POST",
+                body: formData,
+            });
 
-            const form = e.target;
-            const formData = new FormData(form);
+            const textData = await response.text(); 
+            console.log("🔍 WealthBlock Raw Response:", textData);
+
+            if (!response.ok) {
+                console.error("❌ WealthBlock API Error:", textData);
+                return null;
+            }
 
             try {
-                // Fetch the IP address
-                const ipResponse = await fetch(
-                    "https://api64.ipify.org?format=json",
-                );
-                const ipData = await ipResponse.json();
-                const ipAddress = ipData.ip;
-
-                // Append IP address to FormData
-                formData.append("ip_address", ipAddress);
-
-                // Submit form with IP address included
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    alert(`Signup failed: ${result.error}`);
-                    return;
-                }
-
-                if (result.session) {
-                    localStorage.setItem(
-                        "supabase_token",
-                        result.session.access_token,
-                    );
-                }
-
-                alert("Signup successful!");
-                window.location.href = "/signup-step-2";
-            } catch (err) {
-                console.error("Error during signup:", err);
-                alert("An unexpected error occurred.");
+                const jsonData = JSON.parse(textData);
+                console.log("✅ WealthBlock Parsed JSON:", jsonData);
+                return jsonData;
+            } catch (parseError) {
+                console.warn("⚠ WealthBlock returned a non-JSON response. Ignoring parsing error.");
+                return textData;
             }
-        });
+        } catch (error) {
+            console.error("❌ Error during WealthBlock authentication:", error);
+            return null;
+        }
+    }
+
+    document.getElementById("signup-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        try {
+            /*
+            // ✅ Temporarily disabled WealthBlock authentication for testing
+            const wealthBlockAuth = await authenticateWithWealthBlock(formData);
+            
+            if (!wealthBlockAuth) {
+                alert("Authentication with WealthBlock failed. Please try again.");
+                return;
+            }
+            */
+
+            // ✅ Attempt to fetch the IP address but do not block signup if it fails
+            try {
+                const ipResponse = await fetch("https://api64.ipify.org?format=json");
+                if (ipResponse.ok) {
+                    const ipData = await ipResponse.json();
+                    formData.append("ip_address", ipData.ip);
+                    console.log("✅ IP Address Added:", ipData.ip);
+                } else {
+                    console.warn("⚠ Failed to fetch IP address. Continuing signup...");
+                }
+            } catch (err) {
+                console.warn("⚠ Error fetching IP address. Skipping...");
+            }
+
+            // ✅ Submit form data to backend
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert(`Signup failed: ${result.error}`);
+                return;
+            }
+
+            if (result.session) {
+                localStorage.setItem("supabase_token", result.session.access_token);
+            }
+
+            // ✅ Ensure GoHighLevel Contact ID is stored in localStorage
+            if (result.ghl_id) {
+                localStorage.setItem("ghl_contact_id", result.ghl_id);
+                console.log("✅ Stored GHL Contact ID:", result.ghl_id);
+            } else {
+                console.warn("⚠ No GoHighLevel Contact ID received!");
+            }
+
+            alert("Signup successful!");
+            window.location.href = "/signup-step-2"; // Proceed to next step
+        } catch (err) {
+            console.error("❌ Error during signup:", err);
+            alert("An unexpected error occurred.");
+        }
+    });
 </script>
