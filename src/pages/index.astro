@@ -141,7 +141,7 @@ import marvin from '../images/testimonials/steve-lloyd.png';
 		<Header />
 
 		<main>
-			<h1>Open Your Account in Under 3 Minutes</h1>
+			<h1>Open your account in under 2 minutes</h1>
 
 			<form id="signup-form" action="/api/signup" method="post">
 				<div class="group">
@@ -308,7 +308,7 @@ import marvin from '../images/testimonials/steve-lloyd.png';
                 }
 
                 console.log("✅ Signup successful! Redirecting...");
-                window.location.href = "/signup-step-2"; // Proceed to next step
+                window.location.href = "/step-2"; // Proceed to next step
             } catch (err) {
                 console.error("❌ Error during signup:", err);
             }

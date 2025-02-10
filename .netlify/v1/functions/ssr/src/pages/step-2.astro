@@ -255,7 +255,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 2 Completed:", result);
-                    window.location.href = "/signup-step-3"; // Proceed to Step 3
+                    window.location.href = "/step-3"; // Proceed to Step 3
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);

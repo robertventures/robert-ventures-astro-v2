@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_CvSoi7hX.mjs';
-import { manifest } from './manifest_Bblu_fRc.mjs';
+import { manifest } from './manifest_Btdw-Xvk.mjs';
 import { createExports } from '@astrojs/netlify/ssr-function.js';
 
 const serverIslandMap = new Map();;
@@ -21,9 +21,9 @@ const _page12 = () => import('./pages/dashboard.astro.mjs');
 const _page13 = () => import('./pages/login.astro.mjs');
 const _page14 = () => import('./pages/rss.xml.astro.mjs');
 const _page15 = () => import('./pages/signup.astro.mjs');
-const _page16 = () => import('./pages/signup-step-2.astro.mjs');
-const _page17 = () => import('./pages/signup-step-3.astro.mjs');
-const _page18 = () => import('./pages/signup-step-4.astro.mjs');
+const _page16 = () => import('./pages/step-2.astro.mjs');
+const _page17 = () => import('./pages/step-3.astro.mjs');
+const _page18 = () => import('./pages/step-4.astro.mjs');
 const _page19 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
@@ -42,9 +42,9 @@ const pageMap = new Map([
     ["src/pages/login.astro", _page13],
     ["src/pages/rss.xml.js", _page14],
     ["src/pages/signup.astro", _page15],
-    ["src/pages/signup-step-2.astro", _page16],
-    ["src/pages/signup-step-3.astro", _page17],
-    ["src/pages/signup-step-4.astro", _page18],
+    ["src/pages/step-2.astro", _page16],
+    ["src/pages/step-3.astro", _page17],
+    ["src/pages/step-4.astro", _page18],
     ["src/pages/index.astro", _page19]
 ]);
 
@@ -55,7 +55,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "1246012f-91e3-41c9-b057-a760ab93ad2d"
+    "middlewareSecret": "bdee9223-cb89-46b8-8bd9-f5bf9a3d067e"
 };
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;

@@ -74,7 +74,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         <Header />
 
         <main>
-            <h1>Federal regulations require us to verify your identity.</h1>
+            <h1>Federal regulations require us to verify your identity</h1>
 
             <form
                 id="signup-form-step-3"
@@ -94,9 +94,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
                 </p>
-                <p class="disclaimer">
+                <!-- <p class="disclaimer">
                     Your information is secured with AES 128-bit encryption.
-                </p>
+                </p> -->
             </form>
         </main>
 
@@ -165,7 +165,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 3 Completed:", result);
-                    window.location.href = "/signup-step-4"; // Proceed to Step 4
+                    window.location.href = "/step-4"; // Proceed to Step 4
                 } else {
                     const error = await response.json();
                     console.error("❌ Signup failed:", error.error);

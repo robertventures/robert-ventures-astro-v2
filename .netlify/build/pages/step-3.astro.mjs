@@ -1,21 +1,21 @@
 import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
-import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_DstD3cLk.mjs';
+import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_pgatvEbp.mjs';
 import { S as SITE_DESCRIPTION, a as SITE_TITLE } from '../chunks/consts_DaG9i4bq.mjs';
-/* empty css                                         */
+/* empty css                                  */
 export { renderers } from '../renderers.mjs';
 
 var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));
 var _a;
-const $$SignupStep3 = createComponent(async ($$result, $$props, $$slots) => {
-  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>Federal regulations require us to verify your identity.</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
+const $$Step3 = createComponent(async ($$result, $$props, $$slots) => {
+  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-2mcmjpbp> <head>', "", "</head> <body data-astro-cid-2mcmjpbp> ", ` <main data-astro-cid-2mcmjpbp> <h1 data-astro-cid-2mcmjpbp>Federal regulations require us to verify your identity</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-2mcmjpbp> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-2mcmjpbp> <button type="submit" data-astro-cid-2mcmjpbp>Next</button> <p class="disclaimer" data-astro-cid-2mcmjpbp>
 By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
-</p> <p class="disclaimer" data-astro-cid-xxm65cj7>
-Your information is secured with AES 128-bit encryption.
-</p> </form> </main> <script>
+</p> <!-- <p class="disclaimer">
+                    Your information is secured with AES 128-bit encryption.
+                </p> --> </form> </main> <script>
     document.addEventListener("DOMContentLoaded", () => {
         const phoneInput = document.getElementById("phone");
 
@@ -77,7 +77,7 @@ Your information is secured with AES 128-bit encryption.
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 3 Completed:", result);
-                    window.location.href = "/signup-step-4"; // Proceed to Step 4
+                    window.location.href = "/step-4"; // Proceed to Step 4
                 } else {
                     const error = await response.json();
                     console.error("\u274C Signup failed:", error.error);
@@ -87,12 +87,12 @@ Your information is secured with AES 128-bit encryption.
             }
         });
     });
-<\/script></body></html>`], ['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>Federal regulations require us to verify your identity.</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
+<\/script></body></html>`], ['<html lang="en" data-astro-cid-2mcmjpbp> <head>', "", "</head> <body data-astro-cid-2mcmjpbp> ", ` <main data-astro-cid-2mcmjpbp> <h1 data-astro-cid-2mcmjpbp>Federal regulations require us to verify your identity</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-2mcmjpbp> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-2mcmjpbp> <button type="submit" data-astro-cid-2mcmjpbp>Next</button> <p class="disclaimer" data-astro-cid-2mcmjpbp>
 By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
-</p> <p class="disclaimer" data-astro-cid-xxm65cj7>
-Your information is secured with AES 128-bit encryption.
-</p> </form> </main> <script>
+</p> <!-- <p class="disclaimer">
+                    Your information is secured with AES 128-bit encryption.
+                </p> --> </form> </main> <script>
     document.addEventListener("DOMContentLoaded", () => {
         const phoneInput = document.getElementById("phone");
 
@@ -154,7 +154,7 @@ Your information is secured with AES 128-bit encryption.
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 3 Completed:", result);
-                    window.location.href = "/signup-step-4"; // Proceed to Step 4
+                    window.location.href = "/step-4"; // Proceed to Step 4
                 } else {
                     const error = await response.json();
                     console.error("\u274C Signup failed:", error.error);
@@ -164,15 +164,15 @@ Your information is secured with AES 128-bit encryption.
             }
         });
     });
-<\/script></body></html>`])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-xxm65cj7": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-xxm65cj7": true }));
-}, "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/signup-step-3.astro", void 0);
+<\/script></body></html>`])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-2mcmjpbp": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-2mcmjpbp": true }));
+}, "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-3.astro", void 0);
 
-const $$file = "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/signup-step-3.astro";
-const $$url = "/signup-step-3";
+const $$file = "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-3.astro";
+const $$url = "/step-3";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
     __proto__: null,
-    default: $$SignupStep3,
+    default: $$Step3,
     file: $$file,
     url: $$url
 }, Symbol.toStringTag, { value: 'Module' }));

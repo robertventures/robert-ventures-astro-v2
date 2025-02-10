@@ -1,31 +1,31 @@
 import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
-import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_DstD3cLk.mjs';
+import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_pgatvEbp.mjs';
 import { S as SITE_DESCRIPTION, a as SITE_TITLE } from '../chunks/consts_DaG9i4bq.mjs';
-/* empty css                                         */
+/* empty css                                  */
 export { renderers } from '../renderers.mjs';
 
 var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
 var _a;
-const $$SignupStep2 = createComponent(async ($$result, $$props, $$slots) => {
-  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-4zzpisu6> <head>', "", "</head> <body data-astro-cid-4zzpisu6> ", ` <main data-astro-cid-4zzpisu6> <h1 data-astro-cid-4zzpisu6>Before you start, tell us a bit about yourself</h1> <form id="signup-form-step-2" action="/api/signup-step-2" method="post" data-astro-cid-4zzpisu6> <p class="portfolio-info" data-astro-cid-4zzpisu6>
+const $$Step2 = createComponent(async ($$result, $$props, $$slots) => {
+  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-dkbl4zda> <head>', "", "</head> <body data-astro-cid-dkbl4zda> ", ` <main data-astro-cid-dkbl4zda> <h1 data-astro-cid-dkbl4zda>Before you start, tell us a bit about yourself</h1> <form id="signup-form-step-2" action="/api/signup-step-2" method="post" data-astro-cid-dkbl4zda> <p class="portfolio-info" data-astro-cid-dkbl4zda>
 What is the approximate size of your liquid investments
                     portfolio?
-</p> <div class="portfolio-value-container" data-astro-cid-4zzpisu6> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="0" required data-astro-cid-4zzpisu6>
+</p> <div class="portfolio-value-container" data-astro-cid-dkbl4zda> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="0" required data-astro-cid-dkbl4zda>
 I don't have a portfolio
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="10,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="10,000" data-astro-cid-dkbl4zda>
 Around 10k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="50,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="50,000" data-astro-cid-dkbl4zda>
 Around 50k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="100,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="100,000" data-astro-cid-dkbl4zda>
 Around 100k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="500,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="500,000" data-astro-cid-dkbl4zda>
 Around 500k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="1,000,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="1,000,000" data-astro-cid-dkbl4zda>
 Around 1 million
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="5,000,000" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="portfolio_value" value="5,000,000" data-astro-cid-dkbl4zda>
 Over 5 million
 </label> </div> <!-- <input
                     type="number"
@@ -37,13 +37,13 @@ Over 5 million
                     name="zipcode"
                     placeholder="zipcode"
                     required
-                /> --> <p class="portfolio-info" data-astro-cid-4zzpisu6>When are you planning to invest?</p> <div class="investment-urgency-options" data-astro-cid-4zzpisu6> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="now" data-astro-cid-4zzpisu6>
+                /> --> <p class="portfolio-info" data-astro-cid-dkbl4zda>When are you planning to invest?</p> <div class="investment-urgency-options" data-astro-cid-dkbl4zda> <label data-astro-cid-dkbl4zda> <input type="radio" name="investment_urgency" value="now" data-astro-cid-dkbl4zda>
 Immediately
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1 month" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="investment_urgency" value="1 month" data-astro-cid-dkbl4zda>
 Within a month
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="3 months" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="investment_urgency" value="3 months" data-astro-cid-dkbl4zda>
 Within 3 months
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1 year" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-dkbl4zda> <input type="radio" name="investment_urgency" value="1 year" data-astro-cid-dkbl4zda>
 Within a year
 </label> </div> <!-- <p>What are your investment objectives?</p>
                 <select name="investment_objective">
@@ -56,7 +56,7 @@ Within a year
                     <option value="tax-aware_investing">Tax-Aware investing</option>
                     <option value="low_fee_solution">Low-Fee solution</option>
                     <option value="portfolio_management">Portfolio management</option>
-                </select> --> <button type="submit" data-astro-cid-4zzpisu6>Next</button> </form> </main> <script>
+                </select> --> <button type="submit" data-astro-cid-dkbl4zda>Next</button> </form> </main> <script>
     document
         .getElementById("signup-form-step-2")
         .addEventListener("submit", async (e) => {
@@ -92,7 +92,7 @@ Within a year
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 2 Completed:", result);
-                    window.location.href = "/signup-step-3"; // Proceed to Step 3
+                    window.location.href = "/step-3"; // Proceed to Step 3
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
@@ -101,15 +101,15 @@ Within a year
                 console.error("Error during signup:", err);
             }
         });
-<\/script></body></html>`])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-4zzpisu6": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-4zzpisu6": true }));
-}, "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/signup-step-2.astro", void 0);
+<\/script></body></html>`])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-dkbl4zda": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-dkbl4zda": true }));
+}, "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-2.astro", void 0);
 
-const $$file = "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/signup-step-2.astro";
-const $$url = "/signup-step-2";
+const $$file = "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-2.astro";
+const $$url = "/step-2";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
     __proto__: null,
-    default: $$SignupStep2,
+    default: $$Step2,
     file: $$file,
     url: $$url
 }, Symbol.toStringTag, { value: 'Module' }));
