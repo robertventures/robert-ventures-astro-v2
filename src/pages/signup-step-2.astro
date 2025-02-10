@@ -9,28 +9,145 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            main {
+                padding: 1.5rem;
+            }
+
+            form{
+                display: flex;
+                flex-direction: column;
+            }
+
+            h1 {
+                color: #000;
+                text-align: center;
+                font-family: "Satoshi", sans-serif;
+                font-size: 1.4375rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 130%;
+                margin-bottom: 1.5rem;
+            }
+
+            .portfolio-info {
+                font-size: 1.125rem;
+                font-family: "Inter", sans-serif;
+                color: #505050;
+                font-weight: 500;
+                margin-bottom: 0.75rem;
+            }
+
+            .portfolio-value-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .investment-urgency-options {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            button {
+                background-color: #5028ff;
+                color: #fff;
+                padding: 15px;
+                line-height: 1;
+                font-family: Inter, sans-serif;
+                font-size: 1.125rem;
+                font-weight: 500;
+                border-radius: 0.75rem;
+                border: 1px solid #5028ff;
+                margin-top: 2rem;
+            }
+
+            input[type='radio']{
+                width: 24px;
+                height: 24px;
+                accent-color: #5028FF;
+                
+            }
+
+            label{
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+        </style>
     </head>
+
     <body>
         <Header />
 
         <main>
-            <h1>Sign up page step 2</h1>
-            <br />
-            <br />
-            <p>What is the approximate size of your liquid investments portfolio</p>
-            <form id="signup-form-step-2" action="/api/signup-step-2" method="post">
-                <select name="portfolio_value">
-                    <option selected hidden value="null">Select one</option>
-                    <option value="no">I do not have a portfolio</option>
-                    <option value="10k">Around 10k</option>
-                    <option value="50k">Around 50k</option>
-                    <option value="100k">Around 100k</option>
-                    <option value="500k">Around 500k</option>
-                    <option value="1m">Around 1 million</option>
-                    <option value="3m">Around 3 million</option>
-                    <option value="5m+">Over 5 million</option>
-
-                </select>
+            <h1>Before you start, tell us a bit about yourself</h1>
+            <form
+                id="signup-form-step-2"
+                action="/api/signup-step-2"
+                method="post"
+            >
+                <p class="portfolio-info">
+                    What is the approximate size of your liquid investments
+                    portfolio?
+                </p>
+                <div class="portfolio-value-container">
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="no"
+                            required
+                        />
+                        I don't have a portfolio
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="10k"
+                        />
+                        Around 10k
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="50k"
+                        />
+                        Around 50k
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="100k"
+                        />
+                        Around 100k
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="500k"
+                        />
+                        Around 500k
+                    </label>
+                    <label>
+                        <input type="radio" name="portfolio_value" value="1m" />
+                        Around 1 million
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="5m+"
+                        />
+                        Over 5 million
+                    </label>
+                </div>
 
                 <!-- <input
                     type="number"
@@ -45,14 +162,41 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     required
                 /> -->
 
-                <p>When are you planning to invest?</p>
-                <select name="investment_urgency">
-                    <option selected hidden value="null">Select one</option>
-                    <option value="now">Immediately</option>
-                    <option value="1_month">Within a month</option>
-                    <option value="3_months">Within 3 months</option>
-                    <option value="1_year">Within a year</option>
-                </select>
+                <p class="portfolio-info">When are you planning to invest?</p>
+                <div class="investment-urgency-options">
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_urgency"
+                            value="now"
+                        />
+                        Immediately
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_urgency"
+                            value="1_month"
+                        />
+                        Within a month
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_urgency"
+                            value="3_months"
+                        />
+                        Within 3 months
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_urgency"
+                            value="1_year"
+                        />
+                        Within a year
+                    </label>
+                </div>
 
                 <!-- <p>What are your investment objectives?</p>
                 <select name="investment_objective">
@@ -67,10 +211,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     <option value="portfolio_management">Portfolio management</option>
                 </select> -->
 
-                <button type="submit">continue</button>
+                <button type="submit">Next</button>
             </form>
         </main>
-        <Footer />
     </body>
 </html>
 
@@ -90,10 +233,17 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             const ghlContactId = localStorage.getItem("ghl_contact_id");
 
             if (!ghlContactId) {
-                console.warn("GoHighLevel Contact ID not found in localStorage!");
-                alert("Error: Unable to find your contact ID. Please restart signup.");
+                console.warn(
+                    "GoHighLevel Contact ID not found in localStorage!",
+                );
+                alert(
+                    "Error: Unable to find your contact ID. Please restart signup.",
+                );
             } else {
-                console.log("Retrieved GHL Contact ID from localStorage:", ghlContactId);
+                console.log(
+                    "Retrieved GHL Contact ID from localStorage:",
+                    ghlContactId,
+                );
                 formData.append("ghl_contact_id", ghlContactId);
             }
 
@@ -118,4 +268,3 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             }
         });
 </script>
-

@@ -8,21 +8,96 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 <!doctype html>
 <html lang="en">
 
+
+
 <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 </head>
+
+<style>
+
+    main{
+        padding: 1.5rem;
+    }
+
+    h1 {
+        color: #000;
+        text-align: center;
+        font-family: "Satoshi", sans-serif;
+        font-size: 1.4375rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%;
+        margin-bottom: 1.5rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    form input {
+        padding: 1rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1;
+        font-family: Inter, sans-serif;
+        border-radius: 0.75rem;
+        border: 1px solid #AFB5BC;
+    }
+
+    .group {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .group input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    button {
+        background-color: #5028FF;
+        color: #fff;
+        padding: 15px;
+        line-height: 1;
+        font-family: Inter, sans-serif;
+        font-size: 1.125rem;
+        font-weight: 500;
+        border-radius: 0.75rem;
+        border: 1px solid #5028FF;
+        margin-top: 0.75rem;
+    }
+
+    .disclaimer{
+        margin-top: 0.75rem;
+        font-family: Inter, sans-serif;
+        /* line-height: 1.6; */
+        font-size: 14px;
+        text-align: center;
+    }
+
+    a{
+        color: #505050;
+        text-decoration: underline;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+
+</style>
 
 <body>
     <Header />
 
     <main>
-        <h1>Sign up page</h1>
-        <br />
-        <br />
+        <h1>Open Your Account in Under 3 Minutes</h1>
 
         <form id="signup-form" action="/api/signup" method="post">
-            <input type="text" name="first_name" placeholder="First Name" required />
-            <input type="text" name="last_name" placeholder="Last Name" required />
+
+            <div class="group">
+                <input type="text" name="first_name" placeholder="First Name" required />
+                <input type="text" name="last_name" placeholder="Last Name" required />
+            </div>
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
 
@@ -36,8 +111,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 </select> -->
             <button type="submit">Sign Up</button>
         </form>
+        <p class="disclaimer">By continuing, you agree to our <a href="">Privacy Policy</a> and <a href="">Terms of Use</a></p>
     </main>
-    <Footer />
+    <!-- <Footer /> -->
 </body>
 
 </html>
@@ -50,7 +126,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 body: formData,
             });
 
-            const textData = await response.text(); 
+            const textData = await response.text();
             console.log("🔍 WealthBlock Raw Response:", textData);
 
             if (!response.ok) {

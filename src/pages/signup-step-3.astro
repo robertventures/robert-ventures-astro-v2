@@ -9,23 +9,91 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            main {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                color: #000;
+                text-align: center;
+                font-family: "Satoshi", sans-serif;
+                font-size: 1.4375rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 130%;
+                margin-bottom: 1.5rem;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            button {
+                background-color: #5028ff;
+                color: #fff;
+                padding: 15px;
+                line-height: 1;
+                font-family: Inter, sans-serif;
+                font-size: 1.125rem;
+                font-weight: 500;
+                border-radius: 0.75rem;
+                border: 1px solid #5028ff;
+                margin-top: 2rem;
+            }
+
+            form input {
+                padding: 1rem 0.75rem;
+                font-size: 1rem;
+                line-height: 1;
+                font-family: Inter, sans-serif;
+                border-radius: 0.75rem;
+                border: 1px solid #afb5bc;
+            }
+
+            .disclaimer {
+                margin-top: 0.75rem;
+                font-family: Inter, sans-serif;
+                /* line-height: 1.6; */
+                font-size: 14px;
+                text-align: center;
+            }
+
+            a {
+                color: #505050;
+                text-decoration: underline;
+                white-space: nowrap;
+                font-weight: 500;
+            }
+        </style>
     </head>
     <body>
         <Header />
 
         <main>
-            <h1>Sign up page step 3</h1>
+            <h1>We take compliance seriously. Verify your identity</h1>
 
-            <form id="signup-form-step-3" action="/api/signup-step-3" method="post">
+            <form
+                id="signup-form-step-3"
+                action="/api/signup-step-3"
+                method="post"
+            >
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone_number"
+                    placeholder="Phone number"
+                    required
+                />
 
-            <input type="tel" id="phone" name="phone_number" placeholder="1234567890" required>
-
-            <button type="submit">continue</button>
-
+                <button type="submit">continue</button>
+                <p class="disclaimer">
+                    Yes, I allow Robert Ventures to send me emails and text messages.
+                </p>
             </form>
         </main>
 
-        <Footer />
     </body>
 </html>
 
@@ -42,8 +110,12 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             const ghlContactId = localStorage.getItem("ghl_contact_id");
 
             if (!ghlContactId) {
-                console.error("GoHighLevel Contact ID not found in localStorage!");
-                alert("Error: Unable to find your contact ID. Please restart signup.");
+                console.error(
+                    "GoHighLevel Contact ID not found in localStorage!",
+                );
+                alert(
+                    "Error: Unable to find your contact ID. Please restart signup.",
+                );
                 return;
             }
 
@@ -79,4 +151,3 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             }
         });
 </script>
-

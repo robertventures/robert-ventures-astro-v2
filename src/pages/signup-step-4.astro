@@ -9,14 +9,28 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            main {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                color: #000;
+                text-align: center;
+                font-family: "Satoshi", sans-serif;
+                font-size: 1.4375rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 130%;
+                margin-bottom: 1.5rem;
+            }
+        </style>
     </head>
     <body>
         <Header />
 
         <main>
-            <h1>Sign up page step 4</h1>
-            <br />
-            <br />
+            <h1>Let's finalize your account with a quick call</h1>
 
             <!-- <form id="signup-form-step-4" action="/api/signup-step-4" method="post">
                 <label for="date">Select a date for your call:</label>
@@ -47,7 +61,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 type="text/javascript"></script>
         </main>
 
-        <Footer />
     </body>
 </html>
 
@@ -101,7 +114,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         console.log("🔍 Full event data:", event.data);
 
         // ✅ Detect booking completion event
-        if (Array.isArray(event.data) && event.data[0] === "msgsndr-booking-complete") {
+        if (
+            Array.isArray(event.data) &&
+            event.data[0] === "msgsndr-booking-complete"
+        ) {
             console.log("✅ Booking detected! Redirecting user to /login...");
 
             // ✅ After 5 seconds, redirect to /login
