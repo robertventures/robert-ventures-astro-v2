@@ -7,13 +7,13 @@ import { $ as $$Image } from '../chunks/_astro_assets_BFr7Uugx.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
-const marvin = new Proxy({"src":"/_astro/marvin-gordon.rL8HkIXl.png","width":160,"height":160,"format":"png"}, {
+const marvin = new Proxy({"src":"/_astro/steve-lloyd.CS6Xtyt4.png","width":160,"height":160,"format":"png"}, {
 						get(target, name, receiver) {
 							if (name === 'clone') {
 								return structuredClone(target);
 							}
 							if (name === 'fsPath') {
-								return "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/images/testimonials/marvin-gordon.png";
+								return "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/images/testimonials/steve-lloyd.png";
 							}
 							
 							return target[name];
