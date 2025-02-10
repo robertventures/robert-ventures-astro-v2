@@ -10,11 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^3.1.8",
+    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/netlify": "^6.1.0",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
     "@supabase/supabase-js": "^2.47.2",
-    "astro": "^4.16.6",
+    "astro": "^5.2.5",
     "dotenv": "^16.4.7"
   }
 }
