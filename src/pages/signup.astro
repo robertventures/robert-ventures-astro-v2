@@ -18,6 +18,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
     main{
         padding: 1.5rem;
+        display: none;
     }
 
     h1 {
@@ -153,6 +154,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
         const form = e.target;
         const formData = new FormData(form);
+        const password = form.password.value.trim(); // ✅ Ensure correct password retrieval
+
+        // ✅ Validate password for at least one special character before making API calls
+        const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+        if (!specialCharRegex.test(password)) {
+            alert("Password must contain at least one special character.");
+            return;
+        }
 
         try {
             /*

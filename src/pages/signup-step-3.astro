@@ -12,6 +12,8 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         <style>
             main {
                 padding: 1.5rem;
+                max-width: 366px;
+                margin: 0 auto;
             }
 
             h1 {
@@ -87,9 +89,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     required
                 />
 
-                <button type="submit">continue</button>
+                <button type="submit">Next</button>
                 <p class="disclaimer">
-                    Yes, I allow Robert Ventures to send me emails and text messages.
+                    By clicking next, you consent to Robert Ventures sending you
+                    emails and text messages.
                 </p>
             </form>
         </main>
@@ -98,37 +101,57 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 </html>
 
 <script is:inline>
-    document
-        .getElementById("signup-form-step-3")
-        .addEventListener("submit", async (e) => {
+    document.addEventListener("DOMContentLoaded", () => {
+        const phoneInput = document.getElementById("phone");
+
+        phoneInput.addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+            // Ensure it always starts with +1
+            if (!value.startsWith("1")) {
+                value = "1" + value;
+            }
+
+            // Format phone number as +1 (XXX) XXX-XXXX
+            let formattedNumber = "+1";
+            if (value.length > 1) {
+                formattedNumber += " (" + value.substring(1, 4);
+            }
+            if (value.length >= 4) {
+                formattedNumber += ") " + value.substring(4, 7);
+            }
+            if (value.length >= 7) {
+                formattedNumber += "-" + value.substring(7, 11);
+            }
+
+            e.target.value = formattedNumber;
+        });
+
+        document.getElementById("signup-form-step-3").addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const form = e.target;
             const formData = new FormData(form);
+            let phoneValue = phoneInput.value.replace(/\D/g, ""); // Remove all non-numeric characters
+
+            // ✅ Ensure phone number is valid (10 digits after country code)
+            if (phoneValue.length !== 11 || !phoneValue.startsWith("1")) {
+                console.warn("⚠ Invalid phone number entered:", phoneValue);
+                alert("Please enter a valid US phone number.");
+                return;
+            }
 
             // ✅ Retrieve GoHighLevel Contact ID from localStorage
             const ghlContactId = localStorage.getItem("ghl_contact_id");
 
             if (!ghlContactId) {
-                console.error(
-                    "GoHighLevel Contact ID not found in localStorage!",
-                );
-                alert(
-                    "Error: Unable to find your contact ID. Please restart signup.",
-                );
+                console.error("GoHighLevel Contact ID not found in localStorage!");
+                alert("Error: Unable to find your contact ID. Please restart signup.");
                 return;
             }
 
             formData.append("ghl_contact_id", ghlContactId);
-
-            // ✅ Validate phone number (US format)
-            const phoneInput = document.getElementById("phone").value.trim();
-            const phoneRegex = /^\+?1?\d{10}$/; // Matches US numbers (with or without country code)
-
-            if (!phoneRegex.test(phoneInput)) {
-                alert("Please enter a valid US phone number (10 digits).");
-                return;
-            }
+            formData.set("phone_number", phoneValue); // Ensure it's stored in raw format
 
             try {
                 const response = await fetch(form.action, {
@@ -139,15 +162,15 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 3 Completed:", result);
-                    alert("Step 3 completed successfully!");
                     window.location.href = "/signup-step-4"; // Proceed to Step 4
                 } else {
                     const error = await response.json();
-                    alert(`Signup failed: ${error.error}`);
+                    console.error("❌ Signup failed:", error.error);
                 }
             } catch (err) {
-                console.error("Error during signup:", err);
-                alert("An unexpected error occurred.");
+                console.error("❌ Error during signup:", err);
             }
         });
+    });
 </script>
+
