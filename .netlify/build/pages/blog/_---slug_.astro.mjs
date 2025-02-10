@@ -1,7 +1,7 @@
 import { e as createAstro, c as createComponent, r as renderTemplate, a as renderComponent } from '../../chunks/astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
 import { g as getCollection } from '../../chunks/_astro_content_Dod3Cjm4.mjs';
-import { $ as $$BlogPost } from '../../chunks/BlogPost_-TjpHV7_.mjs';
+import { $ as $$BlogPost } from '../../chunks/BlogPost_x-SO9DgM.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://example.com");

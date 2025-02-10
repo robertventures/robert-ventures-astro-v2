@@ -1,6 +1,6 @@
 import { e as createAstro, c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead, f as renderSlot, d as addAttribute } from './astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
-import { $ as $$BaseHead, a as $$Header } from './Header_DstD3cLk.mjs';
+import { $ as $$BaseHead, a as $$Header } from './Header_BUNk7Egf.mjs';
 import { $ as $$Footer } from './Footer_CWVz9_y_.mjs';
 import { $ as $$FormattedDate } from './FormattedDate_C0e2Tu3-.mjs';
 /* empty css                         */
