@@ -13,19 +13,19 @@ const $$SignupStep2 = createComponent(async ($$result, $$props, $$slots) => {
   return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-4zzpisu6> <head>', "", "</head> <body data-astro-cid-4zzpisu6> ", ` <main data-astro-cid-4zzpisu6> <h1 data-astro-cid-4zzpisu6>Before you start, tell us a bit about yourself</h1> <form id="signup-form-step-2" action="/api/signup-step-2" method="post" data-astro-cid-4zzpisu6> <p class="portfolio-info" data-astro-cid-4zzpisu6>
 What is the approximate size of your liquid investments
                     portfolio?
-</p> <div class="portfolio-value-container" data-astro-cid-4zzpisu6> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="no" required data-astro-cid-4zzpisu6>
+</p> <div class="portfolio-value-container" data-astro-cid-4zzpisu6> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="0" required data-astro-cid-4zzpisu6>
 I don't have a portfolio
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="10k" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="10,000" data-astro-cid-4zzpisu6>
 Around 10k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="50k" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="50,000" data-astro-cid-4zzpisu6>
 Around 50k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="100k" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="100,000" data-astro-cid-4zzpisu6>
 Around 100k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="500k" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="500,000" data-astro-cid-4zzpisu6>
 Around 500k
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="1m" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="1,000,000" data-astro-cid-4zzpisu6>
 Around 1 million
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="5m+" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="portfolio_value" value="5,000,000" data-astro-cid-4zzpisu6>
 Over 5 million
 </label> </div> <!-- <input
                     type="number"
@@ -39,11 +39,11 @@ Over 5 million
                     required
                 /> --> <p class="portfolio-info" data-astro-cid-4zzpisu6>When are you planning to invest?</p> <div class="investment-urgency-options" data-astro-cid-4zzpisu6> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="now" data-astro-cid-4zzpisu6>
 Immediately
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1_month" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1 month" data-astro-cid-4zzpisu6>
 Within a month
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="3_months" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="3 months" data-astro-cid-4zzpisu6>
 Within 3 months
-</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1_year" data-astro-cid-4zzpisu6>
+</label> <label data-astro-cid-4zzpisu6> <input type="radio" name="investment_urgency" value="1 year" data-astro-cid-4zzpisu6>
 Within a year
 </label> </div> <!-- <p>What are your investment objectives?</p>
                 <select name="investment_objective">
