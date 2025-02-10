@@ -1,6 +1,6 @@
 import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
-import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_BUNk7Egf.mjs';
+import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_DstD3cLk.mjs';
 import { S as SITE_DESCRIPTION, a as SITE_TITLE } from '../chunks/consts_DaG9i4bq.mjs';
 /* empty css                                  */
 export { renderers } from '../renderers.mjs';
