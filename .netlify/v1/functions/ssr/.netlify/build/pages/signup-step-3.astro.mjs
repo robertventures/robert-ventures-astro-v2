@@ -10,9 +10,11 @@ var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));
 var _a;
 const $$SignupStep3 = createComponent(async ($$result, $$props, $$slots) => {
-  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>We take compliance seriously. Verify your identity</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
+  return renderTemplate(_a || (_a = __template(['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>Federal regulations require us to verify your identity.</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
 By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
+</p> <p class="disclaimer" data-astro-cid-xxm65cj7>
+Your information is secured with AES 128-bit encryption.
 </p> </form> </main> <script>
     document.addEventListener("DOMContentLoaded", () => {
         const phoneInput = document.getElementById("phone");
@@ -85,9 +87,11 @@ By clicking next, you consent to Robert Ventures sending you
             }
         });
     });
-<\/script></body></html>`], ['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>We take compliance seriously. Verify your identity</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
+<\/script></body></html>`], ['<html lang="en" data-astro-cid-xxm65cj7> <head>', "", "</head> <body data-astro-cid-xxm65cj7> ", ` <main data-astro-cid-xxm65cj7> <h1 data-astro-cid-xxm65cj7>Federal regulations require us to verify your identity.</h1> <form id="signup-form-step-3" action="/api/signup-step-3" method="post" data-astro-cid-xxm65cj7> <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required data-astro-cid-xxm65cj7> <button type="submit" data-astro-cid-xxm65cj7>Next</button> <p class="disclaimer" data-astro-cid-xxm65cj7>
 By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
+</p> <p class="disclaimer" data-astro-cid-xxm65cj7>
+Your information is secured with AES 128-bit encryption.
 </p> </form> </main> <script>
     document.addEventListener("DOMContentLoaded", () => {
         const phoneInput = document.getElementById("phone");
