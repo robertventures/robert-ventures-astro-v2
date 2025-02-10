@@ -3,7 +3,7 @@ import 'kleur/colors';
 import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_D06FuaVQ.mjs';
 import { $ as $$Footer } from '../chunks/Footer_CWVz9_y_.mjs';
 import { S as SITE_DESCRIPTION, a as SITE_TITLE } from '../chunks/consts_DaG9i4bq.mjs';
-import { s as supabase } from '../chunks/supabase_BP3y35C4.mjs';
+import { s as supabase } from '../chunks/supabase_Cp-Rfy68.mjs';
 export { renderers } from '../renderers.mjs';
 
 var __freeze = Object.freeze;
