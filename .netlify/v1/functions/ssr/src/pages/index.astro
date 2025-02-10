@@ -1,0 +1,318 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import Herobox from "../sections/Herobox.astro";
+import BlackBanner from "../sections/BlackBanner.astro";
+import Benefits from "../sections/Benefits.astro";
+import Calculator from "../sections/Calculator.astro";
+
+import { Image } from 'astro:assets';
+import marvin from '../images/testimonials/marvin-gordon.png';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				padding: 1.5rem;
+				max-width: 366px;
+				margin: 0 auto;
+			}
+
+			h1 {
+				color: #000;
+				text-align: center;
+				font-family: "Satoshi", sans-serif;
+				font-size: 1.4375rem;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 130%;
+				margin-bottom: 1.5rem;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			form input {
+				padding: 1rem 0.75rem;
+				font-size: 1rem;
+				line-height: 1;
+				font-family: Inter, sans-serif;
+				border-radius: 0.75rem;
+				border: 1px solid #afb5bc;
+			}
+
+			.group {
+				display: flex;
+				gap: 0.75rem;
+			}
+
+			.group input {
+				flex: 1;
+				min-width: 0;
+			}
+
+			button {
+				background-color: #5028ff;
+				color: #fff;
+				padding: 15px;
+				line-height: 1;
+				font-family: Inter, sans-serif;
+				font-size: 1.125rem;
+				font-weight: 500;
+				border-radius: 0.75rem;
+				border: 1px solid #5028ff;
+				margin-top: 0.75rem;
+			}
+
+			.disclaimer {
+				margin-top: 0.75rem;
+				font-family: Inter, sans-serif;
+				/* line-height: 1.6; */
+				font-size: 14px;
+				text-align: center;
+				margin-bottom: 3rem;
+			}
+
+			a {
+				color: #505050;
+				text-decoration: underline;
+				white-space: nowrap;
+				font-weight: 500;
+			}
+
+
+			.testimonial-photos{
+				display: flex;
+				justify-content: center;
+				margin-bottom: 0.75rem;
+			}
+			.testimonial-photos img{
+				max-width: 80px;
+			}
+
+			.testimonial{
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1rem;
+				color:#505050 ;
+				margin-bottom: 0.75rem;
+			}
+
+			.testimonial-name{
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1.125rem;
+				line-height: 1.6;
+				font-weight: 500;
+			}
+
+			.password-length{
+				display: none;
+				color: red;
+			}
+
+			.password-character{
+				display: none;
+				color: red;
+			}
+
+
+		</style>
+	</head>
+	<body>
+		<!-- <Header />
+
+		<main>
+			<Herobox />
+			<BlackBanner />
+			<Benefits />
+			<Calculator />
+		</main>
+		<Footer /> -->
+
+		<Header />
+
+		<main>
+			<h1>Open Your Account in Under 3 Minutes</h1>
+
+			<form id="signup-form" action="/api/signup" method="post">
+				<div class="group">
+					<input
+						type="text"
+						name="first_name"
+						placeholder="First Name"
+						required
+					/>
+					<input
+						type="text"
+						name="last_name"
+						placeholder="Last Name"
+						required
+					/>
+				</div>
+				<input type="email" name="email" placeholder="Email" required />
+				<input
+					type="password"
+					name="password"
+					placeholder="Password"
+					required
+				/>
+				<p class="password-length">password must be at least 8 character long.</p>
+				<p class="password-character">password must contain at least one special character.</p>
+				
+
+				<!-- <select name="how_did_they_hear">
+						<option selected hidden value="null">Select one</option>
+						<option value="facebook">Facebook</option>
+						<option value="instagram">Instagram</option>
+						<option value="friend">Friend</option>
+						<option value="newsletter">Newsletter</option>
+						<option value="google">Google</option>
+					</select> -->
+				<button type="submit">Sign Up</button>
+			</form>
+			<p class="disclaimer">
+				By continuing, you agree to our <a href="">Privacy Policy</a> and
+				<a href="">Terms of Use</a>
+			</p>
+
+
+			<div class="testimonials">
+				<div class="testimonial-photos">
+					<Image src={marvin} alt="A description of my image." />
+				</div>
+	
+				<p class="testimonial">“I was pleased every step of the way, from the start of the presentation  through the onboarding and receiving of the monthly payouts in both my  bank account and IRA. Joe provided an easy way to access monthly  interest payments on a consistent basis.”</p>
+	
+				<p class="testimonial-name">Marvin Gordon</p>
+			</div>
+		</main>
+
+		<!-- <Footer /> -->
+	</body>
+</html>
+
+<script is:inline>
+    async function authenticateWithWealthBlock(formData) {
+        try {
+            const response = await fetch("/api/wealthblock", {
+                method: "POST",
+                body: formData,
+            });
+
+            const textData = await response.text();
+            console.log("🔍 WealthBlock Raw Response:", textData);
+
+            if (!response.ok) {
+                console.error("❌ WealthBlock API Error:", textData);
+                return null;
+            }
+
+            try {
+                const jsonData = JSON.parse(textData);
+                console.log("✅ WealthBlock Parsed JSON:", jsonData);
+                return jsonData;
+            } catch (parseError) {
+                console.warn("⚠ WealthBlock returned a non-JSON response. Ignoring parsing error.");
+                return textData;
+            }
+        } catch (error) {
+            console.error("❌ Error during WealthBlock authentication:", error);
+            return null;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("signup-form");
+        const passwordInput = form.querySelector("input[name='password']");
+        const passwordLengthMsg = document.querySelector(".password-length");
+        const passwordCharMsg = document.querySelector(".password-character");
+
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const password = formData.get("password") || "";
+
+            // ✅ Check if password is at least 8 characters long
+            const isLongEnough = password.length >= 8;
+            passwordLengthMsg.style.display = isLongEnough ? "none" : "block";
+
+            // ✅ Check if password contains at least one special character
+            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+            const hasSpecialChar = specialCharRegex.test(password);
+            passwordCharMsg.style.display = hasSpecialChar ? "none" : "block";
+
+            // ✅ Stop submission if any validation fails
+            if (!isLongEnough || !hasSpecialChar) {
+                console.warn("⚠ Password validation failed.");
+                return;
+            }
+
+            try {
+                /*
+                // ✅ Temporarily disabled WealthBlock authentication for testing
+                const wealthBlockAuth = await authenticateWithWealthBlock(formData);
+                
+                if (!wealthBlockAuth) {
+                    console.warn("⚠ Authentication with WealthBlock failed. Please try again.");
+                    return;
+                }
+                */
+
+                // ✅ Attempt to fetch the IP address but do not block signup if it fails
+                try {
+                    const ipResponse = await fetch("https://api64.ipify.org?format=json");
+                    if (ipResponse.ok) {
+                        const ipData = await ipResponse.json();
+                        formData.append("ip_address", ipData.ip);
+                        console.log("✅ IP Address Added:", ipData.ip);
+                    } else {
+                        console.warn("⚠ Failed to fetch IP address. Continuing signup...");
+                    }
+                } catch (err) {
+                    console.warn("⚠ Error fetching IP address. Skipping...");
+                }
+
+                // ✅ Submit form data to backend
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    console.error(`❌ Signup failed: ${result.error}`);
+                    return;
+                }
+
+                if (result.session) {
+                    localStorage.setItem("supabase_token", result.session.access_token);
+                }
+
+                // ✅ Ensure GoHighLevel Contact ID is stored in localStorage
+                if (result.ghl_id) {
+                    localStorage.setItem("ghl_contact_id", result.ghl_id);
+                    console.log("✅ Stored GHL Contact ID:", result.ghl_id);
+                } else {
+                    console.warn("⚠ No GoHighLevel Contact ID received!");
+                }
+
+                console.log("✅ Signup successful! Redirecting...");
+                window.location.href = "/signup-step-2"; // Proceed to next step
+            } catch (err) {
+                console.error("❌ Error during signup:", err);
+            }
+        });
+    });
+</script>
