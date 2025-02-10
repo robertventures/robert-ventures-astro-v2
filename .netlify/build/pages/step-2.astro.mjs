@@ -1,6 +1,7 @@
 import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_DX3Ct7Tn.mjs';
 import 'kleur/colors';
 import { a as $$Header, $ as $$BaseHead } from '../chunks/Header_pgatvEbp.mjs';
+import { $ as $$Footer } from '../chunks/Footer_BKsYOzD7.mjs';
 import { S as SITE_DESCRIPTION, a as SITE_TITLE } from '../chunks/consts_DaG9i4bq.mjs';
 /* empty css                                  */
 export { renderers } from '../renderers.mjs';
@@ -56,52 +57,7 @@ Within a year
                     <option value="tax-aware_investing">Tax-Aware investing</option>
                     <option value="low_fee_solution">Low-Fee solution</option>
                     <option value="portfolio_management">Portfolio management</option>
-                </select> --> <button type="submit" data-astro-cid-dkbl4zda>Next</button> </form> </main> <script>
-    document
-        .getElementById("signup-form-step-2")
-        .addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const form = e.target;
-            const formData = new FormData(form);
-
-            /*
-             * NEW FUNCTIONALITY: Retrieve GoHighLevel Contact ID from localStorage
-             * This will ensure we send the correct ID to update the GoHighLevel contact.
-             */
-            const ghlContactId = localStorage.getItem("ghl_contact_id");
-
-            if (!ghlContactId) {
-                console.warn(
-                    "GoHighLevel Contact ID not found in localStorage!",
-                );
-            } else {
-                console.log(
-                    "Retrieved GHL Contact ID from localStorage:",
-                    ghlContactId,
-                );
-                formData.append("ghl_contact_id", ghlContactId);
-            }
-
-            try {
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: formData,
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log("Step 2 Completed:", result);
-                    window.location.href = "/step-3"; // Proceed to Step 3
-                } else {
-                    const error = await response.json();
-                    console.error("Signup failed:", error.error);
-                }
-            } catch (err) {
-                console.error("Error during signup:", err);
-            }
-        });
-<\/script></body></html>`])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-dkbl4zda": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-dkbl4zda": true }));
+                </select> --> <button type="submit" data-astro-cid-dkbl4zda>Next</button> </form> </main> `, ' <script>\n    document\n        .getElementById("signup-form-step-2")\n        .addEventListener("submit", async (e) => {\n            e.preventDefault();\n\n            const form = e.target;\n            const formData = new FormData(form);\n\n            /*\n             * NEW FUNCTIONALITY: Retrieve GoHighLevel Contact ID from localStorage\n             * This will ensure we send the correct ID to update the GoHighLevel contact.\n             */\n            const ghlContactId = localStorage.getItem("ghl_contact_id");\n\n            if (!ghlContactId) {\n                console.warn(\n                    "GoHighLevel Contact ID not found in localStorage!",\n                );\n            } else {\n                console.log(\n                    "Retrieved GHL Contact ID from localStorage:",\n                    ghlContactId,\n                );\n                formData.append("ghl_contact_id", ghlContactId);\n            }\n\n            try {\n                const response = await fetch(form.action, {\n                    method: form.method,\n                    body: formData,\n                });\n\n                if (response.ok) {\n                    const result = await response.json();\n                    console.log("Step 2 Completed:", result);\n                    window.location.href = "/step-3"; // Proceed to Step 3\n                } else {\n                    const error = await response.json();\n                    console.error("Signup failed:", error.error);\n                }\n            } catch (err) {\n                console.error("Error during signup:", err);\n            }\n        });\n<\/script></body></html>'])), renderComponent($$result, "BaseHead", $$BaseHead, { "title": SITE_TITLE, "description": SITE_DESCRIPTION, "data-astro-cid-dkbl4zda": true }), renderHead(), renderComponent($$result, "Header", $$Header, { "data-astro-cid-dkbl4zda": true }), renderComponent($$result, "Footer", $$Footer, { "data-astro-cid-dkbl4zda": true }));
 }, "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-2.astro", void 0);
 
 const $$file = "/Users/eduardodematos/Documents/GitHub/robert-ventures-astro/src/pages/step-2.astro";
