@@ -7,100 +7,117 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <style>
-            main {
-                padding: 1.5rem;
-                max-width: 366px;
-                margin: 0 auto;
-            }
 
-            h1 {
-                color: #000;
-                text-align: center;
-                font-family: "Satoshi", sans-serif;
-                font-size: 1.4375rem;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 130%;
-                margin-bottom: 1.5rem;
-            }
+<head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 
-            form {
-                display: flex;
-                flex-direction: column;
-            }
 
-            button {
-                background-color: #5028ff;
-                color: #fff;
-                padding: 15px;
-                line-height: 1;
-                font-family: Inter, sans-serif;
-                font-size: 1.125rem;
-                font-weight: 500;
-                border-radius: 0.75rem;
-                border: 1px solid #5028ff;
-                margin-top: 2rem;
-            }
+    <style>
+        main {
+            padding: 1.5rem;
+            max-width: 366px;
+            margin: 0 auto;
+        }
 
-            form input {
-                padding: 1rem 0.75rem;
-                font-size: 1rem;
-                line-height: 1;
-                font-family: Inter, sans-serif;
-                border-radius: 0.75rem;
-                border: 1px solid #afb5bc;
-            }
+        h1 {
+            color: #000;
+            text-align: center;
+            font-family: "Satoshi", sans-serif;
+            font-size: 1.4375rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 130%;
+            margin-bottom: 1.5rem;
+        }
 
-            .disclaimer {
-                margin-top: 0.75rem;
-                font-family: Inter, sans-serif;
-                /* line-height: 1.6; */
-                font-size: 14px;
-                text-align: center;
-            }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-            a {
-                color: #505050;
-                text-decoration: underline;
-                white-space: nowrap;
-                font-weight: 500;
-            }
-        </style>
-    </head>
-    <body>
-        <Header />
+        button {
+            background-color: #5028ff;
+            color: #fff;
+            padding: 15px;
+            line-height: 1;
+            font-family: Inter, sans-serif;
+            font-size: 1.125rem;
+            font-weight: 500;
+            border-radius: 0.75rem;
+            border: 1px solid #5028ff;
+            margin-top: 2rem;
+        }
 
-        <main>
-            <h1>Federal regulations require us to verify your identity</h1>
+        form input {
+            padding: 1rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1;
+            font-family: Inter, sans-serif;
+            border-radius: 0.75rem;
+            border: 1px solid #afb5bc;
+        }
 
-            <form
-                id="signup-form-step-3"
-                action="/api/signup-step-3"
-                method="post"
-            >
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone_number"
-                    placeholder="Phone number"
-                    required
-                />
+        .disclaimer {
+            margin-top: 0.75rem;
+            font-family: Inter, sans-serif;
+            /* line-height: 1.6; */
+            font-size: 14px;
+            text-align: center;
+        }
 
-                <button type="submit">Next</button>
-                <p class="disclaimer">
-                    By clicking next, you consent to Robert Ventures sending you
-                    emails and text messages.
-                </p>
-                <!-- <p class="disclaimer">
+        a {
+            color: #505050;
+            text-decoration: underline;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+    </style>
+
+
+    <!-- Meta Pixel Code -->
+    <script is:inline>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version =‘2.0’;
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document,‘script’,
+            ‘https://connect.facebook.net/en_US/fbevents.js’);
+            fbq(‘init’, ‘652212003052612’);
+        fbq(‘track’, ‘PageView’);
+        fbq(‘track’, ‘CompleteRegistration’);
+    </script>
+    <noscript><img height=“1” width=“1" style=“display:none”
+            src=“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1” /></noscript>
+    <!-- End Meta Pixel Code -->
+</head>
+
+<body>
+    <Header />
+
+    <main>
+        <h1>Federal regulations require us to verify your identity</h1>
+
+        <form id="signup-form-step-3" action="/api/signup-step-3" method="post">
+            <input type="tel" id="phone" name="phone_number" placeholder="Phone number" required />
+
+            <button type="submit">Next</button>
+            <p class="disclaimer">
+                By clicking next, you consent to Robert Ventures sending you
+                emails and text messages.
+            </p>
+            <!-- <p class="disclaimer">
                     Your information is secured with AES 128-bit encryption.
                 </p> -->
-            </form>
-        </main>
-		<Footer />
-    </body>
+        </form>
+    </main>
+    <Footer />
+</body>
+
 </html>
 
 <script is:inline>
@@ -176,4 +193,3 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         });
     });
 </script>
-
