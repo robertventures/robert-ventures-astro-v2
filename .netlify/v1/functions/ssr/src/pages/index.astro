@@ -8,8 +8,8 @@ import BlackBanner from "../sections/BlackBanner.astro";
 import Benefits from "../sections/Benefits.astro";
 import Calculator from "../sections/Calculator.astro";
 
-import { Image } from 'astro:assets';
-import marvin from '../images/testimonials/steve-lloyd.png';
+import { Image } from "astro:assets";
+import marvin from "../images/testimonials/steve-lloyd.png";
 ---
 
 <!doctype html>
@@ -88,25 +88,24 @@ import marvin from '../images/testimonials/steve-lloyd.png';
 				font-weight: 500;
 			}
 
-
-			.testimonial-photos{
+			.testimonial-photos {
 				display: flex;
 				justify-content: center;
 				margin-bottom: 0.75rem;
 			}
-			.testimonial-photos img{
+			.testimonial-photos img {
 				max-width: 80px;
 			}
 
-			.testimonial{
+			.testimonial {
 				text-align: center;
 				font-family: "Inter", sans-serif;
 				font-size: 1rem;
-				color:#505050 ;
+				color: #505050;
 				margin-bottom: 0.75rem;
 			}
 
-			.testimonial-name{
+			.testimonial-name {
 				text-align: center;
 				font-family: "Inter", sans-serif;
 				font-size: 1.125rem;
@@ -114,30 +113,78 @@ import marvin from '../images/testimonials/steve-lloyd.png';
 				font-weight: 500;
 			}
 
-			.password-length{
+			.password-length {
 				display: none;
 				color: red;
 			}
 
-			.password-character{
+			.password-character {
 				display: none;
 				color: red;
 			}
-
-
 		</style>
+
+		<!-- Meta Pixel Code -->
+		<script is:inline>
+			!(function (f, b, e, v, n, t, s) {
+				if (f.fbq) return;
+				n = f.fbq = function () {
+					n.callMethod
+						? n.callMethod.apply(n, arguments)
+						: n.queue.push(arguments);
+				};
+				if (!f._fbq) f._fbq = n;
+				n.push = n;
+				n.loaded = !0;
+				n.version = "2.0";
+				n.queue = [];
+				t = b.createElement(e);
+				t.async = !0;
+				t.src = v;
+				s = b.getElementsByTagName(e)[0];
+				s.parentNode.insertBefore(t, s);
+			})(
+				window,
+				document,
+				"script",
+				"https://connect.facebook.net/en_US/fbevents.js",
+			);
+			fbq("init", "652212003052612");
+			fbq("track", "PageView");
+			fbq("track", "Lead");
+		</script>
+		<noscript
+			><img
+				height="“1”"
+				width='“1"'
+				style="“display:none”"
+				src="“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”"
+			/></noscript
+		>
+		<!-- End Meta Pixel Code -->
+
+		<!-- Google tag (gtag.js) -->
+		<script is:inline
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=AW-10852233213"
+		></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+			gtag("config", "AW-10852233213");
+		</script>
+
+		<!-- Event snippet for Rv wesite - submit lead form conversion page -->
+		<script is:inline>
+			gtag("event", "conversion", {
+				send_to: "AW-10852233213/BmIMCMX8lZ0aEP3f37Yo",
+			});
+		</script>
 	</head>
 	<body>
-		<!-- <Header />
-
-		<main>
-			<Herobox />
-			<BlackBanner />
-			<Benefits />
-			<Calculator />
-		</main>
-		<Footer /> -->
-
 		<Header />
 
 		<main>
@@ -165,33 +212,38 @@ import marvin from '../images/testimonials/steve-lloyd.png';
 					placeholder="Password"
 					required
 				/>
-				<p class="password-length">Password must be at least 8 character long.</p>
-				<p class="password-character">Password must contain at least one special character.</p>
-				
+				<p class="password-length">
+					Password must be at least 8 character long.
+				</p>
+				<p class="password-character">
+					Password must contain at least one special character.
+				</p>
 
-				<!-- <select name="how_did_they_hear">
-						<option selected hidden value="null">Select one</option>
-						<option value="facebook">Facebook</option>
-						<option value="instagram">Instagram</option>
-						<option value="friend">Friend</option>
-						<option value="newsletter">Newsletter</option>
-						<option value="google">Google</option>
-					</select> -->
 				<button type="submit">Sign Up</button>
 			</form>
 			<p class="disclaimer">
-				By continuing, you agree to our <a href="https://robertventures.com/privacy-policy">Privacy Policy</a> and
-				<a href="https://robertventures.com/terms-of-use">Terms of Use</a>
+				By continuing, you agree to our <a
+					href="https://robertventures.com/privacy-policy"
+					>Privacy Policy</a
+				> and
+				<a href="https://robertventures.com/terms-of-use"
+					>Terms of Use</a
+				>
 			</p>
-
 
 			<div class="testimonials">
 				<div class="testimonial-photos">
 					<Image src={marvin} alt="A description of my image." />
 				</div>
-	
-				<p class="testimonial">“I've known Joe for over a decade now and he has been more than just a friend but has been instrumental in our holding company to make accountable double-digit returns and has been a blessing. Always could count on him for the payments.”</p>
-	
+
+				<p class="testimonial">
+					“I've known Joe for over a decade now and he has been more
+					than just a friend but has been instrumental in our holding
+					company to make accountable double-digit returns and has
+					been a blessing. Always could count on him for the
+					payments.”
+				</p>
+
 				<p class="testimonial-name">Steve Lloyd</p>
 			</div>
 		</main>
@@ -201,117 +253,127 @@ import marvin from '../images/testimonials/steve-lloyd.png';
 </html>
 
 <script is:inline>
-    async function authenticateWithWealthBlock(formData) {
-        try {
-            const response = await fetch("/api/wealthblock", {
-                method: "POST",
-                body: formData,
-            });
+	async function authenticateWithWealthBlock(formData) {
+		try {
+			const response = await fetch("/api/wealthblock", {
+				method: "POST",
+				body: formData,
+			});
 
-            const textData = await response.text();
-            console.log("🔍 WealthBlock Raw Response:", textData);
+			const textData = await response.text();
+			console.log("🔍 WealthBlock Raw Response:", textData);
 
-            if (!response.ok) {
-                console.error("❌ WealthBlock API Error:", textData);
-                return null;
-            }
+			if (!response.ok) {
+				console.error("❌ WealthBlock API Error:", textData);
+				return null;
+			}
 
-            try {
-                const jsonData = JSON.parse(textData);
-                console.log("✅ WealthBlock Parsed JSON:", jsonData);
-                return jsonData;
-            } catch (parseError) {
-                console.warn("⚠ WealthBlock returned a non-JSON response. Ignoring parsing error.");
-                return textData;
-            }
-        } catch (error) {
-            console.error("❌ Error during WealthBlock authentication:", error);
-            return null;
-        }
-    }
+			try {
+				const jsonData = JSON.parse(textData);
+				console.log("✅ WealthBlock Parsed JSON:", jsonData);
+				return jsonData;
+			} catch (parseError) {
+				console.warn(
+					"⚠ WealthBlock returned a non-JSON response. Ignoring parsing error.",
+				);
+				return textData;
+			}
+		} catch (error) {
+			console.error("❌ Error during WealthBlock authentication:", error);
+			return null;
+		}
+	}
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("signup-form");
-        const passwordInput = form.querySelector("input[name='password']");
-        const passwordLengthMsg = document.querySelector(".password-length");
-        const passwordCharMsg = document.querySelector(".password-character");
+	document.addEventListener("DOMContentLoaded", () => {
+		const form = document.getElementById("signup-form");
+		const passwordInput = form.querySelector("input[name='password']");
+		const passwordLengthMsg = document.querySelector(".password-length");
+		const passwordCharMsg = document.querySelector(".password-character");
 
+		form.addEventListener("submit", async (e) => {
+			e.preventDefault();
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+			const formData = new FormData(form);
+			const password = formData.get("password") || "";
 
-            const formData = new FormData(form);
-            const password = formData.get("password") || "";
+			// ✅ Check if password is at least 8 characters long
+			const isLongEnough = password.length >= 8;
+			passwordLengthMsg.style.display = isLongEnough ? "none" : "block";
 
-            // ✅ Check if password is at least 8 characters long
-            const isLongEnough = password.length >= 8;
-            passwordLengthMsg.style.display = isLongEnough ? "none" : "block";
+			// ✅ Check if password contains at least one special character
+			const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+			const hasSpecialChar = specialCharRegex.test(password);
+			passwordCharMsg.style.display = hasSpecialChar ? "none" : "block";
 
-            // ✅ Check if password contains at least one special character
-            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-            const hasSpecialChar = specialCharRegex.test(password);
-            passwordCharMsg.style.display = hasSpecialChar ? "none" : "block";
+			// ✅ Stop submission if any validation fails
+			if (!isLongEnough || !hasSpecialChar) {
+				console.warn("⚠ Password validation failed.");
+				return;
+			}
 
-            // ✅ Stop submission if any validation fails
-            if (!isLongEnough || !hasSpecialChar) {
-                console.warn("⚠ Password validation failed.");
-                return;
-            }
+			try {
+				// ✅ Temporarily disabled WealthBlock authentication for testing
+				const wealthBlockAuth =
+					await authenticateWithWealthBlock(formData);
 
-            try {
-                
-                // ✅ Temporarily disabled WealthBlock authentication for testing
-                const wealthBlockAuth = await authenticateWithWealthBlock(formData);
-                
-                if (!wealthBlockAuth) {
-                    console.warn("⚠ Authentication with WealthBlock failed. Please try again.");
-                    return;
-                }
+				if (!wealthBlockAuth) {
+					console.warn(
+						"⚠ Authentication with WealthBlock failed. Please try again.",
+					);
+					return;
+				}
 
-                // ✅ Attempt to fetch the IP address but do not block signup if it fails
-                try {
-                    const ipResponse = await fetch("https://api64.ipify.org?format=json");
-                    if (ipResponse.ok) {
-                        const ipData = await ipResponse.json();
-                        formData.append("ip_address", ipData.ip);
-                        console.log("✅ IP Address Added:", ipData.ip);
-                    } else {
-                        console.warn("⚠ Failed to fetch IP address. Continuing signup...");
-                    }
-                } catch (err) {
-                    console.warn("⚠ Error fetching IP address. Skipping...");
-                }
+				// ✅ Attempt to fetch the IP address but do not block signup if it fails
+				try {
+					const ipResponse = await fetch(
+						"https://api64.ipify.org?format=json",
+					);
+					if (ipResponse.ok) {
+						const ipData = await ipResponse.json();
+						formData.append("ip_address", ipData.ip);
+						console.log("✅ IP Address Added:", ipData.ip);
+					} else {
+						console.warn(
+							"⚠ Failed to fetch IP address. Continuing signup...",
+						);
+					}
+				} catch (err) {
+					console.warn("⚠ Error fetching IP address. Skipping...");
+				}
 
-                // ✅ Submit form data to backend
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: formData,
-                });
+				// ✅ Submit form data to backend
+				const response = await fetch(form.action, {
+					method: form.method,
+					body: formData,
+				});
 
-                const result = await response.json();
+				const result = await response.json();
 
-                if (!response.ok) {
-                    console.error(`❌ Signup failed: ${result.error}`);
-                    return;
-                }
+				if (!response.ok) {
+					console.error(`❌ Signup failed: ${result.error}`);
+					return;
+				}
 
-                if (result.session) {
-                    localStorage.setItem("supabase_token", result.session.access_token);
-                }
+				if (result.session) {
+					localStorage.setItem(
+						"supabase_token",
+						result.session.access_token,
+					);
+				}
 
-                // ✅ Ensure GoHighLevel Contact ID is stored in localStorage
-                if (result.ghl_id) {
-                    localStorage.setItem("ghl_contact_id", result.ghl_id);
-                    console.log("✅ Stored GHL Contact ID:", result.ghl_id);
-                } else {
-                    console.warn("⚠ No GoHighLevel Contact ID received!");
-                }
+				// ✅ Ensure GoHighLevel Contact ID is stored in localStorage
+				if (result.ghl_id) {
+					localStorage.setItem("ghl_contact_id", result.ghl_id);
+					console.log("✅ Stored GHL Contact ID:", result.ghl_id);
+				} else {
+					console.warn("⚠ No GoHighLevel Contact ID received!");
+				}
 
-                console.log("✅ Signup successful! Redirecting...");
-                window.location.href = "/step-2"; // Proceed to next step
-            } catch (err) {
-                console.error("❌ Error during signup:", err);
-            }
-        });
-    });
+				console.log("✅ Signup successful! Redirecting...");
+				window.location.href = "/step-2"; // Proceed to next step
+			} catch (err) {
+				console.error("❌ Error during signup:", err);
+			}
+		});
+	});
 </script>
