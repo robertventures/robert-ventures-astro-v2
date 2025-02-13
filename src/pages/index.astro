@@ -111,6 +111,30 @@ import steve from "../images/testimonials/steve-lloyd.png";
 				line-height: 1.6;
 				font-weight: 500;
 			}
+
+			.loader {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: white;
+				display: inline-block;
+				animation: pulse 1s infinite;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.5);
+					opacity: 0.5;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
 		</style>
 
 		<!-- Meta Pixel Code -->
@@ -172,7 +196,10 @@ import steve from "../images/testimonials/steve-lloyd.png";
 				/>
 				<p class="signup-error"></p>
 
-				<button type="submit">Sign Up</button>
+				<button type="submit">
+					<span class="button-text">Sign Up</span>
+					<span class="loader" style="display: none;"></span>
+				</button>
 			</form>
 
 			<p class="disclaimer">
@@ -206,6 +233,9 @@ import steve from "../images/testimonials/steve-lloyd.png";
 			document.addEventListener("DOMContentLoaded", async () => {
 				const form = document.getElementById("signup-form");
 				const errorElement = document.querySelector(".signup-error");
+				const button = form.querySelector("button[type='submit']");
+				const buttonText = button.querySelector(".button-text");
+				const loader = button.querySelector(".loader");
 
 				let ip_address = null;
 				try {
@@ -223,6 +253,9 @@ import steve from "../images/testimonials/steve-lloyd.png";
 				form.addEventListener("submit", async (e) => {
 					e.preventDefault();
 					errorElement.style.display = "none";
+					button.disabled = true;
+					buttonText.style.display = "none";
+					loader.style.display = "inline-block";
 
 					const formData = new FormData(form);
 					const data = Object.fromEntries(formData.entries());
@@ -248,6 +281,10 @@ import steve from "../images/testimonials/steve-lloyd.png";
 						console.error("❌ Error during signup:", error);
 						errorElement.textContent = error.message;
 						errorElement.style.display = "block";
+					} finally {
+						button.disabled = false;
+						buttonText.style.display = "inline";
+						loader.style.display = "none";
 					}
 				});
 			});
