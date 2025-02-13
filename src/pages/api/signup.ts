@@ -125,10 +125,14 @@ export const POST: APIRoute = async ({ request }) => {
             });
 
             const ghlData = await ghlResponse.json();
+            console.log("📩 GHL Contact Creation Response:", JSON.stringify(ghlData, null, 2));
+
             ghlContactId = ghlData?.contact?.id || null;
 
             if (!ghlResponse.ok || !ghlContactId) {
                 console.warn("⚠️ Failed to create GoHighLevel contact:", ghlData);
+            } else {
+                console.log("✅ GoHighLevel Contact ID Created:", ghlContactId);
             }
         } catch (error) {
             console.error("❌ Error calling GoHighLevel API:", error);
@@ -168,8 +172,15 @@ export const POST: APIRoute = async ({ request }) => {
             await supabase.from("profiles").update({ ghl_id: ghlContactId }).eq("id", userId);
         }
 
+        /** ───────────────────────────────
+         * ✅ Step 7: Return GHL Contact ID to Frontend
+         * ─────────────────────────────── */
         return new Response(
-            JSON.stringify({ message: "Signup successful", user: signupData.user, ghl_id: ghlContactId }),
+            JSON.stringify({
+                message: "Signup successful",
+                user: signupData.user,
+                ghl_contact_id: ghlContactId || null // ✅ Ensure frontend gets a valid or `null` ID
+            }),
             { status: 200, headers: { "Content-Type": "application/json" } }
         );
 

@@ -136,7 +136,6 @@ import steve from "../images/testimonials/steve-lloyd.png";
 				}
 			}
 		</style>
-
 		<!-- Meta Pixel Code -->
 	<script is:inline>
 		!function(f,b,e,v,n,t,s)
@@ -163,8 +162,6 @@ import steve from "../images/testimonials/steve-lloyd.png";
 	gtag('event', 'conversion', {'send_to': 'AW-10852233213/BmIMCMX8lZ0aEP3f37Yo'});
   </script>
 	<!-- End Google tag (gtag.js) -->
-
-
 	</head>
 	<body>
 		<Header />
@@ -174,26 +171,11 @@ import steve from "../images/testimonials/steve-lloyd.png";
 
 			<form id="signup-form">
 				<div class="group">
-					<input
-						type="text"
-						name="first_name"
-						placeholder="First Name"
-						required
-					/>
-					<input
-						type="text"
-						name="last_name"
-						placeholder="Last Name"
-						required
-					/>
+					<input type="text" name="first_name" placeholder="First Name" required />
+					<input type="text" name="last_name" placeholder="Last Name" required />
 				</div>
 				<input type="email" name="email" placeholder="Email" required />
-				<input
-					type="password"
-					name="password"
-					placeholder="Password"
-					required
-				/>
+				<input type="password" name="password" placeholder="Password" required />
 				<p class="signup-error"></p>
 
 				<button type="submit">
@@ -204,12 +186,8 @@ import steve from "../images/testimonials/steve-lloyd.png";
 
 			<p class="disclaimer">
 				By continuing, you agree to our
-				<a href="https://robertventures.com/privacy-policy"
-					>Privacy Policy</a
-				> and
-				<a href="https://robertventures.com/terms-of-use"
-					>Terms of Use</a
-				>.
+				<a href="https://robertventures.com/privacy-policy">Privacy Policy</a> and
+				<a href="https://robertventures.com/terms-of-use">Terms of Use</a>.
 			</p>
 
 			<div class="testimonials">
@@ -217,11 +195,7 @@ import steve from "../images/testimonials/steve-lloyd.png";
 					<Image src={steve} alt="A description of my image." />
 				</div>
 				<p class="testimonial">
-					“I've known Joe for over a decade now and he has been more
-					than just a friend but has been instrumental in our holding
-					company to make accountable double-digit returns and has
-					been a blessing. Always could count on him for the
-					payments.”
+					“I've known Joe for over a decade now and he has been more than just a friend but has been instrumental in our holding company to make accountable double-digit returns and has been a blessing. Always could count on him for the payments.”
 				</p>
 				<p class="testimonial-name">Steve Lloyd.</p>
 			</div>
@@ -239,9 +213,7 @@ import steve from "../images/testimonials/steve-lloyd.png";
 
 				let ip_address = null;
 				try {
-					const ipResponse = await fetch(
-						"https://api64.ipify.org?format=json",
-					);
+					const ipResponse = await fetch("https://api64.ipify.org?format=json");
 					if (ipResponse.ok) {
 						const ipData = await ipResponse.json();
 						ip_address = ipData.ip;
@@ -271,8 +243,15 @@ import steve from "../images/testimonials/steve-lloyd.png";
 						const result = await response.json(); // Parse the response
 
 						if (!response.ok) {
-							// Handle errors properly
 							throw new Error(result.error || "Signup failed. Please try again.");
+						}
+
+						// ✅ Store GHL Contact ID in localStorage
+						if (result.ghl_contact_id) {
+							localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
+							console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
+						} else {
+							console.warn("⚠ No GHL Contact ID received.");
 						}
 
 						console.log("✅ Signup successful! Redirecting...");
