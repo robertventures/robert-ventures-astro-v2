@@ -1,0 +1,68 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+
+// src/pages/dashboard.astro
+import { supabase } from "../lib/supabase";
+
+const { data: session } = await supabase.auth.getSession();
+
+if (!session?.session) {
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/login", // Redirect to the login page if not logged in
+    },
+  });
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+
+		<main>
+            <h1>Dashboard</h1>
+            <br>
+            <br>
+
+            <button id="signout-button">Sign Out</button>
+
+
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<script is:inline>
+
+document.getElementById("signout-button").addEventListener("click", async () => {
+    try {
+      const response = await fetch("/api/signout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert(result.message);
+        // Redirect to home or login page after signout
+        window.location.href = "/";
+      } else {
+        const error = await response.json();
+        alert(`Signout failed: ${error.error}`);
+      }
+    } catch (err) {
+      console.error("Error during signout:", err);
+      alert("An unexpected error occurred.");
+    }
+  });
+
+
+</script>
