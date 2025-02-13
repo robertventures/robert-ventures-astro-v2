@@ -23,4 +23,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+<<<<<<< Updated upstream
 .mail-test
+=======
+
+.mail-test
+>>>>>>> Stashed changes
