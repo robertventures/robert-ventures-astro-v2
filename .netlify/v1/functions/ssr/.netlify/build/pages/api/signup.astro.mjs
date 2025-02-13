@@ -5,7 +5,6 @@ const POST = async ({ request }) => {
   const clientId = "d0IzeElybTVYUXk1V3kyNTk1";
   const apiKey = "rfjrH4tf/5yXPKeO3gA2NuoKodA2ioaZh+viIVmFXWw";
   const ghlApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhdGlvbl9pZCI6ImJmSGl5MU5XaXhzdHl2NUxReFNwIiwidmVyc2lvbiI6MSwiaWF0IjoxNzI2MTU2Mjg5NzE0LCJzdWIiOiJVT2dvY3laMFBJZzNCUDA0cndDZiJ9.hhl4Em5rI83tRH7bpA64qgQ_gWgd3noxEauLKKbwAuQ";
-  const skipWealthBlock = undefined                                 === "false";
   try {
     const body = await request.json();
     const { first_name, last_name, email, password, ip_address } = body;
@@ -17,71 +16,69 @@ const POST = async ({ request }) => {
       );
     }
     console.log("📩 Received Signup Data:", { first_name, last_name, email, ip_address });
-    if (!skipWealthBlock) {
-      const authResponse = await fetch("https://api.wealthblock.ai/platform/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Client-ID": clientId
-        },
-        body: JSON.stringify({ apiKey })
-      });
-      const authData = await authResponse.json();
-      if (!authResponse.ok || !authData.success || !authData.data) {
-        console.error("❌ WealthBlock authentication failed:", authData);
-        return new Response(
-          JSON.stringify({ error: "WealthBlock authentication failed", details: authData.message || authData }),
-          { status: 400, headers: { "Content-Type": "application/json" } }
-        );
-      }
-      const bearerToken = authData.data;
-      const userRegistrationResponse = await fetch("https://api.wealthblock.ai/user/register", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${bearerToken}`,
-          "Client-ID": clientId,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          password,
-          username: email,
-          acceptTerms: true,
-          lastName: last_name
-        })
-      });
-      const userRegistrationData = await userRegistrationResponse.json();
-      if (!userRegistrationResponse.ok || !userRegistrationData.token) {
-        console.error("❌ WealthBlock user registration failed:", userRegistrationData);
-        return new Response(
-          JSON.stringify({ error: userRegistrationData.error || "Failed to register user in WealthBlock" }),
-          { status: 400, headers: { "Content-Type": "application/json" } }
-        );
-      }
-      const accountBearerToken = userRegistrationData.token;
-      const accountCreationResponse = await fetch("https://api.wealthblock.ai/account/?au=1", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${accountBearerToken}`,
-          "Client-ID": clientId,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          defaultRoleType: 1,
-          profile: {
-            firstName: first_name,
-            lastName: last_name,
-            email
-          }
-        })
-      });
-      const accountCreationData = await accountCreationResponse.json();
-      if (!accountCreationResponse.ok) {
-        console.error("❌ WealthBlock account creation failed:", accountCreationData);
-        return new Response(
-          JSON.stringify({ error: "Failed to create WealthBlock account", details: accountCreationData.message || accountCreationData }),
-          { status: 400, headers: { "Content-Type": "application/json" } }
-        );
-      }
+    const authResponse = await fetch("https://api.wealthblock.ai/platform/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Client-ID": clientId
+      },
+      body: JSON.stringify({ apiKey })
+    });
+    const authData = await authResponse.json();
+    if (!authResponse.ok || !authData.success || !authData.data) {
+      console.error("❌ WealthBlock authentication failed:", authData);
+      return new Response(
+        JSON.stringify({ error: "WealthBlock authentication failed", details: authData.message || authData }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+    const bearerToken = authData.data;
+    const userRegistrationResponse = await fetch("https://api.wealthblock.ai/user/register", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${bearerToken}`,
+        "Client-ID": clientId,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        password,
+        username: email,
+        acceptTerms: true,
+        lastName: last_name
+      })
+    });
+    const userRegistrationData = await userRegistrationResponse.json();
+    if (!userRegistrationResponse.ok || !userRegistrationData.token) {
+      console.error("❌ WealthBlock user registration failed:", userRegistrationData);
+      return new Response(
+        JSON.stringify({ error: userRegistrationData.error || "Failed to register user in WealthBlock" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+    const accountBearerToken = userRegistrationData.token;
+    const accountCreationResponse = await fetch("https://api.wealthblock.ai/account/?au=1", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${accountBearerToken}`,
+        "Client-ID": clientId,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        defaultRoleType: 1,
+        profile: {
+          firstName: first_name,
+          lastName: last_name,
+          email
+        }
+      })
+    });
+    const accountCreationData = await accountCreationResponse.json();
+    if (!accountCreationResponse.ok) {
+      console.error("❌ WealthBlock account creation failed:", accountCreationData);
+      return new Response(
+        JSON.stringify({ error: "Failed to create WealthBlock account", details: accountCreationData.message || accountCreationData }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
     }
     let ghlContactId = null;
     try {

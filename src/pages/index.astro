@@ -112,54 +112,6 @@ import steve from "../images/testimonials/steve-lloyd.png";
 				font-weight: 500;
 			}
 		</style>
-
-		<!-- Meta Pixel Code -->
-		<script is:inline>
-			!(function (f, b, e, v, n, t, s) {
-				if (f.fbq) return;
-				n = f.fbq = function () {
-					n.callMethod
-						? n.callMethod.apply(n, arguments)
-						: n.queue.push(arguments);
-				};
-				if (!f._fbq) f._fbq = n;
-				n.push = n;
-				n.loaded = !0;
-				n.version = "2.0";
-				n.queue = [];
-				t = b.createElement(e);
-				t.async = !0;
-				t.src = v;
-				s = b.getElementsByTagName(e)[0];
-				s.parentNode.insertBefore(t, s);
-			})(
-				window,
-				document,
-				"script",
-				"https://connect.facebook.net/en_US/fbevents.js",
-			);
-			fbq("init", "652212003052612");
-			fbq("track", "PageView");
-			fbq("track", "Lead");
-		</script>
-		<noscript
-			><img
-				height="“1”"
-				width='“1"'
-				style="“display:none”"
-				src="“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”"
-			/></noscript
-		>
-		<!-- End Meta Pixel Code -->
-
-		<!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10852233213"></script> <script is:inline> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-10852233213'); </script>
-
-		<!-- Event snippet for Rv wesite - submit lead form conversion page -->
-		<script is:inline>
-			gtag("event", "conversion", {
-				send_to: "AW-10852233213/BmIMCMX8lZ0aEP3f37Yo",
-			});
-		</script>
 	</head>
 	<body>
 		<Header />
@@ -253,6 +205,13 @@ import steve from "../images/testimonials/steve-lloyd.png";
 							headers: { "Content-Type": "application/json" },
 							body: JSON.stringify(data),
 						});
+
+						const result = await response.json(); // Parse the response
+
+						if (!response.ok) {
+							// Handle errors properly
+							throw new Error(result.error || "Signup failed. Please try again.");
+						}
 
 						console.log("✅ Signup successful! Redirecting...");
 						window.location.href = "/step-2";

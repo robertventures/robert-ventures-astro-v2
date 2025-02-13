@@ -5,7 +5,6 @@ export const POST: APIRoute = async ({ request }) => {
     const clientId = import.meta.env.WB_CLIENT_ID;
     const apiKey = import.meta.env.WB_API_KEY;
     const ghlApiKey = import.meta.env.GHL_API_KEY;
-    const skipWealthBlock = import.meta.env.SKIP_WEALTHBLOCK === 'false';
 
     if (!clientId || !apiKey || !ghlApiKey) {
         console.error("❌ Missing API credentials.");
@@ -30,87 +29,85 @@ export const POST: APIRoute = async ({ request }) => {
 
         console.log("📩 Received Signup Data:", { first_name, last_name, email, ip_address });
 
-        if (!skipWealthBlock) {
-            /** ───────────────────────────────
-             * ✅ Step 1: Authenticate with WealthBlock
-             * ─────────────────────────────── */
-            const authResponse = await fetch("https://api.wealthblock.ai/platform/auth", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Client-ID": clientId,
-                },
-                body: JSON.stringify({ apiKey }),
-            });
+        /** ───────────────────────────────
+         * ✅ Step 1: Authenticate with WealthBlock
+         * ─────────────────────────────── */
+        const authResponse = await fetch("https://api.wealthblock.ai/platform/auth", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Client-ID": clientId,
+            },
+            body: JSON.stringify({ apiKey }),
+        });
 
-            const authData = await authResponse.json();
-            if (!authResponse.ok || !authData.success || !authData.data) {
-                console.error("❌ WealthBlock authentication failed:", authData);
-                return new Response(
-                    JSON.stringify({ error: "WealthBlock authentication failed", details: authData.message || authData }),
-                    { status: 400, headers: { "Content-Type": "application/json" } }
-                );
-            }
+        const authData = await authResponse.json();
+        if (!authResponse.ok || !authData.success || !authData.data) {
+            console.error("❌ WealthBlock authentication failed:", authData);
+            return new Response(
+                JSON.stringify({ error: "WealthBlock authentication failed", details: authData.message || authData }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
 
-            const bearerToken = authData.data;
+        const bearerToken = authData.data;
 
-            /** ───────────────────────────────
-             * ✅ Step 2: Register the User in WealthBlock
-             * ─────────────────────────────── */
-            const userRegistrationResponse = await fetch("https://api.wealthblock.ai/user/register", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${bearerToken}`,
-                    "Client-ID": clientId,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    password,
-                    username: email,
-                    acceptTerms: true,
-                    lastName: last_name
-                })
-            });
+        /** ───────────────────────────────
+         * ✅ Step 2: Register the User in WealthBlock
+         * ─────────────────────────────── */
+        const userRegistrationResponse = await fetch("https://api.wealthblock.ai/user/register", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${bearerToken}`,
+                "Client-ID": clientId,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                password,
+                username: email,
+                acceptTerms: true,
+                lastName: last_name
+            })
+        });
 
-            const userRegistrationData = await userRegistrationResponse.json();
-            if (!userRegistrationResponse.ok || !userRegistrationData.token) {
-                console.error("❌ WealthBlock user registration failed:", userRegistrationData);
-                return new Response(
-                    JSON.stringify({ error: userRegistrationData.error || "Failed to register user in WealthBlock" }),
-                    { status: 400, headers: { "Content-Type": "application/json" } }
-                );
-            }
+        const userRegistrationData = await userRegistrationResponse.json();
+        if (!userRegistrationResponse.ok || !userRegistrationData.token) {
+            console.error("❌ WealthBlock user registration failed:", userRegistrationData);
+            return new Response(
+                JSON.stringify({ error: userRegistrationData.error || "Failed to register user in WealthBlock" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
 
-            const accountBearerToken = userRegistrationData.token;
+        const accountBearerToken = userRegistrationData.token;
 
-            /** ───────────────────────────────
-             * ✅ Step 3: Create an Account in WealthBlock
-             * ─────────────────────────────── */
-            const accountCreationResponse = await fetch("https://api.wealthblock.ai/account/?au=1", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${accountBearerToken}`,
-                    "Client-ID": clientId,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    defaultRoleType: 1,
-                    profile: {
-                        firstName: first_name,
-                        lastName: last_name,
-                        email
-                    }
-                })
-            });
+        /** ───────────────────────────────
+         * ✅ Step 3: Create an Account in WealthBlock
+         * ─────────────────────────────── */
+        const accountCreationResponse = await fetch("https://api.wealthblock.ai/account/?au=1", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accountBearerToken}`,
+                "Client-ID": clientId,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                defaultRoleType: 1,
+                profile: {
+                    firstName: first_name,
+                    lastName: last_name,
+                    email
+                }
+            })
+        });
 
-            const accountCreationData = await accountCreationResponse.json();
-            if (!accountCreationResponse.ok) {
-                console.error("❌ WealthBlock account creation failed:", accountCreationData);
-                return new Response(
-                    JSON.stringify({ error: "Failed to create WealthBlock account", details: accountCreationData.message || accountCreationData }),
-                    { status: 400, headers: { "Content-Type": "application/json" } }
-                );
-            }
+        const accountCreationData = await accountCreationResponse.json();
+        if (!accountCreationResponse.ok) {
+            console.error("❌ WealthBlock account creation failed:", accountCreationData);
+            return new Response(
+                JSON.stringify({ error: "Failed to create WealthBlock account", details: accountCreationData.message || accountCreationData }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
         }
 
         /** ───────────────────────────────
