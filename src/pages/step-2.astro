@@ -64,6 +64,35 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 border-radius: 0.75rem;
                 border: 1px solid #5028ff;
                 margin-top: 2rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .loader {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: white;
+                display: inline-block;
+                animation: pulse 1s infinite;
+                margin-left: 10px;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
             }
 
             input[type='radio']{
@@ -213,7 +242,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     <option value="portfolio_management">Portfolio management</option>
                 </select> -->
 
-                <button type="submit">Next</button>
+                <button type="submit">
+                    <span class="button-text">Next</span>
+                    <span class="loader" style="display: none;"></span>
+                </button>
             </form>
         </main>
         <Footer />
@@ -227,7 +259,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             e.preventDefault();
 
             const form = e.target;
+            const button = form.querySelector("button[type='submit']");
+            const buttonText = button.querySelector(".button-text");
+            const loader = button.querySelector(".loader");
             const formData = new FormData(form);
+
+            button.disabled = true;
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
 
             /*
              * NEW FUNCTIONALITY: Retrieve GoHighLevel Contact ID from localStorage
@@ -263,6 +302,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 }
             } catch (err) {
                 console.error("Error during signup:", err);
+            } finally {
+                button.disabled = false;
+                buttonText.style.display = "inline";
+                loader.style.display = "none";
             }
         });
 </script>

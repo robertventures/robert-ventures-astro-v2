@@ -44,6 +44,35 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 border-radius: 0.75rem;
                 border: 1px solid #5028ff;
                 margin-top: 2rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .loader {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: white;
+                display: inline-block;
+                animation: pulse 1s infinite;
+                margin-left: 10px;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
             }
 
             form input {
@@ -58,7 +87,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             .disclaimer {
                 margin-top: 0.75rem;
                 font-family: Inter, sans-serif;
-                /* line-height: 1.6; */
                 font-size: 14px;
                 text-align: center;
             }
@@ -72,7 +100,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         </style>
 
         <!-- Meta Pixel Code -->
-        <!-- <script is:inline>
+        <script is:inline>
             !(function (f, b, e, v, n, t, s) {
                 if (f.fbq) return;
                 n = f.fbq = function () {
@@ -106,7 +134,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 style="“display:none”"
                 src="“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”"
             /></noscript
-        > -->
+        >
         <!-- End Meta Pixel Code -->
     </head>
 
@@ -129,14 +157,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     required
                 />
 
-                <button type="submit">Next</button>
+                <button type="submit">
+                    <span class="button-text">Next</span>
+                    <span class="loader" style="display: none;"></span>
+                </button>
                 <p class="disclaimer">
                     By clicking next, you consent to Robert Ventures sending you
                     emails and text messages.
                 </p>
-                <!-- <p class="disclaimer">
-                    Your information is secured with AES 128-bit encryption.
-                </p> -->
             </form>
         </main>
         <Footer />
@@ -176,6 +204,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 e.preventDefault();
 
                 const form = e.target;
+                const button = form.querySelector("button[type='submit']");
+                const buttonText = button.querySelector(".button-text");
+                const loader = button.querySelector(".loader");
                 const formData = new FormData(form);
                 let phoneValue = phoneInput.value.replace(/\D/g, ""); // Remove all non-numeric characters
 
@@ -205,6 +236,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 formData.append("ghl_contact_id", ghlContactId);
                 formData.set("phone_number", phoneValue); // Ensure it's stored in raw format
 
+                button.disabled = true;
+                buttonText.style.display = "none";
+                loader.style.display = "inline-block";
+
                 try {
                     const response = await fetch(form.action, {
                         method: form.method,
@@ -221,6 +256,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     }
                 } catch (err) {
                     console.error("❌ Error during signup:", err);
+                } finally {
+                    button.disabled = false;
+                    buttonText.style.display = "inline";
+                    loader.style.display = "none";
                 }
             });
     });
