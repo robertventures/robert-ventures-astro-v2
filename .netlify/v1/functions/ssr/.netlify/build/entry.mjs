@@ -3,7 +3,7 @@ import { s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_CvSo
 import { manifest } from './manifest_BND2moSN.mjs';
 import { createExports } from '@astrojs/netlify/ssr-function.js';
 
-const serverIslandMap = new Map();;
+const serverIslandMap = new Map();
 
 const _page0 = () => import('./pages/_image.astro.mjs');
 const _page1 = () => import('./pages/about.astro.mjs');
@@ -25,6 +25,7 @@ const _page16 = () => import('./pages/step-2.astro.mjs');
 const _page17 = () => import('./pages/step-3.astro.mjs');
 const _page18 = () => import('./pages/step-4.astro.mjs');
 const _page19 = () => import('./pages/index.astro.mjs');
+
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/about.astro", _page1],
@@ -54,14 +55,17 @@ const _manifest = Object.assign(manifest, {
     renderers,
     middleware: () => import('./_noop-middleware.mjs')
 });
+
 const _args = {
     "middlewareSecret": "c0b4caa4-bbdf-4996-b938-057504b19c7d"
 };
+
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;
 const _start = 'start';
+
 if (_start in serverEntrypointModule) {
-	serverEntrypointModule[_start](_manifest, _args);
+    serverEntrypointModule[_start](_manifest, _args);
 }
 
 export { __astrojsSsrVirtualEntry as default, pageMap };
