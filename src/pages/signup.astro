@@ -3,221 +3,270 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { Image } from "astro:assets";
+import steve from "../images/testimonials/steve-lloyd.png";
 ---
 
 <!doctype html>
 <html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				padding: 1.5rem 0;
+				max-width: 366px;
+				margin: 0 auto;
+			}
 
+			h1 {
+				color: #000;
+				text-align: center;
+				font-family: "Satoshi", sans-serif;
+				font-size: 1.4375rem;
+				font-weight: 700;
+				line-height: 130%;
+				margin-bottom: 1.5rem;
+			}
 
+			form {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
 
-<head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-</head>
+			form input {
+				padding: 1rem 0.75rem;
+				font-size: 1rem;
+				font-family: Inter, sans-serif;
+				border-radius: 0.75rem;
+				border: 1px solid #afb5bc;
+			}
 
-<style>
+			.group {
+				display: flex;
+				gap: 0.75rem;
+			}
 
-    main{
-        padding: 1.5rem;
-        display: none;
-    }
+			.group input {
+				flex: 1;
+				min-width: 0;
+			}
 
-    h1 {
-        color: #000;
-        text-align: center;
-        font-family: "Satoshi", sans-serif;
-        font-size: 1.4375rem;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 130%;
-        margin-bottom: 1.5rem;
-    }
+			button {
+				background-color: #5028ff;
+				color: #fff;
+				padding: 15px;
+				font-family: Inter, sans-serif;
+				font-size: 1.125rem;
+				font-weight: 500;
+				border-radius: 0.75rem;
+				border: 1px solid #5028ff;
+				margin-top: 0.75rem;
+				cursor: pointer;
+			}
 
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
+			.signup-error {
+				color: red;
+				text-align: center;
+				display: none;
+				font-size: 0.875rem;
+			}
 
-    form input {
-        padding: 1rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1;
-        font-family: Inter, sans-serif;
-        border-radius: 0.75rem;
-        border: 1px solid #AFB5BC;
-    }
+			.disclaimer {
+				margin-top: 0.75rem;
+				font-family: Inter, sans-serif;
+				font-size: 14px;
+				text-align: center;
+				margin-bottom: 3rem;
+			}
 
-    .group {
-        display: flex;
-        gap: 0.75rem;
-    }
+			a {
+				color: #505050;
+				text-decoration: underline;
+				font-weight: 500;
+			}
 
-    .group input {
-        flex: 1;
-        min-width: 0;
-    }
+			.testimonial-photos {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 0.75rem;
+			}
 
-    button {
-        background-color: #5028FF;
-        color: #fff;
-        padding: 15px;
-        line-height: 1;
-        font-family: Inter, sans-serif;
-        font-size: 1.125rem;
-        font-weight: 500;
-        border-radius: 0.75rem;
-        border: 1px solid #5028FF;
-        margin-top: 0.75rem;
-    }
+			.testimonial-photos img {
+				max-width: 80px;
+			}
 
-    .disclaimer{
-        margin-top: 0.75rem;
-        font-family: Inter, sans-serif;
-        /* line-height: 1.6; */
-        font-size: 14px;
-        text-align: center;
-    }
+			.testimonial {
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1rem;
+				color: #505050;
+				margin-bottom: 0.75rem;
+			}
 
-    a{
-        color: #505050;
-        text-decoration: underline;
-        white-space: nowrap;
-        font-weight: 500;
-    }
+			.testimonial-name {
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1.125rem;
+				line-height: 1.6;
+				font-weight: 500;
+			}
 
-</style>
+			.loader {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: white;
+				display: inline-block;
+				animation: pulse 1s infinite;
+			}
 
-<body>
-    <Header />
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.5);
+					opacity: 0.5;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+		</style>
+		<!-- Meta Pixel Code -->
+	<script is:inline>
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)}(window, document,'script',
+		'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '652212003052612');
+		fbq('track', 'PageView');
+		fbq('track', 'Lead');
+	</script>
+	<noscript>
+		<img height=“1” width=“1" style=“display:none” src=“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”
+	/></noscript>
+	<!-- End Meta Pixel Code -->
 
-    <main>
-        <h1>Open Your Account in Under 3 Minutes</h1>
+	<!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10852233213"></script> <script is:inline> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-10852233213'); </script>
 
-        <form id="signup-form" action="/api/signup" method="post">
-
-            <div class="group">
-                <input type="text" name="first_name" placeholder="First Name" required />
-                <input type="text" name="last_name" placeholder="Last Name" required />
-            </div>
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-
-            <!-- <select name="how_did_they_hear">
-                    <option selected hidden value="null">Select one</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="friend">Friend</option>
-                    <option value="newsletter">Newsletter</option>
-                    <option value="google">Google</option>
-                </select> -->
-            <button type="submit">Sign Up</button>
-        </form>
-        <p class="disclaimer">By continuing, you agree to our <a href="">Privacy Policy</a> and <a href="">Terms of Use</a></p>
-    </main>
-    <!-- <Footer /> -->
-</body>
-
-</html>
-
+	<!-- Event snippet for Rv wesite - submit lead form conversion page -->
 <script is:inline>
-    async function authenticateWithWealthBlock(formData) {
-        try {
-            const response = await fetch("/api/wealthblock", {
-                method: "POST",
-                body: formData,
-            });
+	gtag('event', 'conversion', {'send_to': 'AW-10852233213/BmIMCMX8lZ0aEP3f37Yo'});
+  </script>
+	<!-- End Google tag (gtag.js) -->
+	</head>
+	<body>
+		<Header />
 
-            const textData = await response.text();
-            console.log("🔍 WealthBlock Raw Response:", textData);
+		<main>
+			<h1>Open your account in under 2 minutes</h1>
 
-            if (!response.ok) {
-                console.error("❌ WealthBlock API Error:", textData);
-                return null;
-            }
+			<form id="signup-form">
+				<div class="group">
+					<input type="text" name="first_name" placeholder="First Name" required />
+					<input type="text" name="last_name" placeholder="Last Name" required />
+				</div>
+				<input type="email" name="email" placeholder="Email" required />
+				<input type="password" name="password" placeholder="Password" required />
+				<p class="signup-error"></p>
 
-            try {
-                const jsonData = JSON.parse(textData);
-                console.log("✅ WealthBlock Parsed JSON:", jsonData);
-                return jsonData;
-            } catch (parseError) {
-                console.warn("⚠ WealthBlock returned a non-JSON response. Ignoring parsing error.");
-                return textData;
-            }
-        } catch (error) {
-            console.error("❌ Error during WealthBlock authentication:", error);
-            return null;
-        }
-    }
+				<button type="submit">
+					<span class="button-text">Sign Up</span>
+					<span class="loader" style="display: none;"></span>
+				</button>
+			</form>
 
-    document.getElementById("signup-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
+			<p class="disclaimer">
+				By continuing, you agree to our
+				<a href="https://robertventures.com/privacy-policy">Privacy Policy</a> and
+				<a href="https://robertventures.com/terms-of-use">Terms of Use</a>.
+			</p>
 
-        const form = e.target;
-        const formData = new FormData(form);
-        const password = form.password.value.trim(); // ✅ Ensure correct password retrieval
+			<div class="testimonials">
+				<div class="testimonial-photos">
+					<Image src={steve} alt="A description of my image." />
+				</div>
+				<p class="testimonial">
+					“I've known Joe for over a decade now and he has been more than just a friend but has been instrumental in our holding company to make accountable double-digit returns and has been a blessing. Always could count on him for the payments.”
+				</p>
+				<p class="testimonial-name">Steve Lloyd.</p>
+			</div>
+		</main>
 
-        // ✅ Validate password for at least one special character before making API calls
-        const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-        if (!specialCharRegex.test(password)) {
-            alert("Password must contain at least one special character.");
-            return;
-        }
+		<Footer />
 
-        try {
-            /*
-            // ✅ Temporarily disabled WealthBlock authentication for testing
-            const wealthBlockAuth = await authenticateWithWealthBlock(formData);
-            
-            if (!wealthBlockAuth) {
-                alert("Authentication with WealthBlock failed. Please try again.");
-                return;
-            }
-            */
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", async () => {
+				const form = document.getElementById("signup-form");
+				const errorElement = document.querySelector(".signup-error");
+				const button = form.querySelector("button[type='submit']");
+				const buttonText = button.querySelector(".button-text");
+				const loader = button.querySelector(".loader");
 
-            // ✅ Attempt to fetch the IP address but do not block signup if it fails
-            try {
-                const ipResponse = await fetch("https://api64.ipify.org?format=json");
-                if (ipResponse.ok) {
-                    const ipData = await ipResponse.json();
-                    formData.append("ip_address", ipData.ip);
-                    console.log("✅ IP Address Added:", ipData.ip);
-                } else {
-                    console.warn("⚠ Failed to fetch IP address. Continuing signup...");
-                }
-            } catch (err) {
-                console.warn("⚠ Error fetching IP address. Skipping...");
-            }
+				let ip_address = null;
+				try {
+					const ipResponse = await fetch("https://api64.ipify.org?format=json");
+					if (ipResponse.ok) {
+						const ipData = await ipResponse.json();
+						ip_address = ipData.ip;
+					}
+				} catch (err) {
+					console.warn("⚠ Error fetching IP address.");
+				}
 
-            // ✅ Submit form data to backend
-            const response = await fetch(form.action, {
-                method: form.method,
-                body: formData,
-            });
+				form.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					errorElement.style.display = "none";
+					button.disabled = true;
+					buttonText.style.display = "none";
+					loader.style.display = "inline-block";
 
-            const result = await response.json();
+					const formData = new FormData(form);
+					const data = Object.fromEntries(formData.entries());
+					data.ip_address = ip_address;
 
-            if (!response.ok) {
-                alert(`Signup failed: ${result.error}`);
-                return;
-            }
+					try {
+						const response = await fetch("/api/signup", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify(data),
+						});
 
-            if (result.session) {
-                localStorage.setItem("supabase_token", result.session.access_token);
-            }
+						const result = await response.json(); // Parse the response
 
-            // ✅ Ensure GoHighLevel Contact ID is stored in localStorage
-            if (result.ghl_id) {
-                localStorage.setItem("ghl_contact_id", result.ghl_id);
-                console.log("✅ Stored GHL Contact ID:", result.ghl_id);
-            } else {
-                console.warn("⚠ No GoHighLevel Contact ID received!");
-            }
+						if (!response.ok) {
+							throw new Error(result.error || "Signup failed. Please try again.");
+						}
 
-            alert("Signup successful!");
-            window.location.href = "/signup-step-2"; // Proceed to next step
-        } catch (err) {
-            console.error("❌ Error during signup:", err);
-            alert("An unexpected error occurred.");
-        }
-    });
-</script>
+						// ✅ Store GHL Contact ID in localStorage
+						if (result.ghl_contact_id) {
+							localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
+							console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
+						} else {
+							console.warn("⚠ No GHL Contact ID received.");
+						}
+
+						console.log("✅ Signup successful! Redirecting...");
+						window.location.href = "/step-2";
+					} catch (error) {
+						console.error("❌ Error during signup:", error);
+						errorElement.textContent = error.message;
+						errorElement.style.display = "block";
+					} finally {
+						button.disabled = false;
+						buttonText.style.display = "inline";
+						loader.style.display = "none";
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
