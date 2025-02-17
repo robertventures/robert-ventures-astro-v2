@@ -233,8 +233,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     return;
                 }
 
+                // ✅ Retrieve email from localStorage
+                const userEmail = localStorage.getItem("user_email");
+
+                if (!userEmail) {
+                    console.error("User email not found in localStorage!");
+                    alert("Error: Unable to find your email. Please restart signup.");
+                    return;
+                }
+
                 formData.append("ghl_contact_id", ghlContactId);
                 formData.set("phone_number", phoneValue); // Ensure it's stored in raw format
+                formData.append("email", userEmail); // Append email to form data
 
                 button.disabled = true;
                 buttonText.style.display = "none";

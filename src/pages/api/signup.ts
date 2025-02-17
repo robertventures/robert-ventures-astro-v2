@@ -5,8 +5,9 @@ export const POST: APIRoute = async ({ request }) => {
     const clientId = import.meta.env.WB_CLIENT_ID;
     const apiKey = import.meta.env.WB_API_KEY;
     const ghlApiKey = import.meta.env.GHL_API_KEY;
+    const makeSignupWebhook = import.meta.env.MAKE_SIGNUP_WEBHOOK;
 
-    if (!clientId || !apiKey || !ghlApiKey) {
+    if (!clientId || !apiKey || !ghlApiKey || !makeSignupWebhook) {
         console.error("❌ Missing API credentials.");
         return new Response(
             JSON.stringify({ error: "Server misconfiguration: Missing API credentials" }),
@@ -134,8 +135,18 @@ export const POST: APIRoute = async ({ request }) => {
             } else {
                 console.log("✅ GoHighLevel Contact ID Created:", ghlContactId);
             }
+
+            // Call the webhook with the contact details
+            await fetch(makeSignupWebhook, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ firstName: first_name, lastName: last_name, email }),
+            });
+            console.log("✅ Webhook called successfully");
         } catch (error) {
-            console.error("❌ Error calling GoHighLevel API:", error);
+            console.error("❌ Error calling GoHighLevel API or webhook:", error);
         }
 
         /** ───────────────────────────────
