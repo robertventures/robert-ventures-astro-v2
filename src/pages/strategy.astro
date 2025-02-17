@@ -1,0 +1,40 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { Image } from "astro:assets";
+import StrategyHero from "../sections/StrategyHero.astro";
+import StrategyRealEstate from "../sections/StrategyRealEstate.astro";
+import StrategyDigital from "../sections/StrategyDigital.astro";
+import CTADark from "../sections/CTADark.astro";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            body {
+                padding: 0 0.5rem;
+            }
+
+            @media screen and (min-width: 768px) {
+                body {
+                    padding: 0 1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <StrategyHero />
+        <StrategyRealEstate />
+        <StrategyDigital />
+        <CTADark />
+
+        <Footer />
+
+        <script is:inline></script>
+    </body>
+</html>

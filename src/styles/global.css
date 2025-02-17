@@ -14,6 +14,10 @@
 	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
 	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
 		0 16px 32px rgba(var(--gray), 33%);
+
+	--background: #E4E9F0;
+
+
 }
 
 @font-face {
@@ -44,7 +48,7 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: #ffffff;
+	background: var(--background);
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
@@ -72,7 +76,10 @@ h6 {
 }
 
 h1 {
-	font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem);
+	/* font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem); */
+	/* font-size: clamp(3rem, 2.7143rem + 1.4286vw, 4rem); */
+	font-size: 3rem;
+	line-height: 1.25;
 }
 
 h2 {
@@ -118,7 +125,8 @@ a:hover {
 }
 
 p {
-	font-size: 1rem;
+	font-size: 1.125rem;
+	line-height: 2;
 	margin: 0;
 }
 

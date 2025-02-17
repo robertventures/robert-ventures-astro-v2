@@ -1,0 +1,103 @@
+---
+import Image from "astro/components/Image.astro";
+import iphone from "../images/Desktop-herobox-iphone.png";
+---
+
+<style>
+
+    section{
+        max-width: 1356px;
+        margin: 0 auto;
+        margin-bottom: 3rem;
+    }
+
+    .strategy-hero{
+        padding: 3rem 0.5rem;
+        /* margin: 0 0.5rem; */
+        background-color: #FFFFFF;
+        border-radius: 1rem;
+    }
+    span {
+        background: linear-gradient(90deg, #281480 0%, #3c1fbf 50%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    h1{
+        margin-bottom: 1.5rem;
+    }
+
+    .info{
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+    }
+
+    .info-block{
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+    }
+
+    @media screen and (min-width: 768px) {
+        section{
+            margin-bottom: 4rem;
+        }
+        .info{
+            flex-direction: row;
+        }
+
+        .strategy-hero{
+            padding: 4rem 3rem;
+        }
+
+        .info{
+            gap: 2rem;
+        }
+    }
+</style>
+
+<section>
+    <div class="strategy-hero">
+        <h1>
+            <span>Real Estate and Digital Assets</span><br> for a Diversified Portfolio
+        </h1>
+    
+        <div class="info">
+    
+            <div class="info-block">
+                <p>
+                    At Robert Ventures, we strategically invest in two key sectors: Real
+                    Estate and Digital Assets, creating a diversified portfolio designed to
+                    deliver consistent returns for the next decade.
+                </p>
+            
+                <p>
+                    Our focus is on balancing stability with growth, offering investors
+                    predictable income streams with returns higher than traditional money
+                    markets. We allocate 30-70% of raised funds into real estate, with the
+                    remainder invested in digital assets.
+                </p>
+            </div>
+    
+            <div class="info-block">
+                <p>
+                    By leveraging a blend of passive income-generating assets and value
+                    appreciation, we ensure steady cash flow to support payments and
+                    investor withdrawals.
+                </p>
+            
+                <p>
+                    As one of the few private offerings with this level of diversification,
+                    Robert Ventures' fixed-rate bonds reflect our unwavering commitment to
+                    providing high-quality investment opportunities and optimized returns.
+                </p>
+            </div>
+        
+        </div>
+    
+    </div>
+</section>
+
+<script is:inline></script>
