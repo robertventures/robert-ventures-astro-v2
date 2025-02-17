@@ -5,6 +5,8 @@ export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
     const phoneNumber = formData.get("phone_number")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
+    const email = formData.get("email")?.toString(); // Retrieve the email from form data
+    const makeStep3Webhook = import.meta.env.MAKE_STEP3_WEBHOOK;
 
     if (!phoneNumber) {
         return new Response(
@@ -16,6 +18,13 @@ export const POST: APIRoute = async ({ request }) => {
     if (!ghlContactId) {
         return new Response(
             JSON.stringify({ error: "GoHighLevel Contact ID is missing" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+    }
+
+    if (!email) {
+        return new Response(
+            JSON.stringify({ error: "Email is required" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
         );
     }
@@ -106,6 +115,21 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(
                 JSON.stringify({ error: error.message }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        // ✅ Step 5: Call the webhook with the email and phone number
+        const webhookResponse = await fetch(makeStep3Webhook, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, phone_number: phoneNumber }),
+        });
+
+        if (!webhookResponse.ok) {
+            console.error("Error calling webhook:", await webhookResponse.text());
+            return new Response(
+                JSON.stringify({ error: "Failed to call webhook" }),
+                { status: webhookResponse.status, headers: { "Content-Type": "application/json" } }
             );
         }
 
