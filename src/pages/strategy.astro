@@ -1,7 +1,7 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import FooterOld from "../components/FooterOld.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
 import StrategyHero from "../sections/StrategyHero.astro";
@@ -15,25 +15,18 @@ import CTADark from "../sections/CTADark.astro";
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
         <style>
-            body {
-                padding: 0 0.5rem;
-            }
 
-            @media screen and (min-width: 768px) {
-                body {
-                    padding: 0 1rem;
-                }
-            }
         </style>
     </head>
     <body>
         <Header />
-        <StrategyHero />
-        <StrategyRealEstate />
-        <StrategyDigital />
-        <CTADark />
 
-        <Footer />
+            <StrategyHero />
+            <StrategyRealEstate />
+            <StrategyDigital />
+            <CTADark />
+
+        <FooterOld />
 
         <script is:inline></script>
     </body>
