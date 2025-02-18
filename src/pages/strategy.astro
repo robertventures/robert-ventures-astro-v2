@@ -3,7 +3,6 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import FooterOld from "../components/FooterOld.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { Image } from "astro:assets";
 import StrategyHero from "../sections/StrategyHero.astro";
 import StrategyRealEstate from "../sections/StrategyRealEstate.astro";
 import StrategyDigital from "../sections/StrategyDigital.astro";
@@ -20,12 +19,10 @@ import CTADark from "../sections/CTADark.astro";
     </head>
     <body>
         <Header />
-
             <StrategyHero />
             <StrategyRealEstate />
             <StrategyDigital />
             <CTADark />
-
         <FooterOld />
 
         <script is:inline></script>
