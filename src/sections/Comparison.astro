@@ -1,0 +1,234 @@
+---
+import Image from "astro/components/Image.astro";
+import arrow from "../images/design-elements/Arrow-right.svg";
+import chart from "../images/design-elements/comparison-chart.jpg";
+---
+
+<style>
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .section-content {
+        max-width: 366px;
+        margin: 0 auto;
+    }
+
+    section > * {
+        text-align: center;
+    }
+
+    h2 {
+        color: #281480;
+        margin-bottom: 0.75rem;
+    }
+
+    p {
+        color: #505050;
+        text-align: center;
+        font-weight: 500;
+        line-height: 160%; /* 1.8rem */
+    }
+
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .section-container{
+            padding: 4rem 1.5rem;
+        }
+
+        h2{
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content {
+            max-width: 921px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+                "info image"
+                "form image";
+            justify-content: space-between;
+        }
+
+        .info-section {
+            grid-area: info;
+            margin-top: auto;
+            margin-bottom: 3rem;
+            max-width: 366px;
+            margin-right: auto;
+        }
+
+        .form-section {
+            grid-area: form;
+            max-width: 366px;
+            width: 100%;
+            margin-right: auto;
+        }
+
+        .image-section {
+            grid-area: image;
+            text-align: center;
+        }
+
+        .image-section img{
+            margin-left: auto;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <div class="info-section">
+                <h2>Comparison Chart</h2>
+                <p>
+                    When it comes to high yield returns we are the best in the
+                    market.
+                </p>
+            </div>
+
+            <div class="image-section">
+                <Image
+                    src={chart}
+                    alt="herobox"
+                    width={380}
+                    height={380}
+                />
+            </div>
+
+            <div class="form-section">
+                <form id="hero-cta-form">
+                    <div class="form-block">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                            class="email-input"
+                        />
+                        <button type="submit">
+                            <span class="button-text">
+                                <Image
+                                    src={arrow}
+                                    alt="herobox"
+                                    width={24}
+                                    height={24}
+                                />
+                            </span>
+                            <span class="loader" style="display: none;"></span>
+                        </button>
+                    </div>
+                    <p class="signup-error"></p>
+                </form>
+                <p class="account">
+                    Have an account? <a class="login" href="/">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+    document
+        .getElementById("hero-cta-form")
+        .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = document.querySelector(".email-input");
+            const email = emailInput.value;
+            const buttonText = document.querySelector(".button-text");
+            const loader = document.querySelector(".loader");
+            const signupError = document.querySelector(".signup-error");
+
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
+            signupError.style.display = "none";
+
+            try {
+                const response = await fetch("/api/get-started", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
+                } else {
+                    const errorMessage = result.error || "Signup failed";
+                    signupError.textContent = errorMessage;
+                    signupError.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                signupError.textContent = "An unexpected error occurred.";
+                signupError.style.display = "block";
+            } finally {
+                buttonText.style.display = "inline-block";
+                loader.style.display = "none";
+            }
+        });
+</script>
