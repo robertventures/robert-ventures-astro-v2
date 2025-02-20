@@ -2,34 +2,58 @@
 import Image from "astro/components/Image.astro";
 import ten from "../images/design-elements/10-rv.svg";
 import arrow from "../images/design-elements/Arrow-right.svg";
+
+import business from "../images/business-logos/business-insider.svg";
+import weird from "../images/business-logos/weird.svg";
+import market from "../images/business-logos/market-watch.svg";
+import ap from "../images/business-logos/ap.svg";
+import street from "../images/business-logos/street-insider.svg";
+import benzinga from "../images/business-logos/benzinga.svg";
 ---
 
 <style>
     section {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .section-container {
         border-radius: 1rem;
         background: #fff;
         padding: 3rem 1.5rem 2rem 1.5rem;
+
+        background-image: url(/waves.svg);
+        background-position: center;
     }
+
+    .section-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
     section > * {
         text-align: center;
     }
 
     h1 {
         font-size: 2.875rem;
+        color: #281480;
 
         margin-bottom: 2rem;
     }
+
     .hero-image {
         margin: 0 auto;
         margin-bottom: 1.5rem;
     }
 
-    p {
+    p.hero-text {
         font-family: "Satoshi", sans-serif;
         font-size: 1.8125rem;
 
         font-weight: 700;
-        line-height: 100%; /* 1.8125rem */
+        line-height: 100%;
+        /* 1.8125rem */
 
         background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
         background-clip: text;
@@ -39,18 +63,24 @@ import arrow from "../images/design-elements/Arrow-right.svg";
         margin-bottom: 3rem;
     }
 
+    form {
+        margin-bottom: 1rem;
+    }
+
     .form-block {
         border-radius: 1.5625rem;
         border: 1px solid #afb5bc;
         background: #fff;
 
         display: flex;
-        width: 22.875rem;
+        max-width: 366px;
         height: 3.125rem;
         padding: 1rem 0.5rem 1rem 1.5rem;
         justify-content: space-between;
         align-items: center;
         flex-shrink: 0;
+
+        margin: 0 auto;
     }
 
     input {
@@ -70,43 +100,117 @@ import arrow from "../images/design-elements/Arrow-right.svg";
     .signup-error {
         display: none;
     }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+
+        margin-bottom: 2rem;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    hr {
+        height: 0.0625rem;
+        background: #afb5bc;
+        margin-bottom: 1rem;
+    }
+
+    .business {
+        display: grid;
+        grid-auto-columns: auto;
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: center;
+        justify-items: center;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .section-container {
+            margin: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        h1 {
+            margin-bottom: 3rem;
+        }
+        .section-content {
+            max-width: 921px;
+        }
+
+        .business {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+    }
 </style>
 
 <section>
-    <h1>Compound Your Wealth Passively</h1>
+    <div class="section-container">
+        <div class="section-content">
+            <h1>Compound Your Wealth Passively</h1>
 
-    <Image
-        class="hero-image"
-        src={ten}
-        alt="10% returns"
-        width={275}
-        height={148}
-    />
-    <p>Fixed Annual Returns</p>
-
-    <form id="hero-cta-form">
-        <div class="form-block">
-            <input
-                type="email"
-                placeholder="Enter your email"
-                required
-                class="email-input"
+            <Image
+                class="hero-image"
+                src={ten}
+                alt="10% returns"
+                width={275}
+                height={148}
             />
-            <button type="submit">
-                <span class="button-text">
-                    <Image
-                        src={arrow}
-                        alt="herobox"
-                        width={24}
-                        height={24}
-                    /></span
-                >
-                <span class="loader" style="display: none;"></span>
-            </button>
-        </div>
+            <p class="hero-text">Fixed Annual Returns</p>
 
-        <p class="signup-error"></p>
-    </form>
+            <form id="hero-cta-form">
+                <div class="form-block">
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        required
+                        class="email-input"
+                    />
+                    <button type="submit">
+                        <span class="button-text">
+                            <Image
+                                src={arrow}
+                                alt="herobox"
+                                width={24}
+                                height={24}
+                            />
+                        </span>
+                        <span class="loader" style="display: none;"></span>
+                    </button>
+                </div>
+                <p class="signup-error"></p>
+            </form>
+            <p class="account">
+                Have an account? <a class="login" href="/">Log in</a>
+            </p>
+
+            <hr />
+
+            <div class="business">
+                <Image
+                    src={business}
+                    alt="10% returns"
+                    width={144}
+                    height={12}
+                />
+
+                <Image src={weird} alt="10% returns" width={52} height={47} />
+
+                <Image src={market} alt="10% returns" width={132} height={19} />
+
+                <Image src={ap} alt="10% returns" width={43} height={50} />
+
+                <Image src={street} alt="10% returns" width={150} height={23} />
+
+                <Image src={benzinga} alt="10% returns" width={103} height={14} />
+            </div>
+        </div>
+    </div>
 </section>
 
 <script is:inline>
