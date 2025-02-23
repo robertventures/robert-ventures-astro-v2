@@ -1,7 +1,9 @@
 ---
 import Image from "astro/components/Image.astro";
 import arrow from "../images/design-elements/Arrow-right.svg";
-import joe from "../images/design-elements/joe-robert.jpg";
+import one from "../images/design-elements/one.svg";
+import two from "../images/design-elements/two.svg";
+import three from "../images/design-elements/three.svg";
 ---
 
 <style>
@@ -26,81 +28,22 @@ import joe from "../images/design-elements/joe-robert.jpg";
         text-align: center;
     }
 
-    .intro img {
-        margin: 0 auto;
-        margin-bottom: 1.5rem;
-    }
-
-    .intro {
-        margin-bottom: 3rem;
-    }
-
     h2 {
-        font-size: 1.125rem;
-        color: #1d1d1f;
-        margin-bottom: 0.5rem;
+        color: #281480;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 110%; /* 2.475rem */
+        margin-bottom: 0.75rem;
     }
 
-    p.name {
+    p.intro {
         color: #505050;
-        text-align: center;
+        font-size: 1.125rem;
         font-weight: 500;
         line-height: 160%; /* 1.8rem */
-        font-size: 0.875rem;
-        margin-bottom: 1.5rem;
-    }
-
-    p.info {
-        color: #505050;
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 150%; /* 1.875rem */
-    }
-
-    .info-blocks {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
 
         margin-bottom: 3rem;
     }
-    .info-block {
-        text-align: left;
-        padding: 1rem;
-
-        border-radius: 0.5rem;
-        border: 1px solid #afb5bc;
-    }
-
-    .block-title {
-        color: #1d1d1f;
-        font-size: 0.875rem;
-        font-weight: 500;
-        line-height: 100%; /* 0.875rem */
-
-        margin-bottom: 0.38rem;
-    }
-
-    .block-value {
-        font-size: 2rem;
-        color: #281480;
-        font-weight: 600;
-        line-height: 100%; /* 2rem */
-    }
-
-    .extra-info {
-        color: #505050;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 160%; /* 1.6rem */
-
-        margin: 0 auto;
-        margin-bottom: 1rem;
-
-        max-width: 39rem;
-
-    }
-
     form {
         margin-bottom: 1rem;
     }
@@ -149,10 +92,59 @@ import joe from "../images/design-elements/joe-robert.jpg";
         color: #396afb;
     }
 
+    .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        margin-bottom: 3rem;
+    }
+
+    .step {
+        display: flex;
+        text-align: left;
+        gap: 0.75rem;
+    }
+    .number {
+        flex-shrink: 0;
+    }
+
+    .info-title {
+        color: #1d1d1f;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 100%; /* 1.125rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .info-text {
+        color: #505050;
+
+        font-size: 1rem;
+
+        font-weight: 400;
+        line-height: 160%; /* 1.6rem */
+    }
+
+    .info-text.second {
+        margin-bottom: 1rem;
+    }
+
+    .info a {
+        color: #396afb;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 100%; /* 1rem */
+
+        /* text-decoration: none; */
+    }
+
     @media only screen and (min-width: 768px) {
         section {
             padding: 0 2rem;
         }
+
         .account{
             margin-bottom: 0;
         }
@@ -167,9 +159,23 @@ import joe from "../images/design-elements/joe-robert.jpg";
             max-width: 921px;
         }
 
-        .info-blocks{
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+        .steps{
+            flex-direction: row;
         }
+
+        .step{
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            flex: 1;
+        }
+
+
+        p.account{
+            margin-bottom: 0;
+        }
+
 
     }
 </style>
@@ -177,43 +183,73 @@ import joe from "../images/design-elements/joe-robert.jpg";
 <section>
     <div class="section-container">
         <div class="section-content">
-            <div class="intro">
-                <Image src={joe} alt="herobox" width={96} height={96} />
-                <h2>Joe Robert</h2>
-                <p class="name">Robert Ventures, CEO.</p>
+            <h2>How It Works</h2>
 
-                <p class="info">
-                    At Robert Ventures, our mission is to leverage my investment
-                    strategies to maximize growth and deliver strong returns for
-                    our investors.
-                </p>
-            </div>
-
-            <div class="info-blocks">
-                <div class="info-block">
-                    <p class="block-title">Track Record</p>
-                    <p class="block-value">20 yrs</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Properties</p>
-                    <p class="block-value">200 +</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Mortgages</p>
-                    <p class="block-value">1500 +</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Tech Investments</p>
-                    <p class="block-value">40 +</p>
-                </div>
-            </div>
-
-            <p class="extra-info">
-                Trust your investments with a proven manager that hasn't missed
-                an investor payment and returned all capital with interest.
+            <p class="intro">
+                This is an exclusive and first of its kind bond offering,
+                available to all US investors
             </p>
 
-            <form id="joe-cta-form">
+            <div class="steps">
+                <div class="step">
+                    <div class="number">
+                        <Image
+                            src={one}
+                            alt="first step"
+                            width={36}
+                            height={36}
+                        />
+                    </div>
+                    <div class="info">
+                        <p class="info-title">Get Started</p>
+                        <p class="info-text">
+                            Create an account, choose options, sign docs and
+                            fund your investment within 2 minutes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="number">
+                        <Image
+                            src={two}
+                            alt="first step"
+                            width={36}
+                            height={36}
+                        />
+                    </div>
+                    <div class="info">
+                        <p class="info-title">We Diversify the Funds</p>
+                        <p class="info-text second">
+                            We build new homes in one of the #1 beaches in the
+                            USA, while allocating to Bitcoin and Ethereum as a
+                            way to preserve and grow capital for the company and
+                            its investors.
+                        </p>
+                        <a href="/">Learn more </a>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="number">
+                        <Image
+                            src={three}
+                            alt="first step"
+                            width={36}
+                            height={36}
+                        />
+                    </div>
+                    <div class="info">
+                        <p class="info-title">Get Paid Monthly</p>
+                        <p class="info-text">
+                            Receive your high-yield interest payments monthly or
+                            let them compound over your bond term.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="how-cta-form">
                 <div class="form-block">
                     <input
                         type="email"
@@ -244,7 +280,7 @@ import joe from "../images/design-elements/joe-robert.jpg";
 
 <script is:inline>
     document
-        .getElementById("joe-cta-form")
+        .getElementById("how-cta-form")
         .addEventListener("submit", async function (event) {
             event.preventDefault();
 
