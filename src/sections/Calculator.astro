@@ -1,272 +1,742 @@
 ---
-
+import Image from "astro/components/Image.astro";
+import arrow from "../images/design-elements/Arrow-right.svg";
 ---
 
 <style>
-    
+    input[type="radio"] {
+        height: 1.5rem;
+        width: 1.5rem;
+        accent-color: #281480;
+    }
+    /* SLIDER STYLE */
+    input[type="range"].styled-slider {
+        height: 24px;
+        -webkit-appearance: none;
+        background-color: transparent;
+    }
+
+    input[type="range"].styled-slider.slider-progress {
+        --range: calc(var(--max) - var(--min));
+        --ratio: calc((var(--value) - var(--min)) / var(--range));
+        --sx: calc(0.5 * 24px + var(--ratio) * (100% - 24px));
+    }
+
+    input[type="range"].styled-slider:focus {
+        outline: 0;
+    }
+
+    input[type="range"].styled-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 16px;
+        background: #281480;
+        border: none;
+        box-shadow: none;
+        margin-top: calc(2px * 0.5 - 32px * 0.5);
+    }
+
+    input[type="range"].styled-slider::-webkit-slider-runnable-track {
+        height: 2px;
+        border: none;
+        border-radius: 0;
+        background: #efefef;
+        box-shadow: none;
+    }
+
+    input[type="range"].styled-slider.slider-progress::-webkit-slider-runnable-track {
+        background:
+            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
+            #efefef;
+    }
+
+    input[type="range"].styled-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 16px;
+        background: #281480;
+        border: none;
+        box-shadow: none;
+    }
+
+    input[type="range"].styled-slider::-moz-range-track {
+        height: 2px;
+        border: none;
+        border-radius: 0;
+        background: #efefef;
+        box-shadow: none;
+    }
+
+    input[type="range"].styled-slider.slider-progress::-moz-range-track {
+        background:
+            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
+            #efefef;
+    }
+
+    input[type="range"].styled-slider::-ms-fill-upper {
+        background: 0 0;
+        border-color: transparent;
+    }
+
+    input[type="range"].styled-slider::-ms-fill-lower {
+        background: 0 0;
+        border-color: transparent;
+    }
+
+    input[type="range"].styled-slider::-ms-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 16px;
+        background: #281480;
+        border: none;
+        box-shadow: none;
+        margin-top: 0;
+        box-sizing: border-box;
+    }
+
+    input[type="range"].styled-slider::-ms-track {
+        height: 2px;
+        border-radius: 0;
+        background: #efefef;
+        border: none;
+        box-shadow: none;
+        box-sizing: border-box;
+    }
+
+    input[type="range"].styled-slider.slider-progress::-ms-fill-lower {
+        height: 2px;
+        border-radius: 0;
+        margin: -undefined 0 -undefined -undefined;
+        background: #281480;
+        border: none;
+        border-right-width: 0;
+    }
+
+    /* SLIDER STYLE */
+
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        text-align: center;
+    }
+    /* FORM */
+
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.56rem;
+
+        max-width: 366px;
+        margin: 0 auto;
+    }
+
+    .calculate-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    h2 {
+        margin-bottom: 2rem;
+        text-align: center; /* Center the h2 element */
+        color: #281480;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 110%; /* 2.475rem */
+    }
+
+    .calculate-block {
+        /* border: 1px solid red; */
+    }
+
+    .select-term {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    p.calculate-heading {
+        color: #505050;
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 100%; /* 1.125rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .year-option {
+        flex: 1;
+
+        padding: 1rem;
+        padding-bottom: 0.62rem;
+
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: start;
+
+        justify-content: space-between;
+
+        border-radius: 0.5rem;
+        border: 1px solid #afb5bc;
+    }
+
+    .year-option label {
+        display: flex;
+        flex-direction: column;
+
+        gap: 0.37rem;
+
+        color: #1d1d1f;
+        font-size: 0.875rem;
+
+        font-weight: 500;
+        line-height: 100%; /* 0.875rem */
+    }
+
+    .year-option label span {
+        color: #281480;
+        font-size: 2.5625rem;
+        font-weight: 600;
+        line-height: 100%; /* 2.5625rem */
+    }
+
+    .selection-active {
+        background-color: #f2f5f8;
+    }
+
+    .return-option {
+        display: flex;
+        flex-direction: row-reverse;
+
+        position: relative;
+
+        justify-content: center;
+
+        padding: 1rem;
+    }
+
+    .return-option input {
+        position: absolute;
+        right: 1rem;
+    }
+
+    .select-return {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .return-option {
+        border-radius: 0.5rem;
+        border: 1px solid #afb5bc;
+    }
+
+    .investment-value {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .styled-input {
+        border-radius: 0.5rem;
+        border: 1px solid #7f8ca0;
+        padding: 1rem;
+
+        color: #281480;
+        font-size: 1.4375rem;
+        font-weight: 600;
+        line-height: 100%; /* 1.4375rem */
+
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"].styled-input::-webkit-outer-spin-button,
+    input[type="number"].styled-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .dollar-sign {
+        position: absolute;
+        left: 10px;
+        font-size: 1.4375rem;
+        color: #281480;
+        font-family: "Inter", sans-serif;
+    }
+
+    .styled-input {
+        padding-left: 1.5rem; /* Adjust padding to make space for the dollar sign */
+        width: 100%;
+
+    }
+
+    /* RESULT SECTION */
+
+    .result-section .total-value {
+        text-align: center;
+    }
+
+    #total-profit {
+        text-align: center;
+        font-size: 2.875rem;
+        font-weight: 900;
+        line-height: 100%; /* 2.875rem */
+
+        font-family: "Inter", sans-serif;
+
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .title.small {
+        line-height: 1;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .value.small {
+        color: #281480;
+        text-align: center;
+        /* font-feature-settings: "cv01" on; */
+        font-family: "Inter", sans-serif;
+        font-size: 1.625rem;
+        font-weight: 700;
+        line-height: 100%; /* 1.625rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .extra-text {
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .section-container {
+            padding: 4rem 1.5rem;
+        }
+
+        .section-content {
+            max-width: 921px;
+
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .section-content > div {
+            max-width: 366px;
+        }
+
+        .result-section {
+            align-self: center;
+        }
+    }
 </style>
 
 <section>
     <div class="section-container">
+        <h2>Bond Terms Available</h2>
         <div class="section-content">
-                <h2>Bond Terms Available</h2>
-        
+            <div class="terms-section">
                 <div class="financial-future-section">
                     <div class="calculate-content">
-        
-                            <div class="calculate-block">
-                                <p class="calculate-heading">Terms:</p>
-                                <div id="term" class="calculate-data">
-                                    <div class="calculate-data-group year-option">
-                                        <input
-                                            type="radio"
-                                            name="year-term"
-                                            value="3"
-                                            checked
-                                            onclick="calculateReturns()"
-                                        />
-                                        <label for="css">3 Years - 10% APY</label><br />
-                                    </div>
-        
-                                    <div class="calculate-data-group year-option">
-                                        <input
-                                            type="radio"
-                                            name="year-term"
-                                            value="1"
-                                            onclick="calculateReturns()"
-                                        />
-                                        <label for="html">1 Year - 8% APY</label><br />
-                                    </div>
+                        <div class="calculate-block">
+                            <p class="calculate-heading">Select term:</p>
+                            <div id="term" class="calculate-data select-term">
+                                <div class="calculate-data-group year-option">
+                                    <input
+                                        type="radio"
+                                        name="year-term"
+                                        value="1"
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="html"
+                                        >1 Year Term<span>8%</span></label
+                                    >
+                                </div>
+                                <div class="calculate-data-group year-option">
+                                    <input
+                                        type="radio"
+                                        name="year-term"
+                                        value="3"
+                                        checked
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="css"
+                                        >3 Years Term<span>10%</span></label
+                                    >
                                 </div>
                             </div>
-        
-                            <div class="calculate-block">
-                                <p class="calculate-heading">Return Options:</p>
-                                <div class="calculate-data">
-                                    <div class="calculate-data-group return-option">
-                                        <input
-                                            type="radio"
-                                            name="payment-term"
-                                            value="compound"
-                                            onclick="calculateReturns()"
-                                            checked
-                                        />
-                                        <label for="css">Compound</label><br />
-                                    </div>
-        
-                                    <div class="calculate-data-group return-option">
-                                        <input
-                                            type="radio"
-                                            name="payment-term"
-                                            value="monthly"
-                                            onclick="calculateReturns()"
-                                        />
-                                        <label for="html">Monthly</label><br />
-                                    </div>
+                        </div>
+                        <div class="calculate-block">
+                            <p class="calculate-heading">Return Options:</p>
+                            <div class="calculate-data select-return">
+                                <div class="calculate-data-group return-option">
+                                    <input
+                                        type="radio"
+                                        name="payment-term"
+                                        value="compound"
+                                        onclick="calculateReturns()"
+                                        checked
+                                    />
+                                    <label for="css">Compound</label>
+                                </div>
+                                <div class="calculate-data-group return-option">
+                                    <input
+                                        type="radio"
+                                        name="payment-term"
+                                        value="monthly"
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="html">Monthly</label>
                                 </div>
                             </div>
-        
-                            <div class="calculate-block">
-                                <div class="initial-investment-text">
-                                    <p class="calculate-heading">Initial Investment:</p>
-                                </div>
+                        </div>
+                        <div class="calculate-block">
+                            <div class="initial-investment-text">
+                                <p class="calculate-heading">
+                                    Investment Amount:
+                                </p>
+                            </div>
+                            <div class="investment-value">
                                 <input
-                                    id="amount"
-                                    class="amount styled-input"
-                                    type="number"
-                                    name="amount"
+                                    id="amount-slider"
+                                    class="styled-slider slider-progress"
+                                    type="range"
+                                    name="amount-slider"
                                     value="50000"
                                     step="1000"
                                     min="1000"
                                     max="100000"
-                                    oninput="calculateReturns()"
+                                    oninput="syncSliderAndInput('slider')"
                                 />
+                                <div class="input-container">
+                                    <span class="dollar-sign">$</span>
+                                    <input
+                                        id="amount"
+                                        class="amount styled-input"
+                                        type="number"
+                                        name="amount"
+                                        value="50000"
+                                        step="1000"
+                                        min="1000"
+                                        max="100000"
+                                        oninput="syncSliderAndInput('input')"
+                                    />
+                                </div>
                             </div>
+                        </div>
                     </div>
                 </div>
-        
-                <div class="result-section">
-                    <div class="result-block wrapper">
-                        <p class="title">Total value with interest:</p>
-                        <div class="value">
-                                <path
-                                    d="M4.5 15L12 7.5L19.5 15"
-                                    stroke="#17A814"
-                                    stroke-width="4"
-                                    stroke-linecap="square"></path>
-                            </svg>
-                            <p id="total-profit">TotalAmount</p>
-                        </div>
-                        <div class="result-block calc-final-block">
-                            <p class="title small">Compound interest:</p>
-                            <p class="value small" id="return-value">CompoundReturn</p>
-                        </div>
-        
-        
+            </div>
+            <div class="result-section">
+                <div class="result-block wrapper total-value">
+                    <p class="title">Total value with interest:</p>
+                    <div class="value">
+                        <!-- <path
+                            d="M4.5 15L12 7.5L19.5 15"
+                            stroke="#17A814"
+                            stroke-width="4"
+                            stroke-linecap="square"></path> -->
                     </div>
+                    <p id="total-profit">TotalAmount</p>
                 </div>
+                <div class="result-block calc-final-block">
+                    <p class="title small">Compound interest:</p>
+                    <p class="value small" id="return-value">CompoundReturn</p>
+                    <p class="extra-text">extraText</p>
+                </div>
+                <div class="calculator-form">
+                    <form id="how-cta-form">
+                        <div class="form-block">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                required
+                                class="email-input"
+                            />
+                            <button type="submit">
+                                <span class="button-text">
+                                    <Image
+                                        src={arrow}
+                                        alt="herobox"
+                                        width={24}
+                                        height={24}
+                                    />
+                                </span>
+                                <span class="loader" style="display: none;"
+                                ></span>
+                            </button>
+                        </div>
+                        <p class="signup-error"></p>
+                    </form>
+                    <p class="account">
+                        Have an account? <a class="login" href="/">Log in</a>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <script is:inline>
     // Selectors
-const investmentAmountInput = document.getElementById("amount");
-const totalProfitElement = document.getElementById("total-profit");
-const returnValueElement = document.getElementById("return-value");
-const amountHeading = document.querySelector("p.amount-heading");
-const resultTitles = document.querySelectorAll(".result-section p.title");
-const yearTermInputs = document.querySelectorAll(".year-option");
-const returnOptions = document.querySelectorAll(".return-option");
+    const investmentAmountInput = document.getElementById("amount");
+    const investmentAmountSlider = document.getElementById("amount-slider");
+    const totalProfitElement = document.getElementById("total-profit");
+    const returnValueElement = document.getElementById("return-value");
+    const extraTextElement = document.querySelector(".extra-text");
+    const resultTitles = document.querySelectorAll(".result-section p.title");
+    const yearTermInputs = document.querySelectorAll(".year-option");
+    const returnOptions = document.querySelectorAll(".return-option");
 
-// Helper function for formatting currency and wrapping cents
-function formatCurrencyWithCents(value) {
-    const formatted = value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const [dollars, cents] = formatted.split('.');
-    return `${dollars}<span class="cents">.${cents}</span>`;
-}
-
-// Helper function to handle toggling active class
-function toggleActiveClass(group) {
-    group.forEach((item) => {
-        const input = item.querySelector("input");
-        if (input?.checked) {
-            item.classList.add("selection-active");
-        } else {
-            item.classList.remove("selection-active");
-        }
-    });
-}
-
-// Calculate Returns
-function calculateReturns() {
-    const paymentTerm = document.querySelector('input[name="payment-term"]:checked')?.value;
-    const investmentAmount = parseFloat(investmentAmountInput.value) || 0;
-    const investmentDuration = parseFloat(document.querySelector('input[name="year-term"]:checked')?.value) || 0;
-
-    const nominalAnnualRate = investmentDuration === 3 ? 0.10 : 0.08;
-    const totalMonths = investmentDuration * 12;
-
-    let totalInterest = 0;
-    let totalPrincipal = investmentAmount;
-    let monthlyPayment = 0;
-
-    if (paymentTerm === "monthly") {
-        // Monthly Payments Calculation
-        const monthlyRate = nominalAnnualRate / 12;
-        monthlyPayment = investmentAmount * monthlyRate;
-
-        // Total Interest over the period
-        totalInterest = monthlyPayment * totalMonths;
-
-        // Total Principal includes the total interest
-        totalPrincipal = investmentAmount + totalInterest;
-    } else {
-        // Compound Interest Calculation
-        let effectiveAnnualRate;
-        if (investmentDuration === 3) {
-            // For durations of 3 years, use 10% APR compounded monthly
-            effectiveAnnualRate = 0.104713; // Approximately 10.4713%
-        } else {
-            // For durations of 1 year, use 8% APR compounded monthly
-            effectiveAnnualRate = 0.083; // Approximately 8.3%
-        }
-
-        totalPrincipal = investmentAmount * Math.pow(1 + effectiveAnnualRate, investmentDuration);
-        totalInterest = totalPrincipal - investmentAmount;
+    // Helper function for formatting currency and wrapping cents
+    function formatCurrencyWithCents(value) {
+        const formatted = value.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+        const [dollars, cents] = formatted.split(".");
+        return `${dollars}<span class="cents">.${cents}</span>`;
     }
 
-    // Update UI
-    if (paymentTerm === "monthly") {
-        resultTitles[0].textContent = "Total Value with Interest:";
-        resultTitles[1].textContent = "Monthly Payments:";
-        const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
-        totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
+    // Helper function to handle toggling active class
+    function toggleActiveClass(group) {
+        group.forEach((item) => {
+            const input = item.querySelector("input");
+            if (input?.checked) {
+                item.classList.add("selection-active");
+            } else {
+                item.classList.remove("selection-active");
+            }
+        });
+    }
 
-        // Calculate compound value for comparison
-        let effectiveAnnualRateForCompounding;
-        if (investmentDuration === 3) {
-            effectiveAnnualRateForCompounding = 0.104713;
-        } else {
-            effectiveAnnualRateForCompounding = 0.083;
+    // Sync slider and input values
+    function syncSliderAndInput(source) {
+        if (source === "input") {
+            investmentAmountSlider.value = investmentAmountInput.value;
+        } else if (source === "slider") {
+            investmentAmountInput.value = investmentAmountSlider.value;
         }
-        const compoundedValue = investmentAmount * Math.pow(1 + effectiveAnnualRateForCompounding, investmentDuration);
+        calculateReturns();
+    }
 
-        const extraEarnings = compoundedValue - totalPrincipal;
+    // Calculate Returns
+    function calculateReturns() {
+        const paymentTerm = document.querySelector(
+            'input[name="payment-term"]:checked',
+        )?.value;
+        const investmentAmount = parseFloat(investmentAmountInput.value) || 0;
+        const investmentDuration =
+            parseFloat(
+                document.querySelector('input[name="year-term"]:checked')
+                    ?.value,
+            ) || 0;
 
-        const formattedMonthlyPayment = formatCurrencyWithCents(monthlyPayment);
-        const formattedExtraEarnings = formatCurrencyWithCents(extraEarnings);
+        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.08;
+        const totalMonths = investmentDuration * 12;
 
-        document.querySelector(".calc-final-block").style.display = "block";
+        let totalInterest = 0;
+        let totalPrincipal = investmentAmount;
+        let monthlyPayment = 0;
 
-        returnValueElement.innerHTML = `
-            <div>$${formattedMonthlyPayment}</div>
-            <p class="link-to-compound">
-                Earn 
-                <span class="green">$${formattedExtraEarnings}</span> more with compound payments
-            </p>`;
-    } else {
-        resultTitles[0].textContent = "Total value with interest:";
-        resultTitles[1].textContent = "Compound interest:";
-        const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
-        const formattedTotalInterest = formatCurrencyWithCents(totalInterest);
-        totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
-        returnValueElement.innerHTML = `
+        if (paymentTerm === "monthly") {
+            // Monthly Payments Calculation
+            const monthlyRate = nominalAnnualRate / 12;
+            monthlyPayment = investmentAmount * monthlyRate;
+
+            // Total Interest over the period
+            totalInterest = monthlyPayment * totalMonths;
+
+            // Total Principal includes the total interest
+            totalPrincipal = investmentAmount + totalInterest;
+        } else {
+            // Compound Interest Calculation
+            let effectiveAnnualRate;
+            if (investmentDuration === 3) {
+                // For durations of 3 years, use 10% APR compounded monthly
+                effectiveAnnualRate = 0.104713; // Approximately 10.4713%
+            } else {
+                // For durations of 1 year, use 8% APR compounded monthly
+                effectiveAnnualRate = 0.083; // Approximately 8.3%
+            }
+
+            totalPrincipal =
+                investmentAmount *
+                Math.pow(1 + effectiveAnnualRate, investmentDuration);
+            totalInterest = totalPrincipal - investmentAmount;
+        }
+
+        // Update UI
+        if (paymentTerm === "monthly") {
+            resultTitles[0].textContent = "Total with Interest:";
+            resultTitles[1].textContent = "Monthly Payments:";
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
+            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
+
+            // Calculate compound value for comparison
+            let effectiveAnnualRateForCompounding;
+            if (investmentDuration === 3) {
+                effectiveAnnualRateForCompounding = 0.104713;
+            } else {
+                effectiveAnnualRateForCompounding = 0.083;
+            }
+            const compoundedValue =
+                investmentAmount *
+                Math.pow(
+                    1 + effectiveAnnualRateForCompounding,
+                    investmentDuration,
+                );
+
+            const extraEarnings = compoundedValue - totalPrincipal;
+
+            const formattedMonthlyPayment =
+                formatCurrencyWithCents(monthlyPayment);
+            const formattedExtraEarnings =
+                formatCurrencyWithCents(extraEarnings);
+
+            document.querySelector(".calc-final-block").style.display = "block";
+
+            returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
+            extraTextElement.innerHTML = `
+                Earn $${formattedExtraEarnings} more with compound payments
+            `;
+        } else {
+            resultTitles[0].textContent = "Total with Interest:";
+            resultTitles[1].textContent = "Compound interest:";
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalInterest =
+                formatCurrencyWithCents(totalInterest);
+            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
+            returnValueElement.innerHTML = `
             $${formattedTotalInterest} 
             <span class="result-block-extra-info">
                 (${investmentDuration === 3 ? "10% APY" : "8% Annually"})
             </span>`;
-        document.querySelector(".calc-final-block").style.display = "none";
-    }
-
-    const formattedInvestmentAmount = formatCurrencyWithCents(investmentAmount);
-    amountHeading.innerHTML = `$${formattedInvestmentAmount}`;
-}
-
-// Initialize sliders with style updates
-document.querySelectorAll('input[type="range"].slider-progress').forEach((slider) => {
-    const updateSliderStyle = () => {
-        slider.style.setProperty("--value", slider.value);
-        slider.style.setProperty("--min", slider.min || "0");
-        slider.style.setProperty("--max", slider.max || "100");
-    };
-
-    updateSliderStyle(); // Set initial styles
-    slider.addEventListener("input", () => {
-        updateSliderStyle(); // Update on input
-        calculateReturns();
-    });
-});
-
-// Initialize input number with style updates
-document.querySelectorAll('input[type="number"].styled-input').forEach((input) => {
-    input.addEventListener("input", () => {
-        calculateReturns();
-    });
-});
-
-// Add Event Listeners for year-term and return options
-[...yearTermInputs, ...returnOptions].forEach((option) => {
-    const radioButton = option.querySelector("input");
-
-    if (radioButton?.checked) {
-        option.classList.add("selection-active"); // Apply active class to default selected option
-    }
-
-    option.addEventListener("click", () => {
-        // Ensure radio buttons are toggled correctly
-        if (radioButton) radioButton.checked = true;
-
-        // Update active classes dynamically
-        if (radioButton.name === "year-term") {
-            toggleActiveClass(yearTermInputs);
-        } else if (radioButton.name === "payment-term") {
-            toggleActiveClass(returnOptions);
+            document.querySelector(".calc-final-block").style.display = "none";
+            extraTextElement.innerHTML = ""; // Clear extra text when not monthly
         }
-        calculateReturns();
-    });
-});
+    }
 
-// Initial Calculation
-calculateReturns();
+    // Initialize sliders with style updates
+    document
+        .querySelectorAll('input[type="range"].slider-progress')
+        .forEach((slider) => {
+            const updateSliderStyle = () => {
+                slider.style.setProperty("--value", slider.value);
+                slider.style.setProperty("--min", slider.min || "0");
+                slider.style.setProperty("--max", slider.max || "100");
+            };
+
+            updateSliderStyle(); // Set initial styles
+            slider.addEventListener("input", () => {
+                updateSliderStyle(); // Update on input
+                syncSliderAndInput("slider");
+            });
+        });
+
+    // Initialize input number with style updates
+    document
+        .querySelectorAll('input[type="number"].styled-input')
+        .forEach((input) => {
+            input.addEventListener("input", () => {
+                syncSliderAndInput("input");
+            });
+        });
+
+    // Add Event Listeners for year-term and return options
+    [...yearTermInputs, ...returnOptions].forEach((option) => {
+        const radioButton = option.querySelector("input");
+
+        if (radioButton?.checked) {
+            option.classList.add("selection-active"); // Apply active class to default selected option
+        }
+
+        option.addEventListener("click", () => {
+            // Ensure radio buttons are toggled correctly
+            if (radioButton) radioButton.checked = true;
+
+            // Update active classes dynamically
+            if (radioButton.name === "year-term") {
+                toggleActiveClass(yearTermInputs);
+            } else if (radioButton.name === "payment-term") {
+                toggleActiveClass(returnOptions);
+            }
+            calculateReturns();
+        });
+    });
+
+    // Initial Calculation
+    calculateReturns();
 </script>
