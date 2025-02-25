@@ -281,9 +281,7 @@ import three from "../images/design-elements/three.svg";
 </section>
 
 <script is:inline>
-    document
-        .getElementById("how-cta-form")
-        .addEventListener("submit", async function (event) {
+    document.getElementById("how-cta-form").addEventListener("submit", async function (event) {
             event.preventDefault();
 
             const emailInput = document.querySelector(".email-input");
