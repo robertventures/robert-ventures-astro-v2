@@ -393,6 +393,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
 
         .section-content > div {
             max-width: 366px;
+            flex: 1;
         }
 
         .result-section {
@@ -669,7 +670,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
 
             returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
             extraTextElement.innerHTML = `
-                Earn $${formattedExtraEarnings} more with compound payments
+                Earn $${formattedExtraEarnings} more with compound
             `;
         } else {
             resultTitles[0].textContent = "Total with Interest:";

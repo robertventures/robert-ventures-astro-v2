@@ -1,0 +1,306 @@
+---
+import Image from "astro/components/Image.astro";
+import opener from "../images/design-elements/vector.svg";
+
+import arrow from "../images/design-elements/Arrow-right.svg";
+---
+
+<style>
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        margin-bottom: 2rem;
+
+        text-align: center;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    /* FORM */
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .section-content {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        color: #281480;
+        text-align: center;
+
+        font-size: 2.25rem;
+
+        font-weight: 700;
+        line-height: 1.1; /* 2.475rem */
+
+        margin-bottom: 2rem;
+    }
+
+    .faqs {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        margin-bottom: 3rem;
+    }
+
+    .accordion {
+        background-color: #ffffff;
+        cursor: pointer;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: background-color 0.4s;
+
+        padding-bottom: 1rem;
+    }
+
+    button.accordion {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 160%; /* 2rem */
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    .active,
+    .accordion:hover {
+        /* background-color: #ccc; */
+    }
+
+    .panel {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        background-color: white;
+    }
+
+    .panel p {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 0.85rem;
+        font-weight: 500;
+        line-height: 160%; /* 2rem */
+
+        padding-bottom: 1rem;
+    }
+
+    .faq-container {
+        /* margin-bottom: 1rem; */
+        border-bottom: 1px solid #afb5bc;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faqs">
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Is my principal safe?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >What if I want my money early?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >How often do I get paid?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >What is the biggest risk?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Is the 10% truly fixed even if markets go down?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form">
+                <form id="how-cta-form">
+                    <div class="form-block">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                            class="email-input"
+                        />
+                        <button type="submit">
+                            <span class="button-text">
+                                <Image
+                                    src={arrow}
+                                    alt="herobox"
+                                    width={24}
+                                    height={24}
+                                />
+                            </span>
+                            <span class="loader" style="display: none;"></span>
+                        </button>
+                    </div>
+                    <p class="signup-error"></p>
+                </form>
+                <p class="account">
+                    Have an account? <a class="login" href="/">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    });
+</script>
