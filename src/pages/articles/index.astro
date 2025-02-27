@@ -15,6 +15,11 @@ const articles = (await getCollection("articles")).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+
+		<title>Robert Ventures: Articles</title>
+		<meta name="description" content="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions." />
+
+		<meta property="og:url" content="https://robertventures.com/articles" />
 		<style>
 			section {
 				margin-bottom: 1.5rem;

@@ -5,6 +5,53 @@ import joe from "../images/design-elements/joe-robert.jpg";
 ---
 
 <style>
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        margin-bottom: 2rem;
+    }
+
+    /* FORM */
+
     section {
         margin-bottom: 1.5rem;
     }
@@ -36,12 +83,17 @@ import joe from "../images/design-elements/joe-robert.jpg";
     }
 
     h2 {
+        color: #281480;
+        margin-bottom: 3rem;
+    }
+
+    p.name {
         font-size: 1.125rem;
         color: #1d1d1f;
         margin-bottom: 0.5rem;
     }
 
-    p.name {
+    p.position {
         color: #505050;
         text-align: center;
         font-weight: 500;
@@ -98,51 +150,6 @@ import joe from "../images/design-elements/joe-robert.jpg";
         margin-bottom: 1rem;
 
         max-width: 39rem;
-
-    }
-
-    form {
-        margin-bottom: 1rem;
-    }
-
-    .form-block {
-        border-radius: 1.5625rem;
-        border: 1px solid #afb5bc;
-        background: #fff;
-        display: flex;
-        max-width: 366px;
-        height: 3.125rem;
-        padding: 1rem 0.5rem 1rem 1.5rem;
-        justify-content: space-between;
-        align-items: center;
-        flex-shrink: 0;
-        margin: 0 auto;
-    }
-
-    input {
-        border: none;
-    }
-
-    button {
-        background-color: #5028ff;
-        border: 1px solid #5028ff;
-        color: #fff;
-        border-radius: 2rem;
-        width: 2.13156rem;
-        height: 2.13156rem;
-    }
-
-    .signup-error {
-        display: none;
-    }
-
-    .account {
-        color: #737373;
-        font-family: "Inter", sans-serif;
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 150%;
-        margin-bottom: 2rem;
     }
 
     .login {
@@ -153,7 +160,7 @@ import joe from "../images/design-elements/joe-robert.jpg";
         section {
             padding: 0 2rem;
         }
-        .account{
+        .account {
             margin-bottom: 0;
         }
     }
@@ -167,10 +174,9 @@ import joe from "../images/design-elements/joe-robert.jpg";
             max-width: 921px;
         }
 
-        .info-blocks{
+        .info-blocks {
             grid-template-columns: 1fr 1fr 1fr 1fr;
         }
-
     }
 </style>
 
@@ -178,9 +184,10 @@ import joe from "../images/design-elements/joe-robert.jpg";
     <div class="section-container">
         <div class="section-content">
             <div class="intro">
+                <h2>Manager Track Record</h2>
                 <Image src={joe} alt="herobox" width={96} height={96} />
-                <h2>Joe Robert</h2>
-                <p class="name">Robert Ventures, CEO.</p>
+                <p class="name">Joe Robert</p>
+                <p class="position">Robert Ventures, CEO.</p>
 
                 <p class="info">
                     At Robert Ventures, our mission is to leverage my investment
@@ -236,7 +243,7 @@ import joe from "../images/design-elements/joe-robert.jpg";
                 <p class="signup-error"></p>
             </form>
             <p class="account">
-                Have an account? <a class="login" href="/">Log in</a>
+                Have an account? <a class="login" href="https://invest.robertventures.com/login?f=1">Log in</a>
             </p>
         </div>
     </div>

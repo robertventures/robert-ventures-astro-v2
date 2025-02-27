@@ -1,12 +1,8 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { Image } from "astro:assets";
 
-import Herobox from "../sections/Herobox.astro";
-import Benefits from "../sections/Benefits.astro";
 import Calculator from "../sections/Calculator.astro";
 import HeroboxV2 from "../sections/HeroboxV2.astro";
 import Comparison from "../sections/Comparison.astro";
@@ -21,10 +17,10 @@ import FAQ from "../sections/FAQ.astro";
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
+		<title>Robert Ventures: Compound Your Wealth Passively!</title>
+		<meta name="description" content="We provide predictable and reliable fixed-rate returns of up to 10% APY for investors secured by real estate and technology assets." />
 
-		</style>
-
+		<meta property="og:url" content="https://robertventures.com/" />
 	</head>
 	<body>
 		<Header />
