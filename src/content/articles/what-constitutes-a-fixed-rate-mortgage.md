@@ -1,9 +1,8 @@
 ---
 title: 'Home Financing 101: What Constitutes a Fixed Rate Mortgage?'
-description: 'Discover the financial stability of fixed-rate mortgages. Predictable payments offer peace of mind, but
-explore their pros and cons for a well-informed decision.'
-pubDate: 'Nov 03 2023'
-heroImage: '/blog-placeholder-3.jpg'
+description: 'Discover the financial stability of fixed-rate mortgages. Predictable payments offer peace of mind, but explore their pros and cons for a well-informed decision.'
+pubDate: 'Nov 06 2023'
+heroImage: 'articles-images/6.webp'
 ---
 
 <div class="blog-content">

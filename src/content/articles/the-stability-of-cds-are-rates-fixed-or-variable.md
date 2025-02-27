@@ -1,9 +1,8 @@
 ---
 title: 'The Stability of CDs: Are Rates Fixed or Variable?'
-description: 'Explore the stability of CDs: choose between fixed and variable rates to best suit your investment goals
-and enjoy secure returns.'
-pubDate: 'Nov 03 2023'
-heroImage: '/blog-placeholder-3.jpg'
+description: 'Explore the stability of CDs: choose between fixed and variable rates to best suit your investment goals and enjoy secure returns.'
+pubDate: 'Nov 09 2023'
+heroImage: 'articles-images/9.webp'
 ---
 
 <div class="blog-content">

@@ -1,9 +1,8 @@
 ---
 title: 'Highest Interest Strategies for Savings Accounts'
-description: 'Boost your savings with high-interest accounts. Learn how to choose the best rates and maximize returns
-with Robert Ventures' insights.'
-pubDate: 'Nov 03 2023'
-heroImage: '/blog-placeholder-3.jpg'
+description: 'Boost your savings with high-interest accounts. Learn how to choose the best rates and maximize returns with Robert Ventures insights.'
+pubDate: 'Nov 10 2023'
+heroImage: 'articles-images/10.webp'
 ---
 
 <div class="blog-content">

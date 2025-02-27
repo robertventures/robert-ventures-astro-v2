@@ -1,8 +1,8 @@
 ---
 title: '10 Passive Income Ideas for Financial Freedom'
 description: 'Compare 1-year vs. longer-term CD rates to maximize your investment returns. Understand the pros, cons, and trends to make informed decisions.'
-pubDate: 'Nov 03 2023'
-heroImage: '/blog-placeholder-3.jpg'
+pubDate: 'Nov 05 2023'
+heroImage: 'articles-images/5.webp'
 ---
 
 <div class="blog-content">
