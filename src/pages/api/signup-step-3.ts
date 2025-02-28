@@ -44,8 +44,16 @@ export const POST: APIRoute = async ({ request }) => {
         // ✅ Step 1: Fetch the authenticated user's UUID from Supabase
         const { data: session, error: sessionError } = await supabase.auth.getSession();
 
-        if (sessionError || !session?.session?.user?.id) {
+        if (sessionError) {
             console.error("Error fetching user session:", sessionError);
+            return new Response(
+                JSON.stringify({ error: "Error fetching user session" }),
+                { status: 401, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (!session?.session?.user?.id) {
+            console.error("User not authenticated");
             return new Response(
                 JSON.stringify({ error: "User not authenticated" }),
                 { status: 401, headers: { "Content-Type": "application/json" } }
