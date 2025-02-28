@@ -44,6 +44,9 @@ export const POST: APIRoute = async ({ request }) => {
         // ✅ Step 1: Fetch the authenticated user's UUID from Supabase
         const { data: session, error: sessionError } = await supabase.auth.getSession();
 
+        console.log("Session data:", session);
+        console.log("Session error:", sessionError);
+
         if (sessionError) {
             console.error("Error fetching user session:", sessionError);
             return new Response(
