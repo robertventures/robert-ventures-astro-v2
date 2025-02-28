@@ -5,6 +5,7 @@ import Footer from "../../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
+import FooterNew from "../../components/FooterNew.astro";
 
 const articles = (await getCollection("articles")).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -153,6 +154,6 @@ const articles = (await getCollection("articles")).sort(
 				</div>
 			</section>
 		</main>
-		<Footer />
+		<FooterNew />
 	</body>
 </html>
