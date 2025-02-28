@@ -1,13 +1,5 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-
-interface Props {
-	title: string;
-	description: string;
-	image?: string;
-}
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -20,18 +12,57 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 <link rel="icon" type="image/svg+xml" href="/rv-icon.png" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
-
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- SEO Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content="investment, wealth management, real estate, technology assets, fixed-rate returns, APY" />
+<meta name="author" content="Robert Ventures" />
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:type" content="website" />
+<meta property="og:image" content={image} />
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Robert Ventures",
+    "url": {canonicalURL},
+    "logo": "https://robertventures.com/path/to/logo.png",
+    "description": {description},
+    "sameAs": [
+        "https://www.facebook.com/robertventures",
+        "https://twitter.com/robertventures",
+        "https://www.linkedin.com/company/robertventures"
+    ]
+}
+</script>
+
+<!-- Font preloads -->
+<link rel="preload" href="/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter-bold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/public-sans-regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/public-sans-bold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/satoshi-regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/satoshi-bold.woff2" as="font" type="font/woff2" crossorigin />
 
 <script is:inline>
-	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-	  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-NK8975F');
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NK8975F');
 </script>

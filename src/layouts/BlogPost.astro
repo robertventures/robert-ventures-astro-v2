@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"articles">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
@@ -15,10 +15,23 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<BaseHead title={title} description={description} />
 		<style>
 			main {
-				width: calc(100% - 2em);
 				max-width: 100%;
 				margin: 0;
 			}
+
+			.section-container {
+				max-width: 1280px;
+				margin: 0 auto;
+				border-radius: 1rem;
+				background: #fff;
+				padding: 3rem 1.5rem;
+			}
+
+			.section-content {
+				max-width: 640px;
+				margin: 0 auto;
+			}
+
 			.hero-image {
 				width: 100%;
 			}
@@ -29,11 +42,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				box-shadow: var(--box-shadow);
 			}
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
+
+				background-color: #fff;
 			}
 			.title {
 				margin-bottom: 1em;
@@ -51,6 +64,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+
+			h2 {
+				color: #1d1d1f;
+				font-family: Inter;
+				font-size: 1.625rem;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 125%; /* 2.03125rem */
+			}
+
+			@media only screen and (min-width: 768px) {
+				main {
+					padding: 0 2rem;
+				}
+			}
 		</style>
 	</head>
 
@@ -58,25 +86,33 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
+				<!-- <div class="hero-image">
 					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
+				</div> -->
+
+				<div class="section-container">
+					<div class="section-content">
+						<div class="prose">
+							<div class="title">
+								<!-- <div class="date">
+									<FormattedDate date={pubDate} />
+									{
+										updatedDate && (
+											<div class="last-updated-on">
+												Last updated on{" "}
+												<FormattedDate
+													date={updatedDate}
+												/>
+											</div>
+										)
+									}
+								</div> -->
+								<h1>{title}</h1>
+								<hr />
+							</div>
+							<slot />
 						</div>
-						<h1>{title}</h1>
-						<hr />
 					</div>
-					<slot />
 				</div>
 			</article>
 		</main>

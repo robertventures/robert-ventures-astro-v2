@@ -2,13 +2,16 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const pageTitle = "Robert Ventures: Step 2";
+const pageDescription = "Complete the second step of your account setup with Robert Ventures.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <BaseHead title={pageTitle} description={pageDescription} />
+        <meta name="robots" content="noindex, nofollow" />
         <style>
             main {
                 padding: 1.5rem;
@@ -16,7 +19,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 margin: 0 auto;
             }
 
-            form{
+            form {
                 display: flex;
                 flex-direction: column;
             }
@@ -95,14 +98,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 }
             }
 
-            input[type='radio']{
+            input[type='radio'] {
                 width: 24px;
                 height: 24px;
                 accent-color: #5028FF;
-                
             }
 
-            label{
+            label {
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
@@ -180,19 +182,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                     </label>
                 </div>
 
-                <!-- <input
-                    type="number"
-                    name="age"
-                    placeholder="age"
-                    required
-                /> -->
-                <!-- <input
-                    type="text"
-                    name="zipcode"
-                    placeholder="zipcode"
-                    required
-                /> -->
-
                 <p class="portfolio-info">When are you planning to invest?</p>
                 <div class="investment-urgency-options">
                     <label>
@@ -228,19 +217,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                         Within a year
                     </label>
                 </div>
-
-                <!-- <p>What are your investment objectives?</p>
-                <select name="investment_objective">
-                    <option selected hidden value="null">Select one</option>
-                    <option value="tax_preparation">Tax preparation</option>
-                    <option value="management_new_wealth">Management of new wealth</option>
-                    <option value="retirement_plan">Retirement plan</option>
-                    <option value="estate_planning">Estate planning</option>
-                    <option value="social_investing">Estate planning</option>
-                    <option value="tax-aware_investing">Tax-Aware investing</option>
-                    <option value="low_fee_solution">Low-Fee solution</option>
-                    <option value="portfolio_management">Portfolio management</option>
-                </select> -->
 
                 <button type="submit">
                     <span class="button-text">Next</span>

@@ -2,14 +2,16 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const pageTitle = "Robert Ventures: Step 3";
+const pageDescription = "Complete the third step of your account setup with Robert Ventures.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-
+        <BaseHead title={pageTitle} description={pageDescription} />
+        <meta name="robots" content="noindex, nofollow" />
         <style>
             main {
                 padding: 1.5rem;
@@ -129,10 +131,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         </script>
         <noscript
             ><img
-                height="“1”"
-                width='“1"'
-                style="“display:none”"
-                src="“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”"
+                height="1"
+                width="1"
+                style="display:none"
+                src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1"
             /></noscript
         >
         <!-- End Meta Pixel Code -->

@@ -1,0 +1,384 @@
+---
+import Image from "astro/components/Image.astro";
+import opener from "../images/design-elements/vector.svg";
+
+import arrow from "../images/design-elements/Arrow-right.svg";
+---
+
+<style>
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        margin-bottom: 2rem;
+
+        text-align: center;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    /* FORM */
+
+    h2 {
+        color: #281480;
+        text-align: center;
+
+        font-size: 2.25rem;
+
+        font-weight: 700;
+        line-height: 1.1; /* 2.475rem */
+
+        margin-bottom: 2rem;
+    }
+
+    .faqs {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        margin-bottom: 3rem;
+    }
+
+    .accordion {
+        background-color: #ffffff;
+        cursor: pointer;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: background-color 0.4s;
+
+        padding-bottom: 1rem;
+    }
+
+    button.accordion {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 160%; /* 2rem */
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .active,
+    .accordion:hover {
+        /* background-color: #ccc; */
+    }
+
+    .panel {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        background-color: white;
+    }
+
+    .panel p {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 0.85rem;
+        font-weight: 500;
+        line-height: 160%; /* 2rem */
+
+        padding-bottom: 1rem;
+    }
+
+    .faq-container {
+        /* margin-bottom: 1rem; */
+        border-bottom: 1px solid #afb5bc;
+    }
+
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faqs">
+                <div class="faq-container">
+                    <button class="accordion"
+                        >How does Robert Ventures affords to pay those rates?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            We invest in new assets designed to generate
+                            predictable monthly revenue and long-term value
+                            growth for the company.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Is This FDIC Insured?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            No, the bonds are not FDIC (Federal Deposit
+                            Insurance Corporation) insured. FDIC insurance is
+                            designed to protect depositors' funds in banks and
+                            savings institutions in the event of a bank failure.<br
+                            />
+                            The company's bonds are a type of investment in privately
+                            held companies or securities that are not publicly traded.
+                            These investments carry inherent risks and are not guaranteed
+                            or insured by the FDIC or any other government agency.<br
+                            /> Our bonds are issued according to SEC's Reg A+.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Why Should I Invest With Robert Ventures?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            For any investment/allocation decision, you should
+                            always answer to those questions:<br />
+                            - Do I believe in the asset class I am about to invest?<br
+                            />
+                            - Do I like the expected returns?<br />
+                            - Do they make sense to my portfolio?<br />
+                            - Do I trust the manager?<br />
+                            Our product is made for qualified investors who intend
+                            to outpace inflation and earn high yields, especially
+                            given the current macroeconomic conditions.<br />
+                            Joe has over 20 years of experience in the real estate
+                            sector and 6 years in the technology industry. He is
+                            in constant contact with people from the sector, and
+                            the team has a detailed due diligence process before
+                            investing in any asset.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Are There Any Fees?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            No.<br />
+                            The bonds are structured to eliminate intermediary fees
+                            and reduce overall expenses, meaning any additional fees
+                            do not reduce your monthly payments.<br />
+                            Bondholders can be confident that excessive fees and
+                            expenses do not impact their returns. Transparency and
+                            fairness are crucial elements in building trust with
+                            our investors, and this fee structure reflects that commitment.<br
+                            />
+                            By investing in the Robert Ventures Bonds, you're getting
+                            the most out of your investment, and your interests are
+                            always a top priority.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >How Are My Investments Taxed?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Robert Ventures' investments are taxed the same as
+                            any other high-yield bond or interest-bearing
+                            investment. You will receive a form 1099-INT at the
+                            beginning of every tax year for the previous year,
+                            covering all interest paid during the calendar/tax
+                            year.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-container">
+                    <button class="accordion"
+                        >Can I Invest With An IRA? What Are The Benefits?
+                        <Image
+                            src={opener}
+                            alt="first step"
+                            width={18}
+                            height={18}
+                        />
+                    </button>
+                    <div class="panel">
+                        <p>
+                            Yes, you can invest with your self-directed
+                            retirement accounts.<br> Here are some of the benefits of investing in the Robert Ventures Bonds through an IRA account:<br>
+                            - Interest not taxable when realized;<br>
+                            -In a Roth IRA account: the interest income is tax-free when paid and withdrawn;<br>
+                            - In a Traditional IRA Account: the interest income is tax-deferred, which means it's only taxed when taking distributions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form">
+                <form id="faq-cta-form">
+                    <div class="form-block">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                            class="email-input"
+                        />
+                        <button type="submit">
+                            <span class="button-text">
+                                <Image
+                                    src={arrow}
+                                    alt="herobox"
+                                    width={24}
+                                    height={24}
+                                />
+                            </span>
+                            <span class="loader" style="display: none;"></span>
+                        </button>
+                    </div>
+                    <p class="signup-error"></p>
+                </form>
+                <p class="account">
+                    Have an account? <a
+                        class="login"
+                        href="https://invest.robertventures.com/login?f=1"
+                        >Log in</a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    });
+
+    document
+        .getElementById("faq-cta-form")
+        .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = document.querySelector(".email-input");
+            const email = emailInput.value;
+            const buttonText = document.querySelector(".button-text");
+            const loader = document.querySelector(".loader");
+            const signupError = document.querySelector(".signup-error");
+
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
+            signupError.style.display = "none";
+
+            try {
+                const response = await fetch("/api/get-started", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
+                } else {
+                    const errorMessage = result.error || "Signup failed";
+                    signupError.textContent = errorMessage;
+                    signupError.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                signupError.textContent = "An unexpected error occurred.";
+                signupError.style.display = "block";
+            } finally {
+                buttonText.style.display = "inline-block";
+                loader.style.display = "none";
+            }
+        });
+</script>

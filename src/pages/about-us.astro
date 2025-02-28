@@ -1,0 +1,27 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import AboutHero from "../sections/AboutHero.astro";
+import JoeRobert from "../sections/JoeRobert.astro";
+import TheTeam from "../sections/TheTeam.astro";
+
+const pageTitle = "Robert Ventures: Meet the Experienced Team";
+const pageDescription = "Meet Robert Ventures' expert team, led by Joe Robert. Discover our mission and innovative strategies in real estate and digital asset investment.";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+    </head>
+    <body>
+        <Header />
+        <AboutHero />
+        <JoeRobert />
+        <TheTeam/>
+
+        <FooterNew />
+    </body>
+</html>

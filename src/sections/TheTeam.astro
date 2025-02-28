@@ -1,0 +1,228 @@
+---
+import Image from "astro/components/Image.astro";
+
+import arrow from "../images/design-elements/Arrow-right.svg";
+import william from "../images/design-elements/william.png";
+import andrew from "../images/design-elements/andrew.png";
+import matheus from "../images/design-elements/matheus.png";
+---
+
+<style>
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+
+        text-align: center;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    /* FORM */
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem 4rem 1.5rem;
+    }
+
+    .section-content {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        color: #281480;
+        text-align: center;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.1; /* 2.475rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .intro p {
+        color: #505050;
+        text-align: center;
+        font-family: "Inter", sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.5; /* 1.875rem */
+
+        margin-bottom: 3rem;
+    }
+
+    .team-members{
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+    }
+
+    .member {
+        text-align: center;
+        font-family: "Inter";
+    }
+
+    .member img {
+        margin: 0 auto;
+        margin-bottom: 1.3rem;
+    }
+
+    .member p.name {
+        color: #1d1d1f;
+        text-align: center;
+
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 100%; /* 1.25rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .member p.position {
+        color: #505050;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1; /* 0.875rem */
+
+        margin-bottom: 1.5rem;
+    }
+
+    .member p.description {
+        color: #505050;
+
+        font-size: 1.125rem;
+
+        font-weight: 400;
+        line-height: 160%; /* 1.8rem */
+
+        text-align: left;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px){
+        .section-container {
+
+        padding: 4rem 1.5rem 5rem 1.5rem;
+    }
+
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <div class="intro">
+                <h2>Meet The Team</h2>
+                <p>
+                    We're a capital efficient team led by Joe Robert, with
+                    decades of experience in real estate and digital asset
+                    investments.
+                </p>
+            </div>
+
+            <div class="team-members">
+                <div class="member">
+                    <Image src={william} alt="herobox" width={90} height={90} />
+                    <p class="name">William Guida</p>
+                    <p class="position">Robert Ventures, Head of Strategy</p>
+                    <p class="description">
+                        William Guida has nearly a decade of experience in the
+                        digital asset space and has been an active investor
+                        since 2015. His deep connections within the digital
+                        asset development and investment communities make him
+                        invaluable in identifying and executing blockchain
+                        investment opportunities.
+                    </p>
+                </div>
+                <div class="member">
+                    <Image src={andrew} alt="herobox" width={90} height={90} />
+                    <p class="name">Andrew Ney</p>
+                    <p class="position">Robert Ventures, Data Analyst</p>
+                    <p class="description">
+                        Andrew Ney has been researching and investing in digital
+                        assets since 2017, leveraging his data analytics
+                        expertise to drive informed decision-making at Robert
+                        Ventures. With a degree in Chemical Engineering from
+                        Clemson University and a Data Scientist certification,
+                        Andrew's proficiency in R and Python ensures the team's
+                        strategies are data-driven and capital is deployed
+                        efficiently.
+                    </p>
+                </div>
+                <div class="member">
+                    <Image src={matheus} alt="herobox" width={90} height={90} />
+                    <p class="name">Matheus Brandão</p>
+                    <p class="position">Robert Ventures, Research Analyst</p>
+                    <p class="description">
+                        Matheus Brandão has been actively researching and
+                        investing in digital assets since 2017, leveraging his
+                        dual expertise in economics and accounting. With a
+                        bachelor's degree in both fields and extensive
+                        experience in blockchain development and wealth
+                        management, Matheus plays a vital role in analyzing
+                        market trends and managing portfolio growth. His
+                        consulting background at PwC ensures that Robert
+                        Ventures adheres to the highest financial standards
+                        while maintaining trust and transparency with investors.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+

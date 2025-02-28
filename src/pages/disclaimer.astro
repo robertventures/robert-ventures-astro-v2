@@ -1,0 +1,57 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+
+const pageTitle = "Robert Ventures: Disclaimer";
+const pageDescription = "Robert Ventures' disclaimer outlines compliance with Regulation A, offering process details, and SEC qualification requirements for securities.";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+
+        <meta property="og:url" content="https://robertventures.com/disclaimer" />
+        <meta name="robots" content="noindex, nofollow">
+
+        <style>
+            section {
+                margin-bottom: 1.5rem;
+            }
+
+            .section-container {
+                max-width: 1280px;
+                margin: 0 auto;
+                border-radius: 1rem;
+                background: #fff;
+                padding: 3rem 1.5rem;
+            }
+
+            .section-content {
+                max-width: 366px;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+
+        <section>
+            <div class="section-container">
+                <div class="section-content">
+                    <div name="termly-embed" data-id="b0442740-9f2a-47aa-b6b1-5ffdd9b6c33a" data-type="iframe"></div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+
+    <script is:inline type="text/javascript">(function(d, s, id) {
+        var js, tjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://app.termly.io/embed-policy.min.js";
+        tjs.parentNode.insertBefore(js, tjs);
+      }(document, 'script', 'termly-jssdk'));</script>
+</html>

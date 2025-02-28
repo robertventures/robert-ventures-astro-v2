@@ -1,128 +1,37 @@
 ---
-
+import Image from "astro/components/Image.astro";
+import arrow from "../images/design-elements/Arrow-right.svg";
 ---
 
 <style>
-    .section {
-        max-width: 1365px;
-        margin: 0 auto;
-
-    }
-
-    .calculator{
-        margin: 0 8px;
-        padding: 4rem 0.5rem;
-        background-color: #fefefe;
-        border-radius: 1rem;
-    }
-    h2 {
-        margin-bottom: 3rem;
-    }
-    .calculate-content {
-        padding: 32px 24px;
-        border: 1px solid #dbe2eb;
-        border-radius: 16px;
-
-        margin-bottom: 24px;
-        background-color: #fefefe;
-    }
-    .calculate-side {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    .calculate-heading {
-        margin: 0;
-        margin-bottom: 16px;
-        font-family:
-            Public Sans,
-            sans-serif;
-        color: #546071;
-        font-weight: 500;
-    }
-
-    .calculate-data {
-        display: flex;
-        flex-direction: column;
-        gap: 17px;
-    }
-
-    .calculate-data-group {
-        display: flex;
-        align-items: center;
-        flex: 1;
-    }
-
-    label {
-        font-family: Satoshi, sans-serif;
-        font-size: 18px;
-        color: #7f8ca0;
-    }
-
     input[type="radio"] {
-        height: 32px;
-        width: 32px;
-        accent-color: #3c1fbf;
-        margin-right: 12px;
-        margin-left: 0px;
+        height: 1.5rem;
+        width: 1.5rem;
+        accent-color: #281480;
     }
-
-    :checked + label {
-        color: #1b2028;
-    }
-
-    input.amount {
-        width: 100%;
-    }
-
-    .min-max-data {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .min-max-data p {
-        font-family: Satoshi, sans-serif;
-        font-size: 14px;
-        line-height: 26px;
-        color: #7f8ca0;
-        margin: 0;
-    }
-
-    .amount-heading {
-        font-family: Satoshi, sans-serif;
-        font-size: 24px;
-        color: #1b2028;
-        margin: 0;
-        margin-bottom: 13px;
-        font-weight: 700;
-    }
-
-    /* INPUT  INPUT INPUT  */
-
+    /* SLIDER STYLE */
     input[type="range"].styled-slider {
-        height: 32px;
+        height: 24px;
         -webkit-appearance: none;
+        background-color: transparent;
     }
 
-    /*progress support*/
     input[type="range"].styled-slider.slider-progress {
         --range: calc(var(--max) - var(--min));
         --ratio: calc((var(--value) - var(--min)) / var(--range));
-        --sx: calc(0.5 * 32px + var(--ratio) * (100% - 32px));
+        --sx: calc(0.5 * 24px + var(--ratio) * (100% - 24px));
     }
 
     input[type="range"].styled-slider:focus {
-        outline: none;
+        outline: 0;
     }
 
-    /*webkit*/
     input[type="range"].styled-slider::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border-radius: 16px;
-        background: #3c1fbf;
+        background: #281480;
         border: none;
         box-shadow: none;
         margin-top: calc(2px * 0.5 - 32px * 0.5);
@@ -138,16 +47,15 @@
 
     input[type="range"].styled-slider.slider-progress::-webkit-slider-runnable-track {
         background:
-            linear-gradient(#3c1fbf, #3c1fbf) 0 / var(--sx) 100% no-repeat,
+            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
             #efefef;
     }
 
-    /*mozilla*/
     input[type="range"].styled-slider::-moz-range-thumb {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border-radius: 16px;
-        background: #3c1fbf;
+        background: #281480;
         border: none;
         box-shadow: none;
     }
@@ -162,26 +70,25 @@
 
     input[type="range"].styled-slider.slider-progress::-moz-range-track {
         background:
-            linear-gradient(#3c1fbf, #3c1fbf) 0 / var(--sx) 100% no-repeat,
+            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
             #efefef;
     }
 
-    /*ms*/
     input[type="range"].styled-slider::-ms-fill-upper {
-        background: transparent;
+        background: 0 0;
         border-color: transparent;
     }
 
     input[type="range"].styled-slider::-ms-fill-lower {
-        background: transparent;
+        background: 0 0;
         border-color: transparent;
     }
 
     input[type="range"].styled-slider::-ms-thumb {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border-radius: 16px;
-        background: #3c1fbf;
+        background: #281480;
         border: none;
         box-shadow: none;
         margin-top: 0;
@@ -199,546 +106,638 @@
 
     input[type="range"].styled-slider.slider-progress::-ms-fill-lower {
         height: 2px;
-        border-radius: 0px 0 0 0px;
+        border-radius: 0;
         margin: -undefined 0 -undefined -undefined;
-        background: #3c1fbf;
+        background: #281480;
         border: none;
         border-right-width: 0;
     }
 
-    /* INPUT  INPUT INPUT  */
+    /* SLIDER STYLE */
+
+    /* FORM */
+    form {
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        width: 2.13156rem;
+        height: 2.13156rem;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        text-align: center;
+    }
+    /* FORM */
+
+    section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.56rem;
+
+        max-width: 366px;
+        margin: 0 auto;
+    }
+
+    .calculate-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    h2 {
+        margin-bottom: 2rem;
+        text-align: center; /* Center the h2 element */
+        color: #281480;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 110%; /* 2.475rem */
+    }
+
+    .calculate-block {
+        /* border: 1px solid red; */
+    }
+
+    .select-term {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    p.calculate-heading {
+        color: #505050;
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 100%; /* 1.125rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .year-option {
+        flex: 1;
+
+        padding: 1rem;
+        padding-bottom: 0.62rem;
+
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: start;
+
+        justify-content: space-between;
+
+        border-radius: 0.5rem;
+        border: 1px solid #afb5bc;
+    }
+
+    .year-option label {
+        display: flex;
+        flex-direction: column;
+
+        gap: 0.37rem;
+
+        color: #1d1d1f;
+        font-size: 0.875rem;
+
+        font-weight: 500;
+        line-height: 100%; /* 0.875rem */
+    }
+
+    .year-option label span {
+        color: #281480;
+        font-size: 2.5625rem;
+        font-weight: 600;
+        line-height: 100%; /* 2.5625rem */
+    }
+
+    .selection-active {
+        background-color: #f2f5f8;
+    }
+
+    .return-option {
+        display: flex;
+        flex-direction: row-reverse;
+
+        position: relative;
+
+        justify-content: center;
+
+        padding: 1rem;
+    }
+
+    .return-option input {
+        position: absolute;
+        right: 1rem;
+    }
+
+    .select-return {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .return-option {
+        border-radius: 0.5rem;
+        border: 1px solid #afb5bc;
+    }
+
+    .investment-value {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .styled-input {
+        border-radius: 0.5rem;
+        border: 1px solid #7f8ca0;
+        padding: 1rem;
+
+        color: #281480;
+        font-size: 1.4375rem;
+        font-weight: 600;
+        line-height: 100%; /* 1.4375rem */
+
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"].styled-input::-webkit-outer-spin-button,
+    input[type="number"].styled-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .dollar-sign {
+        position: absolute;
+        left: 10px;
+        font-size: 1.4375rem;
+        color: #281480;
+        font-family: "Inter", sans-serif;
+    }
+
+    .styled-input {
+        padding-left: 1.5rem; /* Adjust padding to make space for the dollar sign */
+        width: 100%;
+
+    }
 
     /* RESULT SECTION */
 
-    .result-section {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    .result-block {
-        background-color: #f4f6fa;
-        border-radius: 8px;
-    }
-
-    .result-block:first-child {
-        background: url("https://uploads-ssl.webflow.com/64e51c01416719efe90e8aff/64e924ac725a76fabf40d0cf_result-block-bg.webp");
-        background-position: center;
-        background-size: cover;
-        border: 1px solid red;
-    }
-
-    .result-block {
-        padding: 24px;
-        font-family: Satoshi, sans-serif;
-    }
-
-    .result-block p.title {
-        color: #546071;
-        font-size: 24px;
-        margin: 0;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-
-    .result-block:first-child p.title {
-        color: #dbe2eb;
-    }
-
-    .result-block:first-child .value {
-        color: #fefefe;
-        font-size: 48px;
-        line-height: 56px;
-    }
-
-    p#total-profit {
-        margin: 0;
-        display: inline-block;
-        font-family: Satoshi, sans-serif;
-        font-weight: 700;
-        color: #fefefe;
-        font-size: 38px;
-    }
-
-    .result-block:first-child .value span.cents {
-        font-size: 36px;
-        border: 1px solid red;
-    }
-
-    .cents {
-        font-size: 24px;
-        border: 1px solid red;
-    }
-
-    .result-block .value {
-        margin: 0;
-        margin-top: 8px;
-        font-size: 30px;
-        color: #1b2028;
-        font-family: Satoshi, sans-serif;
-        font-weight: 700;
-
-        border: 1px solid red;
-    }
-
-    .result-section a {
-        background-color: #5028ff;
-        padding: 20px 24px;
+    .result-section .total-value {
         text-align: center;
-        color: #fefefe;
-        text-decoration: none;
-        font-family: Satoshi, sans-serif;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 20px;
-        border-radius: 6px;
-        position: relative;
     }
 
-    .result-section a svg {
-        position: absolute;
-        right: 24px;
-        transform: translateY(-7px);
+    #total-profit {
+        text-align: center;
+        font-size: 2.875rem;
+        font-weight: 900;
+        line-height: 100%; /* 2.875rem */
+
+        font-family: "Inter", sans-serif;
+
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        margin-bottom: 1.5rem;
     }
 
-    p.result-section-info {
-        font-family:
-            Public Sans,
-            sans-serif;
-        font-size: 16px;
-        line-height: 28px;
-        color: #7f8ca0;
+    .title.small {
+        line-height: 1;
+        text-align: center;
+        margin-bottom: 0.5rem;
     }
 
-    p span.result-block-extra-info {
-        font-family: Satoshi, sans-serif;
-        font-size: 16px;
-        color: #17a814;
+    .value.small {
+        color: #281480;
+        text-align: center;
+        /* font-feature-settings: "cv01" on; */
+        font-family: "Inter", sans-serif;
+        font-size: 1.625rem;
+        font-weight: 700;
+        line-height: 100%; /* 1.625rem */
+
+        margin-bottom: 0.75rem;
     }
 
-    p.link-to-compound {
-        color: #7f8ca0;
-        display: block;
-        margin: 0;
-        text-decoration: underline;
-        font-size: 16px;
-        font-family:
-            Public Sans,
-            sans-serif;
-        line-height: 28px;
-        font-weight: 300;
-        margin-top: 12px;
+    .extra-text {
+        text-align: center;
+        line-height: 1.6;
     }
 
-    span.green {
-        color: #17a814;
-        text-decoration: underline;
-    }
-
-    /* EMAIL SUBMIT */
-
-    #label-email-abcc5f7d-6445-4782-872a-e949b860c23e {
-        display: none;
-    }
-
-    .result-section form {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .result-section input {
-        width: 100%;
-        box-sizing: border-box;
-        font-family: Satoshi, sans-serif;
-        min-height: 44px;
-        padding: 0 16px;
-        border-radius: 6px;
-        border: 1px solid #dbe2eb;
-        font-size: 14px;
-    }
-
-    .result-section input[type="submit"] {
-        border: none;
-        background-image: url("https://uploads-ssl.webflow.com/64e51c01416719efe90e8aff/6516f3d7befc461bdca3e809_submit-button-bg.svg");
-        background-size: contain;
-        background-position: right;
-        background-color: #5028ff;
-        background-repeat: no-repeat;
-        cursor: pointer;
-        color: #fefefe;
-    }
-
-    .result-section .hs_error_rollup {
-        display: none;
-    }
-
-    .result-section ul {
-        display: none;
-    }
-
-    @media only screen and (min-width: 660px) {
-        .financial-future-section {
-            display: flex;
-            background-image: url(https://uploads-ssl.webflow.com/64e51c01416719efe90e8aff/64f1e84df675358d75c8cfcf_rv-calculator-bg-svg.svg);
-            background-position: top;
-            background-size: contain;
-            background-repeat: no-repeat;
-            gap: 16px;
-        }
-        .calculate-content {
-            flex: 1;
-            margin: 0px;
-        }
-        .result-section {
-            flex: 1;
-            margin: 0px;
-        }
-
-        .result-block {
-            padding: 24px;
-        }
-
-        p#total-profit {
-            font-size: 48px;
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
         }
     }
 
-    @media only screen and (min-width: 991px) {
-        .financial-future-section {
-            gap: 32px;
+    @media only screen and (min-width: 990px) {
+        .section-container {
+            padding: 4rem 1.5rem;
         }
 
-        .calculate-content {
-            padding: 48px;
-        }
+        .section-content {
+            max-width: 921px;
 
-        .result-block {
-            padding: 48px;
-        }
-
-        .result-section form {
-            display: flex;
             flex-direction: row;
-            gap: 16px;
+            justify-content: space-between;
         }
 
-        .result-section form > div {
-            width: 100%;
+        .section-content > div {
+            max-width: 366px;
+            flex: 1;
         }
 
-        .result-section form .hs_submit {
-            max-width: 199px;
-        }
-
-        .result-section input {
-            min-height: 60px;
-            text-align: left;
-        }
-
-        .result-section input[type="submit"] {
-            padding-left: 32px;
+        .result-section {
+            align-self: center;
         }
     }
 </style>
 
-<div class="section">
-    <div class="calculator">
-        <h2>Calculate Your <br /> <span>Financial Future</span></h2>
-
-        <div class="financial-future-section">
-            <div class="calculate-content">
-                <div class="calculate-side">
-                    <div class="calculate-block">
-                        <p class="calculate-heading">Terms:</p>
-                        <div id="term" class="calculate-data">
-                            <div class="calculate-data-group">
-                                <input
-                                    type="radio"
-                                    name="year-term"
-                                    value="1"
-                                    onclick="calculateReturns()"
-                                />
-                                <label for="html">1 Year (8% Annually)</label
-                                ><br />
-                            </div>
-
-                            <div class="calculate-data-group">
-                                <input
-                                    type="radio"
-                                    name="year-term"
-                                    value="3"
-                                    checked
-                                    onclick="calculateReturns()"
-                                />
-                                <label for="css">3 Years (10% APY)</label><br />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calculate-block">
-                        <p class="calculate-heading">Payment Options:</p>
-                        <div class="calculate-data">
-                            <div class="calculate-data-group">
-                                <input
-                                    type="radio"
-                                    name="payment-term"
-                                    value="monthly"
-                                    onclick="calculateReturns()"
-                                />
-                                <label for="html">Monthly Payments</label><br />
-                            </div>
-                            <div class="calculate-data-group">
-                                <input
-                                    type="radio"
-                                    name="payment-term"
-                                    value="compound"
-                                    onclick="calculateReturns()"
-                                    checked
-                                />
-                                <label for="css">Compound</label><br />
+<section>
+    <div class="section-container">
+        <h2>Bond Terms Available</h2>
+        <div class="section-content">
+            <div class="terms-section">
+                <div class="financial-future-section">
+                    <div class="calculate-content">
+                        <div class="calculate-block">
+                            <p class="calculate-heading">Select Term:</p>
+                            <div id="term" class="calculate-data select-term">
+                                <div class="calculate-data-group year-option">
+                                    <input
+                                        type="radio"
+                                        name="year-term"
+                                        value="1"
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="html"
+                                        >1 Year Term<span>8%</span></label
+                                    >
+                                </div>
+                                <div class="calculate-data-group year-option">
+                                    <input
+                                        type="radio"
+                                        name="year-term"
+                                        value="3"
+                                        checked
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="css"
+                                        >3 Year Term<span>10%</span></label
+                                    >
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="calculate-block">
-                        <p class="calculate-heading">Amount:</p>
-                        <p class="amount-heading">$50000</p>
-                        <input
-                            id="amount"
-                            class="amount styled-slider slider-progress"
-                            type="range"
-                            name="amount"
-                            value="50000"
-                            step="1000"
-                            min="1000"
-                            max="100000"
-                            oninput="calculateReturns()"
-                        />
-                        <div class="min-max-data">
-                            <p>$1000</p>
-                            <p>$100,000</p>
+                        <div class="calculate-block">
+                            <p class="calculate-heading">Return Options:</p>
+                            <div class="calculate-data select-return">
+                                <div class="calculate-data-group return-option">
+                                    <input
+                                        type="radio"
+                                        name="payment-term"
+                                        value="compound"
+                                        onclick="calculateReturns()"
+                                        checked
+                                    />
+                                    <label for="css">Compound</label>
+                                </div>
+                                <div class="calculate-data-group return-option">
+                                    <input
+                                        type="radio"
+                                        name="payment-term"
+                                        value="monthly"
+                                        onclick="calculateReturns()"
+                                    />
+                                    <label for="html">Monthly</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="calculate-block">
-                        <p class="calculate-heading">Length:</p>
-                        <p class="amount-heading time-display">3 Years</p>
-                        <input
-                            id="investmentDuration"
-                            class="amount time-input styled-slider slider-progress"
-                            type="range"
-                            name="amount"
-                            value="3"
-                            step="1"
-                            min="1"
-                            max="10"
-                            oninput="calculateReturns()"
-                        />
-                        <div class="min-max-data">
-                            <p>1 Year</p>
-                            <p>10 Years</p>
+                        <div class="calculate-block">
+                            <div class="initial-investment-text">
+                                <p class="calculate-heading">
+                                    Investment Amount:
+                                </p>
+                            </div>
+                            <div class="investment-value">
+                                <input
+                                    id="amount-slider"
+                                    class="styled-slider slider-progress"
+                                    type="range"
+                                    name="amount-slider"
+                                    value="50000"
+                                    step="1000"
+                                    min="1000"
+                                    max="100000"
+                                    oninput="syncSliderAndInput('slider')"
+                                />
+                                <div class="input-container">
+                                    <span class="dollar-sign">$</span>
+                                    <input
+                                        id="amount"
+                                        class="amount styled-input"
+                                        type="number"
+                                        name="amount"
+                                        value="50000"
+                                        step="1000"
+                                        min="1000"
+                                        max="100000"
+                                        oninput="syncSliderAndInput('input')"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="result-section">
-                <div class="result-block">
+                <div class="result-block wrapper total-value">
                     <p class="title">Total value with interest:</p>
                     <div class="value">
-                        <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M4.5 15L12 7.5L19.5 15"
-                                stroke="#17A814"
-                                stroke-width="4"
-                                stroke-linecap="square"></path>
-                        </svg>
-                        <p id="total-profit">TotalAmount</p>
+                        <!-- <path
+                            d="M4.5 15L12 7.5L19.5 15"
+                            stroke="#17A814"
+                            stroke-width="4"
+                            stroke-linecap="square"></path> -->
                     </div>
+                    <p id="total-profit">TotalAmount</p>
                 </div>
-                <div class="result-block">
-                    <p class="title">Compound interest:</p>
-                    <p class="value" id="return-value">CompoundReturn</p>
+                <div class="result-block calc-final-block">
+                    <p class="title small">Compound interest:</p>
+                    <p class="value small" id="return-value">CompoundReturn</p>
+                    <p class="extra-text">extraText</p>
                 </div>
-
-                <!-- <script
-                    charset="utf-8"
-                    type="text/javascript"
-                    src="//js.hsforms.net/forms/embed/v2.js"></script>
-                <script>
-                    hbspt.forms.create({
-                        region: "na1",
-                        portalId: "23136538",
-                        formId: "abcc5f7d-6445-4782-872a-e949b860c23e",
-                    });
-                </script> -->
-
-                <p class="result-section-info">
-                    The calculator on this website is for illustrative purposes
-                    only. Rates of return and investment values are subject to
-                    change and may be altered over time. Actual earnings and
-                    payments should be verified and are contingent upon the
-                    definitive terms and conditions set forth in any
-                    accompanying contractual agreements.
-                </p>
+                <div class="calculator-form">
+                    <form id="how-cta-form">
+                        <div class="form-block">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                required
+                                class="email-input"
+                            />
+                            <button type="submit">
+                                <span class="button-text">
+                                    <Image
+                                        src={arrow}
+                                        alt="herobox"
+                                        width={24}
+                                        height={24}
+                                    />
+                                </span>
+                                <span class="loader" style="display: none;"
+                                ></span>
+                            </button>
+                        </div>
+                        <p class="signup-error"></p>
+                    </form>
+                    <p class="account">
+                        Have an account? <a class="login" href="https://invest.robertventures.com/login?f=1">Log in</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <script is:inline>
-    const termSelection = document.querySelectorAll("input[name=year-term]");
-    const investmentDurationSlider =
-        document.getElementById("investmentDuration");
+    // Selectors
+    const investmentAmountInput = document.getElementById("amount");
+    const investmentAmountSlider = document.getElementById("amount-slider");
+    const totalProfitElement = document.getElementById("total-profit");
+    const returnValueElement = document.getElementById("return-value");
+    const extraTextElement = document.querySelector(".extra-text");
+    const resultTitles = document.querySelectorAll(".result-section p.title");
+    const yearTermInputs = document.querySelectorAll(".year-option");
+    const returnOptions = document.querySelectorAll(".return-option");
 
-    // TERM BUTTONS THAT UPDATE THE CALC
+    // Helper function for formatting currency and wrapping cents
+    function formatCurrencyWithCents(value) {
+        const formatted = value.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+        const [dollars, cents] = formatted.split(".");
+        return `${dollars}<span class="cents">.${cents}</span>`;
+    }
 
-    termSelection[0].addEventListener("click", () => {
-        investmentDurationSlider.value = 1;
+    // Helper function to handle toggling active class
+    function toggleActiveClass(group) {
+        group.forEach((item) => {
+            const input = item.querySelector("input");
+            if (input?.checked) {
+                item.classList.add("selection-active");
+            } else {
+                item.classList.remove("selection-active");
+            }
+        });
+    }
+
+    // Sync slider and input values
+    function syncSliderAndInput(source) {
+        if (source === "input") {
+            investmentAmountSlider.value = investmentAmountInput.value;
+        } else if (source === "slider") {
+            investmentAmountInput.value = investmentAmountSlider.value;
+        }
         calculateReturns();
-    });
-    termSelection[1].addEventListener("click", () => {
-        investmentDurationSlider.value = 3;
-        calculateReturns();
-    });
+    }
 
+    // Calculate Returns
     function calculateReturns() {
-        const payment = document.querySelector(
+        const paymentTerm = document.querySelector(
             'input[name="payment-term"]:checked',
-        ).value;
+        )?.value;
+        const investmentAmount = parseFloat(investmentAmountInput.value) || 0;
+        const investmentDuration =
+            parseFloat(
+                document.querySelector('input[name="year-term"]:checked')
+                    ?.value,
+            ) || 0;
 
-        const investmentAmount = parseFloat(
-            document.getElementById("amount").value,
-        );
+        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.08;
+        const totalMonths = investmentDuration * 12;
 
-        const investmentDuration = parseFloat(
-            document.getElementById("investmentDuration").value,
-        );
+        let totalInterest = 0;
+        let totalPrincipal = investmentAmount;
+        let monthlyPayment = 0;
 
-        const totalProfitDOM = document.getElementById("total-profit");
-        const valueReturnDOM = document.getElementById("return-value");
+        if (paymentTerm === "monthly") {
+            // Monthly Payments Calculation
+            const monthlyRate = nominalAnnualRate / 12;
+            monthlyPayment = investmentAmount * monthlyRate;
 
-        // GET SECTION TITLES
-        const resultTitles = document.querySelectorAll(
-            ".result-section p.title",
-        );
+            // Total Interest over the period
+            totalInterest = monthlyPayment * totalMonths;
 
-        // Calculate APY based on investment duration
-        const compoundAPY = investmentDuration >= 3 ? 0.104713 : 0.083; // Adjust the interest rate based on investment duration
-        const monthlyAPY = investmentDuration >= 3 ? 0.1 : 0.08;
-
-        let totalAmountMontlhy = investmentAmount;
-        let totalAmountCompound = investmentAmount;
-
-        let monthlyReturns = 0; // Store the monthly returns
-
-        const months = investmentDuration * 12;
-
-        // MONTHLY
-        const monthlyRate = monthlyAPY / 12;
-        const monthlyEarnings = (totalAmountMontlhy * monthlyRate) / months;
-
-        for (let i = 0; i < months; i++) {
-            totalAmountMontlhy += monthlyEarnings;
-            monthlyReturns += monthlyEarnings;
-        }
-
-        let monthlyPayment = monthlyReturns.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-
-        let montlyPaymentTotal = (totalAmountMontlhy +=
-            monthlyReturns * (months - 1));
-
-        // COMPOUND
-        totalAmountCompound *= Math.pow(1 + compoundAPY, investmentDuration);
-
-        const compoundReturn = totalAmountCompound - investmentAmount;
-
-        let compoundValue = totalAmountCompound;
-
-        let returnValue = compoundReturn.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-
-        let extraInfo = "";
-
-        if (investmentDuration >= 3) {
-            extraInfo = "(10.47% APY)";
+            // Total Principal includes the total interest
+            totalPrincipal = investmentAmount + totalInterest;
         } else {
-            extraInfo = "(8% Annually)";
+            // Compound Interest Calculation
+            let effectiveAnnualRate;
+            if (investmentDuration === 3) {
+                // For durations of 3 years, use 10% APR compounded monthly
+                effectiveAnnualRate = 0.104713; // Approximately 10.4713%
+            } else {
+                // For durations of 1 year, use 8% APR compounded monthly
+                effectiveAnnualRate = 0.083; // Approximately 8.3%
+            }
+
+            totalPrincipal =
+                investmentAmount *
+                Math.pow(1 + effectiveAnnualRate, investmentDuration);
+            totalInterest = totalPrincipal - investmentAmount;
         }
 
-        if (payment === "monthly") {
-            const montlyPaymentTotalString = montlyPaymentTotal.toLocaleString(
-                "en-US",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                },
-            );
+        // Update UI
+        if (paymentTerm === "monthly") {
+            resultTitles[0].textContent = "Total with Interest:";
+            resultTitles[1].textContent = "Monthly Payments:";
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
+            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
 
-            // MODIFY SECTION TITLES
-            resultTitles[0].textContent = "Monthly Payment:";
-            resultTitles[1].textContent = "Monthly Payments Total Value:";
+            // Calculate compound value for comparison
+            let effectiveAnnualRateForCompounding;
+            if (investmentDuration === 3) {
+                effectiveAnnualRateForCompounding = 0.104713;
+            } else {
+                effectiveAnnualRateForCompounding = 0.083;
+            }
+            const compoundedValue =
+                investmentAmount *
+                Math.pow(
+                    1 + effectiveAnnualRateForCompounding,
+                    investmentDuration,
+                );
 
-            totalProfitDOM.innerHTML = `$${monthlyPayment.slice(0, -2)}<span class="cents">${monthlyPayment.slice(-2)} </span>`;
+            const extraEarnings = compoundedValue - totalPrincipal;
 
-            valueReturnDOM.innerHTML = `$${montlyPaymentTotalString.slice(0, -3)}<span class="cents">${montlyPaymentTotalString.slice(-3)} </span> <p class="link-to-compound">If you choose to compound you could earn <span class="green">$${(compoundValue - montlyPaymentTotal).toFixed(2)}</span> more</p>`;
-        } else if (payment === "compound") {
-            const compoundValueString = compoundValue.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
+            const formattedMonthlyPayment =
+                formatCurrencyWithCents(monthlyPayment);
+            const formattedExtraEarnings =
+                formatCurrencyWithCents(extraEarnings);
 
-            // MODIFY SECTION TITLES
-            resultTitles[0].textContent = "Total value with interest:";
+            document.querySelector(".calc-final-block").style.display = "block";
+
+            returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
+            extraTextElement.innerHTML = `
+                Earn $${formattedExtraEarnings} more with compound
+            `;
+        } else {
+            resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Compound interest:";
-
-            totalProfitDOM.innerHTML = `$${compoundValueString.slice(0, -2)}<span class="cents">${compoundValueString.slice(-2)} </span>`;
-
-            valueReturnDOM.innerHTML = `$${returnValue.slice(0, -3)}<span class="cents">${returnValue.slice(-3)} <span class="result-block-extra-info">${extraInfo}</span></span>`;
-        }
-
-        // UPDATE AMOUNT SLIDER
-
-        const amountValue = document.querySelector("p.amount-heading");
-        const amountInput = document.querySelector("input.amount").value;
-
-        amountValue.textContent = `$${Number(amountInput).toLocaleString("en-US")}`;
-
-        // UPDATE LENGTH SLIDER
-
-        const timeDisplay = document.querySelector("p.time-display");
-        const timeInput = document.querySelector("input.time-input");
-
-        timeDisplay.textContent = timeInput.value;
-
-        if (timeInput.value <= 2) {
-            termSelection[0].checked = true;
-        } else {
-            termSelection[1].checked = true;
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalInterest =
+                formatCurrencyWithCents(totalInterest);
+            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
+            returnValueElement.innerHTML = `
+            $${formattedTotalInterest} 
+            <span class="result-block-extra-info">
+                (${investmentDuration === 3 ? "10% APY" : "8% Annually"})
+            </span>`;
+            document.querySelector(".calc-final-block").style.display = "none";
+            extraTextElement.innerHTML = ""; // Clear extra text when not monthly
         }
     }
+
+    // Initialize sliders with style updates
+    document
+        .querySelectorAll('input[type="range"].slider-progress')
+        .forEach((slider) => {
+            const updateSliderStyle = () => {
+                slider.style.setProperty("--value", slider.value);
+                slider.style.setProperty("--min", slider.min || "0");
+                slider.style.setProperty("--max", slider.max || "100");
+            };
+
+            updateSliderStyle(); // Set initial styles
+            slider.addEventListener("input", () => {
+                updateSliderStyle(); // Update on input
+                syncSliderAndInput("slider");
+            });
+        });
+
+    // Initialize input number with style updates
+    document
+        .querySelectorAll('input[type="number"].styled-input')
+        .forEach((input) => {
+            input.addEventListener("input", () => {
+                syncSliderAndInput("input");
+            });
+        });
+
+    // Add Event Listeners for year-term and return options
+    [...yearTermInputs, ...returnOptions].forEach((option) => {
+        const radioButton = option.querySelector("input");
+
+        if (radioButton?.checked) {
+            option.classList.add("selection-active"); // Apply active class to default selected option
+        }
+
+        option.addEventListener("click", () => {
+            // Ensure radio buttons are toggled correctly
+            if (radioButton) radioButton.checked = true;
+
+            // Update active classes dynamically
+            if (radioButton.name === "year-term") {
+                toggleActiveClass(yearTermInputs);
+            } else if (radioButton.name === "payment-term") {
+                toggleActiveClass(returnOptions);
+            }
+            calculateReturns();
+        });
+    });
+
+    // Initial Calculation
     calculateReturns();
-
-    for (let e of document.querySelectorAll(
-        'input[type="range"].slider-progress',
-    )) {
-        e.style.setProperty("--value", e.value);
-        e.style.setProperty("--min", e.min == "" ? "0" : e.min);
-        e.style.setProperty("--max", e.max == "" ? "100" : e.max);
-        e.addEventListener("input", () =>
-            e.style.setProperty("--value", e.value),
-        );
-    }
 </script>

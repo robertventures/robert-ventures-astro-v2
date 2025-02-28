@@ -1,0 +1,168 @@
+---
+
+---
+
+<style>
+    section {
+        padding: 0 0.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .cta-dark {
+        max-width: 1356px;
+        margin: 0 auto;
+        padding: 3rem 0.5rem;
+        background-color: #151a20;
+        border-radius: 1rem;
+    }
+
+    h3 {
+        color: #fff;
+        font-size: 2.5rem;
+        text-align: center;
+        max-width: 690px;
+        margin: 0 auto;
+        margin-bottom: 1.5rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        max-width: 360px;
+        margin: 0 auto;
+        gap: 0.75rem;
+    }
+
+    form input {
+        width: 100%;
+        padding: 1rem 0.75rem;
+        font-size: 1rem;
+        font-family: Inter, sans-serif;
+        border-radius: 0.75rem;
+        border: 1px solid #afb5bc;
+    }
+
+    button {
+        background-color: #5028ff;
+        color: #fff;
+        padding: 15px;
+        font-family: Inter, sans-serif;
+        font-size: 1.125rem;
+        font-weight: 500;
+        border-radius: 0.75rem;
+        border: 1px solid #5028ff;
+        cursor: pointer;
+    }
+
+    .signup-error {
+        color: red;
+        text-align: center;
+        display: none;
+        font-size: 0.875rem;
+    }
+
+    .loader {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: white;
+        display: inline-block;
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @media screen and (min-width: 990px) {
+        section{
+            padding: 0 1rem;
+        }
+
+        form{
+            flex-direction: row;
+            max-width: 460px;
+        }
+
+        button{
+            padding: 0 2rem;
+            text-wrap: nowrap;
+        }
+    }
+</style>
+
+<section>
+    <div class="cta-dark">
+        <h3>Secure, Grow, and Compound Your Wealth with Confidence</h3>
+        <form id="cta-form">
+            <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                class="email-input"
+            />
+            <p class="signup-error"></p>
+            <button type="submit">
+                <span class="button-text">Get Started</span>
+                <span class="loader" style="display: none;"></span>
+            </button>
+        </form>
+    </div>
+</section>
+
+<script is:inline>
+    document
+        .getElementById("cta-form")
+        .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = document.querySelector(".email-input");
+            const email = emailInput.value;
+            const buttonText = document.querySelector(".button-text");
+            const loader = document.querySelector(".loader");
+            const signupError = document.querySelector(".signup-error");
+
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
+            signupError.style.display = "none";
+
+            try {
+                const response = await fetch("/api/get-started", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
+                } else {
+                    const errorMessage = result.error || "Signup failed";
+                    signupError.textContent = errorMessage;
+                    signupError.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                signupError.textContent = "An unexpected error occurred.";
+                signupError.style.display = "block";
+            } finally {
+                buttonText.style.display = "inline-block";
+                loader.style.display = "none";
+            }
+        });
+</script>

@@ -14,6 +14,10 @@
 	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
 	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
 		0 16px 32px rgba(var(--gray), 33%);
+
+	--background: #E4E9F0;
+
+
 }
 
 @font-face {
@@ -23,6 +27,7 @@
 	font-style: normal;
 	font-display: swap;
 }
+
 @font-face {
 	font-family: 'Satoshi';
 	src: url('/fonts/Satoshi-Medium.otf') format('opentype');
@@ -39,12 +44,20 @@
 	font-display: swap;
 }
 
+@font-face {
+	font-family: 'Inter';
+	src: url('/fonts/Inter-variable.ttf') format('truetype');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
 body {
 	font-family: 'Public Sans', sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: #ffffff;
+	background: var(--background);
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
@@ -68,20 +81,28 @@ h6 {
 	font-weight: bold;
 	color: rgb(var(--black));
 	line-height: 1.2;
-	margin: 0 ;
+	margin: 0;
 }
 
 h1 {
-	font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem);
+	/* font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem); */
+	/* font-size: clamp(3rem, 2.7143rem + 1.4286vw, 4rem); */
+	/* font-size: 3rem; */
+	line-height: 1.25;
+
+	font-size: 2.5625rem;
 }
 
 h2 {
 	/* font-size: clamp(1.5rem, 0.8571rem + 3.2143vw, 3.75rem); */
-	font-size: clamp(2rem, 1.1489rem + 4.2553vw, 2.25rem);
+	/* font-size: clamp(2rem, 1.1489rem + 4.2553vw, 2.25rem); */
+
+	font-size: 36px;
 }
 
 h3 {
-	font-size: clamp(1.125rem, 0.6429rem + 2.4107vw, 2.8125rem);
+	/* font-size: clamp(1.125rem, 0.6429rem + 2.4107vw, 2.8125rem); */
+	font-size: 24px;
 }
 
 h4 {
@@ -118,7 +139,8 @@ a:hover {
 }
 
 p {
-	font-size: 1rem;
+	font-size: 1.125rem;
+	line-height: 2;
 	margin: 0;
 }
 
@@ -139,11 +161,10 @@ table {
 	width: 100%;
 }
 
-img {
+/* img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
-}
+} */
 
 code {
 	padding: 2px 5px;
@@ -190,7 +211,7 @@ hr {
 	white-space: nowrap;
 }
 
-.formkit-alert-error{
+.formkit-alert-error {
 	display: none;
 }
 
@@ -199,53 +220,101 @@ hr {
 /* RESET RESET RESET RESET RESET RESET RESET  */
 
 /* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
-  }
-  
-  /* 2. Remove default margin */
-  * {
+}
+
+/* 2. Remove default margin */
+* {
 	margin: 0;
-  }
-  
-  body {
+}
+
+body {
 	/* 3. Add accessible line-height */
 	line-height: 1.5;
 	/* 4. Improve text rendering */
 	-webkit-font-smoothing: antialiased;
-  }
-  
-  /* 5. Improve media defaults */
-  img, picture, video, canvas, svg {
+}
+
+/* 5. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
 	display: block;
 	max-width: 100%;
-  }
-  
-  /* 6. Inherit fonts for form controls */
-  input, button, textarea, select {
+}
+
+/* 6. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
 	font: inherit;
-  }
-  
-  /* 7. Avoid text overflows */
-  p, h1, h2, h3, h4, h5, h6 {
+}
+
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	overflow-wrap: break-word;
-  }
-  
-  /* 8. Improve line wrapping */
-  p {
+}
+
+/* 8. Improve line wrapping */
+p {
 	text-wrap: pretty;
-  }
-  h1, h2, h3, h4, h5, h6 {
+	font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	text-wrap: balance;
-  }
-  
-  /*
+	color: #281480;
+}
+
+/*
 	9. Create a root stacking context
   */
-  #root, #__next {
+#root,
+#__next {
 	isolation: isolate;
-  }
+}
 
-  .hidden {
+.hidden {
 	display: none;
+}
+
+section {
+	margin-bottom: 1.5rem;
+}
+
+.section-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	border-radius: 1rem;
+	background: #fff;
+	padding: 3rem 1.5rem;
+}
+
+.section-content {
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+
+@media only screen and (min-width: 768px) {
+	section {
+		padding: 0 2rem;
+	}
 }
