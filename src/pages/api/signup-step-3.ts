@@ -41,6 +41,8 @@ export const POST: APIRoute = async ({ request }) => {
     try {
         console.log("Updating GoHighLevel contact with ID:", ghlContactId);
 
+        // Commenting out Supabase session fetching
+        /*
         // ✅ Step 1: Fetch the authenticated user's UUID from Supabase
         const { data: session, error: sessionError } = await supabase.auth.getSession();
 
@@ -65,6 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         const userId = session.session.user.id; // ✅ This is the correct UUID for Supabase
         console.log("Authenticated Supabase User ID:", userId);
+        */
 
         // ✅ Step 2: Fetch the user's email from GoHighLevel (needed to avoid duplicate issues)
         const ghlGetResponse = await fetch(`https://rest.gohighlevel.com/v1/contacts/${ghlContactId}`, {
@@ -113,6 +116,8 @@ export const POST: APIRoute = async ({ request }) => {
 
         console.log("GoHighLevel Contact Updated with Phone:", JSON.stringify(ghlUpdateResult, null, 2));
 
+        // Commenting out Supabase profile update
+        /*
         // ✅ Step 4: Update Supabase Profile with Phone Number
         const { data, error } = await supabase
             .from("profiles")
@@ -128,6 +133,7 @@ export const POST: APIRoute = async ({ request }) => {
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
+        */
 
         // ✅ Step 5: Call the webhook with the email and phone number
         const webhookResponse = await fetch(makeStep3Webhook, {
@@ -148,7 +154,7 @@ export const POST: APIRoute = async ({ request }) => {
             JSON.stringify({
                 message: "Profile updated successfully",
                 ghl_response: ghlUpdateResult,
-                supabase_response: data
+                // supabase_response: data // Commenting out Supabase response
             }),
             { status: 200, headers: { "Content-Type": "application/json" } }
         );
