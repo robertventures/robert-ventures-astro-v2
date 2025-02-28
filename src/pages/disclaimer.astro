@@ -2,19 +2,15 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import FooterNew from "../components/FooterNew.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const pageTitle = "Robert Ventures: Disclaimer";
+const pageDescription = "Robert Ventures' disclaimer outlines compliance with Regulation A, offering process details, and SEC qualification requirements for securities.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-
-        <title>Robert Ventures: Disclaimer</title>
-        <meta
-            name="description"
-            content="Robert Ventures' disclaimer outlines compliance with Regulation A, offering process details, and SEC qualification requirements for securities."
-        />
+        <BaseHead title={pageTitle} description={pageDescription} />
 
         <meta property="og:url" content="https://robertventures.com/disclaimer" />
         <meta name="robots" content="noindex, nofollow">
@@ -48,6 +44,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 </div>
             </div>
         </section>
+
     </body>
 
     <script is:inline type="text/javascript">(function(d, s, id) {

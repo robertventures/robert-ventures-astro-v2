@@ -5,12 +5,16 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
 import steve from "../images/testimonials/steve-lloyd.png";
+
+const pageTitle = "Robert Ventures: Sign Up";
+const pageDescription = "Create your account with Robert Ventures and start your investment journey.";
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={pageTitle} description={pageDescription} />
+		<meta name="robots" content="noindex, nofollow" />
 		<style>
 			body{
 				background-color: #fff;
@@ -155,13 +159,13 @@ import steve from "../images/testimonials/steve-lloyd.png";
 		fbq('track', 'Lead');
 	</script>
 	<noscript>
-		<img height=“1” width=“1" style=“display:none” src=“https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1”
-	/></noscript>
+		<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1" />
+	</noscript>
 	<!-- End Meta Pixel Code -->
 
 	<!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10852233213"></script> <script is:inline> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-10852233213'); </script>
 
-	<!-- Event snippet for Rv wesite - submit lead form conversion page -->
+	<!-- Event snippet for Rv website - submit lead form conversion page -->
 <script is:inline>
 	gtag('event', 'conversion', {'send_to': 'AW-10852233213/BmIMCMX8lZ0aEP3f37Yo'});
   </script>

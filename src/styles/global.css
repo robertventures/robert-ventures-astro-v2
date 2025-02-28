@@ -27,6 +27,7 @@
 	font-style: normal;
 	font-display: swap;
 }
+
 @font-face {
 	font-family: 'Satoshi';
 	src: url('/fonts/Satoshi-Medium.otf') format('opentype');
@@ -80,7 +81,7 @@ h6 {
 	font-weight: bold;
 	color: rgb(var(--black));
 	line-height: 1.2;
-	margin: 0 ;
+	margin: 0;
 }
 
 h1 {
@@ -210,7 +211,7 @@ hr {
 	white-space: nowrap;
 }
 
-.formkit-alert-error{
+.formkit-alert-error {
 	display: none;
 }
 
@@ -219,53 +220,101 @@ hr {
 /* RESET RESET RESET RESET RESET RESET RESET  */
 
 /* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
-  }
-  
-  /* 2. Remove default margin */
-  * {
+}
+
+/* 2. Remove default margin */
+* {
 	margin: 0;
-  }
-  
-  body {
+}
+
+body {
 	/* 3. Add accessible line-height */
 	line-height: 1.5;
 	/* 4. Improve text rendering */
 	-webkit-font-smoothing: antialiased;
-  }
-  
-  /* 5. Improve media defaults */
-  img, picture, video, canvas, svg {
+}
+
+/* 5. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
 	display: block;
 	max-width: 100%;
-  }
-  
-  /* 6. Inherit fonts for form controls */
-  input, button, textarea, select {
+}
+
+/* 6. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
 	font: inherit;
-  }
-  
-  /* 7. Avoid text overflows */
-  p, h1, h2, h3, h4, h5, h6 {
+}
+
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	overflow-wrap: break-word;
-  }
-  
-  /* 8. Improve line wrapping */
-  p {
+}
+
+/* 8. Improve line wrapping */
+p {
 	text-wrap: pretty;
-  }
-  h1, h2, h3, h4, h5, h6 {
+	font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	text-wrap: balance;
-  }
-  
-  /*
+	color: #281480;
+}
+
+/*
 	9. Create a root stacking context
   */
-  #root, #__next {
+#root,
+#__next {
 	isolation: isolate;
-  }
+}
 
-  .hidden {
+.hidden {
 	display: none;
+}
+
+section {
+	margin-bottom: 1.5rem;
+}
+
+.section-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	border-radius: 1rem;
+	background: #fff;
+	padding: 3rem 1.5rem;
+}
+
+.section-content {
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+
+@media only screen and (min-width: 768px) {
+	section {
+		padding: 0 2rem;
+	}
 }

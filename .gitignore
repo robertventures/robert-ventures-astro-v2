@@ -29,3 +29,10 @@ pnpm-debug.log*
 
 .netlify/
 .netlify/build/
+
+
+# pages
+
+# pages
+pages/dashboard.astro
+pages/login.astro

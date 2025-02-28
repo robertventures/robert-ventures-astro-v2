@@ -2,24 +2,17 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import FooterNew from "../components/FooterNew.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const pageTitle = "Robert Ventures: Cookie Policy";
+const pageDescription = "Learn about Robert Ventures' cookie policy: how we use cookies to enhance your browsing experience and protect your privacy.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <BaseHead title={pageTitle} description={pageDescription} />
 
-        <title>Robert Ventures: Cookie policy</title>
-        <meta
-            name="description"
-            content="Learn about Robert Ventures' cookie policy: how we use cookies to enhance your browsing experience and protect your privacy."
-        />
-
-        <meta
-            property="og:url"
-            content="https://robertventures.com/cookie-policy"
-        />
+        <meta property="og:url" content="https://robertventures.com/cookie-policy" />
         <meta name="robots" content="noindex, nofollow" />
 
         <style>
@@ -56,7 +49,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
                 </div>
             </div>
         </section>
-    </body><script is:inline type="text/javascript">
+
+        <!-- <FooterNew /> -->
+    </body>
+    <script is:inline type="text/javascript">
         (function (d, s, id) {
             var js,
                 tjs = d.getElementsByTagName(s)[0];

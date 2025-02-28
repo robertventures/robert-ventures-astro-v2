@@ -1,0 +1,155 @@
+---
+import { getCollection } from "astro:content";
+import Image from "astro/components/Image.astro";
+
+import vanguard from "../images/business-logos/vanguard.svg";
+import fidelity from "../images/business-logos/fidelity.svg";
+import nasdaq from "../images/business-logos/nasdaq.svg";
+import tesla from "../images/business-logos/tesla.svg";
+import blackrock from "../images/business-logos/blackrock.svg";
+
+const articles = (await getCollection("articles"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+
+function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        const truncated = text.slice(0, maxLength);
+        const lastSpaceIndex = truncated.lastIndexOf(" ");
+        return truncated.slice(0, lastSpaceIndex) + "...";
+    }
+    return text;
+}
+---
+
+<style>
+    h2 {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        max-width: 366px;
+
+        margin: 0 auto;
+    }
+
+    li a {
+        text-decoration: none;
+    }
+
+    .articles li img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 21 / 9;
+        object-fit: cover;
+        margin-bottom: 0.75rem;
+    }
+
+    li h4 {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.25; /* 1.40625rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    li p {
+        color: #505050;
+        font-family: "Inter";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.6; /* 1.6rem */
+    }
+
+    .articles {
+        margin-bottom: 4rem;
+    }
+
+    hr {
+        background: #afb5bc;
+        height: 1px;
+        width: 100%;
+        border: none;
+
+        margin-bottom: 1rem;
+    }
+
+    .logos {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .logos img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        border: 1px solid red;
+        object-fit: contain; /* Ensure the image fits within the container */
+    }
+
+    @media only screen and (min-width: 990px) {
+        .section-container {
+            padding: 4rem 0;
+        }
+        .section-content {
+            max-width: 910px;
+        }
+        ul {
+            max-width: none;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Institutional Involvement</h2>
+            <div class="articles">
+                <ul>
+                    {
+                        articles.map((article) => (
+                            <li>
+                                <a href={`/articles/${article.slug}`}>
+                                    <img
+                                        width={366}
+                                        height={156}
+                                        src={article.data.heroImage}
+                                        alt=""
+                                    />
+                                    <h4 class="title">{article.data.title}</h4>
+                                    <p>
+                                        {truncateText(
+                                            article.data.description,
+                                            90,
+                                        )}
+                                    </p>
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+            <hr />
+            <div class="logos">
+                <Image src={vanguard} alt="Vanguard logo" width={99} height={22} />
+                <Image src={fidelity} alt="Fidelity logo" width={205} height={36} />
+                <Image src={nasdaq} alt="Nasdaq logo" width={113} height={22} />
+                <Image src={tesla} alt="Tesla logo" width={46} height={46} />
+                <Image src={blackrock} alt="Blackrock logo" width={123} height={18} />
+            </div>
+        </div>
+    </div>
+</section>

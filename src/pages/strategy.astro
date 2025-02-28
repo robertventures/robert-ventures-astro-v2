@@ -2,30 +2,27 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import FooterOld from "../components/FooterOld.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import StrategyHero from "../sections/StrategyHero.astro";
 import StrategyRealEstate from "../sections/StrategyRealEstate.astro";
 import StrategyDigital from "../sections/StrategyDigital.astro";
 import CTADark from "../sections/CTADark.astro";
+
+const pageTitle = "Robert Ventures: Strategy";
+const pageDescription = "Discover Robert Ventures' strategy for diversified investment in Real Estate and Digital Assets, balancing stability with growth for long-term yield.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <title>Robert Ventures: Strategy</title>
-		<meta name="description" content="Discover Robert Ventures' strategy for diversified investment in Real Estate and Digital Assets, balancing stability with growth for long-term yield." />
-
+        <BaseHead title={pageTitle} description={pageDescription} />
         <meta property="og:url" content="https://robertventures.com/strategy" />
     </head>
     <body>
         <Header />
-            <StrategyHero />
-            <StrategyRealEstate />
-            <StrategyDigital />
-            <CTADark />
+        <StrategyHero />
+        <StrategyRealEstate />
+        <StrategyDigital />
+        <CTADark />
         <FooterOld />
-
-        <script is:inline></script>
     </body>
 </html>

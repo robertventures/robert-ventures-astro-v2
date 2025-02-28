@@ -2,13 +2,16 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const pageTitle = "Robert Ventures: Step 4";
+const pageDescription = "Let's finalize your account with a quick call.";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <BaseHead title={pageTitle} description={pageDescription} />
+        <meta name="robots" content="noindex, nofollow" />
         <style>
             main {
                 padding: 1.5rem;
