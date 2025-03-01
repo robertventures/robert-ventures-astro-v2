@@ -1,6 +1,6 @@
 ---
 import Image from "astro/components/Image.astro";
-import opener from "../images/design-elements/vector.svg";
+import Opener from "../images/svg/opener.svg";
 
 import arrow from "../images/design-elements/Arrow-right.svg";
 ---
@@ -104,6 +104,10 @@ import arrow from "../images/design-elements/Arrow-right.svg";
         justify-content: space-between;
     }
 
+    button.accordion svg{
+        flex-shrink: 0;
+    }
+
     .active,
     .accordion:hover {
         /* background-color: #ccc; */
@@ -142,12 +146,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >How does Robert Ventures affords to pay those rates?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
@@ -161,12 +160,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >Is This FDIC Insured?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
@@ -187,12 +181,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >Why Should I Invest With Robert Ventures?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
@@ -218,12 +207,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >Are There Any Fees?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
@@ -246,12 +230,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >How Are My Investments Taxed?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
@@ -268,12 +247,7 @@ import arrow from "../images/design-elements/Arrow-right.svg";
                 <div class="faq-container">
                     <button class="accordion"
                         >Can I Invest With An IRA? What Are The Benefits?
-                        <Image
-                            src={opener}
-                            alt="first step"
-                            width={18}
-                            height={18}
-                        />
+                        <Opener>
                     </button>
                     <div class="panel">
                         <p>
