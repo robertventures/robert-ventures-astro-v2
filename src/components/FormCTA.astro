@@ -100,8 +100,6 @@ import Arrow from "../images/svg/right-arrow.svg"
     </p>
 </div>
 
-
-
 <script is:inline>
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", async function (event) {
@@ -125,7 +123,6 @@ import Arrow from "../images/svg/right-arrow.svg"
             loader.style.display = "inline-block";
             signupError.style.display = "none";
 
-
             try {
                 const response = await fetch("/api/get-started", {
                     method: "POST",
@@ -135,19 +132,19 @@ import Arrow from "../images/svg/right-arrow.svg"
                     body: JSON.stringify({ email }),
                 });
 
-                const result = await response.json();
-
-                if (response.ok) {
-                    console.log("Signup successful!");
-                    window.location.href = "/signup";
-                } else {
+                if (!response.ok) {
+                    const result = await response.json();
                     const errorMessage = result.error || "Signup failed";
                     signupError.textContent = errorMessage;
                     signupError.style.display = "block";
+                    console.error("Error response:", result);
+                } else {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
                 }
             } catch (error) {
-                console.error("Error:", error);
-                signupError.textContent = "An unexpected error occurred.";
+                console.error("Network error:", error);
+                signupError.textContent = "Network error occurred. Please try again later.";
                 signupError.style.display = "block";
             } finally {
                 buttonText.style.display = "inline-block";

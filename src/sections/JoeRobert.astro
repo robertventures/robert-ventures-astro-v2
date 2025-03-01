@@ -106,11 +106,6 @@ import FormCTA from "../components/FormCTA.astro";
 
         max-width: 39rem;
     }
-
-    .login {
-        color: #396afb;
-    }
-
     @media only screen and (min-width: 768px) {
         section {
             padding: 0 2rem;
@@ -183,48 +178,3 @@ import FormCTA from "../components/FormCTA.astro";
     </div>
 </section>
 
-<script is:inline>
-    document
-        .getElementById("joe-cta-form")
-        .addEventListener("submit", async function (event) {
-            event.preventDefault();
-
-            const emailInput = document.querySelector(".email-input");
-            const email = emailInput.value;
-            const buttonText = document.querySelector(".button-text");
-            const loader = document.querySelector(".loader");
-            const signupError = document.querySelector(".signup-error");
-
-            buttonText.style.display = "none";
-            loader.style.display = "inline-block";
-            signupError.style.display = "none";
-
-            try {
-                const response = await fetch("/api/get-started", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email }),
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    console.log("Signup successful!");
-                    window.location.href = "/signup";
-                } else {
-                    const errorMessage = result.error || "Signup failed";
-                    signupError.textContent = errorMessage;
-                    signupError.style.display = "block";
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                signupError.textContent = "An unexpected error occurred.";
-                signupError.style.display = "block";
-            } finally {
-                buttonText.style.display = "inline-block";
-                loader.style.display = "none";
-            }
-        });
-</script>
