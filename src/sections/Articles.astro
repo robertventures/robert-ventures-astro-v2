@@ -1,11 +1,11 @@
 ---
 import Image from "astro/components/Image.astro";
 
-import vanguard from "../images/business-logos/vanguard.svg";
-import fidelity from "../images/business-logos/fidelity.svg";
-import nasdaq from "../images/business-logos/nasdaq.svg";
-import tesla from "../images/business-logos/tesla.svg";
-import blackrock from "../images/business-logos/blackrock.svg";
+import Vanguard from "../images/svg/business-logos/vanguard.svg";
+import Fidelity from "../images/svg/business-logos/fidelity.svg";
+import Nasdaq from "../images/svg/business-logos/nasdaq.svg";
+import Tesla from "../images/svg/business-logos/tesla.svg";
+import Blackrock from "../images/svg/business-logos/blackrock.svg";
 
 const articles = [
     {
@@ -111,7 +111,7 @@ function truncateText(text, maxLength) {
     }
 
 
-    .logos img {
+    .logos svg {
         max-width: 100%;
         height: auto; /* Maintain aspect ratio */
         object-fit: contain; /* Ensure the image fits within the container */
@@ -164,11 +164,11 @@ function truncateText(text, maxLength) {
             </div>
             <hr />
             <div class="logos">
-                    <Image src={vanguard} alt="Vanguard logo" width={99} height={22} />
-                    <Image src={fidelity} alt="Fidelity logo" width={205} height={36} />
-                    <Image src={nasdaq} alt="Nasdaq logo" width={113} height={22} />
-                    <Image src={tesla} alt="Tesla logo" width={46} height={46} />
-                    <Image src={blackrock} alt="Blackrock logo" width={123} height={18} />
+                    <Vanguard />
+                    <Fidelity />
+                    <Nasdaq />
+                    <Tesla />
+                    <Blackrock />
             </div>
         </div>
     </div>
