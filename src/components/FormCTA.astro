@@ -79,6 +79,12 @@ import Arrow from "../images/svg/right-arrow.svg"
                 required
                 class="email-input"
             />
+            <input
+                type="text"
+                name="bot-field"
+                class="bot-field"
+                style="display: none;"
+            />
             <button type="submit">
                 <span class="button-text">
                     <Arrow />
@@ -99,16 +105,23 @@ import Arrow from "../images/svg/right-arrow.svg"
 
 
 <script is:inline>
-    document
-        .getElementById("form-cta")
-        .addEventListener("submit", async function (event) {
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", async function (event) {
             event.preventDefault();
 
-            const emailInput = document.querySelector(".email-input");
+            const emailInput = form.querySelector(".email-input");
             const email = emailInput.value;
-            const buttonText = document.querySelector(".button-text");
-            const loader = document.querySelector(".loader");
-            const signupError = document.querySelector(".signup-error");
+            const botField = form.querySelector(".bot-field").value;
+            const buttonText = form.querySelector(".button-text");
+            const loader = form.querySelector(".loader");
+            const signupError = form.querySelector(".signup-error");
+
+            // Bot prevention check
+            if (botField) {
+                signupError.textContent = "Bot detected.";
+                signupError.style.display = "block";
+                return;
+            }
 
             buttonText.style.display = "none";
             loader.style.display = "inline-block";
@@ -142,4 +155,5 @@ import Arrow from "../images/svg/right-arrow.svg"
                 loader.style.display = "none";
             }
         });
+    });
 </script>
