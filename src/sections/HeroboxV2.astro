@@ -10,6 +10,15 @@ import ap from "../images/business-logos/ap.svg";
 import street from "../images/business-logos/street-insider.svg";
 import benzinga from "../images/business-logos/benzinga.svg";
 import FormCTA from "../components/FormCTA.astro";
+
+
+import Business from "../images/svg/business-logos/business-insider.svg";
+import Weird from "../images/svg/business-logos/weird.svg";
+import Market from "../images/svg/business-logos/market-watch.svg";
+import Ap from "../images/svg/business-logos/ap.svg";
+import Street from "../images/svg/business-logos/street-insider.svg";
+import Benzinga from "../images/svg/business-logos/benzinga.svg";
+import Benefits from "./Benefits.astro";
 ---
 
 <style>
@@ -158,27 +167,17 @@ import FormCTA from "../components/FormCTA.astro";
             <hr />
 
             <div class="business">
-                <Image
-                    src={business}
-                    alt="10% returns"
-                    width={144}
-                    height={12}
-                />
+                <Business />
 
-                <Image src={weird} alt="10% returns" width={52} height={47} />
+                <Weird />
 
-                <Image src={market} alt="10% returns" width={132} height={19} />
+                <Market />
 
-                <Image src={ap} alt="10% returns" width={43} height={50} />
+                <Ap />
 
-                <Image src={street} alt="10% returns" width={150} height={23} />
+                <Street />
 
-                <Image
-                    src={benzinga}
-                    alt="10% returns"
-                    width={103}
-                    height={14}
-                />
+                <Benzinga />
             </div>
         </div>
     </div>
