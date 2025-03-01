@@ -6,7 +6,8 @@ import RVLogo from "../images/logos/rv-logo.png";
 
 import opener from "../images/design-elements/vector.svg";
 import arrow from "../images/design-elements/Arrow-right.svg";
-import rvlogo from "../images/logos/rv-logo-vertical.svg";
+import Rvlogo from "../images/svg/rv-logo.svg";
+import RvlogoVertical from "../images/svg/rv-logo-vertical.svg";
 
 
 import Opener from "../images/svg/link-icon.svg";
@@ -62,7 +63,7 @@ import External from "../images/svg/external-link.svg";
 		}
 	}
 
-	img {
+	h2 svg {
 		max-height: 36px;
 		width: auto;
 	}
@@ -154,7 +155,7 @@ import External from "../images/svg/external-link.svg";
 		text-align: center;
 	}
 
-	.footer-end img {
+	.footer-end svg {
 		margin: 0 auto;
 		margin-bottom: 1.5rem;
 	}
@@ -284,8 +285,7 @@ import External from "../images/svg/external-link.svg";
 			<nav>
 				<h2>
 					<a href="/"
-						><Image src={RVLogo} alt="Robert Ventures Logo" /></a
-					>
+						><Rvlogo />
 				</h2>
 				<div class="desktop-links">
 					<a href="/strategy">Strategy</a>
@@ -391,12 +391,7 @@ import External from "../images/svg/external-link.svg";
 					</div>
 
 					<div class="footer-end">
-						<Image
-							src={rvlogo}
-							alt="Robert Ventures Logo"
-							width={116}
-							height={116}
-						/>
+						<RvlogoVertical />
 
 						<p>
 							Robert Ventures Holdings LLC. 2810 N. Church St.,
