@@ -1,7 +1,5 @@
 ---
-
 import Arrow from "../images/svg/right-arrow.svg"
-
 ---
 
 <style>
@@ -126,6 +124,7 @@ import Arrow from "../images/svg/right-arrow.svg"
             buttonText.style.display = "none";
             loader.style.display = "inline-block";
             signupError.style.display = "none";
+
 
             try {
                 const response = await fetch("/api/get-started", {
