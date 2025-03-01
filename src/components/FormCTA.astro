@@ -1,0 +1,145 @@
+---
+
+import Arrow from "../images/svg/right-arrow.svg"
+
+---
+
+<style>
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+
+        padding: 6px;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+
+        text-align: center;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #5028ff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="form">
+    <form id="form-cta">
+        <div class="form-block">
+            <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                class="email-input"
+            />
+            <button type="submit">
+                <span class="button-text">
+                    <Arrow />
+                </span>
+                <span class="loader" style="display: none;"></span>
+            </button>
+        </div>
+        <p class="signup-error"></p>
+    </form>
+    <p class="account">
+        Have an account? <a
+            class="login"
+            href="https://invest.robertventures.com/login?f=1">Log in</a
+        >
+    </p>
+</div>
+
+
+
+<script is:inline>
+    document
+        .getElementById("form-cta")
+        .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = document.querySelector(".email-input");
+            const email = emailInput.value;
+            const buttonText = document.querySelector(".button-text");
+            const loader = document.querySelector(".loader");
+            const signupError = document.querySelector(".signup-error");
+
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
+            signupError.style.display = "none";
+
+            try {
+                const response = await fetch("/api/get-started", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
+                } else {
+                    const errorMessage = result.error || "Signup failed";
+                    signupError.textContent = errorMessage;
+                    signupError.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                signupError.textContent = "An unexpected error occurred.";
+                signupError.style.display = "block";
+            } finally {
+                buttonText.style.display = "inline-block";
+                loader.style.display = "none";
+            }
+        });
+</script>
