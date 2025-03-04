@@ -1,8 +1,7 @@
 ---
-import Image from "astro/components/Image.astro";
-import arrow from "../images/design-elements/Arrow-right.svg";
-import table from "../images/design-elements/comparison-table.jpg";
 import FormCTA from "../components/FormCTA.astro";
+
+import Advantage from "../images/svg/rv-advantage.svg";
 ---
 
 <style>
@@ -41,7 +40,7 @@ import FormCTA from "../components/FormCTA.astro";
         margin-bottom: 3rem;
     }
 
-    .image-section img{
+    .image-section svg{
         margin-bottom: 2rem;
     }
 
@@ -94,7 +93,7 @@ import FormCTA from "../components/FormCTA.astro";
             text-align: center;
         }
 
-        .image-section img{
+        .image-section svg{
             margin-left: auto;
         }
     }
@@ -108,12 +107,7 @@ import FormCTA from "../components/FormCTA.astro";
             </div>
 
             <div class="image-section">
-                <Image
-                    src={table}
-                    alt="herobox"
-                    width={380}
-                    height={380}
-                />
+                <Advantage />
             </div>
 
             <div class="form-section">
