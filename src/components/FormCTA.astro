@@ -23,6 +23,13 @@ import Arrow from "../images/svg/right-arrow.svg"
 
     input {
         border: none;
+        flex-grow: 1; /* Allow the input to grow */
+        margin-right: 0.5rem; /* Add some space between the input and the button */
+    }
+
+    input:focus {
+        outline: none; /* Remove the default outline */
+        border: none; /* Remove the border */
     }
 
     .form-block button {
@@ -30,7 +37,6 @@ import Arrow from "../images/svg/right-arrow.svg"
         border: 1px solid #5028ff;
         color: #fff;
         border-radius: 2rem;
-
         padding: 6px;
     }
 
@@ -44,7 +50,6 @@ import Arrow from "../images/svg/right-arrow.svg"
         font-size: 1rem;
         font-weight: 500;
         line-height: 150%;
-
         text-align: center;
     }
 
