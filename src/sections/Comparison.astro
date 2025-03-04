@@ -3,6 +3,9 @@ import Image from "astro/components/Image.astro";
 import arrow from "../images/design-elements/Arrow-right.svg";
 import chart from "../images/design-elements/comparison-chart.jpg";
 import FormCTA from "../components/FormCTA.astro";
+
+
+import Chart from "../images/svg/chart.svg";
 ---
 
 <style>
@@ -25,6 +28,10 @@ import FormCTA from "../components/FormCTA.astro";
 
     section > * {
         text-align: center;
+    }
+
+    .info-section{
+        margin-bottom: 1rem;
     }
 
     h2 {
@@ -68,7 +75,7 @@ import FormCTA from "../components/FormCTA.astro";
         .info-section {
             grid-area: info;
             margin-top: auto;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             max-width: 366px;
             margin-right: auto;
         }
@@ -103,12 +110,7 @@ import FormCTA from "../components/FormCTA.astro";
             </div>
 
             <div class="image-section">
-                <Image
-                    src={chart}
-                    alt="herobox"
-                    width={380}
-                    height={380}
-                />
+                <Chart />
             </div>
 
             <div class="form-cta">
