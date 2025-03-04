@@ -4,6 +4,7 @@ import '../styles/global.css';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = '../images/logos/rv-icon.png' } = Astro.props;
+
 ---
 
 <!-- Global Metadata -->
@@ -34,22 +35,6 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
 
-<!-- Structured Data -->
-<script type="application/ld+json" is:inline>
-{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Robert Ventures",
-    "url": {canonicalURL},
-    "logo": "https://robertventures.com/path/to/logo.png",
-    "description": {description},
-    "sameAs": [
-        "https://www.facebook.com/robertventures",
-        "https://twitter.com/robertventures",
-        "https://www.linkedin.com/company/robertventures"
-    ]
-}
-</script>
 
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/Inter-variable.ttf" as="font" type="font/ttf" crossorigin />
