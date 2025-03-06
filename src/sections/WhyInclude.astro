@@ -1,0 +1,96 @@
+---
+import FormCTA from "../components/FormCTA.astro";
+---
+
+<style>
+    .section-content {
+        max-width: 366px;
+    }
+    h2 {
+        text-align: center;
+        font-size: 2.25rem;
+
+        margin-bottom: 2rem;
+    }
+
+    .right p {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.6;
+
+        margin-bottom: 2rem;
+    }
+
+    ul {
+        padding-left: 1.5rem;
+
+        font-size: 1rem;
+        line-height: 1.6;
+
+        margin-bottom: 2rem;
+    }
+
+    .form-cta p {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    @media screen and (min-width: 990px){
+
+        .section-content{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            max-width: 912px;
+        }
+
+        .section-content > div{
+            max-width: 366px;
+        }
+
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+
+            <div class="left">
+                <h2>Why Include Digital Assets?</h2>
+    
+                <div class="info">
+                    <ul>
+                        <li>
+                            We use Bitcoin and Ethereum as part of a risk-managed,
+                            institutional-style asset allocation strategy.
+                        </li>
+                        <li>
+                            Investors receive fixed-rate returns, regardless of
+                            market movements.
+                        </li>
+                        <li>
+                            Our portfolio is designed for long-term capital
+                            preservation and reliability.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right">
+                <p>
+                    Digital assets as a tool for growth - supporting fixed-rate
+                    bond payments with institutional-grade diversification.
+                </p>
+
+                <div class="form-cta">
+                    <p class="pre-form-text">
+                        Start earning interest in less than 2 minutes
+                    </p>
+                    <FormCTA />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

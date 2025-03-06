@@ -128,13 +128,20 @@ import Arrow from "../images/svg/right-arrow.svg"
             loader.style.display = "inline-block";
             signupError.style.display = "none";
 
+            // Get user's timezone
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            // Log the data being sent to the API
+            const requestData = { email, timeZone };
+            console.log("Sending data to API:", requestData);
+
             try {
                 const response = await fetch("/api/get-started", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ email }),
+                    body: JSON.stringify(requestData),
                 });
 
                 if (!response.ok) {
