@@ -1,0 +1,110 @@
+---
+import Ark from "../images/svg/institutions/ark.svg";
+import Blackrock from "../images/svg/institutions/blackrock.svg";
+import Fidelity from "../images/svg/institutions/fidelity.svg";
+import Goldman from "../images/svg/institutions/goldman.svg";
+---
+
+<style>
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        max-width: 600px;
+        margin: 0 auto;
+
+        margin-bottom: 3rem;
+    }
+
+    p.title {
+        color: #1d1d1f;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.2; /* 1.5rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .institutions p {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.6rem */
+
+        margin-bottom: 1rem;
+    }
+
+    .institutions-logos{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+
+        max-width: 366px;
+        margin: 0 auto;
+    }
+
+    .institutions-logos svg{
+        min-width: 97px;
+    }
+
+    @media screen and (min-width: 990px){
+        .institutions-logos{
+            display: flex;
+
+            max-width: none;
+            justify-content: center;
+        }
+
+        .institutions-logos svg{
+            min-width: 177px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Bitcoin: Digital Gold for Stability</h2>
+
+            <div class="info">
+                <div class="info-block">
+                    <p class="title">Scarcity Drives Value:</p>
+                    <p>
+                        Like gold, Bitcoin has a limited supply (21 million
+                        coins). We allocate a portion of our holdings to Bitcoin
+                        to maintain long-term purchasing power and capital
+                        security.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <p class="title">Institutional Adoption for Stability:</p>
+                    <p>
+                        BlackRock, Fidelity, and even governments are now using Bitcoin as a store of value, reinforcing its long-term viability.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <p class="title">A Hedge Against Inflation:</p>
+                    <p>
+                        Bitcoin strengthens our portfolio’s resilience, ensuring we meet fixed-income obligations to our bond investors.
+                    </p>
+                </div>
+            </div>
+
+            <div class="institutions">
+                <p>Institutions State Bitcoin as a "Store of Value"</p>
+                <div class="institutions-logos">
+                    <Ark />
+                    <Blackrock />
+                    <Fidelity />
+                    <Goldman />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

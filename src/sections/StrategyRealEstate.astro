@@ -1,105 +1,163 @@
 ---
 import Image from "astro/components/Image.astro";
-import iphone from "../images/Desktop-herobox-iphone.png";
+import houses from "../images/real-estate.png";
+
+import Grow from "../images/svg/grow.svg";
+import Building from "../images/svg/building.svg";
+import Check from "../images/svg/check.svg";
+
+import Travel from "../images/svg/awards/travel.svg";
+import Beach from "../images/svg/awards/beach.svg";
+import Southern from "../images/svg/awards/southern.svg";
 ---
 
 <style>
-
-    section{
+    .section-content{
+        max-width: 366px;
+    }
+    .intro {
         margin-bottom: 3rem;
-        padding: 0 0.5rem;
     }
 
-    .strategy-hero{
-        max-width: 1356px;
-        margin: 0 auto;
-        padding: 3rem 0.5rem;
-        background-color: #FFFFFF;
-        border-radius: 1rem;
-    }
-    span {
-        background: linear-gradient(90deg, #281480 0%, #3c1fbf 50%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    h2 {
+        text-align: center;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 120%; /* 2.175rem */
+        margin-bottom: 1rem;
     }
 
-    h1{
+    .intro p {
+        text-align: center;
+        line-height: 160%;
+
         margin-bottom: 1.5rem;
     }
 
-    .info{
-        display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
+    .intro img {
+        aspect-ratio: 16 / 9;
+        height: auto;
+        width: 100%;
     }
 
-    .info-block{
+    .info {
         display: flex;
         flex-direction: column;
-        gap: 1.125rem;
+        gap: 3rem;
     }
 
-    @media screen and (min-width: 768px) {
-        .section{
-            margin-bottom: 4rem;
-            padding: 0 1rem;
+    .info-head {
+        display: flex;
+        gap: 0.75rem;
+
+        align-items: center;
+
+        margin-bottom: 0.75rem;
+    }
+
+    h3 {
+        color: #1d1d1f;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 120%; /* 1.5rem */
+    }
+
+    .info {
+        margin-bottom: 3rem;
+    }
+
+    .awards p {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.6rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .awards .images{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    @media screen and (min-width: 990px){
+        .section-content{
+            max-width: 600px;
         }
 
-        .info{
-            flex-direction: row;
-        }
-
-        .strategy-hero{
-            padding: 4rem 3rem;
-        }
-
-        .info{
-            gap: 2rem;
+        h2{
+            font-size: 2.25rem;
         }
     }
 </style>
 
 <section>
-    <div class="strategy-hero">
-        <h1>
-            <span>Real Estate:</span><br> The Evergreen Performer
-        </h1>
-    
-        <div class="info">
-    
-            <div class="info-block">
+    <div class="section-container">
+        <div class="section-content">
+            <div class="intro">
+                <h2>Our Real Estate Strategy</h2>
                 <p>
-                    Real estate has consistently shown an upward trend over the past 30 years, with a projected compound annual growth rate (CAGR) of 5.2% through 2030.
+                    The Outer Banks, North Carolina, is one of the most
+                    exclusive beachfront markets in the U.S. - and here's why:
                 </p>
-            
-                <p>
-                    Robert Ventures understands how to navigate market cycles effectively. Joe's deep knowledge of pricing and buyer demand has consistently delivered strong returns, ensuring we are well-prepared to capitalize on future opportunities
-                </p>
+                <Image src={houses} alt="herobox" width={732} height={414} />
+            </div>
 
-                <p>
-                    Our initial focus will be on new construction in North Carolina's Outer Banks, a high-demand area with limited supply of entry-level homes. This unique opportunity allows us to invest in lots ranging from $75,000 to $250,000, with construction costs between $300,000 and $500,000. 
-                </p>
-                <p>
-                    Target sales prices are expected to be between $500,000 and $800,000. Each project is estimated to complete within 10 months, from building permits to final sale.
-                </p>
+            <div class="info">
+                <div class="info-block">
+                    <div class="info-head">
+                        <h3>Strategic Entry into the Market</h3>
+                    </div>
+                    <p>
+                        We build entry-level homes in high-demand areas. Lot
+                        costs: $75K-$250K, construction: $300K-$500K. Sale
+                        prices: $500K-$800K, completion in 10 months.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <div class="info-head">
+                        <h3>Housing Supply is Permanently Limited</h3>
+                    </div>
+                    <p>
+                        Due to strict land-use regulations and geographic
+                        constraints, new developments are rare. Unlike other
+                        markets that can expand, the Outer Banks physically
+                        cannot grow.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <div class="info-head">
+                        <h3>Tourism & Population Growth is Booming</h3>
+                    </div>
+                    <p>
+                        Millions visit every year, fueling strong demand for new
+                        homes. Even in downturns, the Outer Banks remains a
+                        sought-after location for second homes and retirees.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <div class="info-head">
+                        <h3>Historical Appreciation Supports Stability</h3>
+                    </div>
+                    <p>
+                        Home values in the Outer Banks have increased by X% over
+                        the last Y years, proving long-term resilience.
+                    </p>
+                </div>
             </div>
-    
-            <div class="info-block">
-                <p>
-                    Our established relationships with brokers give us exclusive access to properties before they hit the market, and targeted direct marketing campaigns may be employed to generate additional leads. 
-                </p>
-            
-                <p>
-                    The Outer Banks is a sought-after market, consistently ranked among the top beach destinations in the U.S. It attracts buyers looking for vacation homes, whether for personal use, family getaways, or as lucrative rental income properties.
-                </p>
-                <p>
-                    By acquiring, developing, and selling properties in high-demand, low-supply areas, we create opportunities for regular returns and liquidity for our investors. As we grow, we’ll continue exploring other markets where strategic partnerships can further enhance the value of our portfolio.
-                </p>
+
+            <div class="awards">
+                <p>Top-Ranked Beach Destination by:</p>
+                <div class="images">
+                    <Travel />
+                    <Beach />
+                    <Southern />
+                </div>
             </div>
-        
         </div>
-    
     </div>
 </section>
 

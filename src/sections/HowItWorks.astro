@@ -9,23 +9,6 @@ import FormCTA from "../components/FormCTA.astro";
 ---
 
 <style>
-    section {
-        margin-bottom: 1.5rem;
-    }
-
-    .section-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        border-radius: 1rem;
-        background: #fff;
-        padding: 3rem 1.5rem;
-    }
-
-    .section-content {
-        max-width: 366px;
-        margin: 0 auto;
-    }
-
     section > * {
         text-align: center;
     }
@@ -95,25 +78,7 @@ import FormCTA from "../components/FormCTA.astro";
         line-height: 100%; /* 1rem */
     }
 
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0 2rem;
-        }
-
-        .account{
-            margin-bottom: 0;
-        }
-    }
-
     @media only screen and (min-width: 990px) {
-        .section-container {
-            padding: 4rem 1.5rem;
-        }
-
-        .section-content {
-            max-width: 921px;
-        }
-
         .steps{
             flex-direction: row;
         }
@@ -125,12 +90,6 @@ import FormCTA from "../components/FormCTA.astro";
 
             flex: 1;
         }
-
-
-        p.account{
-            margin-bottom: 0;
-        }
-
 
     }
 </style>

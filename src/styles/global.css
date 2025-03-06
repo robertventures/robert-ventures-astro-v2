@@ -142,15 +142,20 @@ p {
 	font-size: 1.125rem;
 	line-height: 2;
 	margin: 0;
+
+	color: #505050;
 }
 
 .prose p {
 	margin-bottom: 2em;
+	border: 1px solid red;
 }
 
 textarea {
 	width: 100%;
 	font-size: 16px;
+
+	border: 1px solid red;
 }
 
 input {
@@ -279,7 +284,7 @@ h3,
 h4,
 h5,
 h6 {
-	text-wrap: balance;
+	/* text-wrap: balance; */
 	color: #281480;
 }
 
@@ -294,6 +299,9 @@ h6 {
 .hidden {
 	display: none;
 }
+
+
+/* DEFAULT SECTION VALUES */
 
 section {
 	margin-bottom: 1.5rem;
@@ -316,5 +324,16 @@ section {
 @media only screen and (min-width: 768px) {
 	section {
 		padding: 0 2rem;
+	}
+}
+
+
+@media only screen and (min-width: 990px) {
+	.section-container {
+		padding: 4rem 1.5rem;
+	}
+
+	.section-content {
+		max-width: 921px;
 	}
 }

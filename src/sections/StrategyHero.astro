@@ -1,103 +1,57 @@
 ---
 import Image from "astro/components/Image.astro";
-import iphone from "../images/Desktop-herobox-iphone.png";
+import comparison from "../images/rv-vs-banks.jpg";
 ---
 
 <style>
-
-    section{
-        margin-bottom: 3rem;
-        padding: 0 0.5rem;
+    .section-content {
+        text-align: center;
+        max-width: 366px;
+    }
+    h1 {
+        font-size: 1.625rem;
+        line-height: 1.2; /* 1.95rem */
+        margin-bottom: 1rem;
     }
 
-    .strategy-hero{
-        margin: 0 auto;
-        max-width: 1356px;
-        padding: 3rem 0.5rem;
-        background-color: #FFFFFF;
-        border-radius: 1rem;
-    }
-    span {
-        background: linear-gradient(90deg, #281480 0%, #3c1fbf 50%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+    p {
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.8rem */
 
-    h1{
         margin-bottom: 1.5rem;
     }
 
-    .info{
-        display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
+    img {
+        aspect-ratio: 16 / 9;
+        height: auto;
+        width: 100%;
     }
 
-    .info-block{
-        display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
-    }
-
-    @media screen and (min-width: 768px) {
-        section{
-            margin-bottom: 4rem;
-            padding: 0 1rem;
-        }
-        .info{
-            flex-direction: row;
+    @media screen and (min-width: 990px){
+        .section-content{
+            max-width: 600px;
         }
 
-        .strategy-hero{
-            padding: 4rem 3rem;
-        }
-
-        .info{
-            gap: 2rem;
+        h1{
+            font-size: 2.25rem;
         }
     }
 </style>
 
 <section>
-    <div class="strategy-hero">
-        <h1>
-            <span>Real Estate and Digital Assets</span><br> for a Diversified Portfolio
-        </h1>
-    
-        <div class="info">
-    
-            <div class="info-block">
-                <p>
-                    At Robert Ventures, we strategically invest in two key sectors: Real
-                    Estate and Digital Assets, creating a diversified portfolio designed to
-                    deliver consistent returns for the next decade.
-                </p>
-            
-                <p>
-                    Our focus is on balancing stability with growth, offering investors
-                    predictable income streams with returns higher than traditional money
-                    markets. We allocate 30-70% of raised funds into real estate, with the
-                    remainder invested in digital assets.
-                </p>
-            </div>
-    
-            <div class="info-block">
-                <p>
-                    By leveraging a blend of passive income-generating assets and value
-                    appreciation, we ensure steady cash flow to support payments and
-                    investor withdrawals.
-                </p>
-            
-                <p>
-                    As one of the few private offerings with this level of diversification,
-                    Robert Ventures' fixed-rate bonds reflect our unwavering commitment to
-                    providing high-quality investment opportunities and optimized returns.
-                </p>
-            </div>
-        
+    <div class="section-container">
+        <div class="section-content">
+            <h1>Why This Investment Strategy is a Game-Changer</h1>
+            <p>
+                Most investment opportunities force you to choose between
+                stability and high returns. At Robert Ventures, we've created a
+                strategy that delivers consistent fixed-rate returns - blending
+                the security of real estate with the growth of digital assets.
+            </p>
+
+            <Image src={comparison} alt="herobox" width={732} height={414} />
         </div>
-    
     </div>
 </section>
 

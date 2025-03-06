@@ -1,0 +1,124 @@
+---
+import Visa from "../images/svg/institutions/visa.svg";
+import Blackrock from "../images/svg/institutions/blackrock.svg";
+import Bank from "../images/svg/institutions/bank.svg";
+---
+
+<style>
+    h2 {
+        text-align: center;
+        margin: 0 auto;
+        margin-bottom: 2rem;
+
+        font-size: 1.625rem;
+
+        max-width: 600px;
+
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        max-width: 600px;
+        margin: 0 auto;
+
+        margin-bottom: 3rem;
+    }
+
+    p.title {
+        color: #1d1d1f;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.2; /* 1.5rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    .institutions p {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.6rem */
+
+        margin-bottom: 1rem;
+    }
+
+    .institutions-logos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+
+        max-width: 366px;
+        margin: 0 auto;
+    }
+
+    .institutions-logos svg {
+        min-width: 97px;
+    }
+
+    @media screen and (min-width: 768px) {
+        h2 {
+            font-size: 2.25rem;
+        }
+    }
+
+    @media screen and (min-width: 990px) {
+        .institutions-logos {
+            display: flex;
+
+            max-width: none;
+            justify-content: center;
+        }
+
+        .institutions-logos svg {
+            min-width: 177px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Ethereum: A Yield-Generating Asset Supporting Bond Payments</h2>
+
+            <div class="info">
+                <div class="info-block">
+                    <p class="title">
+                        Ethereum Staking Generates Passive Yield:
+                    </p>
+                    <p>
+                        We leverage Ethereum staking to support consistent bond
+                        payments, reducing reliance on market fluctuations.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <p class="title">Institutional Integration:</p>
+                    <p>
+                        BlackRock, Fidelity, and even governments are now using
+                        Bitcoin as a store of value, reinforcing its long-term
+                        viability.
+                    </p>
+                </div>
+                <div class="info-block">
+                    <p class="title">Blockchain Security & Risk Control:</p>
+                    <p>
+                        By focusing solely on Bitcoin and Ethereum, we ensure a
+                        secure, institutionally vetted approach with no exposure
+                        to speculative or unproven digital assets.
+                    </p>
+                </div>
+            </div>
+
+            <div class="institutions">
+                <p>Institutions use Ethereum as a "Utility Network"</p>
+                <div class="institutions-logos">
+                    <Visa />
+                    <Blackrock />
+                    <Bank />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

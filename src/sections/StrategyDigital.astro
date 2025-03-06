@@ -1,104 +1,152 @@
 ---
 import Image from "astro/components/Image.astro";
-import internetCrypto from "../images/internet-vs-crypto.jpg";
+import michael from "../images/billionaires/michael.jpg";
+import elon from "../images/billionaires/elon.jpg";
+import mark from "../images/billionaires/mark.jpg";
+import peter from "../images/billionaires/peter.jpg";
+import jack from "../images/billionaires/jack.jpg";
+
+
+import Strategy from "../images/svg/institutions/strategy.svg";
+import Reddit from "../images/svg/institutions/reddit.svg";
+import Square from "../images/svg/institutions/square.svg";
+import Tesla from "../images/svg/institutions/tesla.svg";
+import Coinbase from "../images/svg/institutions/coinbase.svg";
 ---
 
 <style>
-
-    section{
-        margin-bottom: 3rem;
-        padding: 0 0.5rem;
+    section {
+        text-align: center;
     }
 
-    .strategy-hero{
-        max-width: 1356px;
-        margin: 0 auto;
-        padding: 3rem 0.5rem;
-        background-color: #FFFFFF;
-        border-radius: 1rem;
-    }
-    span {
-        background: linear-gradient(90deg, #281480 0%, #3c1fbf 50%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    h1{
-        margin-bottom: 1.5rem;
-    }
-
-    .info{
-        display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
+    .intro {
         margin-bottom: 2rem;
     }
 
-    .info-block{
+    h2 {
+        margin-bottom: 1rem;
+    }
+
+    .intro p {
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.8rem */
+    }
+
+    .info p {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 160%; /* 1.6rem */
+
+        margin-bottom: 1rem;
+    }
+
+    .billionaires {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        column-gap: 0.5rem;
+    }
+
+    .billionaires img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .info {
+        margin-bottom: 3rem;
+    }
+
+    .institutions p {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.6; /* 1.6rem */
+
+        margin-bottom: 1rem;
+    }
+
+    .institutions-images{
         display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1rem;
+
+        max-width: 366px;
+        margin: 0 auto;
     }
 
-    img{
-        width: 100%;
+    .institutions-images svg{
+        min-width: 97px;
     }
 
-    @media screen and (min-width: 768px) {
-        section{
-            margin-bottom: 4rem;
-            padding: 0 1rem;
-        }
-        .info{
-            flex-direction: row;
-        }
+    @media screen and (min-width: 990px) {
+        .institutions-images{
+            max-width: none;
 
-        .strategy-hero{
-            padding: 4rem 3rem;
-        }
-
-        .info{
+            justify-content: center;
             gap: 2rem;
         }
     }
 </style>
 
 <section>
-    <div class="strategy-hero">
-        <h1>
-            <span>Digital Assets:</span><br> Digitization of the World
-        </h1>
-    
-        <div class="info">
-            <div class="info-block">
+    <div class="section-container">
+        <div class="section-content">
+            <div class="intro">
+                <h2>Our Digital Asset Strategy</h2>
                 <p>
-                    At Robert Ventures, we are currently focused on acquiring and investing in Bitcoin (BTC) and Ethereum (ETH), with a strict adherence to our policies and procedures when evaluating any potential new cryptocurrencies. Our thorough underwriting process ensures compliance with regulatory standards and proper risk assessment before any new digital token acquisition.
+                    Unlike speculative investments, Robert Ventures uses Bitcoin
+                    and Ethereum as a store of value and capital appreciation.
                 </p>
-            
-                <p>
-                    We continuously monitor updates from the SEC and Federal Courts, particularly regarding the classification of cryptocurrencies as securities, to maintain legal integrity and safeguard investor confidence. We do not engage in third-party lending or accept cryptocurrency as payment.
-                </p>
+            </div>
 
-                <p>
-                    To enhance the profitability of our digital asset portfolio, we strategically participate in yield-generating activities like “staking.” This process not only contributes to blockchain security but also generates additional returns by validating transactions and creating new blocks. By leveraging staking opportunities, we aim to optimize returns while keeping risk under control and aligning with our investment objectives. 
-                </p>
+            <div class="info">
+                <p>Billionaires that Own Bitcoin</p>
+                <div class="billionaires">
+                    <Image
+                        src={michael}
+                        alt="Michael Sailor"
+                        width={220}
+                        height={320}
+                    />
+                    <Image
+                        src={elon}
+                        alt="Elon Musk"
+                        width={220}
+                        height={320}
+                    />
+                    <Image
+                        src={mark}
+                        alt="Mark Cuban"
+                        width={220}
+                        height={320}
+                    />
+                    <Image
+                        src={peter}
+                        alt="Peter Thiel"
+                        width={220}
+                        height={320}
+                    />
+                    <Image
+                        src={jack}
+                        alt="Jack Dorsey"
+                        width={220}
+                        height={320}
+                    />
+                </div>
             </div>
-    
-            <div class="info-block">
-                <p>
-                    As industry giants like BlackRock, Fidelity, Microsoft, and Tesla make strategic moves into the cryptocurrency space, our investment approach is further validated. These actions signal that digital assets are not only here to stay but are poised for substantial growth in the coming decade, making early exposure to this asset class a critical advantage.
-                </p>
-            
-                <p>
-                    Led by a CEO deeply engaged in the cryptocurrency sector and connected to key project builders and fund managers, Robert Ventures is positioned to stay ahead of emerging trends and capitalize on new opportunities in the evolving digital asset landscape.
-                </p>
+
+            <div class="institutions">
+                <p>Institutions that Hold Bitcoin on Balance Sheet</p>
+                <div class="institutions-images">
+                    <Strategy />
+                    <Reddit />
+                    <Square />
+                    <Tesla />
+                    <Coinbase />
+                </div>
             </div>
         </div>
-        <div class="image">
-            <Image src={internetCrypto} alt="herobox" width={1200} height={512} />
-        </div>
-    
     </div>
 </section>
 
