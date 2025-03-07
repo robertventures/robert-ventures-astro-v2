@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${ghlApiKey}`,
             },
-            body: JSON.stringify({ email, timezone: timeZone }), // Update key to "timezone"
+            body: JSON.stringify({ email, timezone: timeZone, tags:["bonds", "pre-wealthblock"] }), // Update key to "timezone"
         });
 
         const ghlData = await ghlResponse.json();
