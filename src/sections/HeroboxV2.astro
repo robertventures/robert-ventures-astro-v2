@@ -1,15 +1,16 @@
 ---
 
-import FormCTA from "../components/FormCTA.astro";
+import FormCTAV2 from "../components/FormCTAV2.astro";
 
 import Ten from "../images/svg/10-rv.svg";
 
 import Business from "../images/svg/business-logos/business-insider.svg";
-import Weird from "../images/svg/business-logos/weird.svg";
+
 import Market from "../images/svg/business-logos/market-watch.svg";
 import Ap from "../images/svg/business-logos/ap.svg";
 import Street from "../images/svg/business-logos/street-insider.svg";
 import Benzinga from "../images/svg/business-logos/benzinga.svg";
+import Morning from "../images/svg/business-logos/morning.svg";
 
 
 
@@ -59,7 +60,7 @@ import Benzinga from "../images/svg/business-logos/benzinga.svg";
     }
 
     .form-cta {
-        margin-bottom: 1rem;
+        margin-bottom: 3rem;
     }
 
     hr {
@@ -71,9 +72,10 @@ import Benzinga from "../images/svg/business-logos/benzinga.svg";
     .business {
         display: grid;
         grid-auto-columns: auto;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         align-items: center;
         justify-items: center;
+        gap: 0.5rem;
     }
 
     @media only screen and (min-width: 768px) {
@@ -105,7 +107,7 @@ import Benzinga from "../images/svg/business-logos/benzinga.svg";
             <p class="hero-text">Fixed Annual Returns</p>
 
             <div class="form-cta">
-                <FormCTA />
+                <FormCTAV2 />
             </div>
 
             <hr />
@@ -113,15 +115,15 @@ import Benzinga from "../images/svg/business-logos/benzinga.svg";
             <div class="business">
                 <Business />
 
-                <Weird />
+                <Morning />
 
                 <Market />
 
-                <Ap />
-
                 <Street />
-
+                
                 <Benzinga />
+
+                <Ap />
             </div>
         </div>
     </div>

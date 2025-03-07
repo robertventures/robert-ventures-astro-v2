@@ -1,0 +1,178 @@
+---
+import Arrow from "../images/svg/right-arrow.svg";
+---
+
+<style>
+    form {
+        margin-bottom: 1rem;
+    }
+
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+        flex-grow: 1; /* Allow the input to grow */
+        margin-right: 0.5rem; /* Add some space between the input and the button */
+    }
+
+    input:focus {
+        outline: none; /* Remove the default outline */
+        border: none; /* Remove the border */
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        padding: 6px;
+    }
+
+    .signup-error {
+        display: none;
+    }
+
+    .account {
+        color: #737373;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        text-align: center;
+
+        max-width: 260px;
+        margin: 0 auto;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #5028ff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media only screen and (min-width: 990px){
+        .account{
+            max-width: none;
+        }
+    }
+</style>
+
+<div class="form">
+    <form id="form-cta">
+        <div class="form-block">
+            <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                class="email-input"
+            />
+            <input
+                type="text"
+                name="bot-field"
+                class="bot-field"
+                style="display: none;"
+            />
+            <button type="submit">
+                <span class="button-text">
+                    <Arrow />
+                </span>
+                <span class="loader" style="display: none;"></span>
+            </button>
+        </div>
+        <p class="signup-error"></p>
+    </form>
+    <p class="account">
+        Anyone can start with just $1000 in less than 2 minutes
+    </p>
+</div>
+
+<script is:inline>
+    document.querySelectorAll("form").forEach((form) => {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = form.querySelector(".email-input");
+            const email = emailInput.value;
+            const botField = form.querySelector(".bot-field").value;
+            const buttonText = form.querySelector(".button-text");
+            const loader = form.querySelector(".loader");
+            const signupError = form.querySelector(".signup-error");
+
+            // Bot prevention check
+            if (botField) {
+                signupError.textContent = "Bot detected.";
+                signupError.style.display = "block";
+                return;
+            }
+
+            buttonText.style.display = "none";
+            loader.style.display = "inline-block";
+            signupError.style.display = "none";
+
+            // Get user's timezone
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            // Log the data being sent to the API
+            const requestData = { email, timeZone };
+            console.log("Sending data to API:", requestData);
+
+            try {
+                const response = await fetch("/api/get-started", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestData),
+                });
+
+                if (!response.ok) {
+                    const result = await response.json();
+                    const errorMessage = result.error || "Signup failed";
+                    signupError.textContent = errorMessage;
+                    signupError.style.display = "block";
+                    console.error("Error response:", result);
+                } else {
+                    console.log("Signup successful!");
+                    window.location.href = "/signup";
+                }
+            } catch (error) {
+                console.error("Network error:", error);
+                signupError.textContent =
+                    "Network error occurred. Please try again later.";
+                signupError.style.display = "block";
+            } finally {
+                buttonText.style.display = "inline-block";
+                loader.style.display = "none";
+            }
+        });
+    });
+</script>

@@ -12,19 +12,19 @@ const articles = [
         title: "Fidelity: Governments Will Be Significant Bitcoin Investors in 2025",
         description: "Fidelity predicts that governments will become significant investors in Bitcoin by 2025.",
         url: "https://www.pymnts.com/news/2025/fidelity-governments-will-be-significant-bitcoin-investors-in-2025/",
-        image: "/articles-images/33.webp"
+        image: "/institutions-images/bitcoin-img.webp"
     },
     {
         title: "Strengthening American Leadership in Digital Financial Technology",
         description: "The White House outlines new initiatives to strengthen American leadership in digital financial technology.",
         url: "https://www.whitehouse.gov/presidential-actions/2025/01/strengthening-american-leadership-in-digital-financial-technology/",
-        image: "/articles-images/32.webp"
+        image: "/institutions-images/white-house.webp"
     },
     {
         title: "BlackRock Recommends a Bitcoin Allocation of 1% to 2%",
         description: "BlackRock recommends that investors allocate 1% to 2% of their portfolios to Bitcoin.",
         url: "https://www.blocktrainer.de/en/blog/blackrock-recommends-a-bitcoin-allocation-of-1-to-2",
-        image: "/articles-images/31.webp"
+        image: "/institutions-images/blackrock-img.webp"
     }
 ];
 
@@ -143,11 +143,12 @@ function truncateText(text, maxLength) {
                         articles.map((article) => (
                             <li>
                                 <a href={article.url} target="_blank" rel="noopener noreferrer">
-                                    <img
+                                    <Image
+                                        src={article.image}
+                                        alt={article.title}
                                         width={366}
                                         height={156}
-                                        src={article.image}
-                                        alt=""
+                                        style={{ aspectRatio: "21 / 9", objectFit: "cover", marginBottom: "0.75rem" }}
                                     />
                                     <h4 class="title">{article.title}</h4>
                                     <p>
