@@ -2,7 +2,6 @@
 import Image from "astro/components/Image.astro";
 import arrow from "../images/design-elements/Arrow-right.svg";
 
-
 import FormCTA from "../components/FormCTA.astro";
 ---
 
@@ -119,16 +118,18 @@ import FormCTA from "../components/FormCTA.astro";
     /* SLIDER STYLE */
 
     /* FORM */
-    .form-cta{
+    .form-cta {
         margin-top: 1.5rem;
     }
     /* FORM */
-
 
     .section-content {
         display: flex;
         flex-direction: column;
         gap: 1.56rem;
+
+        max-width: 366px;
+        /* margin: 0 auto; */
     }
 
     .calculate-content {
@@ -260,6 +261,7 @@ import FormCTA from "../components/FormCTA.astro";
         position: relative;
         display: flex;
         align-items: center;
+        display: none; /* Hide the input container */
     }
 
     .dollar-sign {
@@ -273,7 +275,6 @@ import FormCTA from "../components/FormCTA.astro";
     .styled-input {
         padding-left: 1.5rem; /* Adjust padding to make space for the dollar sign */
         width: 100%;
-
     }
 
     /* RESULT SECTION */
@@ -319,16 +320,17 @@ import FormCTA from "../components/FormCTA.astro";
         line-height: 1.6;
     }
 
-    .calc-final-block{
+    .calc-final-block {
         margin-top: 1.5rem;
     }
 
-
     @media only screen and (min-width: 990px) {
         .section-content {
-
             flex-direction: row;
             justify-content: space-between;
+
+            max-width: 921px;
+            
         }
 
         .section-content > div {
@@ -339,6 +341,40 @@ import FormCTA from "../components/FormCTA.astro";
         .result-section {
             align-self: center;
         }
+    }
+
+    .initial-investment-text {
+        display: flex;
+        align-items: center;
+
+        justify-content: space-between;
+    }
+
+    p.investment-amount-number {
+        color: #281480;
+        font-weight: 700;
+        line-height: 100%; /* 1.125rem */
+    }
+
+    .investment-value-limits {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .investment-value-limits p {
+        color: #505050;
+        text-align: right;
+        font-family: Inter;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 100%; /* 0.875rem */
+
+        margin-top: 0.75rem;
+    }
+
+    .form-cta p{
+        margin-bottom: 1rem;
     }
 </style>
 
@@ -403,9 +439,10 @@ import FormCTA from "../components/FormCTA.astro";
                         </div>
                         <div class="calculate-block">
                             <div class="initial-investment-text">
-                                <p class="calculate-heading">
+                                <p class="calculate-heading-investment-value">
                                     Investment Amount:
                                 </p>
+                                <p class="investment-amount-number"></p>
                             </div>
                             <div class="investment-value">
                                 <input
@@ -417,22 +454,12 @@ import FormCTA from "../components/FormCTA.astro";
                                     step="1000"
                                     min="1000"
                                     max="100000"
-                                    oninput="syncSliderAndInput('slider')"
+                                    oninput="calculateReturns()"
                                 />
-                                <div class="input-container">
-                                    <span class="dollar-sign">$</span>
-                                    <input
-                                        id="amount"
-                                        class="amount styled-input"
-                                        type="number"
-                                        name="amount"
-                                        value="50000"
-                                        step="1000"
-                                        min="1000"
-                                        max="100000"
-                                        oninput="syncSliderAndInput('input')"
-                                    />
-                                </div>
+                            </div>
+                            <div class="investment-value-limits">
+                                <p>$1,000</p>
+                                <p>$100,000</p>
                             </div>
                         </div>
                     </div>
@@ -456,6 +483,7 @@ import FormCTA from "../components/FormCTA.astro";
                     <p class="extra-text">extraText</p>
                 </div>
                 <div class="form-cta">
+                    <p>Start earning interest in less than 2 minutes</p>
                     <FormCTA />
                 </div>
             </div>
@@ -465,8 +493,10 @@ import FormCTA from "../components/FormCTA.astro";
 
 <script is:inline>
     // Selectors
-    const investmentAmountInput = document.getElementById("amount");
     const investmentAmountSlider = document.getElementById("amount-slider");
+    const investmentAmountNumber = document.querySelector(
+        ".investment-amount-number",
+    );
     const totalProfitElement = document.getElementById("total-profit");
     const returnValueElement = document.getElementById("return-value");
     const extraTextElement = document.querySelector(".extra-text");
@@ -496,22 +526,12 @@ import FormCTA from "../components/FormCTA.astro";
         });
     }
 
-    // Sync slider and input values
-    function syncSliderAndInput(source) {
-        if (source === "input") {
-            investmentAmountSlider.value = investmentAmountInput.value;
-        } else if (source === "slider") {
-            investmentAmountInput.value = investmentAmountSlider.value;
-        }
-        calculateReturns();
-    }
-
     // Calculate Returns
     function calculateReturns() {
         const paymentTerm = document.querySelector(
             'input[name="payment-term"]:checked',
         )?.value;
-        const investmentAmount = parseFloat(investmentAmountInput.value) || 0;
+        const investmentAmount = parseFloat(investmentAmountSlider.value) || 0;
         const investmentDuration =
             parseFloat(
                 document.querySelector('input[name="year-term"]:checked')
@@ -553,6 +573,8 @@ import FormCTA from "../components/FormCTA.astro";
         }
 
         // Update UI
+        investmentAmountNumber.textContent = `$${investmentAmount.toLocaleString()}`;
+
         if (paymentTerm === "monthly") {
             resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Monthly Payments:";
@@ -618,16 +640,7 @@ import FormCTA from "../components/FormCTA.astro";
             updateSliderStyle(); // Set initial styles
             slider.addEventListener("input", () => {
                 updateSliderStyle(); // Update on input
-                syncSliderAndInput("slider");
-            });
-        });
-
-    // Initialize input number with style updates
-    document
-        .querySelectorAll('input[type="number"].styled-input')
-        .forEach((input) => {
-            input.addEventListener("input", () => {
-                syncSliderAndInput("input");
+                calculateReturns();
             });
         });
 
