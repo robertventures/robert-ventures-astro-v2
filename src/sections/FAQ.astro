@@ -7,11 +7,10 @@ import FormCTA from "../components/FormCTA.astro";
 ---
 
 <style>
-
-    section{
+    section {
         margin-bottom: 0;
     }
-    
+
     h2 {
         color: #281480;
         text-align: center;
@@ -57,7 +56,7 @@ import FormCTA from "../components/FormCTA.astro";
         justify-content: space-between;
     }
 
-    button.accordion svg{
+    button.accordion svg {
         flex-shrink: 0;
     }
 
@@ -89,6 +88,22 @@ import FormCTA from "../components/FormCTA.astro";
         border-bottom: 1px solid #afb5bc;
     }
 
+    .book-a-call {
+        text-align: center;
+    }
+
+    .book-a-call p {
+        line-height: 160%;
+        margin-bottom: 0.75rem;
+    }
+
+    .book-a-call a {
+        color: #396afb;
+        font-family: Inter;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 100%;
+    }
 </style>
 
 <section>
@@ -205,17 +220,23 @@ import FormCTA from "../components/FormCTA.astro";
                     <div class="panel">
                         <p>
                             Yes, you can invest with your self-directed
-                            retirement accounts.<br> Here are some of the benefits of investing in the Robert Ventures Bonds through an IRA account:<br>
-                            - Interest not taxable when realized;<br>
-                            -In a Roth IRA account: the interest income is tax-free when paid and withdrawn;<br>
-                            - In a Traditional IRA Account: the interest income is tax-deferred, which means it's only taxed when taking distributions.
+                            retirement accounts.<br /> Here are some of the benefits
+                            of investing in the Robert Ventures Bonds through an
+                            IRA account:<br />
+                            - Interest not taxable when realized;<br />
+                            -In a Roth IRA account: the interest income is tax-free
+                            when paid and withdrawn;<br />
+                            - In a Traditional IRA Account: the interest income is
+                            tax-deferred, which means it's only taxed when taking
+                            distributions.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div class="form-cta">
-                <FormCTA />
+            <div class="book-a-call">
+                <p>Do you have more questions?</p>
+                <a href="/calendar">Book a call</a>
             </div>
         </div>
     </div>
