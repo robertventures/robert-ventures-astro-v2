@@ -3,10 +3,6 @@ import Arrow from "../images/svg/right-arrow.svg";
 ---
 
 <style>
-    form {
-        margin-bottom: 1rem;
-    }
-
     .form-block {
         border-radius: 1.5625rem;
         border: 1px solid #afb5bc;
@@ -54,6 +50,8 @@ import Arrow from "../images/svg/right-arrow.svg";
 
         max-width: 260px;
         margin: 0 auto;
+
+        margin-bottom: 1rem;
     }
 
     .login {
@@ -87,11 +85,14 @@ import Arrow from "../images/svg/right-arrow.svg";
 </style>
 
 <div class="form">
+    <p class="account">
+        Anyone can start with just $1000 in less than 2 minutes
+    </p>
     <form id="form-cta">
         <div class="form-block">
             <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Email Address"
                 required
                 class="email-input"
             />
@@ -110,9 +111,6 @@ import Arrow from "../images/svg/right-arrow.svg";
         </div>
         <p class="signup-error"></p>
     </form>
-    <p class="account">
-        Anyone can start with just $1000 in less than 2 minutes
-    </p>
 </div>
 
 <script is:inline>
