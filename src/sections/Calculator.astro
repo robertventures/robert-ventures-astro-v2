@@ -1,16 +1,15 @@
 ---
-import Image from "astro/components/Image.astro";
-import arrow from "../images/design-elements/Arrow-right.svg";
-
 import FormCTA from "../components/FormCTA.astro";
 ---
 
-<style>
+<style >
     input[type="radio"] {
         height: 1.5rem;
         width: 1.5rem;
         accent-color: #281480;
     }
+
+
     /* SLIDER STYLE */
     input[type="range"].styled-slider {
         height: 24px;
@@ -194,7 +193,7 @@ import FormCTA from "../components/FormCTA.astro";
         line-height: 100%; /* 0.875rem */
     }
 
-    span{
+    span {
         font-family: "Inter";
     }
 
@@ -304,10 +303,22 @@ import FormCTA from "../components/FormCTA.astro";
     .title.small {
         line-height: 1;
         text-align: center;
-        margin-bottom: 0.5rem;
     }
 
     .value.small {
+        color: #281480;
+        text-align: center;
+        /* font-feature-settings: "cv01" on; */
+        font-family: "Inter", sans-serif;
+        font-size: 1.625rem;
+        font-weight: 700;
+        line-height: 100%; /* 1.625rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    p.title.small{
+
         color: #281480;
         text-align: center;
         /* font-feature-settings: "cv01" on; */
@@ -326,6 +337,8 @@ import FormCTA from "../components/FormCTA.astro";
 
     .calc-final-block {
         margin-top: 1.5rem;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
     @media only screen and (min-width: 990px) {
@@ -334,7 +347,6 @@ import FormCTA from "../components/FormCTA.astro";
             justify-content: space-between;
 
             max-width: 921px;
-            
         }
 
         .section-content > div {
@@ -377,9 +389,41 @@ import FormCTA from "../components/FormCTA.astro";
         margin-top: 0.75rem;
     }
 
-    .form-cta p{
+    .form-cta p {
         margin-bottom: 1rem;
     }
+
+    .return-options-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 0.75rem;
+    }
+
+    .return-options-block p {
+        line-height: 1;
+    }
+
+    .extra-text {
+
+        font-size: 13px;
+
+        span {
+            background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-feature-settings: "cv01" on;
+            font-family: Inter;
+            font-size: 0.8125rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 100%;
+        }
+    }
+
+    
 </style>
 
 <section>
@@ -418,7 +462,14 @@ import FormCTA from "../components/FormCTA.astro";
                             </div>
                         </div>
                         <div class="calculate-block">
-                            <p class="calculate-heading">Return Options:</p>
+                            <div class="return-options-block">
+                                <p class="calculate-heading-2">
+                                    Return Options:
+                                </p>
+                                <p class="more-with-compound extra-text">
+                                    hello
+                                </p>
+                            </div>
                             <div class="calculate-data select-return">
                                 <div class="calculate-data-group return-option">
                                     <input
@@ -484,7 +535,6 @@ import FormCTA from "../components/FormCTA.astro";
                 <div class="result-block calc-final-block">
                     <p class="title small">Compound interest:</p>
                     <p class="value small" id="return-value">CompoundReturn</p>
-                    <p class="extra-text">extraText</p>
                 </div>
                 <div class="form-cta">
                     <p>Start earning interest in less than 2 minutes</p>
@@ -564,10 +614,10 @@ import FormCTA from "../components/FormCTA.astro";
             let effectiveAnnualRate;
             if (investmentDuration === 3) {
                 // For durations of 3 years, use 10% APR compounded monthly
-                effectiveAnnualRate = 0.104713; // Approximately 10.4713%
+                effectiveAnnualRate = 0.10; // Approximately 10.4713%
             } else {
                 // For durations of 1 year, use 8% APR compounded monthly
-                effectiveAnnualRate = 0.083; // Approximately 8.3%
+                effectiveAnnualRate = 0.08; // Approximately 8.3%
             }
 
             totalPrincipal =
@@ -581,7 +631,7 @@ import FormCTA from "../components/FormCTA.astro";
 
         if (paymentTerm === "monthly") {
             resultTitles[0].textContent = "Total with Interest:";
-            resultTitles[1].textContent = "Monthly Payments:";
+            resultTitles[1].textContent = "Total Returns:";
             const formattedTotalPrincipal =
                 formatCurrencyWithCents(totalPrincipal);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
@@ -589,9 +639,9 @@ import FormCTA from "../components/FormCTA.astro";
             // Calculate compound value for comparison
             let effectiveAnnualRateForCompounding;
             if (investmentDuration === 3) {
-                effectiveAnnualRateForCompounding = 0.104713;
+                effectiveAnnualRateForCompounding = 0.10;
             } else {
-                effectiveAnnualRateForCompounding = 0.083;
+                effectiveAnnualRateForCompounding = 0.08;
             }
             const compoundedValue =
                 investmentAmount *
@@ -607,11 +657,11 @@ import FormCTA from "../components/FormCTA.astro";
             const formattedExtraEarnings =
                 formatCurrencyWithCents(extraEarnings);
 
-            document.querySelector(".calc-final-block").style.display = "block";
+            document.querySelector(".calc-final-block").style.display = "flex";
 
             returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
             extraTextElement.innerHTML = `
-                Earn $${formattedExtraEarnings} more with compound
+                Compound earns <span class="hello">$${formattedExtraEarnings}</span> more
             `;
         } else {
             resultTitles[0].textContent = "Total with Interest:";
