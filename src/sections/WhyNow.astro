@@ -12,14 +12,14 @@ import FormCTA from "../components/FormCTA.astro";
         margin-bottom: 2rem;
     }
 
-    .list{
+    .list {
         display: flex;
         flex-direction: column;
         gap: 2rem;
 
         max-width: 366px;
 
-        margin:  0 auto;
+        margin: 0 auto;
 
         margin-bottom: 2rem;
     }
@@ -31,10 +31,18 @@ import FormCTA from "../components/FormCTA.astro";
 
     p.title {
         color: #1d1d1f;
-        font-size: 1rem;
+        font-size: 1.125rem;
         font-weight: 500;
         line-height: 1.2;
         margin-bottom: 0.25rem;
+    }
+
+    p.info {
+
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 160%; /* 1.6rem */
     }
 
     .list-item {
@@ -52,19 +60,19 @@ import FormCTA from "../components/FormCTA.astro";
         min-width: 20px;
     }
 
-    .pre-form-text{
+    .pre-form-text {
         margin-bottom: 1rem;
         text-align: center;
     }
 
-    @media screen and (min-width: 990px){
-        .list{
+    @media screen and (min-width: 990px) {
+        .list {
             flex-direction: row;
             max-width: none;
             justify-content: space-between;
         }
 
-        .list > div{
+        .list > div {
             max-width: 366px;
         }
     }
