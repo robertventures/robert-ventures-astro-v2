@@ -36,13 +36,6 @@
 	font-display: swap;
 }
 
-@font-face {
-	font-family: 'Public Sans';
-	src: url('/fonts/PublicSans-Regular.ttf') format('truetype');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
 
 @font-face {
 	font-family: 'Inter';
@@ -53,7 +46,7 @@
 }
 
 body {
-	font-family: 'Public Sans', sans-serif;
+	font-family: 'Inter', sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
