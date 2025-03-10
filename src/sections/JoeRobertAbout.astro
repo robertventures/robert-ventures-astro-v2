@@ -6,24 +6,6 @@ import FormCTA from "../components/FormCTA.astro";
 ---
 
 <style>
-
-    section {
-        margin-bottom: 1.5rem;
-    }
-
-    .section-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        border-radius: 1rem;
-        background: #fff;
-        padding: 3rem 1.5rem;
-    }
-
-    .section-content {
-        max-width: 366px;
-        margin: 0 auto;
-    }
-
     section > * {
         text-align: center;
     }
@@ -34,6 +16,11 @@ import FormCTA from "../components/FormCTA.astro";
     }
 
     .intro {
+        margin-bottom: 3rem;
+    }
+
+    h2 {
+        color: #281480;
         margin-bottom: 3rem;
     }
 
@@ -52,18 +39,30 @@ import FormCTA from "../components/FormCTA.astro";
         margin-bottom: 1.5rem;
     }
 
-    p.info {
+    .info{
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .info p{
         color: #505050;
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 150%; /* 1.875rem */
+        font-family: Inter;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 160%; /* 1.6rem */
+
+        text-align: left;
     }
 
     .info-blocks {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
-
         margin-bottom: 3rem;
     }
     .info-block {
@@ -72,6 +71,8 @@ import FormCTA from "../components/FormCTA.astro";
 
         border-radius: 0.5rem;
         border: 1px solid #afb5bc;
+
+        /* max-width: 177px; */
     }
 
     .block-title {
@@ -129,15 +130,35 @@ import FormCTA from "../components/FormCTA.astro";
     <div class="section-container">
         <div class="section-content">
             <div class="intro">
+                <h2>Manager Track Record</h2>
                 <Image src={joe} alt="herobox" width={96} height={96} />
                 <p class="name">Joe Robert</p>
                 <p class="position">Robert Ventures, CEO</p>
 
-                <p class="info">
-                    At Robert Ventures, our mission is to leverage my investment
-                    strategies to maximize growth and deliver strong returns for
-                    our investors.
-                </p>
+                <div class="info">
+                    <p>
+                        Joe Robert is the CEO and Founder of Robert Ventures and has
+                        an extensive background in real estate investing, with over
+                        20 years of asset management experience. During this period,
+                        he raised capital from individuals and partners that paid
+                        double-digit preferred returns annually for years. Joe has
+                        never lost private investors capital over his whole period
+                        of investing.
+                    </p>
+                    <p>
+                        A decade ago, he partnered with a large fund to take
+                        advantage of the opportunity to buy distressed debt at low
+                        prices and returned capital, along with double digit returns
+                        for several years as the portfolio was managed.
+                    </p>
+    
+                    <p>
+                        Over the last five years, he has made multiple investments
+                        into the tech sector that included providing venture capital
+                        and acquiring digital assets that provided exposure to the
+                        growing digital economy.
+                    </p>
+                </div>
             </div>
 
             <div class="info-blocks">
@@ -164,11 +185,9 @@ import FormCTA from "../components/FormCTA.astro";
                 an investor payment and returned all capital with interest.
             </p>
 
-
             <div class="form-cta">
                 <FormCTA />
             </div>
         </div>
     </div>
 </section>
-
