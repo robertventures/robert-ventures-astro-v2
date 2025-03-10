@@ -6,7 +6,6 @@ import FormCTA from "../components/FormCTA.astro";
 ---
 
 <style>
-
     section {
         margin-bottom: 1.5rem;
     }
@@ -38,9 +37,12 @@ import FormCTA from "../components/FormCTA.astro";
     }
 
     p.name {
-        font-size: 1.125rem;
         color: #1d1d1f;
-        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1; /* 1.25rem */
+
+        margin-bottom: 6px;
     }
 
     p.position {
@@ -93,8 +95,8 @@ import FormCTA from "../components/FormCTA.astro";
     .extra-info {
         color: #505050;
         font-size: 1rem;
-        font-weight: 400;
-        line-height: 160%; /* 1.6rem */
+        font-weight: 500;
+        line-height: 1.6; /* 1.6rem */
 
         margin: 0 auto;
         margin-bottom: 1rem;
@@ -131,7 +133,7 @@ import FormCTA from "../components/FormCTA.astro";
             <div class="intro">
                 <Image src={joe} alt="herobox" width={96} height={96} />
                 <p class="name">Joe Robert</p>
-                <p class="position">Robert Ventures, CEO</p>
+                <p class="position">Manager</p>
 
                 <p class="info">
                     At Robert Ventures, our mission is to leverage my investment
@@ -164,11 +166,9 @@ import FormCTA from "../components/FormCTA.astro";
                 an investor payment and returned all capital with interest.
             </p>
 
-
             <div class="form-cta">
                 <FormCTA />
             </div>
         </div>
     </div>
 </section>
-
