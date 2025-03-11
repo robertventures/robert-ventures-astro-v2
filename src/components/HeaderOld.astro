@@ -46,6 +46,10 @@ import External from "../images/svg/external-link.svg";
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
+	.social-links,
+	.social-links a {
+		display: flex;
+	}
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
@@ -60,7 +64,6 @@ import External from "../images/svg/external-link.svg";
 	.hamburger {
 		display: none;
 		cursor: pointer;
-		z-index: 1003; /* Ensure the hamburger menu is above the overlay */
 	}
 
 	@media (max-width: 720px) {
@@ -81,51 +84,29 @@ import External from "../images/svg/external-link.svg";
 
 	.mobile-menu {
 		position: fixed;
-		top: 10%;
+		bottom: -93vh;
 		left: 0;
 		width: 100%;
-		height: auto; /* Adjust height as needed */
-		max-height: 80%; /* Ensure it doesn't cover the whole screen */
+		height: 90dvh;
 		background-color: white;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-		transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-		z-index: 1002; /* Ensure the mobile menu is above the overlay */
-		padding: 50px 1.5rem;
+		box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+		transition: bottom 0.3s ease-in-out;
+		z-index: 1000;
+		padding: 1.5rem;
 		overflow-y: auto; /* Enable vertical scrolling */
-		border-radius: 1rem;
+		border-radius: 1rem 1rem 0rem 0rem;
 		background: #fff;
-		opacity: 0;
-		visibility: hidden;
 	}
 
 	.mobile-menu.show {
-		opacity: 1;
-		visibility: visible;
-	}
-
-	.overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.2); /* 20% opacity */
-		z-index: 1001; /* Ensure the overlay is above the header */
-		opacity: 0;
-		visibility: hidden;
-		transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-	}
-
-	.overlay.show {
-		opacity: 1; /* Darker background */
-		visibility: visible;
+		bottom: 0; /* No padding at the bottom */
 	}
 
 	.menu-link-lists {
 		display: flex;
 		flex-direction: column;
 		gap: 3rem;
-		/* margin-bottom: 5rem; */
+		margin-bottom: 5rem;
 	}
 
 	.list-heading {
@@ -141,23 +122,6 @@ import External from "../images/svg/external-link.svg";
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-	}
-
-	.links-container .link {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.links-container .link p {
-		flex: 1;
-		text-align: center;
-	}
-
-	.links-container .link Opener {
-		position: absolute;
-		right: 0;
 	}
 
 	.mobile-menu a {
@@ -180,6 +144,36 @@ import External from "../images/svg/external-link.svg";
 	}
 
 
+	.footer-end {
+		text-align: center;
+	}
+
+	.footer-end svg {
+		margin: 0 auto;
+		margin-bottom: 1.5rem;
+	}
+
+	.footer-end p {
+		color: #737373;
+		text-align: center;
+		font-size: 0.875rem;
+		line-height: 150%; /* 1.3125rem */
+		margin-bottom: 1rem;
+	}
+
+	.footer-end a {
+		color: #737373;
+		text-align: center;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 150%; /* 1.5rem */
+		display: block;
+		text-decoration: underline;
+	}
+
+	.footer-end img {
+		max-height: none;
+	}
 
 	@media only screen and (min-width: 768px) {
 		header {
@@ -279,12 +273,12 @@ import External from "../images/svg/external-link.svg";
 </style>
 
 <body>
-	<div class="overlay" id="overlay"></div> <!-- Move overlay to the top -->
 	<header>
 		<div class="header-container">
 			<nav>
 				<h2>
-					<a href="/"><Rvlogo /></a>
+					<a href="/"
+						><Rvlogo />
 				</h2>
 				<div class="desktop-links">
 					<a href="/strategy">Strategy</a>
@@ -303,9 +297,12 @@ import External from "../images/svg/external-link.svg";
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<rect y="4" width="24" height="2" fill="currentColor"></rect>
-						<rect y="11" width="24" height="2" fill="currentColor"></rect>
-						<rect y="18" width="24" height="2" fill="currentColor"></rect>
+						<rect y="4" width="24" height="2" fill="currentColor"
+						></rect>
+						<rect y="11" width="24" height="2" fill="currentColor"
+						></rect>
+						<rect y="18" width="24" height="2" fill="currentColor"
+						></rect>
 					</svg>
 				</div>
 			</nav>
@@ -337,6 +334,64 @@ import External from "../images/svg/external-link.svg";
 								</a>
 							</div>
 						</div>
+						<!-- <div class="list">
+							<p class="list-heading">Follow Us</p>
+							<div class="links-container">
+								<a href="https://www.facebook.com/Robertventures" class="link">
+									<p>Facebook</p>
+									<External />
+								</a>
+								<a href="https://www.instagram.com/robert_ventures/" class="link">
+									<p>Instagram</p>
+									<External />
+								</a>
+								<a href="https://twitter.com/RobertVentures_" class="link">
+									<p>Twitter</p>
+									<External />
+								</a>
+								<a href="https://www.linkedin.com/company/robertventures" class="link">
+									<p>LinkedIn</p>
+									<External />
+								</a>
+								<a href="https://www.youtube.com/@RobertVentures" class="link">
+									<p>Youtube</p>
+									<External />
+								</a>
+							</div>
+						</div> -->
+
+						<!-- <div class="list">
+							<p class="list-heading">Legal</p>
+							<div class="links-container">
+								<a href="/privacy-policy" class="link">
+									<p>Privacy Policy</p>
+									<Opener />
+								</a>
+								<a href="/terms-of-use" class="link">
+									<p>Terms of use</p>
+									<Opener />
+								</a>
+								<a href="/cookie-policy" class="link">
+									<p>Cookie Policy</p>
+									<Opener />
+								</a>
+								<a href="/disclaimer" class="link">
+									<p>Disclaimer</p>
+									<Opener />
+								</a>
+							</div>
+						</div>
+					</div> -->
+
+					<div class="footer-end">
+						<RvlogoVertical />
+
+						<p>
+							Robert Ventures Holdings LLC. 2810 N. Church St.,
+							#28283 Wilmington, Delaware 19802
+						</p>
+
+						<a href="tel:+13024046341">+1 302 404 6341</a>
 					</div>
 				</div>
 			</div>
@@ -345,50 +400,31 @@ import External from "../images/svg/external-link.svg";
 </body>
 
 <script is:inline>
-    document.getElementById("hamburger").addEventListener("click", function () {
-        const mobileMenu = document.getElementById("mobileMenu");
-        const overlay = document.getElementById("overlay");
-        overlay.classList.toggle("show");
-        document.body.classList.toggle("menu-open");
+	document.getElementById("hamburger").addEventListener("click", function () {
+		const mobileMenu = document.getElementById("mobileMenu");
+		mobileMenu.classList.toggle("show");
+		document.body.classList.toggle("menu-open");
+	});
 
-        if (overlay.classList.contains("show")) {
-            setTimeout(() => {
-                mobileMenu.classList.add("show");
-            }, 200); // Delay to match the overlay transition
-        } else {
-            mobileMenu.classList.remove("show");
-        }
-    });
+	let startY;
 
-    document.getElementById("overlay").addEventListener("click", function () {
-        const mobileMenu = document.getElementById("mobileMenu");
-        const overlay = document.getElementById("overlay");
-        mobileMenu.classList.remove("show");
-        overlay.classList.remove("show");
-        document.body.classList.remove("menu-open");
-    });
+	document
+		.getElementById("mobileMenu")
+		.addEventListener("touchstart", function (e) {
+			startY = e.touches[0].clientY;
+		});
 
-    let startY;
+	document
+		.getElementById("mobileMenu")
+		.addEventListener("touchmove", function (e) {
+			const currentY = e.touches[0].clientY;
+			const diffY = currentY - startY;
 
-    document
-        .getElementById("mobileMenu")
-        .addEventListener("touchstart", function (e) {
-            startY = e.touches[0].clientY;
-        });
-
-    document
-        .getElementById("mobileMenu")
-        .addEventListener("touchmove", function (e) {
-            const currentY = e.touches[0].clientY;
-            const diffY = currentY - startY;
-
-            if (diffY > 300) {
-                // If the user swipes down more than 300px
-                const mobileMenu = document.getElementById("mobileMenu");
-                const overlay = document.getElementById("overlay");
-                mobileMenu.classList.remove("show");
-                overlay.classList.remove("show");
-                document.body.classList.remove("menu-open");
-            }
-        });
+			if (diffY > 300) {
+				// If the user swipes down more than 300px
+				const mobileMenu = document.getElementById("mobileMenu");
+				mobileMenu.classList.remove("show");
+				document.body.classList.remove("menu-open");
+			}
+		});
 </script>
