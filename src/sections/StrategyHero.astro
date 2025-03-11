@@ -7,7 +7,6 @@ import comparison from "../images/rv-vs-banks.jpg";
     .section-content {
         text-align: center;
         max-width: 366px;
-
     }
     h1 {
         font-size: 1.625rem;
@@ -21,7 +20,7 @@ import comparison from "../images/rv-vs-banks.jpg";
         line-height: 1.6; /* 1.8rem */
     }
 
-    .info{
+    .info {
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -35,11 +34,27 @@ import comparison from "../images/rv-vs-banks.jpg";
         width: 100%;
     }
 
-    @media screen and (min-width: 990px) {
-        .section-content {
+    .chart-container {
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        height: 400px; /* Set a specific height for the chart container */
+    }
+
+    canvas {
+        height: 100% !important; /* Ensure the canvas takes up the full height of the container */
+    }
+
+    @media screen and (min-width: 768px){
+
+        .section-content{
             max-width: 600px;
         }
+    }
 
+    @media screen and (min-width: 990px) {
         h1 {
             font-size: 2.25rem;
         }
@@ -58,14 +73,85 @@ import comparison from "../images/rv-vs-banks.jpg";
                 </p>
                 <p>
                     At Robert Ventures, we've created a strategy that delivers
-                    consistent fixed-rate returns - blending the security of real
-                    estate with the growth of digital assets.
+                    consistent fixed-rate returns - blending the security of
+                    real estate with the growth of digital assets.
                 </p>
             </div>
 
-            <Image src={comparison} alt="herobox" width={732} height={414} />
+            <!-- <Image src={comparison} alt="herobox" width={732} height={414} /> -->
+
+            <div class="chart-container">
+                <canvas id="investmentChart"></canvas>
+            </div>
         </div>
     </div>
 </section>
 
-<script is:inline></script>
+<!-- Include Chart.js library -->
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script is:inline>
+    function calculateGrowth(initialAmount = 10000, years = 20) {
+        const data = { labels: [], robertVentures: [], bankCDs: [] };
+
+        for (let year = 0; year <= years; year++) {
+            const robertVenturesAmount =
+                initialAmount * Math.pow(1 + 0.1 / 12, year * 12);
+            const cdAmount = initialAmount * Math.pow(1 + 0.0465, year);
+
+            data.labels.push(year);
+            data.robertVentures.push(
+                parseFloat(robertVenturesAmount.toFixed(2)),
+            );
+            data.bankCDs.push(parseFloat(cdAmount.toFixed(2)));
+        }
+        return data;
+    }
+
+    const investmentData = calculateGrowth();
+
+    const ctx = document.getElementById("investmentChart").getContext("2d");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: investmentData.labels,
+            datasets: [
+                {
+                    label: "Robert Ventures (10% APY Monthly Compound)",
+                    data: investmentData.robertVentures,
+                    borderColor: "#7C3AED",
+                    borderWidth: 2,
+                    fill: false,
+                },
+                {
+                    label: "Bank CDs (4.65% APY)",
+                    data: investmentData.bankCDs,
+                    borderColor: "#93C5FD",
+                    borderWidth: 2,
+                    fill: false,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: "Year" } },
+                y: {
+                    title: { display: true, text: "Investment Value ($)" },
+                    ticks: {
+                        callback: (value) => `$${(value / 1000).toFixed(0)}k`,
+                    },
+                },
+            },
+            plugins: {
+                legend: { position: "top" },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => `$${context.raw.toLocaleString()}`,
+                    },
+                },
+            },
+        },
+    });
+</script>
