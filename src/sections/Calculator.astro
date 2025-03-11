@@ -592,7 +592,7 @@ import FormCTA from "../components/FormCTA.astro";
                     ?.value,
             ) || 0;
 
-        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.080;
+        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.08;
         const totalMonths = investmentDuration * 12;
 
         let totalInterest = 0;
@@ -611,18 +611,8 @@ import FormCTA from "../components/FormCTA.astro";
             totalPrincipal = investmentAmount + totalInterest;
         } else {
             // Compound Interest Calculation
-            let effectiveAnnualRate;
-            if (investmentDuration === 3) {
-                // For durations of 3 years, use 10% APR compounded monthly
-                effectiveAnnualRate = 0.10; // Approximately 10.4713%
-            } else {
-                // For durations of 1 year, use 8% APR compounded monthly
-                effectiveAnnualRate = 0.083; // Approximately 8.3%
-            }
-
-            totalPrincipal =
-                investmentAmount *
-                Math.pow(1 + effectiveAnnualRate, investmentDuration);
+            const monthlyRate = nominalAnnualRate / 12;
+            totalPrincipal = investmentAmount * Math.pow(1 + monthlyRate, totalMonths);
             totalInterest = totalPrincipal - investmentAmount;
         }
 
@@ -632,30 +622,15 @@ import FormCTA from "../components/FormCTA.astro";
         if (paymentTerm === "monthly") {
             resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Total Returns:";
-            const formattedTotalPrincipal =
-                formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
 
             // Calculate compound value for comparison
-            let effectiveAnnualRateForCompounding;
-            if (investmentDuration === 3) {
-                effectiveAnnualRateForCompounding = 0.10;
-            } else {
-                effectiveAnnualRateForCompounding = 0.083;
-            }
-            const compoundedValue =
-                investmentAmount *
-                Math.pow(
-                    1 + effectiveAnnualRateForCompounding,
-                    investmentDuration,
-                );
-
+            const compoundedValue = investmentAmount * Math.pow(1 + nominalAnnualRate / 12, totalMonths);
             const extraEarnings = compoundedValue - totalPrincipal;
 
-            const formattedMonthlyPayment =
-                formatCurrencyWithCents(monthlyPayment);
-            const formattedExtraEarnings =
-                formatCurrencyWithCents(extraEarnings);
+            const formattedMonthlyPayment = formatCurrencyWithCents(monthlyPayment);
+            const formattedExtraEarnings = formatCurrencyWithCents(extraEarnings);
 
             document.querySelector(".calc-final-block").style.display = "flex";
 
@@ -666,10 +641,8 @@ import FormCTA from "../components/FormCTA.astro";
         } else {
             resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Compound interest:";
-            const formattedTotalPrincipal =
-                formatCurrencyWithCents(totalPrincipal);
-            const formattedTotalInterest =
-                formatCurrencyWithCents(totalInterest);
+            const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalInterest = formatCurrencyWithCents(totalInterest);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
             returnValueElement.innerHTML = `
             $${formattedTotalInterest} 
