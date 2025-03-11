@@ -592,7 +592,7 @@ import FormCTA from "../components/FormCTA.astro";
                     ?.value,
             ) || 0;
 
-        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.08;
+        const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.080;
         const totalMonths = investmentDuration * 12;
 
         let totalInterest = 0;
@@ -617,7 +617,7 @@ import FormCTA from "../components/FormCTA.astro";
                 effectiveAnnualRate = 0.10; // Approximately 10.4713%
             } else {
                 // For durations of 1 year, use 8% APR compounded monthly
-                effectiveAnnualRate = 0.08; // Approximately 8.3%
+                effectiveAnnualRate = 0.083; // Approximately 8.3%
             }
 
             totalPrincipal =
@@ -641,7 +641,7 @@ import FormCTA from "../components/FormCTA.astro";
             if (investmentDuration === 3) {
                 effectiveAnnualRateForCompounding = 0.10;
             } else {
-                effectiveAnnualRateForCompounding = 0.08;
+                effectiveAnnualRateForCompounding = 0.083;
             }
             const compoundedValue =
                 investmentAmount *
