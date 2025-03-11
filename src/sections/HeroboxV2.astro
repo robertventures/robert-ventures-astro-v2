@@ -1,5 +1,4 @@
 ---
-
 import FormCTAV2 from "../components/FormCTAV2.astro";
 
 import Ten from "../images/svg/10-rv.svg";
@@ -11,10 +10,6 @@ import Ap from "../images/svg/business-logos/ap.svg";
 import Street from "../images/svg/business-logos/street-insider.svg";
 import Benzinga from "../images/svg/business-logos/benzinga.svg";
 import Morning from "../images/svg/business-logos/morning.svg";
-
-
-
-
 ---
 
 <style>
@@ -29,7 +24,7 @@ import Morning from "../images/svg/business-logos/morning.svg";
         text-align: center;
     }
 
-    .section-content svg{
+    .section-content svg {
         margin: 0 auto;
     }
 
@@ -40,7 +35,6 @@ import Morning from "../images/svg/business-logos/morning.svg";
 
         max-width: 640px;
     }
-    
 
     p.hero-text {
         font-family: "Satoshi", sans-serif;
@@ -78,6 +72,15 @@ import Morning from "../images/svg/business-logos/morning.svg";
         gap: 0.5rem;
     }
 
+    p.featured {
+        color: #abbbd3;
+        font-size: 0.6875rem;
+        font-weight: 400;
+        line-height: 1; /* 0.6875rem */
+
+        margin-bottom: 0.75rem;
+    }
+
     @media only screen and (min-width: 768px) {
         section {
             padding: 0 2rem;
@@ -113,6 +116,8 @@ import Morning from "../images/svg/business-logos/morning.svg";
 
             <hr />
 
+            <p class="featured">Featured in</p>
+
             <div class="business">
                 <Business />
 
@@ -121,7 +126,7 @@ import Morning from "../images/svg/business-logos/morning.svg";
                 <Market />
 
                 <Street />
-                
+
                 <Benzinga />
 
                 <Ap />
@@ -129,4 +134,3 @@ import Morning from "../images/svg/business-logos/morning.svg";
         </div>
     </div>
 </section>
-
