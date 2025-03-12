@@ -153,6 +153,7 @@ import Pending from "../images/svg/validation/pending.svg";
 				list-style-type: none;
 				padding-left: 0;
 				font-size: 0.875rem;
+				display: none; /* Hide by default */
 			}
 
 			ul.password-validation li {
@@ -321,6 +322,7 @@ import Pending from "../images/svg/validation/pending.svg";
 					document.getElementById("capital-letter");
 				const specialCharacterCriteria =
 					document.getElementById("special-character");
+				const passwordValidation = document.querySelector(".password-validation");
 
 				let ip_address = null;
 				try {
@@ -334,6 +336,16 @@ import Pending from "../images/svg/validation/pending.svg";
 				} catch (err) {
 					console.warn("⚠ Error fetching IP address.");
 				}
+
+				passwordInput.addEventListener("focus", () => {
+					passwordValidation.style.display = "block"; // Show when input is focused
+				});
+
+				passwordInput.addEventListener("blur", () => {
+					if (!passwordInput.value) {
+						passwordValidation.style.display = "none"; // Hide if input is empty
+					}
+				});
 
 				passwordInput.addEventListener("input", () => {
 					const password = passwordInput.value;
