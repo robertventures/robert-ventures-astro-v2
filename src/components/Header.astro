@@ -1,12 +1,8 @@
 ---
 import Rvlogo from "../images/svg/rv-logo.svg";
-import RvlogoVertical from "../images/svg/rv-logo-vertical.svg";
-
 
 import Opener from "../images/svg/link-icon.svg";
 
-
-import External from "../images/svg/external-link.svg";
 ---
 
 <style>
@@ -272,7 +268,6 @@ import External from "../images/svg/external-link.svg";
 	}
 </style>
 
-<body>
 	<header>
 		<div class="header-container">
 			<nav>
@@ -334,70 +329,11 @@ import External from "../images/svg/external-link.svg";
 								</a>
 							</div>
 						</div>
-						<!-- <div class="list">
-							<p class="list-heading">Follow Us</p>
-							<div class="links-container">
-								<a href="https://www.facebook.com/Robertventures" class="link">
-									<p>Facebook</p>
-									<External />
-								</a>
-								<a href="https://www.instagram.com/robert_ventures/" class="link">
-									<p>Instagram</p>
-									<External />
-								</a>
-								<a href="https://twitter.com/RobertVentures_" class="link">
-									<p>Twitter</p>
-									<External />
-								</a>
-								<a href="https://www.linkedin.com/company/robertventures" class="link">
-									<p>LinkedIn</p>
-									<External />
-								</a>
-								<a href="https://www.youtube.com/@RobertVentures" class="link">
-									<p>Youtube</p>
-									<External />
-								</a>
-							</div>
-						</div> -->
-
-						<!-- <div class="list">
-							<p class="list-heading">Legal</p>
-							<div class="links-container">
-								<a href="/privacy-policy" class="link">
-									<p>Privacy Policy</p>
-									<Opener />
-								</a>
-								<a href="/terms-of-use" class="link">
-									<p>Terms of use</p>
-									<Opener />
-								</a>
-								<a href="/cookie-policy" class="link">
-									<p>Cookie Policy</p>
-									<Opener />
-								</a>
-								<a href="/disclaimer" class="link">
-									<p>Disclaimer</p>
-									<Opener />
-								</a>
-							</div>
-						</div>
-					</div> -->
-
-					<!-- <div class="footer-end">
-						<RvlogoVertical />
-
-						<p>
-							Robert Ventures Holdings LLC. 2810 N. Church St.,
-							#28283 Wilmington, Delaware 19802
-						</p>
-
-						<a href="tel:+13024046341">+1 302 404 6341</a>
-					</div> -->
 				</div>
 			</div>
 		</div>
 	</header>
-</body>
+
 
 <script is:inline>
 	document.getElementById("hamburger").addEventListener("click", function () {
@@ -427,4 +363,11 @@ import External from "../images/svg/external-link.svg";
 				document.body.classList.remove("menu-open");
 			}
 		});
+
+	// Check if the current page URL contains '/signup' or 'step'
+	if (window.location.pathname.includes('/signup') || window.location.pathname.includes('step')) {
+		document.querySelector('.desktop-links').style.opacity = '0';
+		document.querySelector('.desktop-links').style.pointerEvents = 'none';
+		document.querySelector('.desktop-links').style.cursor = 'default';
+	}
 </script>
