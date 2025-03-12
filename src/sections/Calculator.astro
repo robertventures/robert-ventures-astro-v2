@@ -621,7 +621,7 @@ import FormCTA from "../components/FormCTA.astro";
 
         if (paymentTerm === "monthly") {
             resultTitles[0].textContent = "Total with Interest:";
-            resultTitles[1].textContent = "Total Returns:";
+            resultTitles[1].textContent = "Monthly Returns:";
             const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
 
