@@ -3,25 +3,27 @@ const storedEmail = localStorage.getItem("userEmail");
 
 console.log("hello from formHandler");
 
-let userIpAddress = "";
+let userIpAddress = localStorage.getItem("userIP");
 
-// Measure the time taken to fetch the user's IP address
-const startTime = performance.now();
+if (!userIpAddress) {
+    // Measure the time taken to fetch the user's IP address
+    const startTime = performance.now();
 
-// Fetch the user's IP address
-fetch("https://api.ipify.org?format=json")
-    .then(response => response.json())
-    .then(data => {
-        userIpAddress = data.ip;
-        localStorage.setItem("userIP", userIpAddress); // Store IP address in localStorage
-        const endTime = performance.now();
-        const timeTaken = endTime - startTime;
-        console.log("User IP Address:", userIpAddress);
-        console.log("Time taken to capture IP address:", timeTaken.toFixed(2), "milliseconds");
-    })
-    .catch(error => {
-        console.error("Error fetching IP address:", error);
-    });
+    // Fetch the user's IP address
+    fetch("https://api.ipify.org?format=json")
+        .then(response => response.json())
+        .then(data => {
+            userIpAddress = data.ip;
+            localStorage.setItem("userIP", userIpAddress); // Store IP address in localStorage
+            const endTime = performance.now();
+            const timeTaken = endTime - startTime;
+            console.log("User IP Address:", userIpAddress);
+            console.log("Time taken to capture IP address:", timeTaken.toFixed(2), "milliseconds");
+        })
+        .catch(error => {
+            console.error("Error fetching IP address:", error);
+        });
+}
 
 document.querySelectorAll("form").forEach(form => {
 

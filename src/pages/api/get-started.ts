@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
                 email,
                 timezone: timeZone,
                 customField: {
-                    "userip": ipAddress || null
+                    "userip": ipAddress || "123"
                 },
                 tags: ["bonds", "pre-wealthblock"]
             }),
