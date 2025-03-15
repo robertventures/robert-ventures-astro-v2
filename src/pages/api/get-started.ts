@@ -14,17 +14,17 @@ export const POST: APIRoute = async ({ request }) => {
     try {
         // Expect JSON body instead of FormData
         const body = await request.json();
-        const { email, timeZone } = body;
+        const { email, timeZone, ipAddress } = body;
 
         if (!email || !timeZone) {
             console.error("❌ Missing required fields");
             return new Response(
-                JSON.stringify({ error: "All fields are required" }),
+                JSON.stringify({ error: "Email and TimeZone are required" }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        console.log("📩 Received Signup Data:", { email, timeZone });
+        console.log("📩 Received Signup Data:", { email, timeZone, ipAddress });
 
         /** ───────────────────────────────
          * ✅ Create a Contact in GoHighLevel
@@ -35,7 +35,14 @@ export const POST: APIRoute = async ({ request }) => {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${ghlApiKey}`,
             },
-            body: JSON.stringify({ email, timezone: timeZone, tags:["bonds", "pre-wealthblock"] }), // Update key to "timezone"
+            body: JSON.stringify({
+                email,
+                timezone: timeZone,
+                customField: {
+                    "userip": ipAddress || null
+                },
+                tags: ["bonds", "pre-wealthblock"]
+            }),
         });
 
         const ghlData = await ghlResponse.json();
