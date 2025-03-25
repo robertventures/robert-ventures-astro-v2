@@ -1,7 +1,8 @@
 // Retrieve the email from localStorage and use it as needed
 const storedEmail = localStorage.getItem("userEmail");
 
-console.log("hello from formHandler");
+// Capture the page load time
+const pageLoadTime = performance.now();
 
 let userIpAddress = localStorage.getItem("userIP");
 
@@ -17,8 +18,10 @@ if (!userIpAddress) {
             localStorage.setItem("userIP", userIpAddress); // Store IP address in localStorage
             const endTime = performance.now();
             const timeTaken = endTime - startTime;
+            const totalTimeSincePageLoad = endTime - pageLoadTime;
             console.log("User IP Address:", userIpAddress);
             console.log("Time taken to capture IP address:", timeTaken.toFixed(2), "milliseconds");
+            console.log("Total time since page load to capture IP address:", totalTimeSincePageLoad.toFixed(2), "milliseconds");
         })
         .catch(error => {
             console.error("Error fetching IP address:", error);
