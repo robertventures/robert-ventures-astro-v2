@@ -4,7 +4,8 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
 const pageTitle = "Robert Ventures: Step 2";
-const pageDescription = "Complete the second step of your account setup with Robert Ventures.";
+const pageDescription =
+    "Complete the second step of your account setup with Robert Ventures.";
 ---
 
 <!doctype html>
@@ -13,7 +14,7 @@ const pageDescription = "Complete the second step of your account setup with Rob
         <BaseHead title={pageTitle} description={pageDescription} />
         <meta name="robots" content="noindex, nofollow" />
         <style>
-            body{
+            body {
                 background-color: #fff;
             }
             main {
@@ -101,10 +102,10 @@ const pageDescription = "Complete the second step of your account setup with Rob
                 }
             }
 
-            input[type='radio'] {
+            input[type="radio"] {
                 width: 24px;
                 height: 24px;
-                accent-color: #5028FF;
+                accent-color: #5028ff;
             }
 
             label {
@@ -172,7 +173,11 @@ const pageDescription = "Complete the second step of your account setup with Rob
                         Around 500k
                     </label>
                     <label>
-                        <input type="radio" name="portfolio_value" value="1,000,000" />
+                        <input
+                            type="radio"
+                            name="portfolio_value"
+                            value="1,000,000"
+                        />
                         Around 1 million
                     </label>
                     <label>
@@ -274,6 +279,7 @@ const pageDescription = "Complete the second step of your account setup with Rob
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Step 2 Completed:", result);
+                    triggerEvent("portfolio_value_added", "portfolioValueAdded")
                     window.location.href = "/step-3"; // Proceed to Step 3
                 } else {
                     const error = await response.json();
