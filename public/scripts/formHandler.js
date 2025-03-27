@@ -1,6 +1,8 @@
 // Retrieve the email from localStorage and use it as needed
 const storedEmail = localStorage.getItem("userEmail");
 
+console.log("hello from form handler")
+
 // Capture the page load time
 const pageLoadTime = performance.now();
 
