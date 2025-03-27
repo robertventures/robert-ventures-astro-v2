@@ -237,6 +237,13 @@ const pageDescription =
 </html>
 
 <script is:inline>
+
+
+    setTimeout(() => {
+        console.log("3 seconds have passed. Function executed.");
+        // Add your function logic here
+        triggerEvent("portfolio_value_added", "portfolioValueAdded")
+    }, 3000);
     document
         .getElementById("signup-form-step-2")
         .addEventListener("submit", async (e) => {
