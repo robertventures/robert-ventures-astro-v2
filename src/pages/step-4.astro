@@ -94,7 +94,7 @@ const pageDescription = "Let's finalize your account with a quick call.";
             Array.isArray(event.data) &&
             event.data[0] === "msgsndr-booking-complete"
         ) {
-            triggerEvent("book_a_call", "bookACall");
+            triggerEvent("finalize_booking", "finalizeBooking");
             console.log("✅ Booking detected! Redirecting user to /login...");
             document.querySelector("h1.heading").style.display = "none";
             document.querySelector("a.button").style.display = "block";
