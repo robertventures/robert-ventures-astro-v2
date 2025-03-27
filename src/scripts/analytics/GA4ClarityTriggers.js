@@ -1,6 +1,5 @@
 console.log("hello from Direct GTM");
 
-const hello = "Hello World";
 
 // Function to trigger events for Microsoft Clarity and GA4
 function triggerEvent(eventName, clarityEventName) {
@@ -32,18 +31,17 @@ function initializeEventListeners() {
     // Track form submissions for .conversion_v1
     document.querySelectorAll('#form-cta').forEach(function (form) {
         form.addEventListener('submit', function () {
-            console.log('Form submitted - .conversion_v1');
             triggerEvent('get_started_conversion', 'GetStarted');
         });
     });
 
     // Track button clicks for .book-a-call-button
-    document.querySelectorAll('.book-a-call-button').forEach(function (button) {
-        button.addEventListener('click', function () {
-            console.log('Book a Call button clicked');
-            triggerEvent('book_a_call', 'bookACall');
-        });
-    });
+    // document.querySelectorAll('.book-a-call-button').forEach(function (button) {
+    //     button.addEventListener('click', function () {
+    //         console.log('Book a Call button clicked');
+    //         triggerEvent('book_a_call', 'bookACall');
+    //     });
+    // });
 
     // Track interactions with calculator inputs
     var calculatorInputs = document.querySelectorAll('.financial-future-section input');

@@ -80,6 +80,7 @@ document.querySelectorAll("form").forEach(form => {
                 console.error("Error response:", result);
             } else {
                 console.log("Signup successful!");
+                triggerEvent("get_started_conversion", "GetStarted");
                 window.location.href = "/signup";
             }
         } catch (error) {
