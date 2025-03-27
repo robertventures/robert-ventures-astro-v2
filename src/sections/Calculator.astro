@@ -2,13 +2,12 @@
 import FormCTA from "../components/FormCTA.astro";
 ---
 
-<style >
+<style>
     input[type="radio"] {
         height: 1.5rem;
         width: 1.5rem;
         accent-color: #281480;
     }
-
 
     /* SLIDER STYLE */
     input[type="range"].styled-slider {
@@ -317,8 +316,7 @@ import FormCTA from "../components/FormCTA.astro";
         margin-bottom: 0.75rem;
     }
 
-    p.title.small{
-
+    p.title.small {
         color: #281480;
         text-align: center;
         /* font-feature-settings: "cv01" on; */
@@ -406,7 +404,6 @@ import FormCTA from "../components/FormCTA.astro";
     }
 
     .extra-text {
-
         font-size: 13px;
 
         span {
@@ -422,8 +419,6 @@ import FormCTA from "../components/FormCTA.astro";
             line-height: 100%;
         }
     }
-
-    
 </style>
 
 <section>
@@ -546,6 +541,25 @@ import FormCTA from "../components/FormCTA.astro";
 </section>
 
 <script is:inline>
+    // Track interactions with calculator inputs
+    const calculatorInputs = document.querySelectorAll(
+        ".financial-future-section input",
+    );
+    const hasInteracted = false;
+
+    calculatorInputs.forEach(function (input) {
+        input.addEventListener("click", function () {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                console.log("User interacted with the calculator");
+                triggerEvent("calculator_interaction", "CalculatorInteraction");
+            } else {
+                console.log(
+                    "User already interacted with the calculator. Skipping.",
+                );
+            }
+        });
+    });
     // Selectors
     const investmentAmountSlider = document.getElementById("amount-slider");
     const investmentAmountNumber = document.querySelector(
@@ -612,7 +626,8 @@ import FormCTA from "../components/FormCTA.astro";
         } else {
             // Compound Interest Calculation
             const monthlyRate = nominalAnnualRate / 12;
-            totalPrincipal = investmentAmount * Math.pow(1 + monthlyRate, totalMonths);
+            totalPrincipal =
+                investmentAmount * Math.pow(1 + monthlyRate, totalMonths);
             totalInterest = totalPrincipal - investmentAmount;
         }
 
@@ -622,15 +637,20 @@ import FormCTA from "../components/FormCTA.astro";
         if (paymentTerm === "monthly") {
             resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Monthly Returns:";
-            const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
 
             // Calculate compound value for comparison
-            const compoundedValue = investmentAmount * Math.pow(1 + nominalAnnualRate / 12, totalMonths);
+            const compoundedValue =
+                investmentAmount *
+                Math.pow(1 + nominalAnnualRate / 12, totalMonths);
             const extraEarnings = compoundedValue - totalPrincipal;
 
-            const formattedMonthlyPayment = formatCurrencyWithCents(monthlyPayment);
-            const formattedExtraEarnings = formatCurrencyWithCents(extraEarnings);
+            const formattedMonthlyPayment =
+                formatCurrencyWithCents(monthlyPayment);
+            const formattedExtraEarnings =
+                formatCurrencyWithCents(extraEarnings);
 
             document.querySelector(".calc-final-block").style.display = "flex";
 
@@ -641,8 +661,10 @@ import FormCTA from "../components/FormCTA.astro";
         } else {
             resultTitles[0].textContent = "Total with Interest:";
             resultTitles[1].textContent = "Compound interest:";
-            const formattedTotalPrincipal = formatCurrencyWithCents(totalPrincipal);
-            const formattedTotalInterest = formatCurrencyWithCents(totalInterest);
+            const formattedTotalPrincipal =
+                formatCurrencyWithCents(totalPrincipal);
+            const formattedTotalInterest =
+                formatCurrencyWithCents(totalInterest);
             totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
             returnValueElement.innerHTML = `
             $${formattedTotalInterest} 

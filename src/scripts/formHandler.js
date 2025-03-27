@@ -28,7 +28,7 @@ if (!userIpAddress) {
         });
 }
 
-document.querySelectorAll("form").forEach(form => {
+document.querySelectorAll("#form-cta").forEach(form => {
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
