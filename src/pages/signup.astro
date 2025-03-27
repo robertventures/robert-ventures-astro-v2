@@ -306,11 +306,6 @@ import Pending from "../images/svg/validation/pending.svg";
 		<Footer />
 
 		<script is:inline>
-			setTimeout(() => {
-				console.log("3 seconds have passed!");
-				triggerEvent("account_created", "accountCreated")
-			}, 3000);
-			
 			document.addEventListener("DOMContentLoaded", async () => {
 				const form = document.getElementById("signup-form");
 				const errorElement = document.querySelector(".signup-error");
