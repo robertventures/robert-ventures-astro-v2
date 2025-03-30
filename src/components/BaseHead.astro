@@ -37,11 +37,17 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/Inter-variable.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="/fonts/PublicSans-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<!-- <link rel="preload" href="/fonts/satoshi-regular.woff2" as="font" type="font/woff2" crossorigin /> -->
-<link rel="preload" href="/fonts/Satoshi-Medium.otf" as="font" type="font/otf" crossorigin />
-<link rel="preload" href="/fonts/Satoshi-Bold.otf" as="font" type="font/otf" crossorigin />
+<link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Inter-Regular.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Inter-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Inter-Medium.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Inter-Italic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Inter-Italic.woff" as="font" type="font/woff" crossorigin="anonymous" />
+
+<link rel="preload" href="/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Satoshi-Medium.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/Satoshi-Bold.woff" as="font" type="font/woff" crossorigin="anonymous" />
 
 <script is:inline>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
