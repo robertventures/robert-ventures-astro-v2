@@ -431,7 +431,7 @@ import FormCTA from "../components/FormCTA.astro";
                         <div class="calculate-block">
                             <p class="calculate-heading">Select Term:</p>
                             <div id="term" class="calculate-data select-term">
-                                <div class="calculate-data-group year-option">
+                                <div class="calculate-data-group year-option calculator-option">
                                     <input
                                         type="radio"
                                         name="year-term"
@@ -442,7 +442,7 @@ import FormCTA from "../components/FormCTA.astro";
                                         >1 Year Term<span>8%</span></label
                                     >
                                 </div>
-                                <div class="calculate-data-group year-option">
+                                <div class="calculate-data-group year-option calculator-option">
                                     <input
                                         type="radio"
                                         name="year-term"
@@ -466,7 +466,7 @@ import FormCTA from "../components/FormCTA.astro";
                                 </p>
                             </div>
                             <div class="calculate-data select-return">
-                                <div class="calculate-data-group return-option">
+                                <div class="calculate-data-group return-option calculator-option">
                                     <input
                                         type="radio"
                                         name="payment-term"
@@ -476,7 +476,7 @@ import FormCTA from "../components/FormCTA.astro";
                                     />
                                     <label for="css">Compound</label>
                                 </div>
-                                <div class="calculate-data-group return-option">
+                                <div class="calculate-data-group return-option calculator-option">
                                     <input
                                         type="radio"
                                         name="payment-term"
@@ -494,7 +494,7 @@ import FormCTA from "../components/FormCTA.astro";
                                 </p>
                                 <p class="investment-amount-number"></p>
                             </div>
-                            <div class="investment-value">
+                            <div class="investment-value calculator-option">
                                 <input
                                     id="amount-slider"
                                     class="styled-slider slider-progress"
@@ -543,22 +543,29 @@ import FormCTA from "../components/FormCTA.astro";
 <script is:inline>
     // Track interactions with calculator inputs
     const calculatorInputs = document.querySelectorAll(
-        ".financial-future-section input",
+        ".calculator-option",
     );
-    const hasInteracted = false;
+    const rangeInputs = document.querySelectorAll('input[type="range"]');
+    let hasInteracted = false;
+
+    const handleInteraction = () => {
+        if (!hasInteracted) {
+            hasInteracted = true;
+            console.log("User interacted with the calculator");
+            triggerEvent("calculator_interaction", "CalculatorInteraction");
+        } else {
+            console.log(
+                "User already interacted with the calculator. Skipping.",
+            );
+        }
+    };
 
     calculatorInputs.forEach(function (input) {
-        input.addEventListener("click", function () {
-            if (!hasInteracted) {
-                hasInteracted = true;
-                console.log("User interacted with the calculator");
-                triggerEvent("calculator_interaction", "CalculatorInteraction");
-            } else {
-                console.log(
-                    "User already interacted with the calculator. Skipping.",
-                );
-            }
-        });
+        input.addEventListener("click", handleInteraction);
+    });
+
+    rangeInputs.forEach(function (input) {
+        input.addEventListener("input", handleInteraction);
     });
     // Selectors
     const investmentAmountSlider = document.getElementById("amount-slider");
