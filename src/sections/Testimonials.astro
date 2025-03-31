@@ -46,20 +46,24 @@
 
 
 <script is:inline>
-    function loadTestimonial(){
-      // Create a script element
-      const script = document.createElement("script");
-      script.id = "trust-tracking";
-      script.defer = true;
-      // Set the script source
-      script.src = "https://cdn.usetrust.app/trust.min.js";
-      // Inject the script into the document
-      const firstScript = document.getElementsByTagName("script")[0];
-      firstScript.parentNode.insertBefore(script, firstScript);
-      // Define your customer and type IDs
-      window.__TRUST__ = window.__TRUST__ || {};
-      window.__TRUST__["customerId"] = "f97e48f0-cc33-4b3d-8271-f6fc6f7b9515";
-      window.__TRUST__["typeId"] = "dfbea9f7-2122-44ba-9ec7-b39291e25893";
+    function loadTestimonial() {
+        // Create a script element
+        const script = document.createElement("script");
+        script.id = "trust-tracking";
+        script.defer = true;
+        script.async = true;
+        // Set the script source
+        script.src = "https://cdn.usetrust.app/trust.min.js";
+        // Inject the script into the document
+        const firstScript = document.getElementsByTagName("script")[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+        // Define your customer and type IDs
+        window.__TRUST__ = window.__TRUST__ || {};
+        window.__TRUST__["customerId"] = "f97e48f0-cc33-4b3d-8271-f6fc6f7b9515";
+        window.__TRUST__["typeId"] = "dfbea9f7-2122-44ba-9ec7-b39291e25893";
     }
-    setTimeout(loadTestimonial, 3000)
-  </script>
+
+    window.addEventListener("load", () => {
+        setTimeout(loadTestimonial, 0);
+    });
+</script>
