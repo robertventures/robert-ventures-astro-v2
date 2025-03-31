@@ -2,7 +2,7 @@
 title: 'Top 10 Fixed Income Investments for Stable Returns'
 description: 'Secure your financial future with top fixed income investments. Explore 10 stable return options for a diversified, low-risk portfolio.'
 pubDate: 'Nov 03 2023'
-heroImage: 'articles-images/3.webp'
+heroImage: '/articles-images/3.webp'
 ---
 
 <div class="blog-content">

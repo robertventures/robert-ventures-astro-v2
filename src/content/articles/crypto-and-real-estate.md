@@ -2,7 +2,7 @@
 title: 'Crypto and Real Estate: The Future of Property Investment'
 description: "Explore how cryptocurrency is transforming real estate transactions. From blockchain tech to crypto payments, the future of property investment is here."
 pubDate: 'Nov 23 2023'
-heroImage: 'articles-images/23.webp'
+heroImage: '/articles-images/23.webp'
 ---
 
 <div class="blog-content">

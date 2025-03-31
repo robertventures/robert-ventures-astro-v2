@@ -2,7 +2,7 @@
 title: 'The Tax Truth: Is Passive Income Subject to Taxation?'
 description: 'Discover the tax implications of passive income and learn strategies to optimize your tax situation for investments and rental income.'
 pubDate: 'Nov 12 2023'
-heroImage: 'articles-images/12.webp'
+heroImage: '/articles-images/12.webp'
 ---
 
 <div class="blog-content">

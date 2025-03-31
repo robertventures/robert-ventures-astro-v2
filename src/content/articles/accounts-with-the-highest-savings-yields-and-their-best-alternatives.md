@@ -2,7 +2,7 @@
 title: 'Top Savings Accounts & Their Best Alternatives'
 description: 'Maximize your savings with top-yield accounts and explore Robert Ventures Bonds for potentially higher, fixed-rate returns.'
 pubDate: 'Nov 07 2023'
-heroImage: 'articles-images/7.webp'
+heroImage: '/articles-images/7.webp'
 ---
 
 <div class="blog-content">

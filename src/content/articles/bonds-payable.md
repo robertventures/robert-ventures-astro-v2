@@ -2,7 +2,7 @@
 title: 'Bonds Payable: Guide and definition '
 description: "Grasp the essentials of bonds payable, the long-term liabilities on a company's balance sheet. Learn how they work and impact corporate finance."
 pubDate: 'Nov 29 2023'
-heroImage: 'articles-images/29.webp'
+heroImage: '/articles-images/29.webp'
 ---
 
 <div class="blog-content">

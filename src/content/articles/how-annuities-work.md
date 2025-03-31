@@ -2,7 +2,7 @@
 title: 'The Annuity Blueprint: Understanding How Annuities Work'
 description: 'Unlock the secrets of annuities for a secure retirement with our guide. Explore types, benefits, and smart alternatives for steady income.'
 pubDate: 'Nov 08 2023'
-heroImage: 'articles-images/8.webp'
+heroImage: '/articles-images/8.webp'
 ---
 
 <div class="blog-content">

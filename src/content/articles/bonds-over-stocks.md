@@ -2,7 +2,7 @@
 title: 'Comparative Analysis: Why Some Investors Prefer Bonds Over Stocks'
 description: 'Explore why savvy investors might favor bonds over stocks for stability and predictable returns. Understand the trade-offs and strategic benefits.'
 pubDate: 'Nov 14 2023'
-heroImage: 'articles-images/14.webp'
+heroImage: '/articles-images/14.webp'
 ---
 
 <div class="blog-content">

@@ -2,7 +2,7 @@
 title: 'Top 13 Passive Income Ideas for Young Adults 2025'
 description: "Explore easy, diverse passive income ideas for young adults in 2025. Achieve financial flexibility and growth with minimal start-up effort."
 pubDate: 'Dec 01 2023'
-heroImage: 'articles-images/32.webp'
+heroImage: '/articles-images/32.webp'
 ---
 
 <div class="blog-content">

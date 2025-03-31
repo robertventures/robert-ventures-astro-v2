@@ -2,7 +2,7 @@
 title: '18 Passive Income Ideas for Wealth in Retirement'
 description: "Achieve financial freedom in retirement with 18 proven passive income strategies. Secure a worry-free future and unleash your true potential."
 pubDate: 'Nov 26 2023'
-heroImage: 'articles-images/26.webp'
+heroImage: '/articles-images/26.webp'
 ---
 
 <div class="blog-content">

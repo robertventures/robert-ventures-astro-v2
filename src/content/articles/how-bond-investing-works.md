@@ -2,7 +2,7 @@
 title: 'Bond Basics: A Comprehensive Guide to How Bond Investing Works'
 description: 'Master bond investing with our comprehensive guide. Learn about government and corporate bonds, risks, returns, and strategic insights.'
 pubDate: 'Nov 13 2023'
-heroImage: 'articles-images/13.webp'
+heroImage: '/articles-images/13.webp'
 ---
 
 <div class="blog-content">

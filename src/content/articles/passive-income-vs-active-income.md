@@ -2,7 +2,7 @@
 title: 'Passive Income vs Active Income: Achieve Financial Freedom'
 description: "Discover the crucial differences between passive and active income and their impact on your wealth-building strategy. Enhance your financial knowledge now!"
 pubDate: 'Nov 28 2023'
-heroImage: 'articles-images/28.webp'
+heroImage: '/articles-images/28.webp'
 ---
 
 <div class="blog-content">

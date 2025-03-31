@@ -2,7 +2,7 @@
 title: 'Debt Yield in Real Estate Investing'
 description: "Understand debt yield in real estate: Learn how this crucial financial ratio assesses loan risk, its calculation, and impact on investment decisions."
 pubDate: 'Nov 20 2023'
-heroImage: 'articles-images/20.webp'
+heroImage: '/articles-images/20.webp'
 ---
 
 <div class="blog-content">

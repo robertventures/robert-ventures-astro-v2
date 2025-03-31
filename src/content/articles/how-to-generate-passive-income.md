@@ -2,7 +2,7 @@
 title: 'The Fundamentals: How to Generate Passive Income'
 description: 'Discover the art of passive income - your secret to financial freedom! Explore bonds, rental properties, dividends, and more. Let your money work while you relax.'
 pubDate: 'Nov 11 2023'
-heroImage: 'articles-images/11.webp'
+heroImage: '/articles-images/11.webp'
 ---
 
 <div class="blog-content">

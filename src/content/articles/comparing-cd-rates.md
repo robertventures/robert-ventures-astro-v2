@@ -2,7 +2,7 @@
 title: 'Comparing CD Rates: 1 Year vs. Longer Terms'
 description: 'Compare 1-year vs. longer-term CD rates to maximize your investment returns. Understand the pros, cons, and trends to make informed decisions.'
 pubDate: 'Nov 01 2023'
-heroImage: 'articles-images/2.webp'
+heroImage: '/articles-images/2.webp'
 ---
 
 <div class="blog-content">

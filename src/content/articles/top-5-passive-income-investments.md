@@ -2,7 +2,7 @@
 title: 'Top 5 Passive Income Investments for Financial Freedom'
 description: 'Discover top passive income investments for stability and growth. Dive into real estate, stocks, P2P lending, funds, and CDs for financial freedom.'
 pubDate: 'Nov 04 2023'
-heroImage: 'articles-images/4.webp'
+heroImage: '/articles-images/4.webp'
 ---
 
 <div class="blog-content">

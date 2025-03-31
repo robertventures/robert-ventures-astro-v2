@@ -2,7 +2,7 @@
 title: 'Understanding Real Estate Debt Funds: A Comprehensive Guide'
 description: "Delve into real estate debt funds with our comprehensive guide. Learn how they fill market gaps, offer loans, and provide secure investment returns."
 pubDate: 'Nov 19 2023'
-heroImage: 'articles-images/19.webp'
+heroImage: '/articles-images/19.webp'
 ---
 
 <div class="blog-content">

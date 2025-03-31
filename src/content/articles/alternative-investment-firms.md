@@ -2,7 +2,7 @@
 title: 'Alternative Investment Firms: Beyond Traditional Assets'
 description: "Explore how alternative investment firms offer diverse portfolios with private equity, hedge funds, and real assets. Learn the benefits and strategies."
 pubDate: 'Nov 21 2023'
-heroImage: 'articles-images/21.webp'
+heroImage: '/articles-images/21.webp'
 ---
 
 <div class="blog-content">

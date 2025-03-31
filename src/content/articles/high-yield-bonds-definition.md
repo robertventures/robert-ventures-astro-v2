@@ -2,7 +2,7 @@
 title: 'High Yield Bonds Explained: Definition and Types'
 description: "Discover the definition, risks, and investment strategies of high yield bonds. Explore what makes these bonds unique in the world of finance."
 pubDate: 'Nov 27 2023'
-heroImage: 'articles-images/27.webp'
+heroImage: '/articles-images/27.webp'
 ---
 
 <div class="blog-content">

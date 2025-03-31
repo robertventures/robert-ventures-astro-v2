@@ -2,7 +2,7 @@
 title: 'Understanding Return on Invested Capital (ROIC)'
 description: "Grasp ROIC's role in finance—measure a company's profitability and capital efficiency to make informed investment decisions."
 pubDate: 'Nov 17 2023'
-heroImage: 'articles-images/17.webp'
+heroImage: '/articles-images/17.webp'
 ---
 
 <div class="blog-content">
