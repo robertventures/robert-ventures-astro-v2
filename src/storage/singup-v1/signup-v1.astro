@@ -1,0 +1,485 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+import { Image } from "astro:assets";
+import steve from "../images/testimonials/steve-lloyd.png";
+
+const pageTitle = "Robert Ventures: Sign Up";
+const pageDescription =
+	"Create your account with Robert Ventures and start your investment journey.";
+
+import Pending from "../images/svg/validation/pending.svg";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} />
+		<meta name="robots" content="noindex, nofollow" />
+		<style>
+			body {
+				background-color: #fff;
+			}
+			main {
+				padding: 1.5rem 0;
+				max-width: 366px;
+				margin: 0 auto;
+			}
+
+			h1 {
+				color: #000;
+				text-align: center;
+				font-family: "Satoshi", sans-serif;
+				font-size: 1.4375rem;
+				font-weight: 700;
+				line-height: 130%;
+				margin-bottom: 1.5rem;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			form input {
+				padding: 1rem 0.75rem;
+				font-size: 1rem;
+				font-family: Inter, sans-serif;
+				border-radius: 0.75rem;
+				border: 1px solid #afb5bc;
+			}
+
+			.group {
+				display: flex;
+				gap: 0.75rem;
+			}
+
+			.group input {
+				flex: 1;
+				min-width: 0;
+			}
+
+			button {
+				background-color: #5028ff;
+				color: #fff;
+				padding: 15px;
+				font-family: Inter, sans-serif;
+				font-size: 1.125rem;
+				font-weight: 500;
+				border-radius: 0.75rem;
+				border: 1px solid #5028ff;
+				margin-top: 0.75rem;
+				cursor: pointer;
+			}
+
+			.signup-error {
+				color: red;
+				text-align: center;
+				display: none;
+				font-size: 0.875rem;
+			}
+
+			.disclaimer {
+				margin-top: 0.75rem;
+				font-family: Inter, sans-serif;
+				font-size: 14px;
+				text-align: center;
+				margin-bottom: 3rem;
+			}
+
+			a {
+				color: #505050;
+				text-decoration: underline;
+				font-weight: 500;
+			}
+
+			.testimonial-photos {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 0.75rem;
+			}
+
+			.testimonial-photos img {
+				max-width: 80px;
+				height: auto;
+			}
+
+			.testimonial {
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1rem;
+				color: #505050;
+				margin-bottom: 0.75rem;
+			}
+
+			.testimonial-name {
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1.125rem;
+				line-height: 1.6;
+				font-weight: 500;
+			}
+
+			.loader {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: white;
+				display: inline-block;
+				animation: pulse 1s infinite;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.5);
+					opacity: 0.5;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			ul.password-validation {
+				list-style-type: none;
+				padding-left: 0;
+				font-size: 0.875rem;
+				display: none; /* Hide by default */
+			}
+
+			ul.password-validation li {
+				display: flex;
+				gap: 0.5rem;
+
+				align-items: center;
+			}
+		</style>
+		<!-- Meta Pixel Code -->
+		<script is:inline>
+			!(function (f, b, e, v, n, t, s) {
+				if (f.fbq) return;
+				n = f.fbq = function () {
+					n.callMethod
+						? n.callMethod.apply(n, arguments)
+						: n.queue.push(arguments);
+				};
+				if (!f._fbq) f._fbq = n;
+				n.push = n;
+				n.loaded = !0;
+				n.version = "2.0";
+				n.queue = [];
+				t = b.createElement(e);
+				t.async = !0;
+				t.src = v;
+				s = b.getElementsByTagName(e)[0];
+				s.parentNode.insertBefore(t, s);
+			})(
+				window,
+				document,
+				"script",
+				"https://connect.facebook.net/en_US/fbevents.js",
+			);
+			fbq("init", "652212003052612");
+			fbq("track", "PageView");
+			fbq("track", "Lead");
+		</script>
+		<noscript>
+			<img
+				height="1"
+				width="1"
+				style="display:none"
+				src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1"
+			/>
+		</noscript>
+		<!-- End Meta Pixel Code -->
+
+		<!-- Google tag (gtag.js) -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=AW-10852233213"
+		></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+			gtag("config", "AW-10852233213");
+		</script>
+
+		<!-- Event snippet for Rv website - submit lead form conversion page -->
+		<script is:inline>
+			gtag("event", "conversion", {
+				send_to: "AW-10852233213/BmIMCMX8lZ0aEP3f37Yo",
+			});
+		</script>
+		<!-- End Google tag (gtag.js) -->
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<h1>Open your account in under 2 minutes</h1>
+
+			<form id="signup-form">
+				<div class="group">
+					<input
+						type="text"
+						name="first_name"
+						placeholder="First Name"
+						required
+					/>
+					<input
+						type="text"
+						name="last_name"
+						placeholder="Last Name"
+						required
+					/>
+				</div>
+				<input type="email" name="email" placeholder="Email" required />
+				<input
+					type="password"
+					name="password"
+					id="password"
+					placeholder="Password"
+					required
+				/>
+
+				<ul class="password-validation">
+					<li id="length">
+						<span class="validation-icon"><Pending /></span>Must be
+						at least 8 characters long
+					</li>
+					<li id="letters-numbers">
+						<span class="validation-icon"><Pending /></span>Must
+						contain letters and numbers
+					</li>
+					<li id="capital-letter">
+						<span class="validation-icon"><Pending /></span>Must
+						contain at least one capital letter
+					</li>
+					<li id="special-character">
+						<span class="validation-icon"><Pending /></span>Must
+						have at least one special character
+					</li>
+				</ul>
+				<p class="signup-error"></p>
+
+				<button type="submit">
+					<span class="button-text">Sign Up</span>
+					<span class="loader" style="display: none;"></span>
+				</button>
+			</form>
+
+			<p class="disclaimer">
+				By continuing, you agree to our
+				<a href="https://robertventures.com/privacy-policy"
+					>Privacy Policy</a
+				> and
+				<a href="https://robertventures.com/terms-of-use"
+					>Terms of Use</a
+				>.
+			</p>
+
+			<div class="testimonials">
+				<div class="testimonial-photos">
+					<Image src={steve} alt="A description of my image." />
+				</div>
+				<p class="testimonial">
+					“I've known Joe for over a decade now and he has been more
+					than just a friend but has been instrumental in our holding
+					company to make accountable double-digit returns and has
+					been a blessing. Always could count on him for the
+					payments.”
+				</p>
+				<p class="testimonial-name">Steve Lloyd.</p>
+			</div>
+		</main>
+
+		<Footer />
+
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", async () => {
+				const form = document.getElementById("signup-form");
+				const errorElement = document.querySelector(".signup-error");
+				const button = form.querySelector("button[type='submit']");
+				const buttonText = button.querySelector(".button-text");
+				const loader = button.querySelector(".loader");
+				const passwordInput = document.getElementById("password");
+				const lengthCriteria = document.getElementById("length");
+				const lettersNumbersCriteria =
+					document.getElementById("letters-numbers");
+				const capitalLetterCriteria =
+					document.getElementById("capital-letter");
+				const specialCharacterCriteria =
+					document.getElementById("special-character");
+				const passwordValidation = document.querySelector(
+					".password-validation",
+				);
+
+				const greenCheckIcon = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block;">
+<path d="M14.354 4.85354L6.35403 12.8535C6.30759 12.9 6.25245 12.9369 6.19175 12.9621C6.13105 12.9872 6.06599 13.0002 6.00028 13.0002C5.93457 13.0002 5.86951 12.9872 5.80881 12.9621C5.74811 12.9369 5.69296 12.9 5.64653 12.8535L2.14653 9.35354C2.05271 9.25972 2 9.13247 2 8.99979C2 8.86711 2.05271 8.73986 2.14653 8.64604C2.24035 8.55222 2.3676 8.49951 2.50028 8.49951C2.63296 8.49951 2.76021 8.55222 2.85403 8.64604L6.00028 11.7929L13.6465 4.14604C13.7403 4.05222 13.8676 3.99951 14.0003 3.99951C14.133 3.99951 14.2602 4.05222 14.354 4.14604C14.4478 4.23986 14.5006 4.36711 14.5006 4.49979C14.5006 4.63247 14.4478 4.75972 14.354 4.85354Z" fill="#419457"/>
+</svg>`;
+
+				const redCrossIcon = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.85403 9.14628C9.90048 9.19274 9.93733 9.24789 9.96247 9.30859C9.98762 9.36928 10.0006 9.43434 10.0006 9.50003C10.0006 9.56573 9.98762 9.63079 9.96247 9.69148C9.93733 9.75218 9.90048 9.80733 9.85403 9.85378C9.80757 9.90024 9.75242 9.93709 9.69173 9.96223C9.63103 9.98737 9.56598 10.0003 9.50028 10.0003C9.43458 10.0003 9.36953 9.98737 9.30883 9.96223C9.24813 9.93709 9.19298 9.90024 9.14653 9.85378L5.00028 5.70691L0.854028 9.85378C0.760208 9.9476 0.63296 10.0003 0.500278 10.0003C0.367596 10.0003 0.240348 9.9476 0.146528 9.85378C0.0527077 9.75996 2.61548e-09 9.63272 0 9.50003C-2.61548e-09 9.36735 0.0527077 9.2401 0.146528 9.14628L4.2934 5.00003L0.146528 0.853784C0.0527077 0.759964 0 0.632716 0 0.500034C0 0.367352 0.0527077 0.240104 0.146528 0.146284C0.240348 0.0524635 0.367596 -0.000244141 0.500278 -0.000244141C0.63296 -0.000244141 0.760208 0.0524635 0.854028 0.146284L5.00028 4.29316L9.14653 0.146284C9.24035 0.0524635 9.3676 -0.000244143 9.50028 -0.000244141C9.63296 -0.000244138 9.76021 0.0524635 9.85403 0.146284C9.94785 0.240104 10.0006 0.367352 10.0006 0.500034C10.0006 0.632716 9.94785 0.759964 9.85403 0.853784L5.70715 5.00003L9.85403 9.14628Z" fill="#AE4229"/>
+</svg>`;
+
+				let ip_address = null;
+				try {
+					const ipResponse = await fetch(
+						"https://api64.ipify.org?format=json",
+					);
+					if (ipResponse.ok) {
+						const ipData = await ipResponse.json();
+						ip_address = ipData.ip;
+					}
+				} catch (err) {
+					console.warn("⚠ Error fetching IP address.");
+				}
+
+				passwordInput.addEventListener("focus", () => {
+					passwordValidation.style.display = "block"; // Show when input is focused
+				});
+
+				passwordInput.addEventListener("blur", () => {
+					if (!passwordInput.value) {
+						passwordValidation.style.display = "none"; // Hide if input is empty
+					}
+				});
+
+				passwordInput.addEventListener("input", () => {
+					const password = passwordInput.value;
+
+					// Validate length
+					if (password.length >= 8) {
+						lengthCriteria.style.color = "green";
+						lengthCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = greenCheckIcon;
+					} else {
+						lengthCriteria.style.color = "red";
+						lengthCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = redCrossIcon;
+					}
+
+					// Validate letters and numbers
+					if (/[a-zA-Z]/.test(password) && /\d/.test(password)) {
+						lettersNumbersCriteria.style.color = "green";
+						lettersNumbersCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = greenCheckIcon;
+					} else {
+						lettersNumbersCriteria.style.color = "red";
+						lettersNumbersCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = redCrossIcon;
+					}
+
+					// Validate capital letter
+					if (/[A-Z]/.test(password)) {
+						capitalLetterCriteria.style.color = "green";
+						capitalLetterCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = greenCheckIcon;
+					} else {
+						capitalLetterCriteria.style.color = "red";
+						capitalLetterCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = redCrossIcon;
+					}
+
+					// Validate special character
+					if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+						specialCharacterCriteria.style.color = "green";
+						specialCharacterCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = greenCheckIcon;
+					} else {
+						specialCharacterCriteria.style.color = "red";
+						specialCharacterCriteria.querySelector(
+							".validation-icon",
+						).innerHTML = redCrossIcon;
+					}
+				});
+
+				// Retrieve the email from localStorage and populate the email field
+				const storedEmail = localStorage.getItem("userEmail");
+				if (storedEmail) {
+					const emailInput = document.querySelector(
+						"input[name='email']",
+					);
+					emailInput.value = storedEmail;
+				}
+
+				form.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					console.log("Form submitted"); // Add this line to log form submission
+					errorElement.style.display = "none";
+					button.disabled = true;
+					buttonText.style.display = "none";
+					loader.style.display = "inline-block";
+
+					const formData = new FormData(form);
+					const data = Object.fromEntries(formData.entries());
+					data.ip_address = ip_address;
+
+					// Store the email in localStorage
+					localStorage.setItem("user_email", data.email);
+					console.log("Email stored in localStorage:", data.email); // Add this line to log the email
+
+					try {
+						const response = await fetch("/api/signup", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify(data),
+						});
+
+						const result = await response.json(); // Parse the response
+
+						if (!response.ok) {
+							throw new Error(
+								result.error ||
+									"Signup failed. Please try again.",
+							);
+						}
+
+						// ✅ Store GHL Contact ID in localStorage
+						if (result.ghl_contact_id) {
+							localStorage.setItem(
+								"ghl_contact_id",
+								result.ghl_contact_id,
+							);
+							console.log(
+								"✅ GHL Contact ID saved:",
+								result.ghl_contact_id,
+							);
+						} else {
+							console.warn("⚠ No GHL Contact ID received.");
+						}
+
+						console.log("✅ Signup successful! Redirecting...");
+						triggerEvent("account_created", "accountCreated")
+						window.location.href = "/step-2";
+					} catch (error) {
+						console.error("❌ Error during signup:", error);
+						errorElement.textContent = error.message;
+						errorElement.style.display = "block";
+					} finally {
+						button.disabled = false;
+						buttonText.style.display = "inline";
+						loader.style.display = "none";
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
