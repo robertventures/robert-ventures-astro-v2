@@ -34,6 +34,7 @@ pnpm-debug.log*
 pages/dashboard.astro
 pages/login.astro
 
+# storage folder
+src/storage
 
-# storage
-/pages/storage/
+
