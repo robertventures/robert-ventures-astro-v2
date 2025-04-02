@@ -36,4 +36,4 @@ pages/login.astro
 
 
 # storage
-pages/storage/
+/pages/storage/
