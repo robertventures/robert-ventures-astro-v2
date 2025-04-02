@@ -19,13 +19,16 @@ const pageDescription =
             }
             main {
                 padding: 1.5rem;
-                max-width: 366px;
                 margin: 0 auto;
             }
 
             form {
                 display: flex;
                 flex-direction: column;
+
+                max-width: 366px;
+
+                margin: 0 auto;
             }
 
             h1 {
@@ -36,29 +39,33 @@ const pageDescription =
                 font-style: normal;
                 font-weight: 700;
                 line-height: 130%;
+
+                margin: 0 auto;
+
                 margin-bottom: 1.5rem;
+
+                max-width: 366px;
             }
 
             .portfolio-info {
                 font-size: 1.125rem;
                 font-family: "Inter", sans-serif;
-                color: #505050;
+                color: #000000;
                 font-weight: 500;
                 margin-bottom: 0.75rem;
+                line-height: 1.75;
             }
-
-            .portfolio-value-container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .investment-urgency-options {
+            
+            .portfolio-value-container, .investment-urgency-options, .investment-method-options {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
             }
+
+            .portfolio-value-container, .investment-urgency-options {
+                margin-bottom: 2rem;
+            }
+
 
             button {
                 background-color: #5028ff;
@@ -127,66 +134,56 @@ const pageDescription =
                 method="post"
             >
                 <p class="portfolio-info">
-                    What is the approximate size of your liquid investments
-                    portfolio?
+                    Approximately how much are you looking to invest?
                 </p>
                 <div class="portfolio-value-container">
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="0"
-                            required
+                            name="invest_intent"
+                            value="1000"
                         />
-                        I don't have a portfolio
+                        $1,000
                     </label>
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="10,000"
+                            name="invest_intent"
+                            value="5000"
                         />
-                        Around 10k
+                        $5,000
                     </label>
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="50,000"
+                            name="invest_intent"
+                            value="10000"
                         />
-                        Around 50k
+                        $10,000
                     </label>
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="100,000"
+                            name="invest_intent"
+                            value="25000"
                         />
-                        Around 100k
+                        $25,000
                     </label>
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="500,000"
+                            name="invest_intent"
+                            value="50000"
                         />
-                        Around 500k
+                        $50,000
                     </label>
                     <label>
                         <input
                             type="radio"
-                            name="portfolio_value"
-                            value="1,000,000"
+                            name="invest_intent"
+                            value="100000"
                         />
-                        Around 1 million
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="portfolio_value"
-                            value="5,000,000"
-                        />
-                        Over 5 million
+                        $100,000+
                     </label>
                 </div>
 
@@ -223,6 +220,26 @@ const pageDescription =
                             value="1 year"
                         />
                         Within a year
+                    </label>
+                </div>
+
+                <p class="portfolio-info">Which method would you invest from?</p>
+                <div class="investment-method-options">
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_method"
+                            value="personal_funds"
+                        />
+                        Personal Funds
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="investment_method"
+                            value="retirement"
+                        />
+                        Retirement Account
                     </label>
                 </div>
 
@@ -280,7 +297,7 @@ const pageDescription =
                     const result = await response.json();
                     console.log("Step 2 Completed:", result);
                     triggerEvent("portfolio_value_added", "portfolioValueAdded")
-                    window.location.href = "/step-3"; // Proceed to Step 3
+                    window.location.href = "/step-4"; // Proceed to Step 4
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);

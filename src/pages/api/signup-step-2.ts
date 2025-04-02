@@ -2,8 +2,9 @@ import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
-    const portfolioValue = formData.get("portfolio_value")?.toString();
+    const investIntent = formData.get("invest_intent")?.toString();
     const investmentUrgency = formData.get("investment_urgency")?.toString();
+    const investmenMethod = formData.get("investment_method")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
 
     if (!ghlContactId) {
@@ -13,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
         );
     }
 
-    if (!portfolioValue || !investmentUrgency) {
+    if (!investIntent || !investmentUrgency) {
         return new Response(
             JSON.stringify({ error: "All fields are required" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
@@ -22,8 +23,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ✅ These are the unique field keys from your GoHighLevel system.
     const customFields = {
-        "portfolio_value": portfolioValue,
-        "investment_urgency": investmentUrgency
+        "invest_intent": investIntent,
+        "investment_urgency": investmentUrgency,
+        "investment_method": investmenMethod
     };
 
     try {
