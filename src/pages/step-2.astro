@@ -127,7 +127,7 @@ const pageDescription =
         <Header />
 
         <main>
-            <h1>Before you start, tell us a bit about yourself</h1>
+            <h1>3 Questions to Serve You Better</h1>
             <form
                 id="signup-form-step-2"
                 action="/api/signup-step-2"
@@ -300,7 +300,7 @@ const pageDescription =
                     const result = await response.json();
                     console.log("Step 2 Completed:", result);
                     triggerEvent("portfolio_value_added", "portfolioValueAdded")
-                    window.location.href = "/step-4"; // Proceed to Step 4
+                    window.location.href = "/step-3"; // Proceed to Step 3
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
