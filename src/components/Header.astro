@@ -367,7 +367,11 @@ import Opener from "../images/svg/link-icon.svg";
 		});
 
 	// Check if the current page URL contains '/signup' or 'step'
-	if (window.location.pathname.includes('/signup') || window.location.pathname.includes('step')) {
+	if (
+		window.location.pathname.includes('/signup') || 
+		window.location.pathname.includes('/questions') || 
+		window.location.pathname.includes('/booking')
+	) {
 		document.querySelector('.desktop-links').style.opacity = '0';
 		document.querySelector('.desktop-links').style.pointerEvents = 'none';
 		document.querySelector('.desktop-links').style.cursor = 'default';
