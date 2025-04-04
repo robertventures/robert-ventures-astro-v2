@@ -387,7 +387,7 @@ const pageDescription =
 
 						console.log("✅ Signup successful! Redirecting...");
 						triggerEvent("account_created", "accountCreated");
-						window.location.href = "/step-2";
+						window.location.href = "/questions";
 					} catch (error) {
 						console.error("❌ Error during signup:", error);
 						errorElement.textContent = error.message;
