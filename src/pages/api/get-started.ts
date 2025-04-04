@@ -41,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
                 customField: {
                     "userip": ipAddress || "123"
                 },
-                tags: ["bonds", "pre-wealthblock"]
+                tags: ["bonds", "home page"]
             }),
         });
 
