@@ -290,6 +290,21 @@ const pageDescription =
                 formData.append("ghl_contact_id", ghlContactId);
             }
 
+            // NEW FUNCTIONALITY: Store form answers in localStorage
+            const investIntent = formData.get("invest_intent");
+            const investmentUrgency = formData.get("investment_urgency");
+            const investmentMethod = formData.get("investment_method");
+
+            localStorage.setItem("invest_intent", investIntent);
+            localStorage.setItem("investment_urgency", investmentUrgency);
+            localStorage.setItem("investment_method", investmentMethod);
+
+            console.log("Stored answers in localStorage:", {
+                investIntent,
+                investmentUrgency,
+                investmentMethod,
+            });
+
             try {
                 const response = await fetch(form.action, {
                     method: form.method,

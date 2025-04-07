@@ -50,43 +50,57 @@ const pageDescription = "Let's finalize your account with a quick call.";
             }
         </style>
 
-        <!-- Meta Pixel Code -->
         <script is:inline>
-            !(function (f, b, e, v, n, t, s) {
-                if (f.fbq) return;
-                n = f.fbq = function () {
-                    n.callMethod
-                        ? n.callMethod.apply(n, arguments)
-                        : n.queue.push(arguments);
-                };
-                if (!f._fbq) f._fbq = n;
-                n.push = n;
-                n.loaded = !0;
-                n.version = "2.0";
-                n.queue = [];
-                t = b.createElement(e);
-                t.async = !0;
-                t.src = v;
-                s = b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t, s);
-            })(
-                window,
-                document,
-                "script",
-                "https://connect.facebook.net/en_US/fbevents.js",
-            );
-            fbq("init", "652212003052612");
-            fbq("track", "CompleteRegistration");
+            // Check localStorage values
+            const investIntent = parseInt(localStorage.getItem("invest_intent"), 10);
+            const investmentUrgency = parseInt(localStorage.getItem("investment_urgency"), 10);
+
+            // Only add Meta Pixel code if conditions are met
+            if (investIntent >= 5000 && investmentUrgency !== 12) {
+                !(function (f, b, e, v, n, t, s) {
+                    if (f.fbq) return;
+                    n = f.fbq = function () {
+                        n.callMethod
+                            ? n.callMethod.apply(n, arguments)
+                            : n.queue.push(arguments);
+                    };
+                    if (!f._fbq) f._fbq = n;
+                    n.push = n;
+                    n.loaded = !0;
+                    n.version = "2.0";
+                    n.queue = [];
+                    t = b.createElement(e);
+                    t.async = !0;
+                    t.src = v;
+                    s = b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t, s);
+                })(
+                    window,
+                    document,
+                    "script",
+                    "https://connect.facebook.net/en_US/fbevents.js",
+                );
+                fbq("init", "652212003052612");
+                fbq("track", "CompleteRegistration");
+
+                // Log to console when the tag is fired
+                console.log("✅ Meta Pixel tag fired: CompleteRegistration");
+
+                // Add noscript fallback dynamically
+                const noscript = document.createElement("noscript");
+                noscript.innerHTML = `
+                    <img
+                        height="1"
+                        width="1"
+                        style="display:none"
+                        src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1"
+                    />
+                `;
+                document.head.appendChild(noscript);
+            } else {
+                console.log("❌ Meta Pixel tag not fired: Conditions not met");
+            }
         </script>
-        <noscript
-            ><img
-                height="1"
-                width="1"
-                style="display:none"
-                src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1"
-            /></noscript
-        >
-        <!-- End Meta Pixel Code -->
     </head>
     <body>
         <Header />
@@ -95,9 +109,7 @@ const pageDescription = "Let's finalize your account with a quick call.";
             <a class="button" href="https://invest.robertventures.com/login?f=1"
                 >Start Investing</a
             >
-            <h1 class="heading">
-                Schedule a Call to Earn 10%
-            </h1>
+            <h1 class="heading">Schedule a Call to Earn 10%</h1>
 
             <iframe
                 src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
