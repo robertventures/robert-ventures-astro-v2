@@ -5,6 +5,11 @@ import Footer from "../components/Footer.astro";
 
 const pageTitle = "Robert Ventures: Step 4";
 const pageDescription = "Let's finalize your account with a quick call.";
+
+
+
+import { Image } from "astro:assets";
+import steve from "../images/testimonials/steve-lloyd.png";
 ---
 
 <!doctype html>
@@ -30,7 +35,7 @@ const pageDescription = "Let's finalize your account with a quick call.";
                 font-style: normal;
                 font-weight: 700;
                 line-height: 130%;
-                margin-bottom: 1.5rem;
+                margin-bottom: 1rem;
             }
 
             a {
@@ -48,12 +53,65 @@ const pageDescription = "Let's finalize your account with a quick call.";
                 text-align: center;
                 display: none;
             }
+
+            p{
+                text-align: center;
+                margin-bottom: 1.5rem;
+
+                line-height: 1.25;
+            }
+
+
+
+            .testimonials{
+                max-width: 366px;
+                margin: 0 auto;
+
+                margin-top: 1.5rem;
+            }
+
+            .testimonial-photos {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 0.75rem;
+			}
+
+			.testimonial-photos img {
+				max-width: 80px;
+				height: auto;
+			}
+
+
+			p.testimonial {
+
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1rem;
+				color: #505050;
+				margin-bottom: 0.75rem;
+
+				line-height: 1.75;
+			}
+
+			.testimonial-name {
+				text-align: center;
+				font-family: "Inter", sans-serif;
+				font-size: 1.125rem;
+				line-height: 1.6;
+				font-weight: 500;
+			}
         </style>
 
         <script is:inline>
             // Check localStorage values
-            const investIntent = parseInt(localStorage.getItem("invest_intent"), 10);
-            const investmentUrgency = parseInt(localStorage.getItem("investment_urgency"), 10);
+            const investIntent = parseInt(
+                localStorage.getItem("invest_intent"),
+                10,
+            );
+            const investmentUrgency = parseInt(
+                localStorage.getItem("investment_urgency"),
+                10,
+            );
 
             // Only add Meta Pixel code if conditions are met
             if (investIntent >= 5000 && investmentUrgency !== 12) {
@@ -109,8 +167,11 @@ const pageDescription = "Let's finalize your account with a quick call.";
             <a class="button" href="https://invest.robertventures.com/login?f=1"
                 >Start Investing</a
             >
-            <h1 class="heading">Schedule a Call to Earn 10%</h1>
-
+            <h1 class="heading">
+                Book Your 15-Minute Setup Call to Start Earning 10% Fixed
+                Returns
+            </h1>
+            <p>Get your questions answered and let us walk you through the simple steps to get onboarded and start growing your investment.</p>
             <iframe
                 src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
                 style="width: 100%;border:none;overflow: hidden;"
@@ -122,6 +183,20 @@ const pageDescription = "Let's finalize your account with a quick call.";
                 src="https://link.msgsndr.com/js/form_embed.js"
                 type="text/javascript"></script>
         </main>
+
+        <div class="testimonials">
+            <div class="testimonial-photos">
+                <Image src={steve} alt="A description of my image." />
+            </div>
+            <p class="testimonial">
+                “I've known Joe for over a decade now and he has been more
+                than just a friend but has been instrumental in our holding
+                company to make accountable double-digit returns and has
+                been a blessing. Always could count on him for the
+                payments.”
+            </p>
+            <p class="testimonial-name">Marvin Gordon.</p>
+        </div>
         <Footer />
     </body>
 </html>
