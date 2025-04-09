@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
     try {
         // Expect JSON body instead of FormData
         const body = await request.json();
-        const { email, timeZone, ipAddress } = body;
+        const { email, timeZone, ipAddress, utmCampaign } = body;
 
         if (!email || !timeZone) {
             console.error("❌ Missing required fields");
@@ -41,7 +41,8 @@ export const POST: APIRoute = async ({ request }) => {
                 customField: {
                     "userip": ipAddress || "123"
                 },
-                tags: ["bonds", "home page"]
+                tags: ["bonds", "home page"],
+                source: utmCampaign
             }),
         });
 

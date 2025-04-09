@@ -32,6 +32,15 @@ if (!userIpAddress) {
         });
 }
 
+// Extract the utm_campaign parameter from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const utmCampaign = urlParams.get("utm_campaign");
+
+if (utmCampaign) {
+    // Store the utm_campaign in localStorage
+    localStorage.setItem("utmCampaign", utmCampaign);
+}
+
 // Select all forms with the ID "form-cta" and attach event listeners
 document.querySelectorAll("#form-cta").forEach(form => {
     form.addEventListener("submit", async function (event) {
@@ -60,14 +69,16 @@ document.querySelectorAll("#form-cta").forEach(form => {
         // Get the user's timezone using the browser's Intl API
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Retrieve the IP address from localStorage (set earlier)
+        // Retrieve the IP address and utm_campaign from localStorage
         const storedIpAddress = localStorage.getItem("userIP");
+        const storedUtmCampaign = localStorage.getItem("utmCampaign");
 
         // Prepare the data to be sent to the API
         const requestData = { 
             email, 
             timeZone, 
-            ipAddress: storedIpAddress 
+            ipAddress: storedIpAddress,
+            utmCampaign: storedUtmCampaign // Include the utm_campaign
         };
 
         // Store the email in localStorage for future use
