@@ -1,10 +1,14 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const currentPath = Astro.url.pathname; // Get the current path on the server side
 
-const { title, description, image = '../images/logos/rv-icon.png' } = Astro.props;
+const {
+  title,
+  description,
+  image = "../images/logos/rv-icon.png",
+} = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -19,7 +23,10 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 <!-- SEO Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="keywords" content="investment, wealth management, real estate, technology assets, fixed-rate returns, APY" />
+<meta
+  name="keywords"
+  content="investment, wealth management, real estate, technology assets, fixed-rate returns, APY"
+/>
 <meta name="author" content="Robert Ventures" />
 
 <!-- Open Graph Meta Tags -->
@@ -35,49 +42,117 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
 
-
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Regular.woff" as="font" type="font/woff" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Medium.woff" as="font" type="font/woff" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Italic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Italic.woff" as="font" type="font/woff" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-SemiBold.woff" as="font" type="font/woff" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Black.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Inter-Black.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link
+  rel="preload"
+  href="/fonts/Inter-Regular.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Regular.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Medium.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Medium.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Italic.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Italic.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-SemiBold.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-SemiBold.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Black.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Inter-Black.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
 
-<link rel="preload" href="/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Satoshi-Medium.woff" as="font" type="font/woff" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href="/fonts/Satoshi-Bold.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link
+  rel="preload"
+  href="/fonts/Satoshi-Medium.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Satoshi-Medium.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Satoshi-Bold.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Satoshi-Bold.woff"
+  as="font"
+  type="font/woff"
+  crossorigin="anonymous"
+/>
 
-<script is:inline>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NK8975F');
-</script>
+<script is:inline></script>
 
+<!-- GOOGLE TAG MANAGER -->
+<script src="/scripts/gtm.js" defer></script>
+<!-- GOOGLE TAG MANAGER -->
 
 <!-- CHATBOT -->
-<script is:inline>
-  const excludedPaths = ['/signup', '/questions', '/booking'];
-  const currentPath = "{currentPath}"; // Inject the server-side path into the client-side script
-
-  console.log("hello from chatbot")
-
-  if (!excludedPaths.includes(currentPath)) {
-    var script = document.createElement('script');
-    script.src = "https://widgets.leadconnectorhq.com/loader.js";
-    script.setAttribute("data-resources-url", "https://widgets.leadconnectorhq.com/chat-widget/loader.js");
-    script.setAttribute("data-widget-id", "672a148805dded393695deca");
-    document.head.appendChild(script);
-  }
-</script>
+<script src="/scripts/chatbot.js" defer></script>
 <!-- CHATBOT -->
 
-
-<script src="/scripts/analytics/GA4ClarityTriggers.js" defer/>
+<!-- EVENTS HANDLER -->
+<script src="/scripts/analytics/GA4ClarityTriggers.js" defer></script>
+<!-- EVENTS HANDLER -->
