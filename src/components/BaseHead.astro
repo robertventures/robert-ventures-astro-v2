@@ -2,9 +2,9 @@
 import '../styles/global.css';
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const currentPath = Astro.url.pathname; // Get the current path on the server side
 
 const { title, description, image = '../images/logos/rv-icon.png' } = Astro.props;
-
 ---
 
 <!-- Global Metadata -->
@@ -65,7 +65,9 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 <!-- CHATBOT -->
 <script is:inline>
   const excludedPaths = ['/signup', '/questions', '/booking'];
-  const currentPath = Astro.url.pathname;
+  const currentPath = "{currentPath}"; // Inject the server-side path into the client-side script
+
+  console.log("hello from chatbot")
 
   if (!excludedPaths.includes(currentPath)) {
     var script = document.createElement('script');
