@@ -63,12 +63,17 @@ const { title, description, image = '../images/logos/rv-icon.png' } = Astro.prop
 
 
 <!-- CHATBOT -->
-<script>  
-  var script = document.createElement('script');
-  script.src = "https://widgets.leadconnectorhq.com/loader.js";
-  script.setAttribute("data-resources-url", "https://widgets.leadconnectorhq.com/chat-widget/loader.js");
-  script.setAttribute("data-widget-id", "672a148805dded393695deca");
-  document.head.appendChild(script);
+<script is:inline>
+  const excludedPaths = ['/signup', '/questions', '/booking'];
+  const currentPath = Astro.url.pathname;
+
+  if (!excludedPaths.includes(currentPath)) {
+    var script = document.createElement('script');
+    script.src = "https://widgets.leadconnectorhq.com/loader.js";
+    script.setAttribute("data-resources-url", "https://widgets.leadconnectorhq.com/chat-widget/loader.js");
+    script.setAttribute("data-widget-id", "672a148805dded393695deca");
+    document.head.appendChild(script);
+  }
 </script>
 <!-- CHATBOT -->
 
