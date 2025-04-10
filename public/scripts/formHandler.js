@@ -90,6 +90,7 @@ document.querySelectorAll("#form-cta").forEach(form => {
         }
 
         try {
+            
             // Send the form data to the server via a POST request
             const response = await fetch("/api/get-started", {
                 method: "POST",
