@@ -1,9 +1,5 @@
 ---
-import Image from "astro/components/Image.astro";
 import Opener from "../images/svg/opener.svg";
-
-import arrow from "../images/design-elements/Arrow-right.svg";
-import FormCTA from "../components/FormCTA.astro";
 ---
 
 <style>
@@ -247,6 +243,18 @@ import FormCTA from "../components/FormCTA.astro";
         var acc = document.getElementsByClassName("accordion");
         for (var i = 0; i < acc.length; i++) {
             acc[i].addEventListener("click", function () {
+                // Close all other panels
+                for (var j = 0; j < acc.length; j++) {
+                    if (acc[j] !== this) {
+                        acc[j].classList.remove("active");
+                        var otherPanel = acc[j].nextElementSibling;
+                        if (otherPanel.style.maxHeight) {
+                            otherPanel.style.maxHeight = null;
+                        }
+                    }
+                }
+
+                // Toggle the clicked panel
                 this.classList.toggle("active");
                 var panel = this.nextElementSibling;
                 if (panel.style.maxHeight) {
