@@ -45,7 +45,7 @@
 </section>
 
 
-<script is:inline>
+<script >
     function loadTestimonial() {
         // Create a script element
         const script = document.createElement("script");
@@ -66,4 +66,17 @@
     window.addEventListener("load", () => {
         setTimeout(loadTestimonial, 0);
     });
+</script>
+
+<script>
+    declare global {
+        interface Window {
+            __TRUST__?: {
+                customerId?: string;
+                typeId?: string;
+            };
+        }
+    }
+
+    export {};
 </script>

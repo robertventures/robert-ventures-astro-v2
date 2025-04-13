@@ -540,7 +540,7 @@ import FormCTA from "../components/FormCTA.astro";
     </div>
 </section>
 
-<script is:inline>
+<script>
     // Track interactions with calculator inputs
     const calculatorInputs = document.querySelectorAll(
         ".calculator-option",
@@ -603,13 +603,13 @@ import FormCTA from "../components/FormCTA.astro";
 
     // Calculate Returns
     function calculateReturns() {
-        const paymentTerm = document.querySelector(
+        const paymentTerm = (document.querySelector(
             'input[name="payment-term"]:checked',
-        )?.value;
-        const investmentAmount = parseFloat(investmentAmountSlider.value) || 0;
+        ) as HTMLInputElement)?.value;
+        const investmentAmount = parseFloat((investmentAmountSlider as HTMLInputElement).value) || 0;
         const investmentDuration =
             parseFloat(
-                document.querySelector('input[name="year-term"]:checked')
+                (document.querySelector('input[name="year-term"]:checked') as HTMLInputElement)
                     ?.value,
             ) || 0;
 
@@ -659,7 +659,10 @@ import FormCTA from "../components/FormCTA.astro";
             const formattedExtraEarnings =
                 formatCurrencyWithCents(extraEarnings);
 
-            document.querySelector(".calc-final-block").style.display = "flex";
+            const calcFinalBlock = document.querySelector(".calc-final-block");
+            if (calcFinalBlock) {
+                (calcFinalBlock as HTMLElement).style.display = "flex";
+            }
 
             returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
             extraTextElement.innerHTML = `
@@ -678,7 +681,7 @@ import FormCTA from "../components/FormCTA.astro";
             <span class="result-block-extra-info">
                 (${investmentDuration === 3 ? "10% APY" : "8% Annually"})
             </span>`;
-            document.querySelector(".calc-final-block").style.display = "none";
+            (document.querySelector(".calc-final-block") as HTMLElement).style.display = "none";
             extraTextElement.innerHTML = ""; // Clear extra text when not monthly
         }
     }
@@ -688,9 +691,10 @@ import FormCTA from "../components/FormCTA.astro";
         .querySelectorAll('input[type="range"].slider-progress')
         .forEach((slider) => {
             const updateSliderStyle = () => {
-                slider.style.setProperty("--value", slider.value);
-                slider.style.setProperty("--min", slider.min || "0");
-                slider.style.setProperty("--max", slider.max || "100");
+                const inputSlider = slider as HTMLInputElement;
+                inputSlider.style.setProperty("--value", inputSlider.value);
+                inputSlider.style.setProperty("--min", inputSlider.min || "0");
+                inputSlider.style.setProperty("--max", inputSlider.max || "100");
             };
 
             updateSliderStyle(); // Set initial styles

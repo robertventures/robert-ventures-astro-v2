@@ -238,7 +238,7 @@ import Opener from "../images/svg/opener.svg";
     </div>
 </section>
 
-<script is:inline>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         var acc = document.getElementsByClassName("accordion");
         for (var i = 0; i < acc.length; i++) {
@@ -248,7 +248,7 @@ import Opener from "../images/svg/opener.svg";
                     if (acc[j] !== this) {
                         acc[j].classList.remove("active");
                         var otherPanel = acc[j].nextElementSibling;
-                        if (otherPanel.style.maxHeight) {
+                        if (otherPanel instanceof HTMLElement && otherPanel.style.maxHeight) {
                             otherPanel.style.maxHeight = null;
                         }
                     }
