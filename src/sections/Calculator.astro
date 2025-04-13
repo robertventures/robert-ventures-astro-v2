@@ -436,7 +436,6 @@ import FormCTA from "../components/FormCTA.astro";
                                         type="radio"
                                         name="year-term"
                                         value="1"
-                                        onclick="calculateReturns()"
                                     />
                                     <label for="html"
                                         >1 Year Term<span>8%</span></label
@@ -448,7 +447,6 @@ import FormCTA from "../components/FormCTA.astro";
                                         name="year-term"
                                         value="3"
                                         checked
-                                        onclick="calculateReturns()"
                                     />
                                     <label for="css"
                                         >3 Year Term<span>10%</span></label
@@ -471,7 +469,6 @@ import FormCTA from "../components/FormCTA.astro";
                                         type="radio"
                                         name="payment-term"
                                         value="compound"
-                                        onclick="calculateReturns()"
                                         checked
                                     />
                                     <label for="css">Compound</label>
@@ -481,7 +478,6 @@ import FormCTA from "../components/FormCTA.astro";
                                         type="radio"
                                         name="payment-term"
                                         value="monthly"
-                                        onclick="calculateReturns()"
                                     />
                                     <label for="html">Monthly</label>
                                 </div>
@@ -504,7 +500,6 @@ import FormCTA from "../components/FormCTA.astro";
                                     step="1000"
                                     min="1000"
                                     max="100000"
-                                    oninput="calculateReturns()"
                                 />
                             </div>
                             <div class="investment-value-limits">
@@ -518,13 +513,7 @@ import FormCTA from "../components/FormCTA.astro";
             <div class="result-section">
                 <div class="result-block wrapper total-value">
                     <p class="title">Total value with interest:</p>
-                    <div class="value">
-                        <!-- <path
-                            d="M4.5 15L12 7.5L19.5 15"
-                            stroke="#17A814"
-                            stroke-width="4"
-                            stroke-linecap="square"></path> -->
-                    </div>
+                    <div class="value"></div>
                     <p id="total-profit">TotalAmount</p>
                 </div>
                 <div class="result-block calc-final-block">
@@ -542,9 +531,7 @@ import FormCTA from "../components/FormCTA.astro";
 
 <script>
     // Track interactions with calculator inputs
-    const calculatorInputs = document.querySelectorAll(
-        ".calculator-option",
-    );
+    const calculatorInputs = document.querySelectorAll(".calculator-option");
     const rangeInputs = document.querySelectorAll('input[type="range"]');
     let hasInteracted = false;
 
@@ -560,13 +547,14 @@ import FormCTA from "../components/FormCTA.astro";
         }
     };
 
-    calculatorInputs.forEach(function (input) {
+    calculatorInputs.forEach((input) => {
         input.addEventListener("click", handleInteraction);
     });
 
-    rangeInputs.forEach(function (input) {
+    rangeInputs.forEach((input) => {
         input.addEventListener("input", handleInteraction);
     });
+
     // Selectors
     const investmentAmountSlider = document.getElementById("amount-slider");
     const investmentAmountNumber = document.querySelector(
@@ -607,11 +595,9 @@ import FormCTA from "../components/FormCTA.astro";
             'input[name="payment-term"]:checked',
         ) as HTMLInputElement)?.value;
         const investmentAmount = parseFloat((investmentAmountSlider as HTMLInputElement).value) || 0;
-        const investmentDuration =
-            parseFloat(
-                (document.querySelector('input[name="year-term"]:checked') as HTMLInputElement)
-                    ?.value,
-            ) || 0;
+        const investmentDuration = parseFloat(
+            (document.querySelector('input[name="year-term"]:checked') as HTMLInputElement)?.value,
+        ) || 0;
 
         const nominalAnnualRate = investmentDuration === 3 ? 0.1 : 0.08;
         const totalMonths = investmentDuration * 12;
@@ -661,7 +647,9 @@ import FormCTA from "../components/FormCTA.astro";
 
             const calcFinalBlock = document.querySelector(".calc-final-block");
             if (calcFinalBlock) {
-                (calcFinalBlock as HTMLElement).style.display = "flex";
+                if (calcFinalBlock instanceof HTMLElement) {
+                    calcFinalBlock.style.display = "flex";
+                }
             }
 
             returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
@@ -681,7 +669,10 @@ import FormCTA from "../components/FormCTA.astro";
             <span class="result-block-extra-info">
                 (${investmentDuration === 3 ? "10% APY" : "8% Annually"})
             </span>`;
-            (document.querySelector(".calc-final-block") as HTMLElement).style.display = "none";
+            const calcFinalBlock = document.querySelector(".calc-final-block");
+            if (calcFinalBlock instanceof HTMLElement) {
+                calcFinalBlock.style.display = "none";
+            }
             extraTextElement.innerHTML = ""; // Clear extra text when not monthly
         }
     }
