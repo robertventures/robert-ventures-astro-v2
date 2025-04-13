@@ -337,7 +337,7 @@ import Opener from "../images/svg/link-icon.svg";
 	</header>
 
 
-<script is:inline>
+<script>
 	document.getElementById("hamburger").addEventListener("click", function () {
 		const mobileMenu = document.getElementById("mobileMenu");
 		mobileMenu.classList.toggle("show");
@@ -372,15 +372,29 @@ import Opener from "../images/svg/link-icon.svg";
 		window.location.pathname.includes('/questions') || 
 		window.location.pathname.includes('/booking')
 	) {
-		document.querySelector('.desktop-links').style.opacity = '0';
-		document.querySelector('.desktop-links').style.pointerEvents = 'none';
-		document.querySelector('.desktop-links').style.cursor = 'default';
-		document.querySelector('.login-link').style.opacity = '0';
-		document.querySelector('.login-link').style.pointerEvents = 'none';
-		document.querySelector('.login-link').style.cursor = 'default';
+		const desktopLinks = document.querySelector('.desktop-links') as HTMLElement;
+		if (desktopLinks) {
+			desktopLinks.style.opacity = '0';
+			desktopLinks.style.pointerEvents = 'none';
+			desktopLinks.style.cursor = 'default';
+		}
+
+		const loginLink = document.querySelector('.login-link') as HTMLElement;
+		if (loginLink) {
+			loginLink.style.opacity = '0';
+			loginLink.style.pointerEvents = 'none';
+			loginLink.style.cursor = 'default';
+		}
 
 		// Hide the mobile menu
-		document.querySelector('.hamburger').style.display = 'none';
-		document.querySelector('.mobile-menu').style.display = 'none';
+		const hamburger = document.querySelector('.hamburger') as HTMLElement;
+		if (hamburger) {
+			hamburger.style.display = 'none';
+		}
+
+		const mobileMenu = document.querySelector('.mobile-menu') as HTMLElement;
+		if (mobileMenu) {
+			mobileMenu.style.display = 'none';
+		}
 	}
 </script>
