@@ -149,7 +149,9 @@ const {
 <!-- GOOGLE TAG MANAGER -->
 
 <!-- CHATBOT -->
-<script src="/scripts/chatbot.js" defer></script>
+{!['signup', 'questions', 'booking'].some(path => Astro.url.pathname.includes(path)) && (
+  <script src="/scripts/chatbot.js" defer></script>
+)}
 <!-- CHATBOT -->
 
 <!-- EVENTS HANDLER -->
