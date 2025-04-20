@@ -16,7 +16,7 @@ export default defineConfig({
   experimental: {
     svg: true,
   },
-  output: 'server',
+  output: 'static',
   adapter: netlify()
 });
 

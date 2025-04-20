@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 
+export const prerender = false; // Ensure this route is server-rendered
+
 export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
     const investIntent = formData.get("invest_intent")?.toString();

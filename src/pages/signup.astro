@@ -340,15 +340,19 @@ const pageDescription =
 					}
 
 					// Retrieve the phone number value
-					const phoneValue = document
-						.getElementById("phone")
-						.value.replace(/\D/g, ""); // Remove non-numeric characters
+					let phoneValue = document.getElementById("phone").value.trim();
 
-					if (phoneValue.length !== 11 || !phoneValue.startsWith("1")) {
-						console.warn(
-							"⚠ Invalid phone number entered:",
-							phoneValue,
-						);
+					// Check if the phone number starts with "+1" and remove it
+					if (phoneValue.startsWith("+1")) {
+						phoneValue = phoneValue.substring(2); // Remove the "+1"
+					}
+
+					// Remove any non-numeric characters from the phone number
+					phoneValue = phoneValue.replace(/\D/g, "");
+
+					// Validate the phone number length
+					if (phoneValue.length !== 10) {
+						console.warn("⚠ Invalid phone number entered:", phoneValue);
 						alert("Please enter a valid US phone number.");
 						button.disabled = false;
 						buttonText.style.display = "inline";
@@ -356,7 +360,7 @@ const pageDescription =
 						return;
 					}
 
-					// Add the phone number to the data object
+					// Add the formatted phone number to the data object
 					data.phone_number = phoneValue;
 
 					try {
@@ -370,21 +374,14 @@ const pageDescription =
 
 						if (!response.ok) {
 							throw new Error(
-								result.error ||
-									"Signup failed. Please try again.",
+								result.error || "Signup failed. Please try again."
 							);
 						}
 
 						// ✅ Store GHL Contact ID in localStorage
 						if (result.ghl_contact_id) {
-							localStorage.setItem(
-								"ghl_contact_id",
-								result.ghl_contact_id,
-							);
-							console.log(
-								"✅ GHL Contact ID saved:",
-								result.ghl_contact_id,
-							);
+							localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
+							console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
 						} else {
 							console.warn("⚠ No GHL Contact ID received.");
 						}

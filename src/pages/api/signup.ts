@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
-import { supabase } from "../../lib/supabase";
+
+export const prerender = false; // Ensure this route is server-rendered
 
 export const POST: APIRoute = async ({ request }) => {
     const ghlApiKey = import.meta.env.GHL_API_KEY;

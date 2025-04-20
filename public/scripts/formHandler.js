@@ -1,45 +1,4 @@
-// Retrieve the email from localStorage and use it as needed
-const storedEmail = localStorage.getItem("userEmail");
-console.log("Form handler loaded");
 
-// Capture the page load time for performance measurement
-const pageLoadTime = performance.now();
-
-// Retrieve the user's IP address from localStorage if it exists
-let userIpAddress = localStorage.getItem("userIP");
-
-if (!userIpAddress) {
-    // Measure the time taken to fetch the user's IP address
-    const startTime = performance.now();
-
-    // Fetch the user's IP address using an external API
-    fetch("https://api.ipify.org?format=json")
-        .then(response => response.json())
-        .then(data => {
-            userIpAddress = data.ip;
-            localStorage.setItem("userIP", userIpAddress); // Store IP address in localStorage
-            const endTime = performance.now();
-            const timeTaken = endTime - startTime;
-            const totalTimeSincePageLoad = endTime - pageLoadTime;
-
-            // Log performance metrics and the user's IP address
-            console.log("User IP Address:", userIpAddress);
-            console.log("Time taken to capture IP address:", timeTaken.toFixed(2), "milliseconds");
-            console.log("Total time since page load to capture IP address:", totalTimeSincePageLoad.toFixed(2), "milliseconds");
-        })
-        .catch(error => {
-            console.error("Error fetching IP address:", error); // Handle errors gracefully
-        });
-}
-
-// Extract the utm_campaign parameter from the URL
-const urlParams = new URLSearchParams(window.location.search);
-const utmCampaign = urlParams.get("utm_campaign");
-
-if (utmCampaign) {
-    // Store the utm_campaign in localStorage
-    localStorage.setItem("utmCampaign", utmCampaign);
-}
 
 // Select all forms with the ID "form-cta" and attach event listeners
 document.querySelectorAll("#form-cta").forEach(form => {
@@ -66,6 +25,10 @@ document.querySelectorAll("#form-cta").forEach(form => {
         loader.style.display = "inline-block";
         signupError.style.display = "none"; // Hide any previous error messages
 
+
+        // Store the email in localStorage for future use
+        localStorage.setItem("userEmail", email);
+
         // Get the user's timezone using the browser's Intl API
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -73,24 +36,21 @@ document.querySelectorAll("#form-cta").forEach(form => {
         const storedIpAddress = localStorage.getItem("userIP");
         const storedUtmCampaign = localStorage.getItem("utmCampaign");
 
-        // Prepare the data to be sent to the API
-        const requestData = { 
-            email, 
-            timeZone, 
-            ipAddress: storedIpAddress,
-            utmCampaign: storedUtmCampaign // Include the utm_campaign
-        };
-
-        // Store the email in localStorage for future use
-        localStorage.setItem("userEmail", email);
 
         // Set the user's email or unique ID in Microsoft Clarity for tracking
         if (window.clarity && email) {
             window.clarity("identify", email); // Replace "userId" with your desired property name
         }
 
+        // Prepare the data to be sent to the API
+        const requestData = {
+            email,
+            timeZone,
+            ipAddress: storedIpAddress,
+            utmCampaign: storedUtmCampaign // Include the utm_campaign
+        };
+
         try {
-            
             // Send the form data to the server via a POST request
             const response = await fetch("/api/get-started", {
                 method: "POST",
