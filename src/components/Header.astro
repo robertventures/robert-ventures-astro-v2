@@ -96,6 +96,10 @@ import Opener from "../images/svg/link-icon.svg";
 		visibility: hidden; /* Hide by default */
 	}
 
+	.hidden {
+		display: none;
+	}
+
 	.mobile-menu.show {
 		bottom: 0; /* No padding at the bottom */
 		opacity: 1;
@@ -311,7 +315,7 @@ import Opener from "../images/svg/link-icon.svg";
 					</svg>
 				</div>
 			</nav>
-			<div class="mobile-menu" id="mobileMenu">
+			<div class="mobile-menu hidden" id="mobileMenu">
 				<div class="footer-content">
 					<div class="menu-link-lists">
 						<div class="list">
@@ -405,4 +409,11 @@ import Opener from "../images/svg/link-icon.svg";
 			mobileMenu.style.display = 'none';
 		}
 	}
+
+	window.addEventListener("load", function () {
+		const mobileMenu = document.getElementById("mobileMenu");
+		if (mobileMenu) {
+			mobileMenu.classList.remove("hidden");
+		}
+	});
 </script>
