@@ -8,6 +8,9 @@ const {
   description,
   image = "../images/logos/rv-icon.png",
 } = Astro.props;
+
+import { join } from "node:path";
+import { AstroFont } from "astro-font";
 ---
 
 <!-- Global Metadata -->
@@ -42,12 +45,12 @@ const {
 <meta name="twitter:image" content={image} />
 
 <!-- Font preloads -->
-<link
-rel="preload"
-href="/fonts/Satoshi-Bold.woff2"
-as="font"
-type="font/woff2"
-crossorigin="anonymous"
+<!-- <link
+  rel="preload"
+  href="/fonts/Satoshi-Bold.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
 />
 
 <link
@@ -64,37 +67,108 @@ crossorigin="anonymous"
   as="font"
   type="font/woff2"
   crossorigin="anonymous"
+/> -->
+
+<AstroFont
+  config={[
+    {
+      name: "Satoshi",
+      src: [
+        {
+          style: "bold",
+          weight: "700",
+          path: join(process.cwd(), "public", "fonts", "Satoshi-Bold.woff2"),
+          preload: true
+        },
+        {
+          style: "medium",
+          weight: "500",
+          path: join(process.cwd(), "public", "fonts", "Satoshi-Medium.woff2"),
+          preload: false
+        },
+      ],
+      display: "swap",
+      selector: "body",
+      fallback: "sans-serif",
+    },
+    {
+      name: "Inter",
+      src: [
+        {
+          style: "medium",
+          weight: "500",
+          path: join(process.cwd(), "public", "fonts", "Inter-Medium.woff2"),
+          preload: true
+        },
+        {
+          style: "regular",
+          weight: "400",
+          path: join(process.cwd(), "public", "fonts", "Inter-Regular.woff2"),
+          preload: true
+        },
+        {
+          style: "italic",
+          weight: "400",
+          path: join(process.cwd(), "public", "fonts", "Inter-Italic.woff2"),
+          preload: false
+        },
+        {
+          style: "semibold",
+          weight: "600",
+          path: join(process.cwd(), "public", "fonts", "Inter-SemiBold.woff2"),
+          preload: false
+        },
+        {
+          style: "black",
+          weight: "900",
+          path: join(process.cwd(), "public", "fonts", "Inter-Black.woff2"),
+          preload: false
+        }
+      ],
+      display: "swap",
+      selector: "body",
+      fallback: "sans-serif",
+    },
+  ]}
 />
 
 <link rel="preload" href="/images/svg/waves.svg" as="image" />
 <link rel="preload" href="/images/svg/10-rv.svg" as="image" />
 
-
-<link rel="preload" href="/images/svg/business-logos/business-insider.svg" as="image" />
-<link rel="preload" href="/images/svg/business-logos/market-watch.svg" as="image" />
+<link
+  rel="preload"
+  href="/images/svg/business-logos/business-insider.svg"
+  as="image"
+/>
+<link
+  rel="preload"
+  href="/images/svg/business-logos/market-watch.svg"
+  as="image"
+/>
 <link rel="preload" href="/images/svg/business-logos/ap.svg" as="image" />
-<link rel="preload" href="/images/svg/business-logos/street-insider.svg" as="image" />
+<link
+  rel="preload"
+  href="/images/svg/business-logos/street-insider.svg"
+  as="image"
+/>
 <link rel="preload" href="/images/svg/business-logos/benzinga.svg" as="image" />
 <link rel="preload" href="/images/svg/business-logos/morning.svg" as="image" />
-
-
-
-
 
 <!-- GOOGLE TAG MANAGER -->
 <script src="/scripts/gtm.js" defer></script>
 <!-- GOOGLE TAG MANAGER -->
 
 <!-- CHATBOT -->
-{!['signup', 'questions', 'booking'].some(path => Astro.url.pathname.includes(path)) && (
-  <script src="/scripts/chatbot.js" defer></script>
-)}
+{
+  !["signup", "questions", "booking"].some((path) =>
+    Astro.url.pathname.includes(path),
+  ) && <script src="/scripts/chatbot.js" defer />
+}
 <!-- CHATBOT -->
 
 <!-- EVENTS HANDLER -->
 <script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
 <!-- EVENTS HANDLER -->
-
 
 <!-- EVENTS HANDLER -->
 <script src="/scripts/identifyUser.js" async></script>
