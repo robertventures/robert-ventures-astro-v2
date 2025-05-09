@@ -29,7 +29,7 @@ src/pages/dashboard.astro
 
 src/pages/login.astro
 
-src/pages/test.astro
+# src/pages/test.astro
 
 # storage folder
 src/storage
