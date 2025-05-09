@@ -215,7 +215,6 @@ import marvin from "../images/testimonials/marvin-gordon.png";
             event.data[0] === "msgsndr-booking-complete"
         ) {
             triggerEvent("finalize_booking", "finalizeBooking");
-            triggerEvent("invest_now", "investNow");
 
             console.log("✅ Booking detected! Redirecting user to /login...");
             window.location.href =

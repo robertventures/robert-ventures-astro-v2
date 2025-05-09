@@ -25,8 +25,11 @@ pnpm-debug.log*
 .netlify/build/
 
 # pages
-pages/dashboard.astro
-pages/login.astro
+src/pages/dashboard.astro
+
+src/pages/login.astro
+
+src/pages/test.astro
 
 # storage folder
 src/storage
