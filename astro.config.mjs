@@ -10,7 +10,7 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   site: 'https://robertventures.com',
   integrations: [mdx(), sitemap({
-    exclude: ['/test'], // Exclude the /test page from the sitemap
+    exclude: ['/test', '/test2'], // Exclude the /test page from the sitemap
   })],
   devToolbar: {
     enabled: false
