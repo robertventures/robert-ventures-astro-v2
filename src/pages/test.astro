@@ -5,7 +5,7 @@ const pageDescription = "test.";
 ---
 
 <style>
-    .frame {
+    /* .frame {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -13,33 +13,41 @@ const pageDescription = "test.";
         width: 640px;
         height: 480px;
         border: 1px solid #ccc;
-    }
+    } */
 </style>
 
 <!doctype html>
 <html lang="en">
     <head>
         <BaseHead title={pageTitle} description={pageDescription} />
-        <script is:inline src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
+        <!-- <script is:inline src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script> -->
     </head>
     <body>
         <section>
             <div class="section-container">
                 <h1>Hello World</h1>
-                <div id="adobe-dc-view" class="frame"></div>
+                <!-- <div id="adobe-dc-view" class="frame"></div> -->
+
+                <iframe src="https://robertventures.docsend.com/view/dt674xwkdvgqj84d" allow="fullscreen" width="640" height="480"></iframe>
             </div>
         </section>
-        <script is:inline>
-            document.addEventListener("adobe_dc_view_sdk.ready", function () {
+        <!-- <script is:inline>
+            const ADOBE_CLIENT_ID = "a2e91a32169c47009757382ad2fa89b8";
+            function displayPDF() {
                 var adobeDCView = new AdobeDC.View({
-                    clientId: "a2e91a32169c47009757382ad2fa89b8",
+                    clientId: ADOBE_CLIENT_ID,
                     divId: "adobe-dc-view"
                 });
                 adobeDCView.previewFile({
                     content: { location: { url: "/pdf/brochure.pdf" } },
                     metaData: { fileName: "brochure.pdf" }
                 });
-            });
-        </script>
+            }
+            if (window.AdobeDC) {
+                displayPDF();
+            } else {
+                document.addEventListener("adobe_dc_view_sdk.ready", displayPDF);
+            }
+        </script> -->
     </body>
 </html>
