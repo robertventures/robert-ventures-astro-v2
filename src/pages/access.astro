@@ -1,0 +1,152 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+
+
+const pageTitle = "Robert Ventures: Access the Bond Deck or Start Investing";
+const pageDescription = "Access the Robert Ventures Bond Deck or start investing through our investor portal. Immediate access to essential resources for informed investment decisions.";
+
+---
+
+<style>
+
+</style>
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+
+    </head>
+
+    <style>
+        
+        .intro{
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+
+            position: relative;
+            
+        }
+
+        
+        h1{
+  
+            text-align: center;
+            font-size: 2.5rem;
+            max-width: 600px;
+
+            margin: 0 auto;
+        }
+
+        span{
+            background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        font-family: "Satoshi", sans-serif;
+        font-weight: 600;
+
+
+        display: inline-block;
+
+
+        margin: 0 auto;
+
+        margin-bottom: 0.25rem;
+
+        }
+
+        .intro p{
+            font-size: 1.125rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .info-containers{
+            display: flex;
+            gap: 3rem;
+            flex-direction: column;
+
+            max-width: 366px;
+            margin: 0 auto;
+
+            text-align: center;
+        }
+
+        .info-container svg{
+            margin-bottom: 0.75rem;
+        }
+
+        .info-container h3{
+            color: #1D1D1F;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-container p{
+            margin-bottom: 1.5rem;
+        }
+
+        .info-container a{
+            display: block;
+            text-align: center;
+            padding: 1rem;
+
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+
+            line-height: 1;
+
+            background-color: #5028FF;
+
+            border-radius: 12px;
+        }
+
+        .info-container a.big{
+            padding: 1.25rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .info-container a.color{
+            background-color: #fff;
+            color: #1D1D1F;
+            border: 2px solid #5028FF;
+        }
+
+
+    </style>
+    <body>
+        <Header/>
+        <section>
+            <div class="section-container">
+                <div class="intro">
+                    <h1> <span>Immediate Access:</span> <br> Review Our Bond Deck Below Before Your Call</h1>
+                </div>
+
+                <div class="info-containers">
+                    <div class="info-container">
+                        <a class="big" href="https://l.robertventures.com/bsu">Access Bond Deck</a>
+                    </div>
+    
+                    <div class="info-container">
+                        <!-- <Chart /> -->
+                        <h3>Start Investing Now</h3>
+                        <p>You can start investing right now on our investor portal.</p>
+                        <a class="color" href="https://invest.robertventures.com/offering/rob10/details">Access Investor Portal</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <FooterNew />
+    </body>
+</html>

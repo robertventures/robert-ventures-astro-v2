@@ -6,17 +6,17 @@ import sitemap from '@astrojs/sitemap';
 
 import netlify from '@astrojs/netlify';
 
+import tunnel from 'astro-tunnel';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://robertventures.com',
   integrations: [mdx(), sitemap({
     exclude: ['/test', '/test2'], // Exclude the /test page from the sitemap
-  })],
+  }), tunnel()],
   devToolbar: {
     enabled: false
   },
   output: 'static',
   adapter: netlify()
 });
-
-

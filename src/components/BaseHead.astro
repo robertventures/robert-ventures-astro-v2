@@ -164,7 +164,7 @@ import { AstroFont } from "astro-font";
 
 <!-- CHATBOT -->
 {
-  !["signup", "questions", "booking"].some((path) =>
+  !["signup", "questions", "booking", "access"].some((path) =>
     Astro.url.pathname.includes(path),
   ) && <script src="/scripts/chatbot.js" defer />
 }
