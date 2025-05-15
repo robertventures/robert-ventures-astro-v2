@@ -168,7 +168,16 @@ import { AstroFont } from "astro-font";
 {
   !["signup", "questions", "booking", "access"].some((path) =>
     Astro.url.pathname.includes(path),
-  ) && <script src="/scripts/chatbot.js" defer />
+  ) && (
+    <script>
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = '/scripts/chatbot.js';
+        script.defer = true;
+        document.body.appendChild(script);
+      });
+    </script>
+  )
 }
 <!-- CHATBOT -->
 
