@@ -159,7 +159,9 @@ import { AstroFont } from "astro-font";
 <link rel="preload" href="/images/svg/business-logos/morning.svg" as="image" />
 
 <!-- GOOGLE TAG MANAGER -->
-<script src="/scripts/gtm.js" defer></script>
+{Astro.site.hostname === "robertventures.com" && (
+  <script src="/scripts/gtm.js" defer></script>
+)}
 <!-- GOOGLE TAG MANAGER -->
 
 <!-- CHATBOT -->
