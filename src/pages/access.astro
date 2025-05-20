@@ -146,4 +146,15 @@ const pageDescription =
 
         <FooterNew />
     </body>
+    <script is:inline>
+        // Add GA4 and Clarity event on DocSend (Bond Deck) link click
+        document.addEventListener('DOMContentLoaded', function() {
+            var docsendLink = document.querySelector('a.big[href="https://l.robertventures.com/bsu"]');
+            if (docsendLink) {
+                docsendLink.addEventListener('click', function() {
+                    triggerEvent('docsend_bonddeck_click', 'docsendBondDeckClick');
+                });
+            }
+        });
+    </script>
 </html>
