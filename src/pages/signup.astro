@@ -32,9 +32,14 @@ const pageDescription =
 				color: #000;
 				text-align: center;
 				font-family: "Satoshi", sans-serif;
-				font-size: 1.4375rem;
+				font-size: 1.75rem;
 				font-weight: 700;
-				line-height: 130%;
+				margin-bottom: 0.5rem;
+			}
+
+			.extra {
+				text-align: center;
+				font-size: 1rem;
 				margin-bottom: 1.5rem;
 			}
 
@@ -166,6 +171,34 @@ const pageDescription =
 
 				align-items: center;
 			}
+
+			.testimonial-collapsed {
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+				max-height: 3.5em;
+			}
+
+			button.testimonial-toggle {
+				background: #f4f4f4;
+				color: #505050;
+				border: none;
+				padding: 0.25rem 0.75rem;
+				font-size: 0.95rem;
+				border-radius: 0.5rem;
+				margin: 0 auto 2rem auto; /* Increased bottom margin for more space below */
+				cursor: pointer;
+				display: block;
+				box-shadow: none;
+				font-family: inherit;
+				font-weight: 400;
+				transition: background 0.2s;
+
+			}
+			button.testimonial-toggle:hover {
+				background: #e9e9e9;
+			}
 		</style>
 		<!-- Meta Pixel Code -->
 		<script is:inline>
@@ -232,7 +265,11 @@ const pageDescription =
 		<Header />
 
 		<main>
-			<h1>Add Personal Details</h1>
+			<h1>Let's Get to Know You</h1>
+			<p class="extra">
+				We ask for your name and phone to personalize your experience.
+				<!-- Your info is 100% private and never shared. -->
+			</p>
 
 			<form id="signup-form">
 				<div class="group">
@@ -266,21 +303,27 @@ const pageDescription =
 			</form>
 
 			<p class="disclaimer">
-				By clicking get started, you consent to Robert Ventures sending you
-				emails and text messages.
+				By clicking get started, you consent to Robert Ventures sending
+				you emails and text messages.
 			</p>
 
 			<div class="testimonials">
 				<div class="testimonial-photos">
 					<Image src={steve} alt="A description of my image." />
 				</div>
-				<p class="testimonial">
+				<p class="testimonial testimonial-collapsed">
 					“I've known Joe for over a decade now and he has been more
 					than just a friend but has been instrumental in our holding
 					company to make accountable double-digit returns and has
 					been a blessing. Always could count on him for the
 					payments.”
 				</p>
+				<button
+					type="button"
+					class="testimonial-toggle"
+				>
+					Read Full Review
+				</button>
 				<p class="testimonial-name">Steve Lloyd.</p>
 			</div>
 		</main>
@@ -340,7 +383,9 @@ const pageDescription =
 					}
 
 					// Retrieve the phone number value
-					let phoneValue = document.getElementById("phone").value.trim();
+					let phoneValue = document
+						.getElementById("phone")
+						.value.trim();
 
 					// Check if the phone number starts with "+1" and remove it
 					if (phoneValue.startsWith("+1")) {
@@ -352,7 +397,10 @@ const pageDescription =
 
 					// Validate the phone number length
 					if (phoneValue.length !== 10) {
-						console.warn("⚠ Invalid phone number entered:", phoneValue);
+						console.warn(
+							"⚠ Invalid phone number entered:",
+							phoneValue,
+						);
 						alert("Please enter a valid US phone number.");
 						button.disabled = false;
 						buttonText.style.display = "inline";
@@ -374,14 +422,21 @@ const pageDescription =
 
 						if (!response.ok) {
 							throw new Error(
-								result.error || "Signup failed. Please try again."
+								result.error ||
+									"Signup failed. Please try again.",
 							);
 						}
 
 						// ✅ Store GHL Contact ID in localStorage
 						if (result.ghl_contact_id) {
-							localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
-							console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
+							localStorage.setItem(
+								"ghl_contact_id",
+								result.ghl_contact_id,
+							);
+							console.log(
+								"✅ GHL Contact ID saved:",
+								result.ghl_contact_id,
+							);
 						} else {
 							console.warn("⚠ No GHL Contact ID received.");
 						}
@@ -399,6 +454,21 @@ const pageDescription =
 						loader.style.display = "none";
 					}
 				});
+
+				// Testimonial expand/collapse
+				const testimonial = document.querySelector('.testimonial');
+				const toggleBtn = document.querySelector('.testimonial-toggle');
+				if (testimonial && toggleBtn) {
+					toggleBtn.addEventListener('click', function () {
+						testimonial.classList.toggle('testimonial-collapsed');
+						const expanded = !testimonial.classList.contains('testimonial-collapsed');
+						toggleBtn.textContent = expanded ? 'Show less' : 'Read full review';
+						// Send event to GA4 and Clarity using the shared triggerEvent function when expanding
+						if (expanded && typeof triggerEvent === 'function') {
+							triggerEvent('read_full_review', 'read_full_review');
+						}
+					});
+				}
 			});
 		</script>
 	</body>

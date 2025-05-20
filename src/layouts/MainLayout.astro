@@ -1,0 +1,23 @@
+---
+// MainLayout.astro: A reusable layout for main pages
+// Usage: Set title, description, and optionally import custom Header/Footer
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+
+const { title, description, customHeader, customFooter, robots = "index, follow"} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <meta name="robots" content={robots} />
+    <style>{styles}</style>
+  </head>
+  <body>
+    {customHeader ? customHeader : <Header />}
+    <slot />
+    {customFooter ? customFooter : <FooterNew />}
+  </body>
+</html>

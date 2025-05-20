@@ -1,81 +1,60 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
+import MainLayout from "../layouts/MainLayout.astro";
 import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
 import FooterNew from "../components/FooterNew.astro";
 
 const pageTitle = "Robert Ventures: Calendar";
 const pageDescription = "Book a meeting with the Robert Ventures team.";
 ---
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <BaseHead title={pageTitle} description={pageDescription} />
-
-        <style>
-            section {
-                margin-bottom: 1.5rem;
-            }
-
-            .section-container {
-                max-width: 1280px;
-                margin: 0 auto;
-                border-radius: 1rem;
-                background: #fff;
-                padding: 3rem 1.5rem;
-            }
-
-            .section-content {
-                max-width: 640px;
-                margin: 0 auto;
-            }
-
-            h2 {
-                color: #281480;
-                font-size: 2.5625rem;
-                font-weight: 700;
-                line-height: 1.1; /* 2.475rem */
-                margin-bottom: 1rem;
-            }
-
-            p {
-                margin-bottom: 3rem;
-            }
-
-            @media only screen and (min-width: 768px) {
-                section {
-                    padding: 0 2rem;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <Header />
-
-        <section>
-            <div class="section-container">
-                <div class="section-content">
-                    <div class="section-heading">
-                        <h2>Ready to Earn 10% Annually?</h2>
-                        <p>Start with a Personal Concierge Call.</p>
-                    </div>
-                    <iframe
-                        src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
-                        style="width: 100%;border:none;overflow: hidden;"
-                        scrolling="no"
-                        id="xNXEISjf314X2BFZvdaZ_1727445052062"></iframe><br />
-                </div>
-            </div>
-        </section>
-
-        <FooterNew />
-
-        <!-- FORM HANDLER -->
-        <script src="/scripts/formHandler.js" defer/>
-        <script
-            is:inline
-            src="https://link.msgsndr.com/js/form_embed.js"
-            type="text/javascript"></script>
-    </body>
-</html>
+<MainLayout title={pageTitle} description={pageDescription}>
+  <style>
+    section {
+      margin-bottom: 1.5rem;
+    }
+    .section-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      border-radius: 1rem;
+      background: #fff;
+      padding: 3rem 1.5rem;
+    }
+    .section-content {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    h2 {
+      color: #281480;
+      font-size: 2.5625rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-bottom: 3rem;
+    }
+    @media only screen and (min-width: 768px) {
+      section {
+        padding: 0 2rem;
+      }
+    }
+  </style>
+  <section>
+    <div class="section-container">
+      <div class="section-content">
+        <div class="section-heading">
+          <h2>Ready to Earn 10% Annually?</h2>
+          <p>Start with a Personal Concierge Call.</p>
+        </div>
+        <iframe
+          src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
+          style="width: 100%;border:none;overflow: hidden;"
+          scrolling="no"
+          id="xNXEISjf314X2BFZvdaZ_1727445052062"></iframe><br />
+      </div>
+    </div>
+  </section>
+  <!-- FORM HANDLER -->
+  <script src="/scripts/formHandler.js" defer/>
+  <script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+</MainLayout>
