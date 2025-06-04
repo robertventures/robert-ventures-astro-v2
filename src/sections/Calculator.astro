@@ -430,7 +430,7 @@ import FormCTA from "../components/FormCTA.astro";
                 <div class="financial-future-section">
                     <div class="calculate-content">
                         <div class="calculate-block">
-                            <p class="calculate-heading">Select Term:</p>
+                            <p class="calculate-heading">Select Lockup Period:</p>
                             <div id="term" class="calculate-data select-term">
                                 <div class="calculate-data-group year-option calculator-option">
                                     <input
@@ -439,7 +439,7 @@ import FormCTA from "../components/FormCTA.astro";
                                         value="1"
                                     />
                                     <label for="html"
-                                        >1 Year Term<span>8%</span></label
+                                        >1 Year<span>8%</span></label
                                     >
                                 </div>
                                 <div class="calculate-data-group year-option calculator-option">
@@ -450,7 +450,7 @@ import FormCTA from "../components/FormCTA.astro";
                                         checked
                                     />
                                     <label for="css"
-                                        >3 Year Term<span>10%</span></label
+                                        >3 Years<span>10%</span></label
                                     >
                                 </div>
                             </div>
@@ -497,15 +497,15 @@ import FormCTA from "../components/FormCTA.astro";
                                     class="styled-slider slider-progress"
                                     type="range"
                                     name="amount-slider"
-                                    value="50000"
+                                    value="100000"
                                     step="1000"
                                     min="1000"
-                                    max="100000"
+                                    max="200000"
                                 />
                             </div>
                             <div class="investment-value-limits">
                                 <p>$1,000</p>
-                                <p>$100,000</p>
+                                <p>$200,000+</p>
                             </div>
                         </div>
                     </div>
@@ -686,7 +686,7 @@ import FormCTA from "../components/FormCTA.astro";
                 const inputSlider = slider as HTMLInputElement;
                 inputSlider.style.setProperty("--value", inputSlider.value);
                 inputSlider.style.setProperty("--min", inputSlider.min || "0");
-                inputSlider.style.setProperty("--max", inputSlider.max || "100");
+                inputSlider.style.setProperty("--max", inputSlider.max || "200");
             };
 
             updateSliderStyle(); // Set initial styles
