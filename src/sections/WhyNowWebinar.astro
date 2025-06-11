@@ -1,0 +1,153 @@
+---
+import Check from "../images/svg/green-check.svg";
+
+import FormCTA from "../components/FormCTA.astro";
+---
+
+<style>
+    h2 {
+        text-align: center;
+        line-height: 1.1;
+
+        margin-bottom: 2rem;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        max-width: 366px;
+
+        margin: 0 auto;
+
+        margin-bottom: 2rem;
+    }
+
+    .list-item {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    p.title {
+        color: #1d1d1f;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
+    }
+
+    p.info {
+
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 160%; /* 1.6rem */
+    }
+
+    .list-item {
+    }
+
+    .top,
+    .bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .list-item svg {
+        min-height: 20px;
+        min-width: 20px;
+    }
+
+    .pre-form-text {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    @media screen and (min-width: 990px) {
+        .list {
+            flex-direction: row;
+            max-width: none;
+            justify-content: space-between;
+        }
+
+        .list > div {
+            max-width: 366px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>Why Get Started Now?</h2>
+            <div class="list">
+                <div class="top">
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">Fixed-Rate Return</p>
+                            <p class="info">
+                                Earn up to 10% annually with predictable payouts
+                            </p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">
+                                SEC-Qualified & Fully Transparent
+                            </p>
+                            <p class="info">
+                                Unlike most private investments, we operate
+                                under strict regulatory oversight
+                            </p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">Proven Track Record</p>
+                            <p class="info">
+                                Manager has 20+ years of real estate and digital asset
+                                expertise
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">Founder Commitment</p>
+                            <p class="info">
+                                We invest our own capital alongside our investors
+                            </p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">
+                                Personalized Support
+                            </p>
+                            <p class="info">
+                                Our concierge team ensures a seamless experience
+                            </p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <Check />
+                        <div class="list-info">
+                            <p class="title">100% Payment Track Record</p>
+                            <p class="info">
+                                We've never missed an investor payment
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,200 @@
+---
+import Image from "astro/components/Image.astro";
+
+import eight from "../images/8%.png";
+import ten from "../images/10%.png";
+
+import Dollar from "../images/dollar.svg";
+---
+
+<style>
+    section {
+        font-family: "Satoshi", sans-serif;
+    }
+
+    .section-content{
+        max-width: 366px;
+    }
+    .intro {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+    }
+
+    .intro p {
+        font-weight: 500;
+        font-size: 1.25rem;
+        color: #898989;
+    }
+
+    .boxes {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .invest-box {
+        background-color: #f2f5f8;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+
+        padding: 1.5rem;
+
+        max-width: 366px;
+    }
+
+    .percent {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+
+        color: #281480;
+        font-size: 2.625rem;
+        font-weight: 700;
+        line-height: 1;
+        align-self: center;
+
+        margin-bottom: 0.75rem;
+    }
+
+    .percent img {
+        max-height: 79px;
+        width: auto;
+    }
+
+    p {
+        line-height: 1;
+    }
+
+    p.amount {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+
+        color: #281480;
+        font-size: 1.25rem;
+    }
+
+    p.year {
+        font-size: 1.25rem;
+        color: #281480;
+
+        font-weight: 700;
+
+        margin-bottom: 1.125rem;
+    }
+
+    .cta{
+        display: flex;
+        flex-direction: column;
+
+        gap: 1rem;
+    }
+
+    a {
+        background-color: #5028ff;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+
+        text-align: center;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+
+    p.lockup {
+        font-size: 15px;
+        line-height: 1.25;
+        text-align: center;
+        color: #505050;
+    }
+
+    @media only screen and (min-width: 990px){
+        .section-content{
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        .section-content > div{
+            max-width: 366px;
+        }
+
+        .intro{
+            margin-bottom: 2rem;
+        }
+
+        .boxes{
+            max-width: none !important;
+            flex-direction: row;
+            margin-bottom: 3rem;
+
+            margin-bottom: 3rem;
+        }
+
+        .invest-box{
+            width: 366px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <div class="intro">
+                <h2>Investment Options</h2>
+                <p>Monthly Payments or Compounding Interest</p>
+            </div>
+
+            <div class="boxes">
+                <div class="invest-box">
+                    <div class="percent">
+                        <Image
+                            src={eight}
+                            alt="eigth percent APY"
+                            width={eight.width}
+                            height={eight.height}
+                        />
+                        APY
+                    </div>
+                    <p class="year">1 Year Lockup Period</p>
+                    <p class="amount"><Dollar />1k Minimum</p>
+                </div>
+                <div class="invest-box">
+                    <div class="percent">
+                        <Image
+                            src={ten}
+                            alt="eigth percent APY"
+                            width={ten.width}
+                            height={ten.height}
+                        />
+                        APY
+                    </div>
+                    <p class="year">1 Year Lockup Period</p>
+                    <p class="amount"><Dollar />1k Minimum</p>
+                </div>
+            </div>
+
+            <div class="cta">
+                <a href="/">Start Investing Today</a>
+
+                <p class="lockup">
+                    The lockup is the period when you can't withdraw your investment. Once it's over, you can either access your funds or continue receiving monthly payments.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

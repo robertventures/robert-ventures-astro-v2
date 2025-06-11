@@ -1,0 +1,165 @@
+---
+---
+
+<style>
+    .form{
+        max-width: 366px;
+
+        margin: 0 auto;
+    }
+
+
+    .form-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+
+        flex-direction: column;
+        gap: 0.75rem;
+
+        width: 100%;
+        box-sizing: border-box;
+
+        margin-bottom: 1.25rem;
+
+    }
+
+    .name {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    input,
+    select {
+        border: none;
+        flex-grow: 1; /* Allow the input to grow */
+        border: 1px solid #afb5bc;
+        padding: 1rem 0.75rem;
+        width: 100%;
+        box-sizing: border-box;
+
+        border-radius: 0.75rem;
+    }
+
+    input::placeholder,
+    select:invalid {
+        color: #737373;
+        opacity: 1;
+    }
+
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #fff;
+        border: 1px solid #afb5bc;
+        width: 100%;
+
+        color: #737373;
+    }
+    select:required:not(:invalid) {
+        color: #1D1D1F;
+    }
+
+    button {
+        background-color: #5028ff;
+        border: none;
+        color: #fff;
+        border-radius: 0.75rem;
+
+        padding: 1rem 0.75rem;
+
+        font-size: 1.125rem;
+        font-weight: 500;
+
+        width: 100%;
+    }
+
+    .signup-error {
+        display: none;
+        color: red;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #5028ff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .account {
+            max-width: none;
+        }
+    }
+</style>
+
+<div class="form">
+    <form id="form-cta">
+        <div class="form-block">
+            <select required>
+                <option value="" disabled selected>Select an upcoming session</option>
+                <option value="option1">Session 1</option>
+                <option value="option2">Session 2</option>
+                <option value="option3">Session 3</option>
+            </select>
+            <div class="name">
+                <input
+                    type="text"
+                    placeholder="First Name"
+                    required
+                    class="email-input"
+                />
+                <input
+                    type="text"
+                    placeholder="Last Name"
+                    required
+                    class="email-input"
+                />
+            </div>
+            <input
+                type="email"
+                placeholder="Enter Your Email"
+                required
+                class="email-input"
+            />
+            <select required>
+                <option value="" disabled selected
+                    >How much are you looking to invest</option
+                >
+                <option value="option1">1k</option>
+                <option value="option2">5k</option>
+                <option value="option3">10k</option>
+                <option value="option3">25k</option>
+                <option value="option3">50k</option>
+                <option value="option3">100k+</option>
+            </select>
+
+            <input
+                type="text"
+                name="bot-field"
+                class="bot-field"
+                style="display: none;"
+            />
+        </div>
+        <button type="submit"> Get Started </button>
+        <p class="signup-error"></p>
+    </form>
+</div>

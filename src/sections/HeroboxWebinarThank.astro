@@ -1,0 +1,264 @@
+---
+import FormWebinar from "../components/FormWebinar.astro";
+
+import Quote from "../images/quote.svg";
+
+import Download from "../images/download.svg";
+import Calendar from "../images/calendar.svg";
+import Chart from "../images/chart.svg";
+---
+
+<style>
+    .section-container {
+        padding: 3rem 1.5rem 3rem 1.5rem;
+
+        background-image: url(/images/svg/waves.svg);
+        background-repeat: no-repeat;
+        /* background-size: cover; */
+        background-position: top;
+    }
+
+    .section-content{
+        max-width: none;
+    }
+
+    .thank {
+        font-family: "Satoshi", sans-serif;
+        font-size: 14px;
+        color: #ff592c;
+        line-height: 1;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    h1 {
+        font-size: 2.625rem;
+        margin: 0 auto;
+        margin-bottom: 1.5rem;
+
+        max-width: 656px;
+    }
+
+    .intro {
+        margin-bottom: 3rem;
+    }
+
+    .intro a {
+        border: 1px solid red;
+        padding: 1rem;
+        display: block;
+
+        text-align: center;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 1.125rem;
+        line-height: 1;
+
+        background-color: #ff592c;
+        border-radius: 12px;
+    }
+
+    .testimonial {
+        margin-bottom: 5rem;
+    }
+
+    .testimonial svg {
+        margin-bottom: 0.75rem;
+    }
+
+    .testimonial .text {
+        color: #2f2f2f;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+    }
+
+    .testimonial .name {
+        color: #505050;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: "Satoshi" sans-serif;
+        line-height: 1;
+    }
+
+    .testimonial span {
+        font-weight: 400;
+    }
+
+    .next {
+        margin-bottom: 4rem;
+    }
+
+    h2 {
+        font-size: 42px;
+        margin-bottom: 0.75rem;
+    }
+
+    p.subheadline {
+        font-size: 1.25rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .blocks {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .block {
+        padding: 2rem 1.5rem;
+        border-radius: 1rem;
+        background-color: #f2f5f8;
+    }
+
+    .block svg {
+        margin-bottom: 1.5rem;
+    }
+
+    .block h3 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .block p {
+        line-height: 1.6;
+        font-size: 1.25rem;
+        margin-bottom: 3rem;
+    }
+
+    .block a {
+        display: block;
+        padding: 1rem;
+        background-color: #5028ff;
+        border-radius: 12px;
+
+        text-align: center;
+        color: #ffffff;
+        line-height: 1;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.125rem;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+
+        .intro {
+            text-align: center;
+        }
+
+        h2{
+            max-width: 656px;
+            margin-inline: auto;
+        }
+
+        .intro a {
+            display: inline-block;
+        }
+
+        .testimonial{
+            text-align: center;
+            max-width: 366px;
+            margin-inline: auto;
+        }
+
+        .next{
+            text-align: center;
+        }
+
+        .blocks{
+            align-items: center;
+        }
+
+        .block{
+            max-width: 366px;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .section-container {
+            padding: 4rem 1.5rem 4rem 1.5rem;
+        }
+        .blocks{
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .block{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <div class="intro">
+                <p class="thank">THANK YOU</p>
+                <h1>
+                    Check your inbox for a confirmation email with more details
+                </h1>
+                <a href="#">Prepare With Our Investor Guide</a>
+            </div>
+
+            <div class="testimonial">
+                <Quote />
+                <p class="text">
+                    Joe provided an easy way to access monthly interest payments
+                    on a consistent basis.
+                </p>
+                <p class="name">Steve Lloyd, <span>Stone Bay Holdings</span></p>
+            </div>
+
+            <div class="next">
+                <h2>Take Your Next Step Toward 10% Annual Interest Rates</h2>
+                <p class="subheadline">
+                    Simple steps to secure fixed monthly returns.
+                </p>
+            </div>
+
+            <div class="blocks">
+                <div class="block">
+                    <div>
+                        <Download />
+                        <h3>Download the Investor Guide</h3>
+                        <p>
+                            Access the guide using the button below and start
+                            preparing before the webinar.
+                        </p>
+                    </div>
+                    <a href="#">Download Investor Guide</a>
+                </div>
+                <div class="block">
+                    <div>
+                        <Calendar />
+                        <h3>Schedule a Meeting</h3>
+                        <p>
+                            Get questions answered on our business and other topics
+                            like investing through IRA.
+                        </p>
+                    </div>
+                    <a href="#">Schedule Meeting</a>
+                </div>
+                <div class="block">
+                    <div>
+                        <Chart />
+                        <h3>Start Investing Online</h3>
+                        <p>
+                            Invest in our offering with interest rate ranging from
+                            8-10% annually.
+                        </p>
+                    </div>
+                    <a href="#">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
