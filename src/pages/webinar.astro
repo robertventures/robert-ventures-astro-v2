@@ -2,16 +2,13 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 
-
 import HeroboxWebinar from "../sections/HeroboxWebinar.astro";
 import InvestmentOptions from "../sections/InvestmentOptions.astro";
 import WhyNowWebinar from "../sections/WhyNowWebinar.astro";
 import JoeRobertWebinar from "../sections/JoeRobertWebinar.astro";
 import Testimonials from "../sections/Testimonials.astro";
 
-
 import FooterNew from "../components/FooterNew.astro";
-
 
 const pageTitle = "Robert Ventures: Webinar";
 const pageDescription =
@@ -27,15 +24,25 @@ const pageDescription =
     </head>
     <body>
         <Header />
-        <HeroboxWebinar/>
-        <InvestmentOptions/>
-        <WhyNowWebinar/>
-        <JoeRobertWebinar/>
-        <Testimonials/>
+        <HeroboxWebinar />
+        <InvestmentOptions />
+        <WhyNowWebinar />
+        <JoeRobertWebinar />
+        <Testimonials />
         <FooterNew />
     </body>
-
-
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css"><link rel="stylesheet" href="https://webinarkit.com/css/ewk_v5.css?cache=5"><script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script><script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script><script src="https://webinarkit.com/js/ewk_v7.js?v=6&sv=true"></script>
-
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css"
+    /><link
+        rel="stylesheet"
+        href="https://webinarkit.com/css/ewk_v5.css?cache=5"
+    />
+    <script is:inline
+        src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"
+    ></script>
+    <script is:inline
+        src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"
+    ></script>
+    <script is:inline src="https://webinarkit.com/js/ewk_v7.js?v=6&sv=true"></script>
 </html>
