@@ -260,6 +260,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Timer logic
     function getNextSessionDate(sessions) {
       let closest = null;
+      console.log(sessions)
       sessions.forEach(session => {
         const details = JSON.parse(session.id);
         const date = computeSessionDate(details.day, `${details.time} ${details.period}`, details.timeZone);
@@ -271,8 +272,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     function computeSessionDate(weekdayName, timeStr, timeZone) {
       const daysOfWeek = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
       const targetDay = daysOfWeek[weekdayName];
+
+      // Always use UTC for calculations
       const now = new Date();
+      // Get the current time in the session's time zone
       const tzNow = new Date(now.toLocaleString("en-US", { timeZone }));
+
       let result = new Date(tzNow);
       result.setDate(result.getDate() + ((7 + targetDay - result.getDay()) % 7));
       const [time, period] = timeStr.split(" ");
@@ -280,14 +285,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (period === "PM" && hours !== 12) hours += 12;
       if (period === "AM" && hours === 12) hours = 0;
       result.setHours(hours, minutes, 0, 0);
+
+      // If the session time has already passed for this week, move to next week
       if (result <= tzNow) result.setDate(result.getDate() + 7);
+
+      // Convert the result to UTC timestamp
       return new Date(result.toLocaleString("en-US", { timeZone: "UTC" }));
     }
 
     function updateCountdown(targetDate) {
+      // Always use UTC for now
       const now = new Date();
+      const nowUTC = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
       const target = targetDate instanceof Date ? targetDate : new Date(targetDate);
-      const dist = target.getTime() - now.getTime();
+      const dist = target.getTime() - nowUTC.getTime();
       const d = Math.floor(dist / (1000 * 60 * 60 * 24));
       const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
