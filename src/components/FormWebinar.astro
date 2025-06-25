@@ -223,7 +223,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // For each form instance on the page
   document.querySelectorAll(".form").forEach((formContainer) => {
-    const form = formContainer.querySelector("form.form-cta");
+    const form = formContainer.querySelector("form.form-cta") as HTMLFormElement;
     const selectEl = form.querySelector("select[name='session']");
     const phoneInput = form.querySelector("input[name='phone_number']");
     const daysSpan = formContainer.querySelector(".days span");
@@ -244,11 +244,28 @@ window.addEventListener("DOMContentLoaded", async () => {
         return false;
       }
     });
-    selectEl.innerHTML = '<option value="" disabled selected>Select an upcoming session</option>';
-    sessions.forEach(session => {
+    
+    // Calculate next occurrence for each session and prepare data for sorting
+    const sessionsWithDates = sessions.map(session => {
       const details = JSON.parse(session.id);
-      const timeStr = `${details.time} ${details.period}`;
-      const nextDate = computeSessionDate(details.day, timeStr, details.timeZone);
+      const nextDate = computeSessionDate(details.day, `${details.time} ${details.period}`, details.timeZone);
+      return {
+        session: session,
+        nextDate: nextDate
+      };
+    });
+    
+    // Sort sessions by their next occurrence date
+    sessionsWithDates.sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+    
+    selectEl.innerHTML = '<option value="" disabled selected>Select an upcoming session</option>';
+    
+    // Add sorted sessions to dropdown
+    sessionsWithDates.forEach(item => {
+      const session = item.session;
+      const nextDate = item.nextDate;
+      const details = JSON.parse(session.id);
+      
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
@@ -318,13 +335,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Phone input formatting
     if (phoneInput) {
       phoneInput.addEventListener("input", (e) => {
-        let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
+        const input = e.target as HTMLInputElement;
+        let value = input.value.replace(/\D/g, ""); // Remove non-digits
         if (!value.startsWith("1")) value = "1" + value;
         let formatted = "+1";
         if (value.length > 1) formatted += " (" + value.slice(1, 4);
         if (value.length >= 4) formatted += ") " + value.slice(4, 7);
         if (value.length >= 7) formatted += "-" + value.slice(7, 11);
-        e.target.value = formatted;
+        input.value = formatted;
       });
     }
 
@@ -332,9 +350,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       signupError.textContent = "";
-      buttonText.style.display = "none";
-      loader.style.display = "inline-block";
-      submitButton.disabled = true;
+      (buttonText as HTMLElement).style.display = "none";
+      (loader as HTMLElement).style.display = "inline-block";
+      (submitButton as HTMLButtonElement).disabled = true;
 
       const formData = new FormData(form);
       const investIntent = formData.get("invest_intent");
@@ -347,7 +365,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       const selectedOption = selectEl.querySelector("option:checked");
       const isoDate = selectedOption.getAttribute("data-date");
       const tz = selectedOption.getAttribute("data-timezone");
-      const sessionId = JSON.parse(selectedOption.value).id;
+      const sessionId = JSON.parse((selectedOption as HTMLOptionElement).value).id;
       const fullDate = formatFullDate(new Date(isoDate), tz);
 
       const payload = {
@@ -373,22 +391,22 @@ window.addEventListener("DOMContentLoaded", async () => {
         });
         if (!res.ok) {
           signupError.textContent = "Registration failed. Please try again.";
-          buttonText.style.display = "";
-          loader.style.display = "none";
-          submitButton.disabled = false;
+          (buttonText as HTMLElement).style.display = "";
+          (loader as HTMLElement).style.display = "none";
+          (submitButton as HTMLButtonElement).disabled = false;
           return;
         }
         window.location.href = "/webinar-thank-you";
       } catch (err) {
         signupError.textContent = "An error occurred during registration.";
-        buttonText.style.display = "";
-        loader.style.display = "none";
-        submitButton.disabled = false;
+        (buttonText as HTMLElement).style.display = "";
+        (loader as HTMLElement).style.display = "none";
+        (submitButton as HTMLButtonElement).disabled = false;
       }
     });
 
     function formatFullDate(dateObj, timeZone) {
-      const options = {
+      const options: Intl.DateTimeFormatOptions = {
         weekday: "long",
         month: "long",
         day: "numeric",
@@ -396,7 +414,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         minute: "2-digit",
         timeZone: timeZone,
         hour12: true,
-        timeZoneName: "shortGeneric"
+        timeZoneName: "short"
       };
       const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(dateObj);
       const weekday = parts.find(p => p.type === "weekday").value;
