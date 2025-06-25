@@ -6,32 +6,36 @@ export const GET: APIRoute = async () => {
   const apiUrl = `https://webinarkit.com/api/webinar/dates/${webinarId}`;
 
   try {
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${apiKey}`);
-
-    const requestOptions: RequestInit = {
+    const response = await fetch(apiUrl, {
       method: "GET",
-      headers: myHeaders,
+      headers: { Authorization: `Bearer ${apiKey}` },
       redirect: "follow" as RequestRedirect,
-    };
-
-    const response = await fetch(apiUrl, requestOptions);
+    });
 
     if (!response.ok) {
       console.error("Failed to fetch webinar dates:", response.statusText);
       return new Response(
         JSON.stringify({ error: "Failed to fetch webinar dates" }),
-        { status: response.status }
+        { 
+          status: response.status,
+          headers: { "Cache-Control": "no-cache, no-store, must-revalidate" } 
+        }
       );
     }
 
     const data = await response.json();
-    return new Response(JSON.stringify(data), { status: 200 });
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    });
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     return new Response(
       JSON.stringify({ error: "An error occurred while fetching data" }),
-      { status: 500 }
+      { 
+        status: 500,
+        headers: { "Cache-Control": "no-cache, no-store, must-revalidate" } 
+      }
     );
   }
 };
