@@ -296,6 +296,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     data = await response.json();
+
+    // Log the fetched webinar data
+    console.log("Fetched webinar data:", data);
   } catch (err) {
     console.error("An error occurred while fetching webinar data:", err);
     return;
@@ -422,12 +425,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // For countdown timer, use the first upcoming session
     if (sessionsWithDates.length > 0) {
-      const nextSession = sessionsWithDates[0].nextDate; // This is the next webinar date from the API
+      const nextSession = new Date(sessionsWithDates[0].nextDate.toISOString()); // Ensure UTC
 
       // Update the countdown
       function updateCountdown() {
-        const now = new Date(); // Current time
-        const timeLeft = nextSession.getTime() - now.getTime(); // Time difference in milliseconds
+        const now = new Date(); // Current time in user's local timezone
+        const nowUTC = new Date(now.toISOString()); // Convert to UTC
+        const timeLeft = nextSession.getTime() - nowUTC.getTime(); // Time difference in milliseconds
 
         if (timeLeft <= 0) {
           // Time has passed
