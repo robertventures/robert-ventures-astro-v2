@@ -263,11 +263,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Add sorted sessions to dropdown
     sessionsWithDates.forEach(item => {
       const session = item.session;
-      const nextDate = item.nextDate;
+      const nextDate = item.nextDate; // This is now a proper UTC date
 
-      // User's local timezone code (e.g., PDT, GMT-7)
+      // Get user's timezone
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+      // Format directly with the user's timezone - this will correctly convert
+      // the UTC time to the user's local time
       const userTimeOptions = {
         weekday: 'long',
         hour: 'numeric',
@@ -277,16 +279,15 @@ window.addEventListener("DOMContentLoaded", async () => {
         timeZoneName: 'short'
       };
 
-      // Format nextDate directly in user's timezone
+      // Format the date directly - since nextDate is now properly in UTC,
+      // this will correctly show the local time
       const userTimeString = nextDate.toLocaleString("en-US", userTimeOptions);
 
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
       option.setAttribute("data-timezone", userTz);
-
-      // Show user's local time and local timezone code only
-      option.textContent = `${userTimeString}`;
+      option.textContent = userTimeString;
       selectEl.appendChild(option);
     });
 
@@ -311,10 +312,32 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (period === "PM" && hours !== 12) hours += 12;
       if (period === "AM" && hours === 12) hours = 0;
 
-      // Get current date in the session's timezone
+      // Get current date in UTC
       const now = new Date();
-      const nowInTz = new Date(now.toLocaleString("en-US", { timeZone }));
-      const today = nowInTz.getDay();
+      
+      // Get current date components in session timezone
+      const tzOptions = { timeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+      const tzDateParts = new Intl.DateTimeFormat('en-US', tzOptions).formatToParts(now);
+      
+      // Extract parts into a map for easy access
+      const partMap = {};
+      tzDateParts.forEach(part => {
+        if (part.type !== 'literal') {
+          partMap[part.type] = parseInt(part.value, 10);
+        }
+      });
+      
+      // Create date object representing "now" in the session's timezone
+      const nowInTz = new Date(Date.UTC(
+        partMap.year,
+        partMap.month - 1, // JS months are 0-indexed
+        partMap.day,
+        partMap.hour,
+        partMap.minute,
+        partMap.second
+      ));
+      
+      const today = nowInTz.getUTCDay();
 
       // Calculate days until next occurrence
       let daysUntil = (targetDay - today + 7) % 7;
@@ -322,35 +345,40 @@ window.addEventListener("DOMContentLoaded", async () => {
       // If today, check if the time has passed in the session's timezone
       if (daysUntil === 0) {
         if (
-          nowInTz.getHours() > hours ||
-          (nowInTz.getHours() === hours && nowInTz.getMinutes() >= minutes)
+          nowInTz.getUTCHours() > hours ||
+          (nowInTz.getUTCHours() === hours && nowInTz.getUTCMinutes() >= minutes)
         ) {
-          daysUntil = 7;
+          daysUntil = 7; // Schedule for next week
         }
       }
 
-      // Build the date string in the session's timezone
+      // Create session date in UTC
       const sessionDate = new Date(nowInTz);
-      sessionDate.setDate(sessionDate.getDate() + daysUntil);
-      sessionDate.setHours(hours, minutes, 0, 0);
+      sessionDate.setUTCDate(sessionDate.getUTCDate() + daysUntil);
+      sessionDate.setUTCHours(hours, minutes, 0, 0);
 
-      // Format as "YYYY-MM-DDTHH:mm:ss"
-      const parts = {
-        year: sessionDate.getFullYear(),
-        month: sessionDate.getMonth() + 1,
-        day: sessionDate.getDate(),
-        hour: sessionDate.getHours(),
-        minute: sessionDate.getMinutes(),
-        second: 0
-      };
-      const iso = `${parts.year}-${String(parts.month).padStart(2, "0")}-${String(parts.day).padStart(2, "0")}T${String(parts.hour).padStart(2, "0")}:${String(parts.minute).padStart(2, "0")}:00`;
+      // Now convert this UTC time to the equivalent time in the session's timezone
+      // by calculating the offset between UTC and the session timezone
+      const tzOffset = getTimezoneOffset(timeZone, sessionDate);
+      
+      // Apply the offset to get the correct UTC time for this timezone-specific time
+      const finalDate = new Date(sessionDate.getTime() - tzOffset * 60000);
+      
+      return finalDate;
+    }
 
-      // Create a Date object as if the session time is in the session's timezone, then get the equivalent UTC time
-      // This is the key trick!
-      const utcDate = new Date(
-        new Date(iso).toLocaleString("en-US", { timeZone: "UTC" })
-      );
-      return utcDate;
+    // Helper function to get timezone offset in minutes for a specific timezone and date
+    function getTimezoneOffset(timeZone, date) {
+      // Get time strings for UTC and the target timezone
+      const utcString = date.toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
+      const tzString = date.toLocaleString('en-US', { timeZone, hour12: false });
+      
+      // Parse both strings to Date objects
+      const utcDate = new Date(utcString + ' UTC');
+      const tzDate = new Date(tzString + ' UTC'); 
+  
+      // Calculate the difference in minutes
+      return (utcDate - tzDate) / 60000;
     }
 
     function updateCountdown(targetDate) {
