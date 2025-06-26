@@ -356,8 +356,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     sessionsWithDates.forEach(item => {
       const session = item.session;
       const nextDate = item.nextDate;
+      const details = JSON.parse(session.id);
       
-      // Format in user's local timezone
+      // Get user's timezone for display purposes
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      // Format in user's local timezone for display only
       const userTimeOptions = {
         weekday: 'long',
         hour: 'numeric',
@@ -371,6 +375,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
+      option.setAttribute("data-timezone", userTz);  // Add user's timezone for formatFullDate function
+      option.setAttribute("data-original-timezone", details.timeZone);  // Keep the original timezone too if needed
       option.textContent = userTimeString;
       selectEl.appendChild(option);
     });
