@@ -440,7 +440,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       // Update the countdown
       function updateCountdown() {
         const now = new Date();
-        const timeLeft = nextSession.getTime() - now.getTime();
+        const timeLeft = nextSession.getTime() - Date.now();
         
         if (timeLeft <= 0) {
           // Time has passed
