@@ -334,14 +334,59 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Phone input formatting
     if (phoneInput) {
+      let lastValue = "";
+      let isDeleting = false;
+      
+      phoneInput.addEventListener("keydown", (e) => {
+        const input = e.target as HTMLInputElement;
+        lastValue = input.value;
+        // Detect if user is deleting
+        isDeleting = e.key === "Backspace" || e.key === "Delete";
+      });
+
       phoneInput.addEventListener("input", (e) => {
         const input = e.target as HTMLInputElement;
         let value = input.value.replace(/\D/g, ""); // Remove non-digits
-        if (!value.startsWith("1")) value = "1" + value;
-        let formatted = "+1";
-        if (value.length > 1) formatted += " (" + value.slice(1, 4);
-        if (value.length >= 4) formatted += ") " + value.slice(4, 7);
-        if (value.length >= 7) formatted += "-" + value.slice(7, 11);
+        
+        // If user is deleting and the current value length is less than last value length,
+        // don't add formatting until they start typing again
+        if (isDeleting && input.value.length < lastValue.length) {
+          // Just clean the value and set it without formatting
+          if (value.length === 0) {
+            input.value = "";
+            return;
+          }
+          // Allow partial numbers without full formatting when deleting
+          if (value.length <= 1) {
+            input.value = value;
+            return;
+          }
+        }
+        
+        // Add country code if not present
+        if (!value.startsWith("1") && value.length > 0) {
+          value = "1" + value;
+        }
+        
+        // Format the number
+        let formatted = "";
+        if (value.length >= 1) {
+          formatted = "+1";
+          if (value.length > 1) {
+            formatted += " (";
+            if (value.length > 4) {
+              formatted += value.slice(1, 4) + ") ";
+              if (value.length > 7) {
+                formatted += value.slice(4, 7) + "-" + value.slice(7, 11);
+              } else {
+                formatted += value.slice(4, 7);
+              }
+            } else {
+              formatted += value.slice(1);
+            }
+          }
+        }
+        
         input.value = formatted;
       });
     }
