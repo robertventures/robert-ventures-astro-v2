@@ -8,6 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const body = await request.json();
+        console.log("📥 Received form data:", JSON.stringify(body, null, 2));
 
         // 1. Send to GoHighLevel
         let ghlContactId = null;
@@ -51,12 +52,16 @@ export const POST: APIRoute = async ({ request }) => {
             phoneNumberCountryCode: "+1",
             phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             customField1: body.invest_intent,
-            date: body.date
+            date: body.date,
+            fullDate: body.fullDate // <-- Add this line
         });
+        
+        console.log("📤 Sending to WebinarKit:", JSON.stringify(JSON.parse(raw), null, 2));
 
         const webinarId = "684ae034de7a164da41abe10";
         const apiUrl = `https://webinarkit.com/api/webinar/registration/${webinarId}`;
-
+        console.log("🔗 WebinarKit API URL:", apiUrl);
+        
         const requestOptions: RequestInit = {
             method: "POST",
             headers: myHeaders,
@@ -64,11 +69,20 @@ export const POST: APIRoute = async ({ request }) => {
             redirect: "follow"
         };
 
+        console.log("🚀 Making request to WebinarKit...");
         const response = await fetch(apiUrl, requestOptions);
         const responseText = await response.text();
+        console.log("📥 WebinarKit response status:", response.status);
+        
+        try {
+            const responseJson = JSON.parse(responseText);
+            console.log("📥 WebinarKit response:", JSON.stringify(responseJson, null, 2));
+        } catch (e) {
+            console.log("📥 WebinarKit response (text):", responseText);
+        }
 
         if (!response.ok) {
-            console.error("Webinar registration failed:", responseText);
+            console.error("❌ Webinar registration failed:", responseText);
             return new Response(
                 JSON.stringify({ error: "Webinar registration failed", details: responseText }),
                 { status: response.status }
@@ -84,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
             { status: 200, headers: { "Content-Type": "application/json" } }
         );
     } catch (error) {
-        console.error("Error during registration:", error);
+        console.error("❌ Error during registration:", error);
         return new Response(
             JSON.stringify({ error: "An error occurred during registration" }),
             { status: 500 }

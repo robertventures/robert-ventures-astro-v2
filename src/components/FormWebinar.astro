@@ -543,10 +543,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         );
       }
       const selectedOption = selectEl.querySelector("option:checked");
-      const isoDate = selectedOption.getAttribute("data-date");
-      const tz = selectedOption.getAttribute("data-timezone");
-      const sessionId = JSON.parse((selectedOption as HTMLOptionElement).value).id;
-      const fullDate = formatFullDate(new Date(isoDate), tz);
+      const isoDateUTC = selectedOption.getAttribute("data-date");
+      const sessionValue = selectedOption.value;
+      const sessionDetails = JSON.parse(sessionValue);
+      const sessionId = sessionDetails.id;
 
       const payload = {
         session: sessionId,
@@ -559,9 +559,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         })(),
         invest_intent: formData.get("invest_intent"),
         bot_field: formData.get("bot-field"),
-        date: isoDate,
-        fullDate: fullDate
+        date: isoDateUTC, // e.g. "2025-06-26T17:30:00.000Z"
+        fullDate: getFullDateString(isoDateUTC) // e.g. "Wednesday, June 26 at 1:30 PM ET"
       };
+
+      console.log("Payload being sent:", payload);
 
       try {
         const res = await fetch("/api/webinar-registration", {
@@ -616,6 +618,48 @@ window.addEventListener("DOMContentLoaded", async () => {
         case 3: return `${d}rd`;
         default: return `${d}th`;
       }
+    }
+
+    function toUserTimezoneIso(isoUtcString) {
+      const date = new Date(isoUtcString);
+
+      // Get user's timezone offset in minutes (e.g., -240 for EDT)
+      const tzOffsetMinutes = date.getTimezoneOffset();
+      const offsetHours = Math.floor(Math.abs(tzOffsetMinutes) / 60);
+      const offsetMinutes = Math.abs(tzOffsetMinutes) % 60;
+      const sign = tzOffsetMinutes > 0 ? "-" : "+";
+
+      // Get local date/time parts
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
+
+      // Format as ISO string with offset
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
+    }
+
+    function getFullDateString(isoDateUTC) {
+      const date = new Date(isoDateUTC);
+      // Get user's timezone from browser
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      // Format options for full date string
+      const options = {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: userTz,
+        timeZoneName: "short"
+      };
+
+      // Format date in user's timezone
+      return date.toLocaleString("en-US", options);
     }
   });
 });
