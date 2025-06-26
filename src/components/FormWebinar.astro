@@ -207,6 +207,86 @@
 
 <script>
 window.addEventListener("DOMContentLoaded", async () => {
+  function computeSessionDate(weekdayName, timeStr, periodStr, timeZoneStr) {
+    console.log(`Computing session date for: ${weekdayName} at ${timeStr} ${periodStr} in ${timeZoneStr}`);
+    
+    // Map day names to day numbers (0 = Sunday, 6 = Saturday)
+    const dayMap = {
+      "Sunday": 0,
+      "Monday": 1, 
+      "Tuesday": 2,
+      "Wednesday": 3,
+      "Thursday": 4,
+      "Friday": 5,
+      "Saturday": 6
+    };
+    
+    // Parse time string
+    const [hours, minutes] = timeStr.split(":").map(num => parseInt(num, 10));
+    
+    // Handle AM/PM
+    let hour24 = hours;
+    if (periodStr.toUpperCase() === "PM" && hours < 12) {
+      hour24 = hours + 12;
+    }
+    if (periodStr.toUpperCase() === "AM" && hours === 12) {
+      hour24 = 0;
+    }
+    
+    // Get current date in the session's timezone
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timeZoneStr,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    });
+    
+    // Parse parts into a date object
+    const parts = formatter.formatToParts(now);
+    const dateParts = {};
+    parts.forEach(part => {
+      if (part.type !== 'literal') {
+        dateParts[part.type] = parseInt(part.value, 10);
+      }
+    });
+    
+    // Create date for today in the session timezone
+    const sessionDate = new Date(Date.UTC(
+      dateParts.year,
+      dateParts.month - 1,
+      dateParts.day,
+      hour24,
+      minutes,
+      0,
+      0
+    ));
+    
+    // Adjust to the target day of week
+    const currentDayOfWeek = new Date(
+      Date.UTC(dateParts.year, dateParts.month - 1, dateParts.day)
+    ).getUTCDay();
+    
+    let daysToAdd = (dayMap[weekdayName] - currentDayOfWeek + 7) % 7;
+    
+    // If it's the same day, check if the time has passed
+    if (daysToAdd === 0) {
+      if (dateParts.hour > hour24 || (dateParts.hour === hour24 && dateParts.minute >= minutes)) {
+        daysToAdd = 7; // Schedule for next week
+      }
+    }
+    
+    // Add days to reach the target day
+    sessionDate.setUTCDate(sessionDate.getUTCDate() + daysToAdd);
+    
+    console.log(`Computed date: ${sessionDate.toISOString()}`);
+    return sessionDate;
+  }
+  
   // Fetch webinar data once
   let data;
   try {
@@ -235,7 +315,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const buttonText = submitButton.querySelector(".button-text");
     const loader = submitButton.querySelector(".loader");
 
-    // Populate session select
+    // Populate session select with times from API
     const sessions = data.results.filter((item) => {
       try {
         const parsed = JSON.parse(item.id);
@@ -245,171 +325,140 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Calculate next occurrence for each session and prepare data for sorting
-    const sessionsWithDates = sessions.map(session => {
-      const details = JSON.parse(session.id);
-      const nextDate = computeSessionDate(details.day, `${details.time} ${details.period}`, details.timeZone);
-      return {
-        session: session,
-        nextDate: nextDate
-      };
+    // Process sessions and add to dropdown
+    const sessionsWithDates = [];
+    sessions.forEach(session => {
+      try {
+        const details = JSON.parse(session.id);
+        console.log("Session from API:", details);
+        
+        // Create a Date object for the next occurrence
+        const nextDate = getNextSessionDate(
+          details.day,
+          details.time,
+          details.period,
+          details.timeZone
+        );
+        
+        sessionsWithDates.push({
+          session: session,
+          nextDate: nextDate
+        });
+      } catch (error) {
+        console.error("Error processing session:", error);
+      }
     });
 
-    // Sort sessions by their next occurrence date
+    // Sort by date
     sessionsWithDates.sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
     selectEl.innerHTML = '<option value="" disabled selected>Select an upcoming session</option>';
-
-    // Add sorted sessions to dropdown
     sessionsWithDates.forEach(item => {
       const session = item.session;
-      const nextDate = item.nextDate; // This is now a proper UTC date
-
-      // Get user's timezone
-      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-      // Format directly with the user's timezone - this will correctly convert
-      // the UTC time to the user's local time
+      const nextDate = item.nextDate;
+      
+      // Format in user's local timezone
       const userTimeOptions = {
         weekday: 'long',
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
-        timeZone: userTz,
         timeZoneName: 'short'
       };
-
-      // Format the date directly - since nextDate is now properly in UTC,
-      // this will correctly show the local time
+      
       const userTimeString = nextDate.toLocaleString("en-US", userTimeOptions);
-
+      
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
-      option.setAttribute("data-timezone", userTz);
       option.textContent = userTimeString;
       selectEl.appendChild(option);
     });
 
-    // Timer logic
-    function getNextSessionDate(sessions) {
-      let closest = null;
-      sessions.forEach(session => {
-        const details = JSON.parse(session.id);
-        const date = computeSessionDate(details.day, `${details.time} ${details.period}`, details.timeZone);
-        if (!closest || date < closest) closest = date;
-      });
-      return closest;
-    }
-
-    function computeSessionDate(weekdayName, timeStr, timeZone) {
-      const daysOfWeek = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
-      const targetDay = daysOfWeek[weekdayName];
-
-      // Parse the time string
-      const [time, period] = timeStr.split(" ");
-      let [hours, minutes] = time.split(":").map(Number);
-      if (period === "PM" && hours !== 12) hours += 12;
-      if (period === "AM" && hours === 12) hours = 0;
-
-      // Get current date in UTC
+    // Simple function to get next session date
+    function getNextSessionDate(weekdayName, timeStr, periodStr, timeZoneStr) {
+      // Map weekday names to numbers
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const targetDay = weekdays.indexOf(weekdayName);
+      
+      // Parse time
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      
+      // Convert to 24-hour format
+      let hour24 = hours;
+      if (periodStr.toUpperCase() === "PM" && hours < 12) hour24 += 12;
+      if (periodStr.toUpperCase() === "AM" && hours === 12) hour24 = 0;
+      
+      // Get current date in the session's timezone
       const now = new Date();
       
-      // Get current date components in session timezone
-      const tzOptions = { timeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
-      const tzDateParts = new Intl.DateTimeFormat('en-US', tzOptions).formatToParts(now);
+      // Find the next occurrence of the weekday
+      const nowInTargetTz = new Date(now.toLocaleString("en-US", { timeZone: timeZoneStr }));
+      const currentDayOfWeek = nowInTargetTz.getDay();
       
-      // Extract parts into a map for easy access
-      const partMap = {};
-      tzDateParts.forEach(part => {
-        if (part.type !== 'literal') {
-          partMap[part.type] = parseInt(part.value, 10);
-        }
-      });
+      // Calculate days to add
+      let daysToAdd = (targetDay - currentDayOfWeek + 7) % 7;
       
-      // Create date object representing "now" in the session's timezone
-      const nowInTz = new Date(Date.UTC(
-        partMap.year,
-        partMap.month - 1, // JS months are 0-indexed
-        partMap.day,
-        partMap.hour,
-        partMap.minute,
-        partMap.second
-      ));
-      
-      const today = nowInTz.getUTCDay();
-
-      // Calculate days until next occurrence
-      let daysUntil = (targetDay - today + 7) % 7;
-
-      // If today, check if the time has passed in the session's timezone
-      if (daysUntil === 0) {
-        if (
-          nowInTz.getUTCHours() > hours ||
-          (nowInTz.getUTCHours() === hours && nowInTz.getUTCMinutes() >= minutes)
-        ) {
-          daysUntil = 7; // Schedule for next week
+      // If it's the target day, check if the time has passed
+      if (daysToAdd === 0) {
+        const currentHour = nowInTargetTz.getHours();
+        const currentMinute = nowInTargetTz.getMinutes();
+        
+        if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
+          daysToAdd = 7; // Schedule for next week
         }
       }
-
-      // Create session date in UTC
-      const sessionDate = new Date(nowInTz);
-      sessionDate.setUTCDate(sessionDate.getUTCDate() + daysUntil);
-      sessionDate.setUTCHours(hours, minutes, 0, 0);
-
-      // Now convert this UTC time to the equivalent time in the session's timezone
-      // by calculating the offset between UTC and the session timezone
-      const tzOffset = getTimezoneOffset(timeZone, sessionDate);
       
-      // Apply the offset to get the correct UTC time for this timezone-specific time
-      const finalDate = new Date(sessionDate.getTime() - tzOffset * 60000);
+      // Create the next session date
+      const sessionDate = new Date(nowInTargetTz);
+      sessionDate.setDate(sessionDate.getDate() + daysToAdd);
+      sessionDate.setHours(hour24, minutes, 0, 0);
+      
+      // Convert to UTC
+      const utcDate = new Date(sessionDate.toLocaleString("en-US", { timeZone: "UTC" }));
+      
+      // Adjust for timezone offset
+      const tzOffset = new Date(sessionDate.toLocaleString("en-US", { timeZone: timeZoneStr })).getTime() - 
+                      new Date(sessionDate.toLocaleString("en-US", { timeZone: "UTC" })).getTime();
+      
+      const finalDate = new Date(utcDate.getTime() + tzOffset);
+      console.log(`Next ${weekdayName} at ${timeStr} ${periodStr} ${timeZoneStr} = ${finalDate.toString()}`);
       
       return finalDate;
     }
 
-    // Helper function to get timezone offset in minutes for a specific timezone and date
-    function getTimezoneOffset(timeZone, date) {
-      // Get time strings for UTC and the target timezone
-      const utcString = date.toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
-      const tzString = date.toLocaleString('en-US', { timeZone, hour12: false });
+    // For countdown timer, use the first upcoming session
+    if (sessionsWithDates.length > 0) {
+      const nextSession = sessionsWithDates[0].nextDate;
       
-      // Parse both strings to Date objects
-      const utcDate = new Date(utcString + ' UTC');
-      const tzDate = new Date(tzString + ' UTC'); 
-  
-      // Calculate the difference in minutes
-      return (utcDate - tzDate) / 60000;
-    }
-
-    function updateCountdown(targetDate) {
-      const now = new Date();
-      const target = targetDate instanceof Date ? targetDate : new Date(targetDate);
-      const dist = target.getTime() - now.getTime();
-      
-      if (dist < 0) {
-        // Session has passed, find the next one
-        if (daysSpan) daysSpan.textContent = "0";
-        if (hoursSpan) hoursSpan.textContent = "0";
-        if (minutesSpan) minutesSpan.textContent = "0";
-        if (secondsSpan) secondsSpan.textContent = "0";
-        return;
+      // Update the countdown
+      function updateCountdown() {
+        const now = new Date();
+        const timeLeft = nextSession.getTime() - now.getTime();
+        
+        if (timeLeft <= 0) {
+          // Time has passed
+          daysSpan.textContent = "0";
+          hoursSpan.textContent = "0";
+          minutesSpan.textContent = "0";
+          secondsSpan.textContent = "0";
+          return;
+        }
+        
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        daysSpan.textContent = days.toString();
+        hoursSpan.textContent = hours.toString();
+        minutesSpan.textContent = minutes.toString();
+        secondsSpan.textContent = seconds.toString();
       }
       
-      const d = Math.floor(dist / (1000 * 60 * 60 * 24));
-      const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((dist % (1000 * 60)) / 1000);
-      
-      if (daysSpan) daysSpan.textContent = String(d);
-      if (hoursSpan) hoursSpan.textContent = String(h);
-      if (minutesSpan) minutesSpan.textContent = String(m);
-      if (secondsSpan) secondsSpan.textContent = String(s);
-    }
-
-    const nextSessionDate = getNextSessionDate(sessions);
-    if (nextSessionDate) {
-      updateCountdown(nextSessionDate);
-      setInterval(() => updateCountdown(nextSessionDate), 1000);
+      // Initial update and set interval
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
     }
 
     // Phone input formatting
