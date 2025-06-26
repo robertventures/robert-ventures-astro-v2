@@ -548,6 +548,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       const sessionDetails = JSON.parse(sessionValue);
       const sessionId = sessionDetails.id;
 
+      const sessionTimeZone = sessionDetails.timeZone; // e.g., "America/New_York"
       const payload = {
         session: sessionId,
         first_name: formData.get("first_name"),
@@ -559,8 +560,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         })(),
         invest_intent: formData.get("invest_intent"),
         bot_field: formData.get("bot-field"),
-        date: isoDateUTC, // e.g. "2025-06-26T17:30:00.000Z"
-        fullDate: getFullDateString(isoDateUTC) // e.g. "Wednesday, June 26 at 1:30 PM ET"
+        date: isoDateUTC,
+        fullDate: getFullDateString(isoDateUTC, sessionTimeZone) // e.g. "Wednesday, June 26 at 1:30 PM ET"
       };
 
       console.log("Payload being sent:", payload);
@@ -641,12 +642,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
     }
 
-    function getFullDateString(isoDateUTC) {
+    function getFullDateString(isoDateUTC, sessionTimeZone) {
       const date = new Date(isoDateUTC);
-      // Get user's timezone from browser
-      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      // Format options for full date string
       const options = {
         weekday: "long",
         month: "long",
@@ -654,11 +652,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
-        timeZone: userTz,
+        timeZone: sessionTimeZone, // <-- Use session's timezone!
         timeZoneName: "short"
       };
 
-      // Format date in user's timezone
       return date.toLocaleString("en-US", options);
     }
   });
