@@ -1,0 +1,117 @@
+---
+import Arrow from "../images/svg/right-arrow.svg";
+---
+
+<style>
+    .form-block {
+        border-radius: 1.5625rem;
+        border: 1px solid #afb5bc;
+        background: #fff;
+        display: flex;
+        max-width: 366px;
+        height: 3.125rem;
+        padding: 1rem 0.5rem 1rem 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+
+    input {
+        border: none;
+        flex-grow: 1; /* Allow the input to grow */
+        margin-right: 0.5rem; /* Add some space between the input and the button */
+    }
+
+    input:focus {
+        outline: none; /* Remove the default outline */
+        border: none; /* Remove the border */
+    }
+
+    .form-block button {
+        background-color: #5028ff;
+        border: 1px solid #5028ff;
+        color: #fff;
+        border-radius: 2rem;
+        padding: 6px;
+    }
+
+    .signup-error {
+        display: none;
+        color: red;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+
+    .account {
+        color: #737373;
+        /* font-family: "Inter", sans-serif; */
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 150%;
+        text-align: center;
+
+        max-width: 260px;
+        margin: 0 auto;
+
+        margin-bottom: 1rem;
+    }
+
+    .login {
+        color: #396afb;
+    }
+
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #5028ff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media only screen and (min-width: 990px){
+        .account{
+            max-width: none;
+        }
+    }
+</style>
+
+<div class="form">
+    <p class="account">
+        Anyone can start with just $1,000 in less than 2 minutes
+    </p>
+    <form id="form-cta">
+        <div class="form-block">
+            <input
+                type="email"
+                placeholder="Enter Your Email"
+                required
+                class="email-input"
+            />
+            <input
+                type="text"
+                name="bot-field"
+                class="bot-field"
+                style="display: none;"
+            />
+            <button type="submit">
+                <span class="button-text">
+                    <Arrow />
+                </span>
+                <span class="loader" style="display: none;"></span>
+            </button>
+        </div>
+        <p class="signup-error"></p>
+    </form>
+</div>

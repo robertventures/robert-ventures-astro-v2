@@ -3,115 +3,53 @@ import Arrow from "../images/svg/right-arrow.svg";
 ---
 
 <style>
-    .form-block {
-        border-radius: 1.5625rem;
-        border: 1px solid #afb5bc;
-        background: #fff;
+    .cta-block {
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    a {
+        text-decoration: none;
+        text-align: center;
+        border-radius: 8px;
+
+        font-size: 20px;
+        font-weight: 700;
+        font-family: "Satoshi", sans-serif;
+
+        padding: 12px;
+
         max-width: 366px;
-        height: 3.125rem;
-        padding: 1rem 0.5rem 1rem 1.5rem;
-        justify-content: space-between;
-        align-items: center;
-        flex-shrink: 0;
+        width: 100%;
+
         margin: 0 auto;
     }
 
-    input {
-        border: none;
-        flex-grow: 1; /* Allow the input to grow */
-        margin-right: 0.5rem; /* Add some space between the input and the button */
-    }
-
-    input:focus {
-        outline: none; /* Remove the default outline */
-        border: none; /* Remove the border */
-    }
-
-    .form-block button {
+    .invest {
         background-color: #5028ff;
         border: 1px solid #5028ff;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+
         color: #fff;
-        border-radius: 2rem;
-        padding: 6px;
     }
 
-    .signup-error {
-        display: none;
-        color: red;
-        text-align: center;
-        margin-top: 0.5rem;
-    }
-
-    .account {
-        color: #737373;
-        /* font-family: "Inter", sans-serif; */
-        font-size: 1rem;
+    .webinar {
+        color: #281480;
         font-weight: 500;
-        line-height: 150%;
-        text-align: center;
 
-        max-width: 260px;
-        margin: 0 auto;
-
-        margin-bottom: 1rem;
+        border: 1px solid #281480;
     }
-
-    .login {
-        color: #396afb;
-    }
-
-    .loader {
-        border: 2px solid #f3f3f3;
-        border-top: 2px solid #5028ff;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        animation: spin 1s linear infinite;
-        display: none;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    @media only screen and (min-width: 990px){
-        .account{
-            max-width: none;
-        }
+    svg{
+        transform: translateY(1px);
     }
 </style>
 
-<div class="form">
-    <p class="account">
-        Anyone can start with just $1,000 in less than 2 minutes
-    </p>
-    <form id="form-cta">
-        <div class="form-block">
-            <input
-                type="email"
-                placeholder="Enter Your Email"
-                required
-                class="email-input"
-            />
-            <input
-                type="text"
-                name="bot-field"
-                class="bot-field"
-                style="display: none;"
-            />
-            <button type="submit">
-                <span class="button-text">
-                    <Arrow />
-                </span>
-                <span class="loader" style="display: none;"></span>
-            </button>
-        </div>
-        <p class="signup-error"></p>
-    </form>
+<div class="cta-block">
+    <a class="invest" href="https://invest.robertventures.com/offering/rob10/details">Invest<Arrow /></a>
+    <a class="webinar" href="/webinar">Join Our Webinar</a>
 </div>
