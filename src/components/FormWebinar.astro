@@ -435,13 +435,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // For countdown timer, use the first upcoming session
     if (sessionsWithDates.length > 0) {
-      const nextSession = sessionsWithDates[0].nextDate;
-      
+      const nextSession = sessionsWithDates[0].nextDate; // This is the next webinar date from the API
+
       // Update the countdown
       function updateCountdown() {
-        const now = new Date();
-        const timeLeft = nextSession.getTime() - Date.now();
-        
+        const now = new Date(); // Current time
+        const timeLeft = nextSession.getTime() - now.getTime(); // Time difference in milliseconds
+
         if (timeLeft <= 0) {
           // Time has passed
           daysSpan.textContent = "0";
@@ -450,18 +450,18 @@ window.addEventListener("DOMContentLoaded", async () => {
           secondsSpan.textContent = "0";
           return;
         }
-        
+
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-        
+
         daysSpan.textContent = days.toString();
         hoursSpan.textContent = hours.toString();
         minutesSpan.textContent = minutes.toString();
         secondsSpan.textContent = seconds.toString();
       }
-      
+
       // Initial update and set interval
       updateCountdown();
       setInterval(updateCountdown, 1000);
