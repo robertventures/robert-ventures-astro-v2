@@ -335,18 +335,27 @@ window.addEventListener("DOMContentLoaded", async () => {
         const details = JSON.parse(session.id);
         console.log("Session from API:", details);
         
-        // Create a Date object for the next occurrence
-        const nextDate = getNextSessionDate(
-          details.day,
-          details.time,
-          details.period,
-          details.timeZone
-        );
-        
-        sessionsWithDates.push({
-          session: session,
-          nextDate: nextDate
-        });
+        // Use the actual date from the API if available
+        if (session.date) {
+          const nextDate = new Date(session.date);
+          sessionsWithDates.push({
+            session: session,
+            nextDate: nextDate
+          });
+        } else {
+          // Fallback to calculated date if no date in API
+          const nextDate = getNextSessionDate(
+            details.day,
+            details.time,
+            details.period,
+            details.timeZone
+          );
+          
+          sessionsWithDates.push({
+            session: session,
+            nextDate: nextDate
+          });
+        }
       } catch (error) {
         console.error("Error processing session:", error);
       }
@@ -385,56 +394,63 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Simple function to get next session date
-    function getNextSessionDate(weekdayName, timeStr, periodStr, timeZoneStr) {
-      // Map weekday names to numbers
+    function getNextSessionDate(weekdayName, timeStr, periodStr) {
       const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const targetDay = weekdays.indexOf(weekdayName);
 
-      // Parse time
       const [hours, minutes] = timeStr.split(":").map(Number);
-
-      // Convert to 24-hour format
       let hour24 = hours;
       if (periodStr.toUpperCase() === "PM" && hours < 12) hour24 += 12;
       if (periodStr.toUpperCase() === "AM" && hours === 12) hour24 = 0;
 
-      // Get current date
+      // Get current date in New York timezone
       const now = new Date();
-      const currentDayOfWeek = now.getDay();
-
-      // Calculate days to add
-      let daysToAdd = (targetDay - currentDayOfWeek + 7) % 7;
-
-      // If it's the target day, check if the time has passed
+      const currentNYTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+      
+      // Find next occurrence of the target day
+      const currentDay = currentNYTime.getDay();
+      let daysToAdd = (targetDay - currentDay + 7) % 7;
+      
+      // If it's today, check if time has passed
       if (daysToAdd === 0) {
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-
+        const currentHour = currentNYTime.getHours();
+        const currentMinute = currentNYTime.getMinutes();
+        
         if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
-          daysToAdd = 7; // Schedule for next week
+          daysToAdd = 7; // Next week
         }
       }
-
-      // Create the next session date
-      const sessionDate = new Date(now);
+      
+      // Create the session date in New York timezone
+      const sessionDate = new Date(currentNYTime);
       sessionDate.setDate(sessionDate.getDate() + daysToAdd);
       sessionDate.setHours(hour24, minutes, 0, 0);
-
-      return sessionDate; // Return the date directly without timezone adjustments
+      
+      // Convert to UTC properly
+      const sessionUTC = new Date(sessionDate.getTime() - (sessionDate.getTimezoneOffset() * 60000));
+      
+      // Adjust for NY timezone offset
+      const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+      const nyOffset = new Date(tempDate.toLocaleString("en-US", {timeZone: "America/New_York"})).getTime() - tempDate.getTime();
+      const finalSessionUTC = new Date(sessionDate.getTime() - nyOffset);
+      
+      console.log("Session date calculated:", finalSessionUTC.toISOString());
+      
+      return finalSessionUTC;
     }
 
     // For countdown timer, use the first upcoming session
     if (sessionsWithDates.length > 0) {
-      const nextSession = new Date(sessionsWithDates[0].nextDate.toISOString()); // Ensure UTC
+      const nextSession = sessionsWithDates[0].nextDate;
+      console.log("Next session date for timer:", nextSession.toISOString());
+      console.log("Current time:", new Date().toISOString());
 
       // Update the countdown
       function updateCountdown() {
-        const now = new Date(); // Current time in user's local timezone
-        const nowUTC = new Date(now.toISOString()); // Convert to UTC
-        const timeLeft = nextSession.getTime() - nowUTC.getTime(); // Time difference in milliseconds
+        const now = new Date();
+        const timeLeft = nextSession.getTime() - now.getTime();
 
         if (timeLeft <= 0) {
-          // Time has passed
           daysSpan.textContent = "0";
           hoursSpan.textContent = "0";
           minutesSpan.textContent = "0";
