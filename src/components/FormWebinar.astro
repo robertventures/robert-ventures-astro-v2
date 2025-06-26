@@ -290,40 +290,68 @@ window.addEventListener("DOMContentLoaded", async () => {
       const daysOfWeek = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
       const targetDay = daysOfWeek[weekdayName];
 
-      // Always use UTC for calculations
-      const now = new Date();
-      // Get the current time in the session's time zone
-      const tzNow = new Date(now.toLocaleString("en-US", { timeZone }));
-
-      let result = new Date(tzNow);
-      result.setDate(result.getDate() + ((7 + targetDay - result.getDay()) % 7));
+      // Parse the time string
       const [time, period] = timeStr.split(" ");
       let [hours, minutes] = time.split(":").map(Number);
       if (period === "PM" && hours !== 12) hours += 12;
       if (period === "AM" && hours === 12) hours = 0;
-      result.setHours(hours, minutes, 0, 0);
 
-      // If the session time has already passed for this week, move to next week
-      if (result <= tzNow) result.setDate(result.getDate() + 7);
+      // Get current date and time
+      const now = new Date();
+      const today = now.getDay();
+      
+      // Calculate days until next occurrence
+      let daysUntil = (targetDay - today + 7) % 7;
+      if (daysUntil === 0) {
+        // If it's today, check if the time has passed
+        const sessionTime = new Date();
+        sessionTime.setHours(hours, minutes, 0, 0);
+        
+        // Convert session time to user's timezone for comparison
+        const sessionInTz = new Date(sessionTime.toLocaleString("en-US", { timeZone }));
+        const nowInTz = new Date(now.toLocaleString("en-US", { timeZone }));
+        
+        if (sessionInTz <= nowInTz) {
+          daysUntil = 7; // Move to next week
+        }
+      }
 
-      // Convert the result to UTC timestamp
-      return new Date(result.toLocaleString("en-US", { timeZone: "UTC" }));
+      // Create the session date in the session's timezone
+      const sessionDate = new Date(now);
+      sessionDate.setDate(sessionDate.getDate() + daysUntil);
+      sessionDate.setHours(hours, minutes, 0, 0);
+      
+      // Convert to user's local time for accurate countdown
+      const sessionInUserTz = new Date(sessionDate.toLocaleString("en-US", { timeZone }));
+      const userTzOffset = now.getTimezoneOffset() * 60000;
+      const sessionTzOffset = sessionInUserTz.getTimezoneOffset() * 60000;
+      
+      return new Date(sessionDate.getTime() + (sessionTzOffset - userTzOffset));
     }
 
     function updateCountdown(targetDate) {
-      // Always use UTC for now
       const now = new Date();
-      const nowUTC = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
       const target = targetDate instanceof Date ? targetDate : new Date(targetDate);
-      const dist = target.getTime() - nowUTC.getTime();
+      const dist = target.getTime() - now.getTime();
+      
+      if (dist < 0) {
+        // Session has passed, find the next one
+        if (daysSpan) daysSpan.textContent = "0";
+        if (hoursSpan) hoursSpan.textContent = "0";
+        if (minutesSpan) minutesSpan.textContent = "0";
+        if (secondsSpan) secondsSpan.textContent = "0";
+        return;
+      }
+      
       const d = Math.floor(dist / (1000 * 60 * 60 * 24));
       const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((dist % (1000 * 60)) / 1000);
-      if (daysSpan) daysSpan.textContent = d > 0 ? String(d) : "0";
-      if (hoursSpan) hoursSpan.textContent = h > 0 ? String(h) : "0";
-      if (minutesSpan) minutesSpan.textContent = m > 0 ? String(m) : "0";
-      if (secondsSpan) secondsSpan.textContent = s > 0 ? String(s) : "0";
+      
+      if (daysSpan) daysSpan.textContent = String(d);
+      if (hoursSpan) hoursSpan.textContent = String(h);
+      if (minutesSpan) minutesSpan.textContent = String(m);
+      if (secondsSpan) secondsSpan.textContent = String(s);
     }
 
     const nextSessionDate = getNextSessionDate(sessions);
