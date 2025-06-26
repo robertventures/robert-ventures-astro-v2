@@ -268,7 +268,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       // User's local timezone code (e.g., PDT, GMT-7)
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      // Format the time in user's local timezone
+      // Convert the session's nextDate (which is in UTC) to the user's local time
+      const userLocalDate = new Date(nextDate.toLocaleString("en-US", { timeZone: userTz }));
+
       const userTimeOptions = {
         weekday: 'long',
         hour: 'numeric',
@@ -278,7 +280,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         timeZoneName: 'short'
       };
 
-      const userTimeString = nextDate.toLocaleString("en-US", userTimeOptions);
+      const userTimeString = userLocalDate.toLocaleString("en-US", userTimeOptions);
 
       const option = document.createElement("option");
       option.value = session.id;
