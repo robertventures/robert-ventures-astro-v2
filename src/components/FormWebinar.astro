@@ -266,11 +266,27 @@ window.addEventListener("DOMContentLoaded", async () => {
       const nextDate = item.nextDate;
       const details = JSON.parse(session.id);
       
+      // Convert session time to user's local timezone for display
+      const userLocalTime = new Date(nextDate.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
+      
+      // Format the time in user's timezone
+      const timeOptions: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      };
+      
+      const userTimeString = nextDate.toLocaleString("en-US", timeOptions);
+      
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
       option.setAttribute("data-timezone", details.timeZone);
-      option.textContent = session.label.replace(/^Every\s+/i, "");
+      
+      // Display the session with time converted to user's timezone
+      option.textContent = `${userTimeString} (Your Time)`;
       selectEl.appendChild(option);
     });
 
