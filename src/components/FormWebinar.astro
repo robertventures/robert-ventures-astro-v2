@@ -386,51 +386,38 @@ window.addEventListener("DOMContentLoaded", async () => {
       // Map weekday names to numbers
       const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const targetDay = weekdays.indexOf(weekdayName);
-      
+
       // Parse time
       const [hours, minutes] = timeStr.split(":").map(Number);
-      
+
       // Convert to 24-hour format
       let hour24 = hours;
       if (periodStr.toUpperCase() === "PM" && hours < 12) hour24 += 12;
       if (periodStr.toUpperCase() === "AM" && hours === 12) hour24 = 0;
-      
-      // Get current date in the session's timezone
+
+      // Get current date
       const now = new Date();
-      
-      // Find the next occurrence of the weekday
-      const nowInTargetTz = new Date(now.toLocaleString("en-US", { timeZone: timeZoneStr }));
-      const currentDayOfWeek = nowInTargetTz.getDay();
-      
+      const currentDayOfWeek = now.getDay();
+
       // Calculate days to add
       let daysToAdd = (targetDay - currentDayOfWeek + 7) % 7;
-      
+
       // If it's the target day, check if the time has passed
       if (daysToAdd === 0) {
-        const currentHour = nowInTargetTz.getHours();
-        const currentMinute = nowInTargetTz.getMinutes();
-        
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+
         if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
           daysToAdd = 7; // Schedule for next week
         }
       }
-      
+
       // Create the next session date
-      const sessionDate = new Date(nowInTargetTz);
+      const sessionDate = new Date(now);
       sessionDate.setDate(sessionDate.getDate() + daysToAdd);
       sessionDate.setHours(hour24, minutes, 0, 0);
-      
-      // Convert to UTC
-      const utcDate = new Date(sessionDate.toLocaleString("en-US", { timeZone: "UTC" }));
-      
-      // Adjust for timezone offset
-      const tzOffset = new Date(sessionDate.toLocaleString("en-US", { timeZone: timeZoneStr })).getTime() - 
-                      new Date(sessionDate.toLocaleString("en-US", { timeZone: "UTC" })).getTime();
-      
-      const finalDate = new Date(utcDate.getTime() + tzOffset);
-      console.log(`Next ${weekdayName} at ${timeStr} ${periodStr} ${timeZoneStr} = ${finalDate.toString()}`);
-      
-      return finalDate;
+
+      return sessionDate; // Return the date directly without timezone adjustments
     }
 
     // For countdown timer, use the first upcoming session
