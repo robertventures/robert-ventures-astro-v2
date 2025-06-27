@@ -55,7 +55,7 @@ const pageDescription =
                     "https://connect.facebook.net/en_US/fbevents.js"
                 );
                 fbq("init", "652212003052612");
-                fbq("track", "Lead", { value: investIntent, currency: "USD" });
+                fbq("track", "CompleteRegistration", { value: investIntent, currency: "USD" });
                 console.log("✅ Meta Pixel tag fired: Lead");
                 // Add noscript fallback dynamically
                 const noscript = document.createElement("noscript");
