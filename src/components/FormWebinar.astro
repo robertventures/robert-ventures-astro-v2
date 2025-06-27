@@ -568,7 +568,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         invest_intent: formData.get("invest_intent"),
         bot_field: formData.get("bot-field"),
         date: isoDateUTC,
-        fullDate: getFullDateString(isoDateUTC, sessionTimeZone) // e.g. "Wednesday, June 26 at 1:30 PM ET"
+        fullDate: getFullDateString(isoDateUTC, sessionTimeZone),
+        utm_campaign: localStorage.getItem("utmCampaign") || undefined
       };
 
       console.log("Payload being sent:", payload);

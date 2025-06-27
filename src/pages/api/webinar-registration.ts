@@ -25,7 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
                         lastName: body.last_name,
                         phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                         email: body.email,
-                        source: "Webinar",
+                        source: body.utm_campaign || "Webinar",
                         customField: {
                             invest_intent: body.invest_intent
                         }
