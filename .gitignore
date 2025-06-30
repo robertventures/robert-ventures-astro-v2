@@ -29,6 +29,8 @@ src/pages/dashboard.astro
 
 src/pages/login.astro
 
+src/pages/booking.astro
+
 # src/pages/test.astro
 
 # src/pages/test2.astro
