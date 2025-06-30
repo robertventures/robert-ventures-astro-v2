@@ -121,7 +121,7 @@
     }
 
     @media only screen and (min-width: 990px) {
-        .account {
+        .form {
             max-width: none;
         }
     }
@@ -207,86 +207,6 @@
 
 <script>
 window.addEventListener("DOMContentLoaded", async () => {
-  function computeSessionDate(weekdayName, timeStr, periodStr, timeZoneStr) {
-    console.log(`Computing session date for: ${weekdayName} at ${timeStr} ${periodStr} in ${timeZoneStr}`);
-    
-    // Map day names to day numbers (0 = Sunday, 6 = Saturday)
-    const dayMap = {
-      "Sunday": 0,
-      "Monday": 1, 
-      "Tuesday": 2,
-      "Wednesday": 3,
-      "Thursday": 4,
-      "Friday": 5,
-      "Saturday": 6
-    };
-    
-    // Parse time string
-    const [hours, minutes] = timeStr.split(":").map(num => parseInt(num, 10));
-    
-    // Handle AM/PM
-    let hour24 = hours;
-    if (periodStr.toUpperCase() === "PM" && hours < 12) {
-      hour24 = hours + 12;
-    }
-    if (periodStr.toUpperCase() === "AM" && hours === 12) {
-      hour24 = 0;
-    }
-    
-    // Get current date in the session's timezone
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: timeZoneStr,
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: false
-    });
-    
-    // Parse parts into a date object
-    const parts = formatter.formatToParts(now);
-    const dateParts = {};
-    parts.forEach(part => {
-      if (part.type !== 'literal') {
-        dateParts[part.type] = parseInt(part.value, 10);
-      }
-    });
-    
-    // Create date for today in the session timezone
-    const sessionDate = new Date(Date.UTC(
-      dateParts.year,
-      dateParts.month - 1,
-      dateParts.day,
-      hour24,
-      minutes,
-      0,
-      0
-    ));
-    
-    // Adjust to the target day of week
-    const currentDayOfWeek = new Date(
-      Date.UTC(dateParts.year, dateParts.month - 1, dateParts.day)
-    ).getUTCDay();
-    
-    let daysToAdd = (dayMap[weekdayName] - currentDayOfWeek + 7) % 7;
-    
-    // If it's the same day, check if the time has passed
-    if (daysToAdd === 0) {
-      if (dateParts.hour > hour24 || (dateParts.hour === hour24 && dateParts.minute >= minutes)) {
-        daysToAdd = 7; // Schedule for next week
-      }
-    }
-    
-    // Add days to reach the target day
-    sessionDate.setUTCDate(sessionDate.getUTCDate() + daysToAdd);
-    
-    console.log(`Computed date: ${sessionDate.toISOString()}`);
-    return sessionDate;
-  }
-  
   // Fetch webinar data once
   let data;
   try {
@@ -296,8 +216,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     data = await response.json();
-
-    // Log the fetched webinar data
     console.log("Fetched webinar data:", data);
   } catch (err) {
     console.error("An error occurred while fetching webinar data:", err);
@@ -306,7 +224,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // For each form instance on the page
   document.querySelectorAll(".form").forEach((formContainer) => {
-    const form = formContainer.querySelector("form.form-cta") as HTMLFormElement;
+    const form = formContainer.querySelector("form.form-cta");
+    if (!form) return;
+    
     const selectEl = form.querySelector("select[name='session']");
     const phoneInput = form.querySelector("input[name='phone_number']");
     const daysSpan = formContainer.querySelector(".days span");
@@ -315,8 +235,19 @@ window.addEventListener("DOMContentLoaded", async () => {
     const secondsSpan = formContainer.querySelector(".seconds span");
     const signupError = form.querySelector(".signup-error");
     const submitButton = form.querySelector("button[type='submit']");
+    
+    if (!selectEl || !daysSpan || !hoursSpan || !minutesSpan || !secondsSpan || !signupError || !submitButton) {
+      console.error("Required form elements not found");
+      return;
+    }
+    
     const buttonText = submitButton.querySelector(".button-text");
     const loader = submitButton.querySelector(".loader");
+    
+    if (!buttonText || !loader) {
+      console.error("Button elements not found");
+      return;
+    }
 
     // Populate session select with times from API
     const sessions = data.results.filter((item) => {
@@ -327,6 +258,52 @@ window.addEventListener("DOMContentLoaded", async () => {
         return false;
       }
     });
+
+    // Simple function to get next session date
+    function getNextSessionDate(weekdayName, timeStr, periodStr, timeZoneStr) {
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const targetDay = weekdays.indexOf(weekdayName);
+
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      let hour24 = hours;
+      if (periodStr.toUpperCase() === "PM" && hours < 12) hour24 += 12;
+      if (periodStr.toUpperCase() === "AM" && hours === 12) hour24 = 0;
+
+      // Get current date in the specified timezone
+      const now = new Date();
+      const currentTzTime = new Date(now.toLocaleString("en-US", {timeZone: timeZoneStr || "America/New_York"}));
+      
+      // Find next occurrence of the target day
+      const currentDay = currentTzTime.getDay();
+      let daysToAdd = (targetDay - currentDay + 7) % 7;
+      
+      // If it's today, check if time has passed
+      if (daysToAdd === 0) {
+        const currentHour = currentTzTime.getHours();
+        const currentMinute = currentTzTime.getMinutes();
+        
+        if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
+          daysToAdd = 7; // Next week
+        }
+      }
+      
+      // Create the session date in the specified timezone
+      const sessionDate = new Date(currentTzTime);
+      sessionDate.setDate(sessionDate.getDate() + daysToAdd);
+      sessionDate.setHours(hour24, minutes, 0, 0);
+      
+      // Convert to UTC properly
+      const sessionUTC = new Date(sessionDate.getTime() - (sessionDate.getTimezoneOffset() * 60000));
+      
+      // Adjust for timezone offset
+      const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+      const tzOffset = new Date(tempDate.toLocaleString("en-US", {timeZone: timeZoneStr || "America/New_York"})).getTime() - tempDate.getTime();
+      const finalSessionUTC = new Date(sessionDate.getTime() - tzOffset);
+      
+      console.log("Session date calculated:", finalSessionUTC.toISOString());
+      
+      return finalSessionUTC;
+    }
 
     // Process sessions and add to dropdown
     const sessionsWithDates = [];
@@ -387,57 +364,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
-      option.setAttribute("data-timezone", userTz);  // Add user's timezone for formatFullDate function
-      option.setAttribute("data-original-timezone", details.timeZone);  // Keep the original timezone too if needed
+      option.setAttribute("data-timezone", userTz);
+      option.setAttribute("data-original-timezone", details.timeZone);
       option.textContent = userTimeString;
       selectEl.appendChild(option);
     });
-
-    // Simple function to get next session date
-    function getNextSessionDate(weekdayName, timeStr, periodStr) {
-      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const targetDay = weekdays.indexOf(weekdayName);
-
-      const [hours, minutes] = timeStr.split(":").map(Number);
-      let hour24 = hours;
-      if (periodStr.toUpperCase() === "PM" && hours < 12) hour24 += 12;
-      if (periodStr.toUpperCase() === "AM" && hours === 12) hour24 = 0;
-
-      // Get current date in New York timezone
-      const now = new Date();
-      const currentNYTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
-      
-      // Find next occurrence of the target day
-      const currentDay = currentNYTime.getDay();
-      let daysToAdd = (targetDay - currentDay + 7) % 7;
-      
-      // If it's today, check if time has passed
-      if (daysToAdd === 0) {
-        const currentHour = currentNYTime.getHours();
-        const currentMinute = currentNYTime.getMinutes();
-        
-        if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
-          daysToAdd = 7; // Next week
-        }
-      }
-      
-      // Create the session date in New York timezone
-      const sessionDate = new Date(currentNYTime);
-      sessionDate.setDate(sessionDate.getDate() + daysToAdd);
-      sessionDate.setHours(hour24, minutes, 0, 0);
-      
-      // Convert to UTC properly
-      const sessionUTC = new Date(sessionDate.getTime() - (sessionDate.getTimezoneOffset() * 60000));
-      
-      // Adjust for NY timezone offset
-      const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
-      const nyOffset = new Date(tempDate.toLocaleString("en-US", {timeZone: "America/New_York"})).getTime() - tempDate.getTime();
-      const finalSessionUTC = new Date(sessionDate.getTime() - nyOffset);
-      
-      console.log("Session date calculated:", finalSessionUTC.toISOString());
-      
-      return finalSessionUTC;
-    }
 
     // For countdown timer, use the first upcoming session
     if (sessionsWithDates.length > 0) {
@@ -480,14 +411,16 @@ window.addEventListener("DOMContentLoaded", async () => {
       let isDeleting = false;
       
       phoneInput.addEventListener("keydown", (e) => {
-        const input = e.target as HTMLInputElement;
-        lastValue = input.value;
+        const input = e.target;
+        if (!input) return;
+        lastValue = (input as HTMLInputElement).value;
         // Detect if user is deleting
-        isDeleting = e.key === "Backspace" || e.key === "Delete";
+        isDeleting = (e as KeyboardEvent).key === "Backspace" || (e as KeyboardEvent).key === "Delete";
       });
 
       phoneInput.addEventListener("input", (e) => {
         const input = e.target as HTMLInputElement;
+        if (!input) return;
         let value = input.value.replace(/\D/g, ""); // Remove non-digits
         
         // If user is deleting and the current value length is less than last value length,
@@ -495,7 +428,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         if (isDeleting && input.value.length < lastValue.length) {
           // Just clean the value and set it without formatting
           if (value.length === 0) {
-            input.value = "";
+            (input as HTMLInputElement).value = "";
             return;
           }
           // Allow partial numbers without full formatting when deleting
@@ -541,7 +474,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       (loader as HTMLElement).style.display = "inline-block";
       (submitButton as HTMLButtonElement).disabled = true;
 
-      const formData = new FormData(form);
+      const formData = new FormData(form as HTMLFormElement);
       const investIntent = formData.get("invest_intent");
       if (investIntent) {
         localStorage.setItem(
@@ -549,13 +482,40 @@ window.addEventListener("DOMContentLoaded", async () => {
           typeof investIntent === "string" ? investIntent : ""
         );
       }
+      
       const selectedOption = selectEl.querySelector("option:checked");
+      if (!selectedOption) {
+        signupError.textContent = "Please select a session.";
+        (buttonText as HTMLElement).style.display = "";
+        (loader as HTMLElement).style.display = "none";
+        (submitButton as HTMLButtonElement).disabled = false;
+        return;
+      }
+      
       const isoDateUTC = selectedOption.getAttribute("data-date");
-      const sessionValue = selectedOption.value;
-      const sessionDetails = JSON.parse(sessionValue);
+      const sessionValue = (selectedOption as HTMLOptionElement).value;
+      
+      if (!isoDateUTC || !sessionValue) {
+        signupError.textContent = "Invalid session data.";
+        (buttonText as HTMLElement).style.display = "";
+        (loader as HTMLElement).style.display = "none";
+        (submitButton as HTMLButtonElement).disabled = false;
+        return;
+      }
+      let sessionDetails;
+      try {
+        sessionDetails = JSON.parse(sessionValue);
+      } catch (error) {
+        signupError.textContent = "Invalid session format.";
+        (buttonText as HTMLElement).style.display = "";
+        (loader as HTMLElement).style.display = "none";
+        (submitButton as HTMLButtonElement).disabled = false;
+        return;
+      }
+      
       const sessionId = sessionDetails.id;
+      const sessionTimeZone = sessionDetails.timeZone;
 
-      const sessionTimeZone = sessionDetails.timeZone; // e.g., "America/New_York"
       const payload = {
         session: sessionId,
         first_name: formData.get("first_name"),
@@ -596,28 +556,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    function formatFullDate(dateObj, timeZone) {
-      const options: Intl.DateTimeFormatOptions = {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        timeZone: timeZone,
-        hour12: true,
-        timeZoneName: "short"
-      };
-      const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(dateObj);
-      const weekday = parts.find(p => p.type === "weekday").value;
-      const month = parts.find(p => p.type === "month").value;
-      const day = ordinalSuffix(parts.find(p => p.type === "day").value);
-      const hour = parts.find(p => p.type === "hour").value;
-      const minute = parts.find(p => p.type === "minute").value;
-      const period = parts.find(p => p.type === "dayPeriod").value;
-      const tzName = parts.find(p => p.type === "timeZoneName").value;
-      return `${weekday}, ${month} ${day} at ${hour}:${minute} ${period} ${tzName}`;
-    }
-
     function ordinalSuffix(day) {
       const d = parseInt(day, 10);
       if (d > 3 && d < 21) return `${d}th`;
@@ -627,27 +565,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         case 3: return `${d}rd`;
         default: return `${d}th`;
       }
-    }
-
-    function toUserTimezoneIso(isoUtcString) {
-      const date = new Date(isoUtcString);
-
-      // Get user's timezone offset in minutes (e.g., -240 for EDT)
-      const tzOffsetMinutes = date.getTimezoneOffset();
-      const offsetHours = Math.floor(Math.abs(tzOffsetMinutes) / 60);
-      const offsetMinutes = Math.abs(tzOffsetMinutes) % 60;
-      const sign = tzOffsetMinutes > 0 ? "-" : "+";
-
-      // Get local date/time parts
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      const seconds = String(date.getSeconds()).padStart(2, "0");
-
-      // Format as ISO string with offset
-      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
     }
 
     function getFullDateString(isoDateUTC, sessionTimeZone) {
@@ -660,11 +577,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
-        timeZone: sessionTimeZone, // <-- Use session's timezone!
+        timeZone: sessionTimeZone,
         timeZoneName: "short"
       };
 
-      return date.toLocaleString("en-US", options);
+      return date.toLocaleString("en-US", options as Intl.DateTimeFormatOptions);
     }
   });
 });
