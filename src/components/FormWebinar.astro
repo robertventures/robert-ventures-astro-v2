@@ -18,6 +18,14 @@ import Opener from "../images/svg/opener.svg";
         max-width: 366px;
 
         margin: 0 auto;
+
+        background: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+
+        padding: 1rem;
+        
+
     }
 
     .form-block {
@@ -61,6 +69,7 @@ import Opener from "../images/svg/opener.svg";
         border: none;
         flex-grow: 1; /* Allow the input to grow */
         border: 1px solid #afb5bc;
+        background-color: #f8f9fa;
         padding: 1rem 0.75rem;
         width: 100%;
         box-sizing: border-box;
@@ -78,7 +87,7 @@ import Opener from "../images/svg/opener.svg";
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background-color: #fff;
+        background-color: #f8f9fa;
         border: 1px solid #afb5bc;
         width: 100%;
 
@@ -141,7 +150,7 @@ import Opener from "../images/svg/opener.svg";
 
     @media only screen and (min-width: 990px) {
         .form {
-            max-width: none;
+            max-width: 600px;
         }
     }
 </style>
@@ -177,15 +186,8 @@ import Opener from "../images/svg/opener.svg";
             <div class="name">
                 <input
                     type="text"
-                    name="first_name"
-                    placeholder="First Name"
-                    required
-                    class="email-input"
-                />
-                <input
-                    type="text"
-                    name="last_name"
-                    placeholder="Last Name"
+                    name="full_name"
+                    placeholder="Full Name"
                     required
                     class="email-input"
                 />
@@ -366,32 +368,45 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Sort by date
     sessionsWithDates.sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
+    // Helper to format time left until a date
+    function formatTimeLeft(targetDate) {
+      const now = new Date();
+      let diff = targetDate.getTime() - now.getTime();
+      if (diff <= 0) return "(Started)";
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * (1000 * 60 * 60 * 24);
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * (1000 * 60 * 60);
+      const minutes = Math.floor(diff / (1000 * 60));
+      let result = [];
+      if (days > 0) result.push(days + (days === 1 ? " day" : " days"));
+      if (hours > 0) result.push(hours + (hours === 1 ? " hour" : " hours"));
+      if (minutes > 0 && days === 0) result.push(minutes + (minutes === 1 ? " minute" : " minutes"));
+      return result.length ? "In " + result.join(" ") : "Soon";
+    }
+
     selectEl.innerHTML = '<option value="" disabled selected>Select an upcoming session</option>';
     sessionsWithDates.forEach(item => {
       const session = item.session;
       const nextDate = item.nextDate;
       const details = JSON.parse(session.id);
-      
       // Get user's timezone for display purposes
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      
-      // Format in user's local timezone for display only
-      const userTimeOptions = {
-        weekday: 'long',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-        timeZoneName: 'short'
-      };
-      
-      const userTimeString = nextDate.toLocaleString("en-US", userTimeOptions);
-      
+      // Format as: Thu, 7/10, 11:00 AM GMT-4
+      const weekday = nextDate.toLocaleString("en-US", { weekday: "short" });
+      const month = nextDate.getMonth() + 1;
+      const day = nextDate.getDate();
+      const time = nextDate.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+      // Get short timezone (e.g., GMT-4)
+      const tzMatch = nextDate.toLocaleTimeString("en-US", { timeZoneName: "short" }).match(/GMT[+-]\d+/);
+      const tzShort = tzMatch ? tzMatch[0] : nextDate.toLocaleString("en-US", { timeZoneName: "short" }).split(' ').pop();
+      const timeLeftString = formatTimeLeft(nextDate);
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
       option.setAttribute("data-timezone", userTz);
       option.setAttribute("data-original-timezone", details.timeZone);
-      option.textContent = userTimeString;
+      option.textContent = `${weekday}, ${month}/${day}, ${time} ${tzShort} - ${timeLeftString}`;
       selectEl.appendChild(option);
     });
 
@@ -491,8 +506,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-
-
     // Form submission
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -545,8 +558,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       const payload = {
         session: sessionId,
-        first_name: formData.get("first_name"),
-        last_name: formData.get("last_name"),
+        name: formData.get("full_name"),
         email: formData.get("email"),
         phone_number: (() => {
           const val = formData.get("phone_number");

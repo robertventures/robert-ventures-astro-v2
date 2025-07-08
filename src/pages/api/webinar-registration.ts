@@ -21,8 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
                         "Authorization": `Bearer ${ghlApiKey}`,
                     },
                     body: JSON.stringify({
-                        firstName: body.first_name,
-                        lastName: body.last_name,
+                        name: body.name,
                         phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                         email: body.email,
                         source: body.utm_campaign || "Webinar",
@@ -48,13 +47,12 @@ export const POST: APIRoute = async ({ request }) => {
 
         const raw = JSON.stringify({
             email: body.email,
-            firstName: body.first_name,
-            lastName: body.last_name,
+            name: body.name,
+            phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             phoneNumberCountryCode: "+1",
-            phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             customField1: body.invest_intent,
             date: body.date,
-            fullDate: body.fullDate // <-- Add this line
+            fullDate: body.fullDate
         });
         
         console.log("📤 Sending to WebinarKit:", JSON.stringify(JSON.parse(raw), null, 2));
