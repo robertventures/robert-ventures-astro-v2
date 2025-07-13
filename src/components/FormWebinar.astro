@@ -673,6 +673,11 @@ import usFlag from "../images/usflag.png";
             localStorage.setItem("userEmail", typeof userEmail === "string" ? userEmail : "");
           }
           
+          // Send GA4 conversion event
+          if (typeof triggerEvent === 'function') {
+            triggerEvent('register_now', 'registerNow');
+          }
+          
           window.location.href = "/questions";
         } catch (err) {
           signupError.textContent = "An error occurred during registration.";
