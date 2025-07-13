@@ -426,6 +426,46 @@ const { showFormCTA = true } = Astro.props;
             line-height: 100%;
         }
     }
+
+    .desktop-only {
+        display: none !important;
+    }
+    @media only screen and (min-width: 990px) {
+        .desktop-only {
+            display: block !important;
+        }
+    }
+
+    .get-started-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+    .get-started-btn {
+        background-color: #5028ff;
+        border: none;
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 1rem 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        width: 100%;
+        max-width: 366px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+    .get-started-btn:hover {
+        background-color: #3c1fbf;
+    }
+    .get-started-btn .button-text {
+        font-weight: 500;
+    }
 </style>
 
 <section id="calculator">
@@ -528,9 +568,16 @@ const { showFormCTA = true } = Astro.props;
                     <p class="value small" id="return-value">CompoundReturn</p>
                 </div>
                 {showFormCTA && (
-                    <div class="form-cta">
+                    <div class="form-cta desktop-only">
                         <p>Start earning interest in less than 2 minutes</p>
                         <FormCTA />
+                    </div>
+                )}
+                {!showFormCTA && (
+                    <div class="get-started-container desktop-only">
+                        <a class="get-started-btn" href="#main-form">
+                            <span class="button-text">GET STARTED</span>
+                        </a>
                     </div>
                 )}
             </div>
