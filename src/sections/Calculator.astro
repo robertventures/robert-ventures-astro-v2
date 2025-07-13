@@ -1,5 +1,11 @@
 ---
 import FormCTA from "../components/FormCTA.astro";
+
+interface Props {
+    showFormCTA?: boolean;
+}
+
+const { showFormCTA = true } = Astro.props;
 ---
 
 <style>
@@ -521,10 +527,12 @@ import FormCTA from "../components/FormCTA.astro";
                     <p class="title small">Compound interest:</p>
                     <p class="value small" id="return-value">CompoundReturn</p>
                 </div>
-                <div class="form-cta">
-                    <p>Start earning interest in less than 2 minutes</p>
-                    <FormCTA />
-                </div>
+                {showFormCTA && (
+                    <div class="form-cta">
+                        <p>Start earning interest in less than 2 minutes</p>
+                        <FormCTA />
+                    </div>
+                )}
             </div>
         </div>
     </div>

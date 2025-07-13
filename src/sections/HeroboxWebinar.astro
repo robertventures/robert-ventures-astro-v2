@@ -1,7 +1,6 @@
 ---
 import FormWebinar from "../components/FormWebinar.astro";
 
-import Ten from "../../public/images/svg/10-rv.svg";
 
 import Business from "../../public/images/svg/business-logos/business-insider.svg";
 import Market from "../../public/images/svg/business-logos/market-watch.svg";
@@ -9,6 +8,8 @@ import Ap from "../../public/images/svg/business-logos/ap.svg";
 import Street from "../../public/images/svg/business-logos/street-insider.svg";
 import Benzinga from "../../public/images/svg/business-logos/benzinga.svg";
 import Morning from "../../public/images/svg/business-logos/morning.svg";
+
+import Check from "../images/svg/green-check.svg";
 ---
 
 <style>
@@ -28,9 +29,9 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
     }
 
     h1 {
-        font-size: clamp(2.5rem, 11.1vw, 2.875rem);
+        font-size: clamp(2rem, 11.1vw, 2.25rem);
         margin: 0 auto;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         max-width: 640px;
     }
@@ -38,19 +39,12 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
     p.hero-text {
         font-family: "Satoshi", sans-serif;
         font-display: swap;
-        font-size: 1.8125rem;
+        font-size: 1.125rem;
 
-        font-weight: 700;
-        line-height: 100%;
-        /* 1.8125rem */
-
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-weight: 500;
+        line-height: 160%;
 
         margin-bottom: 1.5rem;
-        margin-top: 1.5rem;
     }
 
     .form-cta {
@@ -67,30 +61,60 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
         display: grid;
         grid-auto-columns: auto;
         grid-template-columns: 1fr 1fr;
-        align-items: center;
+        align-items: stretch;
         justify-items: center;
         gap: 0.5rem;
     }
 
+    .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+    }
+
+    .pre-form-headline {
+        color: #505050;
+        font-size: 1.125rem;
+        font-weight: 700;
+        line-height: 100%;
+
+        /* margin: 0 auto; */
+
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+
+        
+    }
+
+    svg{
+        display: inline-block;
+        max-height: 100%;
+        width: auto;
+    }
+
+    span{
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     p.featured {
         color: #abbbd3;
-        font-size: 0.6875rem;
-        font-weight: 400;
+        font-size: 14px;
+        font-weight: 300;
         line-height: 1; /* 0.6875rem */
 
         margin-bottom: 0.75rem;
-    }
-
-    .account {
-        color: #737373;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 150%;
-        text-align: center;
-
-        margin: 0 auto;
-
-        margin-bottom: 1rem;
     }
 
     @media only screen and (min-width: 768px) {
@@ -114,6 +138,11 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
 
         .business {
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            align-items: stretch;
+        }
+
+        .logo-container {
+            height: 80px;
         }
 
         p.featured {
@@ -123,17 +152,17 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
 </style>
 
 <section>
-    <div class="section-container">
+    <div id="main-form" class="section-container">
         <div class="section-content">
-            <h1>Learn How To Compound Your Wealth Passively</h1>
+            <h1>Learn How to Earn <span>10%</span> Fixed Annual Returns with Our SEC-Qualified Bonds</h1>
 
-            <Ten />
-            <p class="hero-text">Fixed Annual Returns</p>
+            <!-- <Ten /> -->
+            <p class="hero-text">Backed by Real Estate and Digital Assets</p>
 
-            <div id="main-form" class="form-cta">
-                <p class="account">
-                    Join our LIVE webinar and get all your questions answered!
-                </p>
+            <div class="form-cta">
+                <div class="pre-form-headline">
+                    <Check/> 100% Payout Success
+                </div>
                 <FormWebinar />
             </div>
 
@@ -142,17 +171,29 @@ import Morning from "../../public/images/svg/business-logos/morning.svg";
             <p class="featured">Featured in</p>
 
             <div class="business">
-                <Business />
+                <div class="logo-container">
+                    <Business />
+                </div>
 
-                <Morning />
+                <div class="logo-container">
+                    <Morning />
+                </div>
 
-                <Market />
+                <div class="logo-container">
+                    <Market />
+                </div>
 
-                <Street />
+                <div class="logo-container">
+                    <Street />
+                </div>
 
-                <Benzinga />
+                <div class="logo-container">
+                    <Benzinga />
+                </div>
 
-                <Ap />
+                <div class="logo-container">
+                    <Ap />
+                </div>
             </div>
         </div>
     </div>

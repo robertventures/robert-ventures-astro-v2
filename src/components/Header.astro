@@ -378,42 +378,4 @@ import Opener from "../images/svg/link-icon.svg";
 			}
 		});
 
-	// Check if the current page URL contains '/signup' or 'step'
-	if (
-		window.location.pathname.includes('/signup') || 
-		window.location.pathname.includes('/questions') || 
-		window.location.pathname.includes('/booking')
-	) {
-		const desktopLinks = document.querySelector('.desktop-links') as HTMLElement;
-		if (desktopLinks) {
-			desktopLinks.style.opacity = '0';
-			desktopLinks.style.pointerEvents = 'none';
-			desktopLinks.style.cursor = 'default';
-		}
-
-		const loginLink = document.querySelector('.login-link') as HTMLElement;
-		if (loginLink) {
-			loginLink.style.opacity = '0';
-			loginLink.style.pointerEvents = 'none';
-			loginLink.style.cursor = 'default';
-		}
-
-		// Hide the mobile menu
-		const hamburger = document.querySelector('.hamburger') as HTMLElement;
-		if (hamburger) {
-			hamburger.style.display = 'none';
-		}
-
-		const mobileMenu = document.querySelector('.mobile-menu') as HTMLElement;
-		if (mobileMenu) {
-			mobileMenu.style.display = 'none';
-		}
-	}
-
-	window.addEventListener("load", function () {
-		const mobileMenu = document.getElementById("mobileMenu");
-		if (mobileMenu) {
-			mobileMenu.classList.remove("hidden");
-		}
-	});
 </script>

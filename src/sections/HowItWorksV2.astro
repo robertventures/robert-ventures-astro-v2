@@ -1,0 +1,230 @@
+---
+import Image from "astro/components/Image.astro";
+
+import iphone from "../images/iphone-rv.png";
+import assets from "../images/assets.png";
+import chart from "../images/chart.png";
+---
+
+<style>
+    h2 {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .blocks {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        align-items: center;
+    }
+    .content-block {
+        padding: 3rem 1rem;
+
+        padding-bottom: 0;
+
+        border-radius: 1rem;
+        background: #fefefe;
+        box-shadow: 0px 6px 25px 0px rgba(0, 0, 0, 0.25);
+
+        max-width: 399px;
+    }
+
+    .extra-padding{
+        padding-bottom: 1.5rem;
+    }
+
+    .block-container {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    h3 {
+        margin-bottom: 0.5rem;
+
+        color: #2a3340;
+        font-size: 1.5rem;
+        line-height: 150%;
+    }
+
+    h4 {
+        color: #848d9a;
+        font-size: 1.25rem;
+        line-height: 100%;
+    }
+
+    p {
+        color: #546071;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.75rem; /* 175% */
+
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .image img {
+        max-width: 306px;
+        height: auto;
+        margin: 0 auto;
+    }
+    .bottom-image {
+        margin-top: auto;
+        padding: 0;
+    }
+    .bottom-image img {
+        margin-bottom: 0;
+        margin-top: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .number {
+        color: #3c1fbf;
+        font-family: Satoshi;
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 70%;
+    }
+
+    @media only screen and (min-width: 990px){
+        .blocks{
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .content-block{
+            /* Remove previous border if not needed */
+            /* border: 1px solid red; */
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 0;
+            max-width: none;
+        }
+    }
+
+    .get-started-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .get-started-btn {
+        background-color: #5028ff;
+        border: none;
+        color: #fff;
+        border-radius: 0.75rem;
+        padding: 1rem 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        width: 100%;
+        max-width: 366px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+
+    }
+
+    .get-started-btn:hover {
+        background-color: #3c1fbf;
+    }
+
+    .get-started-btn .button-text {
+        font-weight: 500;
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="section-content">
+            <h2>How it Works</h2>
+            <div class="blocks">
+
+
+                <div class="content-block">
+                    <div class="block-container">
+                        <div class="info-block">
+                            <h3>Investors Buy Bonds</h3>
+                            <h4>No Accreditation Required</h4>
+                            <p>
+                                Through a 5-min process, you can buy our
+                                fixed-rate bonds and watch your wealth grow
+                                passively.
+                            </p>
+                        </div>
+                        <div class="number">1</div>
+                    </div>
+
+                    <div class="image bottom-image">
+                        <Image
+                            src={iphone}
+                            alt="herobox"
+                            width={iphone.width}
+                            height={iphone.height}
+                        />
+                    </div>
+                </div>
+                <div class="content-block extra-padding">
+                    <div class="block-container">
+                        <div class="info-block">
+                            <h3>
+                                We Allocate Funds to Real Estate and Digital Assets
+                            </h3>
+                            <p>
+                                We are building new construction homes at the beach in North Carolina and acquiring blue-chip digital assets.
+                            </p>
+                        </div>
+                        <div class="number">2</div>
+                    </div>
+                    <div class="image">
+                        <Image
+                            src={assets}
+                            alt="herobox"
+                            width={assets.width}
+                            height={assets.height}
+                        />
+                    </div>
+                </div>
+                <div class="content-block extra-padding">
+                    <div class="block-container">
+                        <div class="info-block">
+                            <h3>Investors Receive <br /> Up to 10% (APY)</h3>
+                            <p>
+                                Assets are strategically sold to service payment
+                                obligations. You will receive distributions based on
+                                the terms of the bonds you selected.
+                            </p>
+                        </div>
+                        <div class="number">3</div>
+                    </div>
+                    <div class="image">
+                        <Image
+                            src={chart}
+                            alt="herobox"
+                            width={chart.width}
+                            height={chart.height}
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="get-started-container">
+                <a class="get-started-btn" href="#main-form" >
+                    <span class="button-text">GET STARTED</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+</script>
