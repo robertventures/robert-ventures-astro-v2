@@ -26,7 +26,8 @@ export const POST: APIRoute = async ({ request }) => {
                         email: body.email,
                         source: body.utm_campaign || "Webinar",
                         customField: {
-                            invest_intent: body.invest_intent
+                            invest_intent: body.invest_intent,
+                            webinar_sign_up_date: body.webinar_sign_up_date
                         }
                     }),
                 });

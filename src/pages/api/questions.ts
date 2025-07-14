@@ -7,6 +7,7 @@ export const POST: APIRoute = async ({ request }) => {
     const investIntent = formData.get("invest_intent")?.toString();
     const alternativeAssets = formData.get("investment_method")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
+    const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
 
     if (!ghlContactId) {
         return new Response(
@@ -27,6 +28,11 @@ export const POST: APIRoute = async ({ request }) => {
         "invest_intent": investIntent,
         "alternative_assets": alternativeAssets
     };
+
+    // Add webinar sign-up date if available
+    if (webinarSignUpDate) {
+        customFields["webinar_sign_up_date"] = webinarSignUpDate;
+    }
 
     try {
         console.log("Updating GoHighLevel contact with ID:", ghlContactId);

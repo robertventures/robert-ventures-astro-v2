@@ -288,6 +288,13 @@ const pageDescription =
             localStorage.setItem("invest_intent", investIntent);
             localStorage.setItem("alternative_assets", alternativeAssets);
 
+            // Add webinar sign-up date from localStorage if available
+            const webinarSignUpDate = localStorage.getItem("webinar_sign_up_date");
+            if (webinarSignUpDate) {
+                formData.append("webinar_sign_up_date", webinarSignUpDate);
+                console.log("✅ Added webinar sign-up date to form data:", webinarSignUpDate);
+            }
+
             console.log("Stored answers in localStorage:", {
                 investIntent,
                 alternativeAssets,

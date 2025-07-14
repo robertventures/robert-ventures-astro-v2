@@ -629,6 +629,27 @@ import usFlag from "../images/usflag.png";
         const sessionId = sessionDetails.id;
         const sessionTimeZone = sessionDetails.timeZone;
 
+        // Function to get current timestamp in EST
+        function getESTTimestamp() {
+            const now = new Date();
+            // Get EST time by creating a new date with EST offset
+            const estOffset = -5; // EST is UTC-5
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const estTime = new Date(utc + (estOffset * 3600000));
+            
+            // Format as YYYY-MM-DDTHH:mm:ss-05:00
+            const year = estTime.getFullYear();
+            const month = String(estTime.getMonth() + 1).padStart(2, '0');
+            const day = String(estTime.getDate()).padStart(2, '0');
+            const hours = String(estTime.getHours()).padStart(2, '0');
+            const minutes = String(estTime.getMinutes()).padStart(2, '0');
+            const seconds = String(estTime.getSeconds()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-05:00`;
+        }
+
+        const estTimestamp = getESTTimestamp();
+
         const payload = {
           session: sessionId,
           name: formData.get("full_name"),
@@ -642,9 +663,14 @@ import usFlag from "../images/usflag.png";
           date: isoDateUTC,
           fullDate: getFullDateString(isoDateUTC, sessionTimeZone),
           utm_campaign: localStorage.getItem("utmCampaign") || undefined,
+          webinar_sign_up_date: estTimestamp, // Use EST timestamp
         };
 
         console.log("Payload being sent:", payload);
+
+        // Store webinar registration timestamp in localStorage (EST)
+        localStorage.setItem("webinar_sign_up_date", estTimestamp);
+        console.log("✅ Webinar registration timestamp saved to localStorage (EST):", estTimestamp);
 
         try {
           const res = await fetch("/api/webinar-registration", {
