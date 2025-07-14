@@ -310,7 +310,7 @@ const pageDescription =
                     const result = await response.json();
                     console.log("Questions Completed:", result);
                     triggerEvent("portfolio_value_added", "portfolioValueAdded")
-                    window.location.href = "/webinar-thank-you"; // Redirect to webinar thank you page
+                    			window.location.href = "/webinar-thank-you/"; // Redirect to webinar thank you page
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
