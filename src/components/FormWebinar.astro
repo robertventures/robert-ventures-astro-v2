@@ -448,7 +448,9 @@ import usFlag from "../images/usflag.png";
 
       selectEl.innerHTML =
         '<option value="" disabled selected>Select an upcoming session</option>';
-      sessionsWithDates.forEach((item) => {
+      
+      // Only show the next 3 sessions
+      sessionsWithDates.slice(0, 3).forEach((item) => {
         const session = item.session;
         const nextDate = item.nextDate;
         const details = JSON.parse(session.id);
