@@ -263,21 +263,27 @@ const analyticsEvents = {
       return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
     },
 
-    // Get EST timestamp
+    // Get EST/EDT timestamp with correct timezone offset
     getESTTimestamp: () => {
       const now = new Date();
-      const estOffset = -5;
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const estTime = new Date(utc + (estOffset * 3600000));
       
-      const year = estTime.getFullYear();
-      const month = String(estTime.getMonth() + 1).padStart(2, '0');
-      const day = String(estTime.getDate()).padStart(2, '0');
-      const hours = String(estTime.getHours()).padStart(2, '0');
-      const minutes = String(estTime.getMinutes()).padStart(2, '0');
-      const seconds = String(estTime.getSeconds()).padStart(2, '0');
+      // Create a date in Eastern timezone to get the correct offset
+      const easternTime = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+      const utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
       
-      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-05:00`;
+      // Calculate the offset in minutes
+      const offsetMinutes = easternTime.getTime() - utcTime.getTime();
+      const offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
+      const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+      
+      const year = easternTime.getFullYear();
+      const month = String(easternTime.getMonth() + 1).padStart(2, '0');
+      const day = String(easternTime.getDate()).padStart(2, '0');
+      const hours = String(easternTime.getHours()).padStart(2, '0');
+      const minutes = String(easternTime.getMinutes()).padStart(2, '0');
+      const seconds = String(easternTime.getSeconds()).padStart(2, '0');
+      
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}0${offsetHours}:00`;
     },
 
     // Format time left
