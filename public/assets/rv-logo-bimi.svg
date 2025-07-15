@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" version="1.2">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" version="1.2" baseProfile="tiny">
   <g id="Group">
     <linearGradient id="linearGradient1" x1="350.825445" y1="419.44103" x2="-13.16361" y2="446.44023" gradientUnits="userSpaceOnUse">
       <stop offset="1e-05" stop-color="#c4ebe9" stop-opacity="1"></stop>
