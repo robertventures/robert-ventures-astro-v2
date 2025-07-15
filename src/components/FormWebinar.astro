@@ -492,35 +492,47 @@ const analyticsEvents = {
     });
 
     if (sessions.length > 0) {
-      const firstSession = sessions[0];
-      const details = JSON.parse(firstSession.id);
-      const nextSession = firstSession.date ? new Date(firstSession.date) : calculateNextSessionDate(details);
-      
-      function updateCountdown() {
-        const now = new Date();
-        const timeLeft = nextSession.getTime() - now.getTime();
+      // Use the same logic as the dropdown to find the next upcoming session
+      const sessionsWithDates = sessions.map(session => {
+        try {
+          const details = JSON.parse(session.id);
+          const nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
+          return { session, nextDate };
+        } catch (error) {
+          console.error("Error processing session:", error);
+          return null;
+        }
+      }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
-        if (timeLeft <= 0) {
-          timeElements.daysSpan.textContent = "0";
-          timeElements.hoursSpan.textContent = "0";
-          timeElements.minutesSpan.textContent = "0";
-          timeElements.secondsSpan.textContent = "0";
-          return;
+      if (sessionsWithDates.length > 0) {
+        const nextSession = sessionsWithDates[0].nextDate;
+        
+        function updateCountdown() {
+          const now = new Date();
+          const timeLeft = nextSession.getTime() - now.getTime();
+
+          if (timeLeft <= 0) {
+            timeElements.daysSpan.textContent = "0";
+            timeElements.hoursSpan.textContent = "0";
+            timeElements.minutesSpan.textContent = "0";
+            timeElements.secondsSpan.textContent = "0";
+            return;
+          }
+
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+          timeElements.daysSpan.textContent = days.toString();
+          timeElements.hoursSpan.textContent = hours.toString();
+          timeElements.minutesSpan.textContent = minutes.toString();
+          timeElements.secondsSpan.textContent = seconds.toString();
         }
 
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        timeElements.daysSpan.textContent = days.toString();
-        timeElements.hoursSpan.textContent = hours.toString();
-        timeElements.minutesSpan.textContent = minutes.toString();
-        timeElements.secondsSpan.textContent = seconds.toString();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
       }
-
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
     }
   }
 
