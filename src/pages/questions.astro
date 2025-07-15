@@ -6,6 +6,22 @@ import FooterNew from "../components/FooterNew.astro";
 const pageTitle = "Robert Ventures: Questions";
 const pageDescription =
     "Complete the second step of your account setup with Robert Ventures.";
+
+// Investment amount options for better maintainability
+const investmentAmounts = [
+    { value: "1000", label: "$1,000" },
+    { value: "5000", label: "$5,000" },
+    { value: "10000", label: "$10,000" },
+    { value: "25000", label: "$25,000" },
+    { value: "50000", label: "$50,000" },
+    { value: "100000", label: "$100,000+" }
+];
+
+// Alternative assets options
+const alternativeAssetsOptions = [
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" }
+];
 ---
 
 <!doctype html>
@@ -14,8 +30,18 @@ const pageDescription =
         <BaseHead title={pageTitle} description={pageDescription} />
         <meta name="robots" content="noindex, nofollow" />
         <style>
-            body {
-                /* background-color: #fff; */
+
+            .section-container {
+                max-width: 1280px;
+                margin: 0 auto;
+                border-radius: 1rem;
+                background: #fff;
+                padding: 3rem 1.5rem;
+            }
+
+            .section-content {
+                max-width: 640px;
+                margin: 0 auto;
             }
 
             h1 {
@@ -39,10 +65,12 @@ const pageDescription =
                 line-height: 1.75;
             }
             
-            .portfolio-value-container, .investment-urgency-options {
+            .portfolio-value-container, 
+            .investment-urgency-options {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
+                margin-bottom: 1rem;
             }
 
             .investment-method-options {
@@ -51,17 +79,13 @@ const pageDescription =
                 gap: 0;
                 justify-content: space-between;
                 width: 100%;
-                /* max-width: 300px; */
                 margin: 0 auto 1rem auto;
             }
+
             .investment-method-options label {
                 width: 50%;
                 justify-content: flex-start;
                 min-width: unset;
-            }
-
-            .portfolio-value-container, .investment-urgency-options, .investment-method-options {
-                margin-bottom: 1rem;
             }
 
             form {
@@ -86,6 +110,16 @@ const pageDescription =
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                transition: background-color 0.2s ease;
+            }
+
+            button:hover {
+                background-color: #3f1fd1;
+            }
+
+            button:disabled {
+                background-color: #6b5b7b;
+                cursor: not-allowed;
             }
 
             .loader {
@@ -123,11 +157,20 @@ const pageDescription =
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 0.5rem;
+                transition: background-color 0.2s ease;
             }
 
-            span.defocus{
+            label:hover {
+                background-color: #f8f9fa;
+            }
+
+            span.defocus {
                 font-weight: 300;
                 font-size: 1.125rem;
+                color: #6b7280;
             }
 
             @media only screen and (min-width: 768px) {
@@ -163,76 +206,35 @@ const pageDescription =
                             How much are you looking to invest?
                         </p>
                         <div class="portfolio-value-container">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="1000"
-                                    required
-                                />
-                                $1,000
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="5000"
-                                />
-                                $5,000
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="10000"
-                                />
-                                $10,000
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="25000"
-                                />
-                                $25,000
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="50000"
-                                />
-                                $50,000
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="invest_intent"
-                                    value="100000"
-                                />
-                                $100,000+
-                            </label>
+                            {investmentAmounts.map((option) => (
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="invest_intent"
+                                        value={option.value}
+                                        required={option.value === "1000"}
+                                    />
+                                    {option.label}
+                                </label>
+                            ))}
                         </div>
 
-                        <p class="portfolio-info">Have you invested in alternative assets before? <span class="defocus"> (private companies, real estate, debt funds, bonds, crypto, etc.) </span></p>
+                        <p class="portfolio-info">
+                            Have you invested in alternative assets before? 
+                            <span class="defocus"> (private companies, real estate, debt funds, bonds, crypto, etc.) </span>
+                        </p>
                         <div class="investment-method-options">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="investment_method"
-                                    value="yes"
-                                    required
-                                />
-                                Yes
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="investment_method"
-                                    value="no"
-                                />
-                                No
-                            </label>
+                            {alternativeAssetsOptions.map((option) => (
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="investment_method"
+                                        value={option.value}
+                                        required={option.value === "yes"}
+                                    />
+                                    {option.label}
+                                </label>
+                            ))}
                         </div>
 
                         <button type="submit">
@@ -243,50 +245,65 @@ const pageDescription =
                 </div>
             </div>
         </section>
+        
         <FooterNew />
     </body>
 </html>
 
-<script is:inline>
-    document
-        .getElementById("questions")
-        .addEventListener("submit", async (e) => {
+<script>
+    // Function to trigger events for Microsoft Clarity and GA4
+    function triggerEvent(eventName: string, clarityEventName: string) {
+        // Push event to Google Tag Manager's dataLayer
+        if ((window as any).dataLayer) {
+            (window as any).dataLayer.push({
+                'event': eventName
+            });
+            console.log('GA4 event triggered: ' + eventName);
+        } else {
+            console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+        }
+
+        // Send event to Microsoft Clarity
+        if (typeof (window as any).clarity === 'function') {
+            (window as any).clarity('event', clarityEventName);
+            console.log('Clarity event triggered: ' + clarityEventName);
+        } else {
+            console.warn('Microsoft Clarity is not initialized.');
+        }
+    }
+
+    // Form submission handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById("questions") as HTMLFormElement;
+        if (!form) return;
+
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const form = e.target;
-            const button = form.querySelector("button[type='submit']");
-            const buttonText = button.querySelector(".button-text");
-            const loader = button.querySelector(".loader");
+            const button = form.querySelector("button[type='submit']") as HTMLButtonElement;
+            const buttonText = button.querySelector(".button-text") as HTMLElement;
+            const loader = button.querySelector(".loader") as HTMLElement;
             const formData = new FormData(form);
 
+            // Disable button and show loader
             button.disabled = true;
             buttonText.style.display = "none";
             loader.style.display = "inline-block";
 
-            /*
-             * NEW FUNCTIONALITY: Retrieve GoHighLevel Contact ID from localStorage
-             * This will ensure we send the correct ID to update the GoHighLevel contact.
-             */
+            // Retrieve GoHighLevel Contact ID from localStorage
             const ghlContactId = localStorage.getItem("ghl_contact_id");
-
             if (!ghlContactId) {
-                console.warn(
-                    "GoHighLevel Contact ID not found in localStorage!",
-                );
+                console.warn("GoHighLevel Contact ID not found in localStorage!");
             } else {
-                console.log(
-                    "Retrieved GHL Contact ID from localStorage:",
-                    ghlContactId,
-                );
+                console.log("Retrieved GHL Contact ID from localStorage:", ghlContactId);
                 formData.append("ghl_contact_id", ghlContactId);
             }
 
-            // NEW FUNCTIONALITY: Store form answers in localStorage
+            // Store form answers in localStorage
             const investIntent = formData.get("invest_intent");
             const alternativeAssets = formData.get("investment_method");
-
-            localStorage.setItem("invest_intent", investIntent);
-            localStorage.setItem("alternative_assets", alternativeAssets);
+            localStorage.setItem("invest_intent", investIntent?.toString() || "");
+            localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
 
             // Add webinar sign-up date from localStorage if available
             const webinarSignUpDate = localStorage.getItem("webinar_sign_up_date");
@@ -309,18 +326,26 @@ const pageDescription =
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Questions Completed:", result);
-                    triggerEvent("portfolio_value_added", "portfolioValueAdded")
-                    			window.location.href = "/webinar-thank-you/"; // Redirect to webinar thank you page
+                    
+                    // Trigger GA4 and Clarity events for questions completion
+                    triggerEvent("questions_completed", "questionsCompleted");
+                    triggerEvent("portfolio_value_added", "portfolioValueAdded");
+                    
+                    window.location.href = "/webinar-thank-you/";
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
+                    alert("There was an error completing your registration. Please try again.");
                 }
             } catch (err) {
                 console.error("Error during signup:", err);
+                alert("There was an error completing your registration. Please try again.");
             } finally {
+                // Re-enable button and hide loader
                 button.disabled = false;
                 buttonText.style.display = "inline";
                 loader.style.display = "none";
             }
         });
+    });
 </script>

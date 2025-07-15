@@ -1,24 +1,87 @@
 ---
 import FormWebinar from "../components/FormWebinar.astro";
-
 import Quote from "../images/quote.svg";
-
 import Download from "../images/download.svg";
 import Calendar from "../images/calendar.svg";
 import Chart from "../images/chart.svg";
+
+// Props interface for better type safety
+interface Props {
+    actionBlocks?: Array<{
+        icon: any;
+        title: string;
+        description: string;
+        linkText: string;
+        href: string;
+        id: string;
+        eventName: string;
+        clarityEventName: string;
+    }>;
+    topCTA?: {
+        href: string;
+        id: string;
+        eventName: string;
+        clarityEventName: string;
+    };
+}
+
+// Default data structure - this is the Astro way!
+const defaultActionBlocks = [
+    {
+        icon: Download,
+        title: "Download the Investor Guide",
+        description: "Access the guide using the button below and start preparing before the webinar.",
+        linkText: "Download Investor Guide",
+        href: "https://l.robertventures.com/bsu",
+        id: "download-investor-guide",
+        eventName: "download_investor_guide_webinar_thankyou",
+        clarityEventName: "downloadInvestorGuideWebinarThankyou"
+    },
+    {
+        icon: Calendar,
+        title: "Schedule a Meeting",
+        description: "Get questions answered on our business and other topics like investing through IRA.",
+        linkText: "Schedule Meeting",
+        href: "https://robertventures.com/calendar/",
+        id: "schedule-meeting",
+        eventName: "schedule_meeting_webinar_thankyou",
+        clarityEventName: "scheduleMeetingWebinarThankyou"
+    },
+    {
+        icon: Chart,
+        title: "Start Investing Online",
+        description: "Invest in our offering with interest rate ranging from 8-10% annually.",
+        linkText: "Get Started",
+        href: "https://invest.robertventures.com/offering/rob10/details",
+        id: "get-started-invest",
+        eventName: "get_started_invest_webinar_thankyou",
+        clarityEventName: "getStartedInvestWebinarThankyou"
+    }
+];
+
+const defaultTopCTA = {
+    href: "https://l.robertventures.com/bsu",
+    id: "get-investor-guide-top",
+    eventName: "get_investor_guide_webinar_thankyou",
+    clarityEventName: "getInvestorGuideWebinarThankyou"
+};
+
+// Use props or defaults - this is the Astro pattern
+const { 
+    actionBlocks = defaultActionBlocks,
+    topCTA = defaultTopCTA
+} = Astro.props;
 ---
 
 <style>
     .section-container {
         padding: 3rem 1.5rem 3rem 1.5rem;
-
         background-image: url(/images/svg/waves.svg);
         background-repeat: no-repeat;
-        /* background-size: cover; */
         background-position: top;
     }
 
-    .section-content{
+    .section-content {
         max-width: none;
     }
 
@@ -33,9 +96,7 @@ import Chart from "../images/chart.svg";
 
     h1 {
         font-size: 2.625rem;
-        margin: 0 auto;
-        margin-bottom: 1.5rem;
-
+        margin: 0 auto 1.5rem auto;
         max-width: 656px;
     }
 
@@ -47,14 +108,12 @@ import Chart from "../images/chart.svg";
         border: 1px solid red;
         padding: 1rem;
         display: block;
-
         text-align: center;
         text-decoration: none;
         color: #ffffff;
         font-weight: 500;
         font-size: 1.125rem;
         line-height: 1;
-
         background-color: #ff592c;
         border-radius: 12px;
     }
@@ -77,7 +136,7 @@ import Chart from "../images/chart.svg";
         color: #505050;
         font-size: 14px;
         font-weight: 700;
-        font-family: "Satoshi" sans-serif;
+        font-family: "Satoshi", sans-serif;
         line-height: 1;
     }
 
@@ -132,7 +191,6 @@ import Chart from "../images/chart.svg";
         padding: 1rem;
         background-color: #5028ff;
         border-radius: 12px;
-
         text-align: center;
         color: #ffffff;
         line-height: 1;
@@ -150,7 +208,7 @@ import Chart from "../images/chart.svg";
             text-align: center;
         }
 
-        h2{
+        h2 {
             max-width: 656px;
             margin-inline: auto;
         }
@@ -159,21 +217,21 @@ import Chart from "../images/chart.svg";
             display: inline-block;
         }
 
-        .testimonial{
+        .testimonial {
             text-align: center;
             max-width: 366px;
             margin-inline: auto;
         }
 
-        .next{
+        .next {
             text-align: center;
         }
 
-        .blocks{
+        .blocks {
             align-items: center;
         }
 
-        .block{
+        .block {
             max-width: 366px;
         }
     }
@@ -182,20 +240,20 @@ import Chart from "../images/chart.svg";
         .section-container {
             padding: 4rem 1.5rem 4rem 1.5rem;
         }
-        .blocks{
+        
+        .blocks {
             flex-direction: row;
             justify-content: center;
             align-items: stretch;
         }
 
-        .block{
+        .block {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
     }
-
 </style>
 
 <section>
@@ -206,8 +264,7 @@ import Chart from "../images/chart.svg";
                 <h1>
                     Check your inbox for a confirmation email with more details
                 </h1>
-                <a href="https://l.robertventures.com/bsu">Get Investor Guide</a>
-
+                <a href={topCTA.href} id={topCTA.id}>Get Investor Guide</a>
             </div>
 
             <div class="testimonial">
@@ -227,40 +284,79 @@ import Chart from "../images/chart.svg";
             </div>
 
             <div class="blocks">
-                <div class="block">
-                    <div>
-                        <Download />
-                        <h3>Download the Investor Guide</h3>
-                        <p>
-                            Access the guide using the button below and start
-                            preparing before the webinar.
-                        </p>
+                {actionBlocks.map((block) => (
+                    <div class="block">
+                        <div>
+                            <block.icon />
+                            <h3>{block.title}</h3>
+                            <p>{block.description}</p>
+                        </div>
+                        <a href={block.href} id={block.id}>{block.linkText}</a>
                     </div>
-                    <a href="https://l.robertventures.com/bsu">Download Investor Guide</a>
-                </div>
-                <div class="block">
-                    <div>
-                        <Calendar />
-                        <h3>Schedule a Meeting</h3>
-                        <p>
-                            Get questions answered on our business and other topics
-                            like investing through IRA.
-                        </p>
-                    </div>
-                    <a href="https://robertventures.com/calendar">Schedule Meeting</a>
-                </div>
-                <div class="block">
-                    <div>
-                        <Chart />
-                        <h3>Start Investing Online</h3>
-                        <p>
-                            Invest in our offering with interest rate ranging from
-                            8-10% annually.
-                        </p>
-                    </div>
-                    <a href="https://invest.robertventures.com/offering/rob10/details">Get Started</a>
-                </div>
+                ))}
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    // Function to trigger events for Microsoft Clarity and GA4
+    function triggerEvent(eventName, clarityEventName) {
+        // Push event to Google Tag Manager's dataLayer
+        if ((window as any).dataLayer) {
+            (window as any).dataLayer.push({
+                'event': eventName
+            });
+            console.log('GA4 event triggered: ' + eventName);
+        } else {
+            console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+        }
+
+        // Send event to Microsoft Clarity
+        if (typeof (window as any).clarity === 'function') {
+            (window as any).clarity('event', clarityEventName);
+            console.log('Clarity event triggered: ' + clarityEventName);
+        } else {
+            console.warn('Microsoft Clarity is not initialized.');
+        }
+    }
+
+    // Add event listeners when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Top CTA event listener
+        const topCTAElement = document.getElementById('get-investor-guide-top');
+        if (topCTAElement) {
+            topCTAElement.addEventListener('click', function() {
+                triggerEvent('get_investor_guide_webinar_thankyou', 'getInvestorGuideWebinarThankyou');
+            });
+        }
+
+        // Action blocks event listeners
+        const actionBlocksData = [
+            {
+                id: 'download-investor-guide',
+                eventName: 'download_investor_guide_webinar_thankyou',
+                clarityEventName: 'downloadInvestorGuideWebinarThankyou'
+            },
+            {
+                id: 'schedule-meeting',
+                eventName: 'schedule_meeting_webinar_thankyou',
+                clarityEventName: 'scheduleMeetingWebinarThankyou'
+            },
+            {
+                id: 'get-started-invest',
+                eventName: 'get_started_invest_webinar_thankyou',
+                clarityEventName: 'getStartedInvestWebinarThankyou'
+            }
+        ];
+
+        actionBlocksData.forEach(block => {
+            const element = document.getElementById(block.id);
+            if (element) {
+                element.addEventListener('click', function() {
+                    triggerEvent(block.eventName, block.clarityEventName);
+                });
+            }
+        });
+    });
+</script>
