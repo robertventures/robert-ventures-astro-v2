@@ -6,9 +6,42 @@ export const POST: APIRoute = async ({ request }) => {
     const apiKey = import.meta.env.WEBINARKIT_API_KEY;
     const ghlApiKey = import.meta.env.GHL_API_KEY;
 
+    // Function to split full name into first and last name
+    function splitFullName(fullName: string): { firstName: string; lastName: string } {
+        if (!fullName || typeof fullName !== 'string') {
+            return { firstName: "", lastName: "" };
+        }
+        
+        const trimmedName = fullName.trim();
+        if (!trimmedName) {
+            return { firstName: "", lastName: "" };
+        }
+        
+        const nameParts = trimmedName.split(/\s+/).filter(part => part.length > 0);
+        
+        if (nameParts.length === 0) {
+            return { firstName: "", lastName: "" };
+        } else if (nameParts.length === 1) {
+            // Only one name provided, use as first name
+            return { firstName: nameParts[0], lastName: "" };
+        } else if (nameParts.length === 2) {
+            // Two names provided, use as first and last
+            return { firstName: nameParts[0], lastName: nameParts[1] };
+        } else {
+            // More than two names, use first as first name, rest as last name
+            const firstName = nameParts[0];
+            const lastName = nameParts.slice(1).join(" ");
+            return { firstName, lastName };
+        }
+    }
+
     try {
         const body = await request.json();
         console.log("📥 Received form data:", JSON.stringify(body, null, 2));
+
+        // Split full name into first and last name
+        const { firstName, lastName } = splitFullName(body.name);
+        console.log("👤 Name split:", { fullName: body.name, firstName, lastName });
 
         // 1. Send to GoHighLevel
         let ghlContactId = null;
@@ -48,10 +81,12 @@ export const POST: APIRoute = async ({ request }) => {
 
         const raw = JSON.stringify({
             email: body.email,
-            name: body.name,
-            phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
+            firstName: firstName,
+            lastName: lastName,
             phoneNumberCountryCode: "+1",
+            phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             customField1: body.invest_intent,
+            customField2: body.webinar_sign_up_date,
             date: body.date,
             fullDate: body.fullDate
         });
