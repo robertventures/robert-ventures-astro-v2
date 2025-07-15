@@ -85,8 +85,6 @@ export const POST: APIRoute = async ({ request }) => {
             lastName: lastName,
             phoneNumberCountryCode: "+1",
             phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
-            customField1: body.invest_intent,
-            customField2: body.webinar_sign_up_date,
             date: body.date,
             fullDate: body.fullDate
         });
