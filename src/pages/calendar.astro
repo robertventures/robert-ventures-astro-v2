@@ -77,5 +77,66 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
             is:inline
             src="https://link.msgsndr.com/js/form_embed.js"
             type="text/javascript"></script>
+        
+        <script>
+            // Function to trigger events for Microsoft Clarity and GA4
+            function triggerEvent(eventName, clarityEventName) {
+                // Push event to Google Tag Manager's dataLayer
+                if ((window as any).dataLayer) {
+                    (window as any).dataLayer.push({
+                        'event': eventName
+                    });
+                    console.log('GA4 event triggered: ' + eventName);
+                } else {
+                    console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+                }
+
+                // Send event to Microsoft Clarity
+                if (typeof (window as any).clarity === 'function') {
+                    (window as any).clarity('event', clarityEventName);
+                    console.log('Clarity event triggered: ' + clarityEventName);
+                } else {
+                    console.warn('Microsoft Clarity is not initialized.');
+                }
+            }
+
+            // Listen for messages from the iframe
+            document.addEventListener('DOMContentLoaded', function() {
+                window.addEventListener('message', function(event) {
+                    // Check if the message is from LeadConnector
+                    if (event.origin === 'https://api.leadconnectorhq.com') {
+                        try {
+                            const data = event.data;
+                            
+                            // Check for booking completion events
+                            if (data && typeof data === 'object') {
+                                // Look for various booking completion indicators
+                                if (data.type === 'booking_completed' || 
+                                    data.event === 'booking_completed' ||
+                                    data.action === 'booking_completed' ||
+                                    data.status === 'completed' ||
+                                    (data.message && data.message.includes('booking')) ||
+                                    (data.data && data.data.booking)) {
+                                    
+                                    console.log('Calendar booking detected:', data);
+                                    triggerEvent('calendar_booking', 'calendarBooking');
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error processing iframe message:', error);
+                        }
+                    }
+                });
+
+                // Alternative: Listen for URL changes in the iframe (if accessible)
+                const iframe = document.getElementById('xNXEISjf314X2BFZvdaZ_1727445052062');
+                if (iframe) {
+                    // Monitor iframe load events as a fallback
+                    iframe.addEventListener('load', function() {
+                        console.log('Calendar iframe loaded');
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
