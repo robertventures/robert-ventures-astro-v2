@@ -264,7 +264,7 @@ const {
                 <h1>
                     Check your inbox for a confirmation email with more details
                 </h1>
-                <a href={topCTA.href} id={topCTA.id}>Get Investor Guide</a>
+                <a href={topCTA.href} class="get-investor-guide-top">Get Investor Guide</a>
             </div>
 
             <div class="testimonial">
@@ -291,7 +291,7 @@ const {
                             <h3>{block.title}</h3>
                             <p>{block.description}</p>
                         </div>
-                        <a href={block.href} id={block.id}>{block.linkText}</a>
+                        <a href={block.href} class={block.id}>{block.linkText}</a>
                     </div>
                 ))}
             </div>
@@ -324,12 +324,12 @@ const {
     // Add event listeners when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
         // Top CTA event listener
-        const topCTAElement = document.getElementById('get-investor-guide-top');
-        if (topCTAElement) {
-            topCTAElement.addEventListener('click', function() {
+        const topCTAElements = document.querySelectorAll('.get-investor-guide-top');
+        topCTAElements.forEach(element => {
+            element.addEventListener('click', function() {
                 triggerEvent('get_investor_guide_webinar_thankyou', 'getInvestorGuideWebinarThankyou');
             });
-        }
+        });
 
         // Action blocks event listeners
         const actionBlocksData = [
@@ -351,12 +351,12 @@ const {
         ];
 
         actionBlocksData.forEach(block => {
-            const element = document.getElementById(block.id);
-            if (element) {
+            const elements = document.querySelectorAll('.' + block.id);
+            elements.forEach(element => {
                 element.addEventListener('click', function() {
                     triggerEvent(block.eventName, block.clarityEventName);
                 });
-            }
+            });
         });
     });
 </script>
