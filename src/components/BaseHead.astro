@@ -166,7 +166,7 @@ import { AstroFont } from "astro-font";
 
 <!-- CHATBOT -->
 {
-  !["signup", "questions", "booking", "access", "webinar", "webinar-thank-you"].some((path) =>
+  !["questions", "access", "webinar", "webinar-thank-you"].some((path) =>
     new RegExp(`/${path}(/|$)`).test(Astro.url.pathname),
   ) && (
     <script>
@@ -180,6 +180,10 @@ import { AstroFont } from "astro-font";
   )
 }
 <!-- CHATBOT -->
+
+<!-- Start Humblytics Tracking Code -->
+<script async src="https://app.humblytics.com/hmbl.min.js?id=15ca1b4"></script>
+<!-- End Humblytics Tracking Code -->
 
 <!-- EVENTS HANDLER -->
 <script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
