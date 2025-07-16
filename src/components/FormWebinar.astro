@@ -321,7 +321,19 @@ const analyticsEvents = {
   };
 
   // Main webinar form functionality
+  let webinarData = null;
+  let countdownIntervals = new Map(); // Store intervals for cleanup
+
   window.addEventListener("DOMContentLoaded", async () => {
+    await loadAndInitializeWebinarData();
+    
+    // Refresh webinar data every 5 minutes to ensure we have the latest sessions
+    setInterval(async () => {
+      await loadAndInitializeWebinarData();
+    }, 5 * 60 * 1000); // 5 minutes
+  });
+
+  async function loadAndInitializeWebinarData() {
     try {
       // Fetch webinar data
       const response = await fetch("/api/webinar-data", { cache: "no-store" });
@@ -332,17 +344,26 @@ const analyticsEvents = {
       const data = await response.json();
       console.log("Fetched webinar data:", data);
 
+      // Store the data globally
+      webinarData = data;
+
       // Initialize form
       initializeForm(data);
     } catch (err) {
       console.error("An error occurred while fetching webinar data:", err);
     }
-  });
+  }
 
   function initializeForm(data) {
-    document.querySelectorAll(".form").forEach((formContainer) => {
+    document.querySelectorAll(".form").forEach((formContainer, index) => {
       const form = formContainer.querySelector("form.form-cta");
       if (!form) return;
+
+      // Add unique form ID for interval management
+      const formContainerEl = formContainer as HTMLElement;
+      if (!formContainerEl.dataset.formId) {
+        formContainerEl.dataset.formId = `form-${index}`;
+      }
 
       const elements = getFormElements(form, formContainer);
       if (!elements) return;
@@ -355,11 +376,19 @@ const analyticsEvents = {
       // Initialize countdown timer
       initializeCountdown(timeElements, data);
 
-      // Setup phone input formatting
-      setupPhoneInput(phoneInput);
+      // Setup phone input formatting (only once)
+      const phoneInputEl = phoneInput as HTMLInputElement;
+      if (!phoneInputEl.dataset.initialized) {
+        setupPhoneInput(phoneInput);
+        phoneInputEl.dataset.initialized = 'true';
+      }
 
-      // Setup form submission
-      setupFormSubmission(form, elements);
+      // Setup form submission (only once)
+      const formEl = form as HTMLFormElement;
+      if (!formEl.dataset.initialized) {
+        setupFormSubmission(form, elements);
+        formEl.dataset.initialized = 'true';
+      }
     });
   }
 
@@ -482,6 +511,13 @@ const analyticsEvents = {
   }
 
   function initializeCountdown(timeElements, data) {
+    // Clear any existing interval for this form
+    const formElement = timeElements.daysSpan.closest('.form') as HTMLElement;
+    const formId = formElement?.dataset?.formId || 'default';
+    if (countdownIntervals.has(formId)) {
+      clearInterval(countdownIntervals.get(formId));
+    }
+
     const sessions = data.results.filter((item) => {
       try {
         const parsed = JSON.parse(item.id);
@@ -505,19 +541,36 @@ const analyticsEvents = {
       }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
       if (sessionsWithDates.length > 0) {
-        const nextSession = sessionsWithDates[0].nextDate;
+        let currentSessionIndex = 0;
         
         function updateCountdown() {
           const now = new Date();
-          const timeLeft = nextSession.getTime() - now.getTime();
-
-          if (timeLeft <= 0) {
+          
+          // Check if current session has passed and switch to next one
+          while (currentSessionIndex < sessionsWithDates.length) {
+            const currentSession = sessionsWithDates[currentSessionIndex];
+            const timeLeft = currentSession.nextDate.getTime() - now.getTime();
+            
+            if (timeLeft > 0) {
+              // This session is still upcoming, use it
+              break;
+            } else {
+              // This session has passed, move to next one
+              currentSessionIndex++;
+            }
+          }
+          
+          // If we've gone through all sessions, show zeros
+          if (currentSessionIndex >= sessionsWithDates.length) {
             timeElements.daysSpan.textContent = "0";
             timeElements.hoursSpan.textContent = "0";
             timeElements.minutesSpan.textContent = "0";
             timeElements.secondsSpan.textContent = "0";
             return;
           }
+          
+          const currentSession = sessionsWithDates[currentSessionIndex];
+          const timeLeft = currentSession.nextDate.getTime() - now.getTime();
 
           const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
           const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -531,7 +584,8 @@ const analyticsEvents = {
         }
 
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        const interval = setInterval(updateCountdown, 1000);
+        countdownIntervals.set(formId, interval);
       }
     }
   }
