@@ -58,6 +58,7 @@ export const POST: APIRoute = async ({ request }) => {
                         phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                         email: body.email,
                         source: body.utm_campaign || "Webinar",
+                        timezone: body.user_timezone || "America/New_York",
                         customField: {
                             invest_intent: body.invest_intent,
                             webinar_sign_up_date: body.webinar_sign_up_date

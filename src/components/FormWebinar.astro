@@ -683,6 +683,7 @@ const analyticsEvents = {
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm_campaign: localStorage.getItem("utmCampaign") || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(),
+        user_timezone: selectedOption.getAttribute("data-timezone"),
       };
 
       console.log("Payload being sent:", payload);
@@ -711,6 +712,16 @@ const analyticsEvents = {
         if (userEmail) {
           localStorage.setItem("userEmail", typeof userEmail === "string" ? userEmail : "");
         }
+        
+        // Store full session details for calendar
+        localStorage.setItem("webinarSession", JSON.stringify({
+          title: sessionDetails.title || "Robert Ventures Webinar",
+          date: isoDateUTC,
+          timeZone: sessionDetails.timeZone,
+          fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
+          email: formData.get("email"),
+          name: formData.get("full_name"),
+        }));
         
         // Trigger analytics events
         utils.triggerEvent('register_now', 'registerNow');
