@@ -684,6 +684,7 @@ const analyticsEvents = {
         utm_campaign: localStorage.getItem("utmCampaign") || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(),
         user_timezone: selectedOption.getAttribute("data-timezone"),
+        user_ip: localStorage.getItem("userIP") || undefined,
       };
 
       console.log("Payload being sent:", payload);

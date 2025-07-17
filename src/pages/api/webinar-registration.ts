@@ -61,7 +61,8 @@ export const POST: APIRoute = async ({ request }) => {
                         timezone: body.user_timezone || "America/New_York",
                         customField: {
                             invest_intent: body.invest_intent,
-                            webinar_sign_up_date: body.webinar_sign_up_date
+                            webinar_sign_up_date: body.webinar_sign_up_date,
+                            userip: body.user_ip || "unknown"
                         }
                     }),
                 });
