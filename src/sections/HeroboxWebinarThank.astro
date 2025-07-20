@@ -382,8 +382,11 @@ import Outlook from "../images/svg/outlook.svg";
 
 <script>
     function downloadICS() {
+        console.log('downloadICS() called');
         const session = JSON.parse(localStorage.getItem('webinarSession'));
+        console.log('Session data:', session);
         if (!session) {
+            console.error('No webinar session found in localStorage');
             alert('Webinar session info not found. Please register for a webinar first.');
             return;
         }
@@ -619,17 +622,22 @@ import Outlook from "../images/svg/outlook.svg";
             menu.querySelectorAll('.calendar-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const type = this.getAttribute('data-calendar');
+                    console.log('Calendar option clicked:', type);
                     
                     // Trigger analytics events for calendar option selection
                     if (type === 'ics') {
+                        console.log('Triggering ICS calendar event...');
                         triggerEvent('calendar_ics_selected', 'calendarIcsSelected');
+                        console.log('ICS event triggered, now calling downloadICS...');
                         downloadICS();
                     }
                     if (type === 'google') {
+                        console.log('Triggering Google calendar event...');
                         triggerEvent('calendar_google_selected', 'calendarGoogleSelected');
                         openGoogleCalendar();
                     }
                     if (type === 'outlook') {
+                        console.log('Triggering Outlook calendar event...');
                         triggerEvent('calendar_outlook_selected', 'calendarOutlookSelected');
                         openOutlookCalendar();
                     }
