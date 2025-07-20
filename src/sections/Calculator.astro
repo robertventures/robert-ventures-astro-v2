@@ -1,5 +1,5 @@
 ---
-import FormCTA from "../components/FormCTA.astro";
+import DualCTA from "../components/DualCTA.astro";
 
 interface Props {
     showFormCTA?: boolean;
@@ -570,7 +570,7 @@ const { showFormCTA = true } = Astro.props;
                 {showFormCTA && (
                     <div class="form-cta desktop-only">
                         <p>Start earning interest in less than 2 minutes</p>
-                        <FormCTA />
+                        <DualCTA />
                     </div>
                 )}
                 {!showFormCTA && (
