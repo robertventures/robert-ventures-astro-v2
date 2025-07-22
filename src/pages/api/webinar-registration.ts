@@ -92,10 +92,8 @@ export const POST: APIRoute = async ({ request }) => {
             phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             date: body.date,
             fullDate: body.fullDate,
-            customFields: {
-                webinar_test: webinarTest,
-                webinar_variant: webinarVariant
-            }
+            customField1: webinarTest,
+            customField2: webinarVariant
         });
         
         console.log("📤 Sending to WebinarKit:", JSON.stringify(JSON.parse(raw), null, 2));
