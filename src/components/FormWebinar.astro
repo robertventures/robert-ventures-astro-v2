@@ -685,6 +685,8 @@ const analyticsEvents = {
         webinar_sign_up_date: utils.getESTTimestamp(),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
+        webinar_test: 'webinar-ux_2025-07-21_v1',
+        webinar_variant: window.location.pathname.includes('webinar-2') ? 'variant_a' : 'control'
       };
 
       console.log("Payload being sent:", payload);
