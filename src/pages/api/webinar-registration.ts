@@ -37,6 +37,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const body = await request.json();
+        const webinarTest = body.webinar_test || 'unknown';
+        const webinarVariant = body.webinar_variant || 'unknown';
         console.log("📥 Received form data:", JSON.stringify(body, null, 2));
 
         // Split full name into first and last name
@@ -63,6 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
                             invest_intent: body.invest_intent,
                             webinar_sign_up_date: body.webinar_sign_up_date,
                             userip: body.user_ip || "unknown"
+                            // Do NOT include webinar_test or webinar_variant here
                         }
                     }),
                 });
@@ -88,7 +91,11 @@ export const POST: APIRoute = async ({ request }) => {
             phoneNumberCountryCode: "+1",
             phoneNumber: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
             date: body.date,
-            fullDate: body.fullDate
+            fullDate: body.fullDate,
+            customFields: {
+                webinar_test: webinarTest,
+                webinar_variant: webinarVariant
+            }
         });
         
         console.log("📤 Sending to WebinarKit:", JSON.stringify(JSON.parse(raw), null, 2));
