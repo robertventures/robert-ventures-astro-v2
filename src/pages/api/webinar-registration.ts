@@ -49,25 +49,34 @@ export const POST: APIRoute = async ({ request }) => {
         let ghlContactId = null;
         if (ghlApiKey) {
             try {
+                // Get current date in MM-DD-YYYY format
+                const now = new Date();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const yyyy = now.getFullYear();
+                const currentDate = `${mm}-${dd}-${yyyy}`;
+                const ghlPayload = {
+                    name: body.name,
+                    phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
+                    email: body.email,
+                    source: body.utm_campaign || "Webinar",
+                    timezone: body.user_timezone || "America/New_York",
+                    customField: {
+                        invest_intent: body.invest_intent,
+                        webinar_sign_up_date: body.webinar_sign_up_date,
+                        webinar_signup_date: currentDate,
+                        userip: body.user_ip || "unknown"
+                        // Do NOT include webinar_test or webinar_variant here
+                    }
+                };
+                console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
                 const ghlRes = await fetch("https://rest.gohighlevel.com/v1/contacts", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${ghlApiKey}`,
                     },
-                    body: JSON.stringify({
-                        name: body.name,
-                        phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
-                        email: body.email,
-                        source: body.utm_campaign || "Webinar",
-                        timezone: body.user_timezone || "America/New_York",
-                        customField: {
-                            invest_intent: body.invest_intent,
-                            webinar_sign_up_date: body.webinar_sign_up_date,
-                            userip: body.user_ip || "unknown"
-                            // Do NOT include webinar_test or webinar_variant here
-                        }
-                    }),
+                    body: JSON.stringify(ghlPayload),
                 });
                 const ghlData = await ghlRes.json();
                 ghlContactId = ghlData?.contact?.id || null;
