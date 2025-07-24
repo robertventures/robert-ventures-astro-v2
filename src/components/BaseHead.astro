@@ -189,20 +189,6 @@ import { AstroFont } from "astro-font";
 <script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
 <!-- EVENTS HANDLER -->
 
+<!-- userAttribution.js: Captures user's IP address and main UTM parameters (utm_source, utm_medium, utm_campaign, utm_content, utm_term, utm_id) and stores them in localStorage for attribution and analytics. -->
+<script src="/scripts/userAttribution.js" async></script>
 <!-- EVENTS HANDLER -->
-<script src="/scripts/identifyUser.js" async></script>
-<!-- EVENTS HANDLER -->
-
-<script is:inline>
-  // Capture the main UTM parameters
-  const utmParams = [
-    "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
-  ];
-  const urlParams = new URLSearchParams(window.location.search);
-  utmParams.forEach(param => {
-    const value = urlParams.get(param);
-    if (value) {
-      localStorage.setItem(param, value);
-    }
-  });
-</script>
