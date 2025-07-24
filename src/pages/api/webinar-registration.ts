@@ -58,19 +58,30 @@ export const POST: APIRoute = async ({ request }) => {
                 const dd = String(now.getDate()).padStart(2, '0');
                 const yyyy = now.getFullYear();
                 const currentDate = `${mm}-${dd}-${yyyy}`;
+                // Only forward the main UTM fields if present
+                let customField = {
+                    invest_intent: body.invest_intent,
+                    webinar_sign_up_date: body.webinar_sign_up_date,
+                    webinar_signup_date: currentDate,
+                    userip: body.user_ip || "unknown"
+                };
+                if (body.utm && typeof body.utm === 'object') {
+                    const allowedUtms = [
+                        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id'
+                    ];
+                    for (const key of allowedUtms) {
+                        if (body.utm[key]) {
+                            customField[key] = body.utm[key];
+                        }
+                    }
+                }
                 const ghlPayload = {
                     name: body.name,
                     phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                     email: body.email,
                     source: body.utm_campaign || "Webinar",
                     timezone: body.user_timezone || "America/New_York",
-                    customField: {
-                        invest_intent: body.invest_intent,
-                        webinar_sign_up_date: body.webinar_sign_up_date,
-                        webinar_signup_date: currentDate,
-                        userip: body.user_ip || "unknown"
-                        // Do NOT include webinar_test or webinar_variant here
-                    }
+                    customField
                 };
                 console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
                 const ghlRes = await fetch("https://rest.gohighlevel.com/v1/contacts", {

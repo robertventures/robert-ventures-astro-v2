@@ -682,6 +682,16 @@ const analyticsEvents = {
         return;
       }
 
+      // Only collect the main UTM parameters
+      const utmParams = [
+        "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
+      ];
+      const utmData = {};
+      utmParams.forEach(param => {
+        const value = localStorage.getItem(param);
+        if (value) utmData[param] = value;
+      });
+
       const payload = {
         session: sessionDetails.id,
         name: formData.get("full_name"),
@@ -694,7 +704,8 @@ const analyticsEvents = {
         bot_field: formData.get("bot-field"),
         date: isoDateUTC,
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
-        utm_campaign: localStorage.getItem("utmCampaign") || undefined,
+        utm: utmData, // Only send the main UTM fields
+        utm_campaign: localStorage.getItem("utm_campaign") || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
