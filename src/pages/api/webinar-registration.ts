@@ -37,6 +37,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const body = await request.json();
+        // --- REMOVED PHONE VALIDATION ---
+        // (No phone validation here, always process registration)
+        // --- END REMOVAL ---
         const webinarTest = body.webinar_test || 'unknown';
         const webinarVariant = body.webinar_variant || 'unknown';
         console.log("📥 Received form data:", JSON.stringify(body, null, 2));
