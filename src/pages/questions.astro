@@ -330,7 +330,7 @@ const alternativeAssetsOptions = [
                     triggerEvent("questions_completed", "questionsCompleted");
                     triggerEvent("portfolio_value_added", "portfolioValueAdded");
                     
-                    window.location.href = "/webinar-thank-you/";
+                    window.location.href = "/webinar-thank-you";
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
