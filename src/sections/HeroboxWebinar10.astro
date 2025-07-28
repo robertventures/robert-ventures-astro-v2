@@ -1,0 +1,203 @@
+---
+import FormWebinar from "../components/FormWebinar.astro";
+
+import Ten from "../images/svg/10-rv.svg";
+
+import Business from "../images/svg/business-logos/business-insider.svg";
+import Market from "../images/svg/business-logos/market-watch.svg";
+import Ap from "../images/svg/business-logos/ap.svg";
+import Street from "../images/svg/business-logos/street-insider.svg";
+import Benzinga from "../images/svg/business-logos/benzinga.svg";
+import Morning from "../images/svg/business-logos/morning.svg";
+
+import Check from "../images/svg/green-check.svg";
+---
+
+<style>
+    .section-container {
+        padding: 3rem 1.5rem 3rem 1.5rem;
+
+        background-image: url(/images/svg/waves.svg);
+        background-repeat: no-repeat;
+        /* background-size: cover; */
+        background-position: top;
+
+        text-align: center;
+    }
+
+    .section-content svg {
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: clamp(2.5rem, 11.1vw, 2.875rem);
+        margin: 0 auto;
+        margin-bottom: 1.5rem;
+
+        max-width: 640px;
+    }
+
+    p.hero-text {
+        font-family: "Satoshi", sans-serif;
+        font-display: swap;
+        font-size: 1.8125rem;
+
+        font-weight: 700;
+        line-height: 100%;
+
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .form-cta {
+        margin-bottom: 2rem;
+    }
+
+    hr {
+        height: 0.0625rem;
+        background: #afb5bc;
+        margin-bottom: 1rem;
+    }
+
+    .business {
+        display: grid;
+        grid-auto-columns: auto;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        justify-items: center;
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+    }
+
+    .pre-form-headline {
+        color: #505050;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 150%;
+
+        /* margin: 0 auto; */
+
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    svg {
+        display: inline-block;
+        max-height: 100%;
+        width: auto;
+    }
+
+    span {
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    p.featured {
+        color: #abbbd3;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1; /* 0.6875rem */
+
+        margin-bottom: 0.75rem;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section {
+            padding: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        .section-container {
+            padding: 4rem 1.5rem 4rem 1.5rem;
+        }
+
+        h1 {
+            margin-bottom: 3rem;
+            font-size: 52px;
+        }
+        .section-content {
+            max-width: 921px;
+        }
+
+        .business {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            align-items: stretch;
+        }
+
+        .logo-container {
+            height: 80px;
+        }
+
+        p.featured {
+            margin-bottom: 0;
+        }
+    }
+</style>
+
+<section>
+    <div id="main-form" class="section-container">
+        <div class="section-content">
+            <h1>Learn How To Compound Your Wealth Passively</h1>
+
+            <Ten />
+            <p class="hero-text">Fixed Annual Returns</p>
+
+            <div class="form-cta">
+                <p class="pre-form-headline">
+                    Join our live webinar and discover how you can start your investment journey.
+                </p>
+                <FormWebinar />
+            </div>
+
+            <hr />
+
+            <p class="featured">Featured in</p>
+
+            <div class="business">
+                <div class="logo-container">
+                    <Business />
+                </div>
+
+                <div class="logo-container">
+                    <Morning />
+                </div>
+
+                <div class="logo-container">
+                    <Market />
+                </div>
+
+                <div class="logo-container">
+                    <Street />
+                </div>
+
+                <div class="logo-container">
+                    <Benzinga />
+                </div>
+
+                <div class="logo-container">
+                    <Ap />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
