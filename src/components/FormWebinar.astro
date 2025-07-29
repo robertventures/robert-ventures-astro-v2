@@ -716,7 +716,7 @@ const analyticsEvents = {
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
-        webinar_variant: localStorage.getItem('webinar_ab_test_variant') || window.location.pathname.includes('webinar-2') ? 'variant_a' : 'control'
+        webinar_variant: localStorage.getItem('webinar_ab_test_variant')
       };
 
       console.log("Payload being sent:", payload);
