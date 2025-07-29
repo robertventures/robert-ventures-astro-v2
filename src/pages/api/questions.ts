@@ -9,6 +9,7 @@ export const POST: APIRoute = async ({ request }) => {
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
     const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
 
+
     if (!ghlContactId) {
         return new Response(
             JSON.stringify({ error: "GoHighLevel Contact ID is missing" }),
@@ -33,6 +34,8 @@ export const POST: APIRoute = async ({ request }) => {
     if (webinarSignUpDate) {
         customFields["webinar_sign_up_date"] = webinarSignUpDate;
     }
+
+
 
     try {
         console.log("Updating GoHighLevel contact with ID:", ghlContactId);

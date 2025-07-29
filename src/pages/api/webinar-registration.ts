@@ -64,7 +64,8 @@ export const POST: APIRoute = async ({ request }) => {
                     webinar_sign_up_date: body.webinar_sign_up_date,
                     webinar_signup_date: currentDate,
                     userip: body.user_ip || "unknown",
-                    webinar_ab_test_variant: body.webinar_variant || "unknown"
+                    webinar_ab_test_variant: body.webinar_variant || "unknown",
+                    device_type: body.device_type || "unknown"
                 };
                 if (body.utm && typeof body.utm === 'object') {
                     const allowedUtms = [

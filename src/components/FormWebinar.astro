@@ -715,6 +715,7 @@ const analyticsEvents = {
         webinar_sign_up_date: utils.getESTTimestamp(),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
+        device_type: localStorage.getItem("device_type") || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
         webinar_variant: localStorage.getItem('webinar_ab_test_variant')
       };
