@@ -1,8 +1,8 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
+import NotificationBar from "../components/NotificationBar.astro";
 
-import HeroboxWebinar10 from "../sections/HeroboxWebinar10.astro";
+import HeroboxWebinar10WithLogo from "../sections/HeroboxWebinar10WithLogo.astro";
 import WhyNowWebinar from "../sections/WhyNowWebinar.astro";
 import JoeRobertWebinar from "../sections/JoeRobertWebinar.astro";
 import Testimonials from "../sections/Testimonials.astro";
@@ -29,8 +29,7 @@ export const prerender = false
         <meta name="robots" content="noindex, nofollow" />
     </head>
     <body>
-        <Header />
-        <HeroboxWebinar10 />
+        <HeroboxWebinar10WithLogo />
         <!-- <Calculator showFormCTA={false}/> -->
         <InvestmentOptions/>
         <HowItWorksV2/>
@@ -38,5 +37,6 @@ export const prerender = false
         <JoeRobertWebinar />
         <Testimonials />
         <FooterNew />
+        <NotificationBar />
     </body>
 </html>

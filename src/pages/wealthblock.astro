@@ -1,0 +1,62 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+
+const pageTitle = "Robert Ventures: Compound Your Wealth Passively!";
+const pageDescription =
+    "We provide predictable and reliable fixed-rate returns of up to 10% APY for investors secured by real estate and technology assets.";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+        
+        <!-- Meta tags for iframe compatibility -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-Frame-Options" content="ALLOWALL">
+        
+        <!-- Structured data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Robert Ventures",
+                "url": "https://robertventures.com/",
+                "logo": "src/images/logos/rv-logo-vertical.svg",
+                "description": "Robert Ventures offers SEC-approved fixed-rate bonds with annual returns up to 10%, backed by diversified investments in real estate and digital assets.",
+                "telephone": "+1 302-404-6341",
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+1 302-404-6341",
+                    "contactType": "customer service",
+                    "areaServed": "US",
+                    "availableLanguage": ["English"]
+                },
+                "sameAs": [
+                    "https://www.facebook.com/Robertventures",
+                    "https://twitter.com/RobertVentures_",
+                    "https://www.instagram.com/robert_ventures/",
+                    "https://www.youtube.com/@RobertVentures",
+                    "https://www.linkedin.com/company/robertventures"
+                ]
+            }
+        </script>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                background: #f5f5f5;
+            }
+            
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello World</h1>
+    </body>
+</html>

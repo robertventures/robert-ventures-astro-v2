@@ -1,0 +1,244 @@
+---
+// This component creates a FOMO notification bar that shows fake user registrations
+---
+
+<div id="notification-container">
+    <div class="notification">
+        <div class="notification-content">
+            <div class="notification-icon"></div>
+            <div class="notification-text">
+                <div class="notification-name">Sarah M.</div>
+                <div class="notification-location">just registered from New York, NY</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #notification-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .notification {
+        background-color: #ffffff;
+        border: 1px solid #f3f4f6;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        margin-bottom: 10px;
+        max-width: 300px;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+        pointer-events: none;
+    }
+
+    .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .notification.hide {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .notification-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .notification-icon::before {
+        content: "✓";
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .notification-text {
+        font-size: 0.875rem;
+        color: #2f2f2f;
+        line-height: 1.4;
+    }
+
+    .notification-name {
+        font-weight: 600;
+        color: #5028ff;
+    }
+
+    .notification-location {
+        color: #6b7280;
+        font-size: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+        #notification-container {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+        }
+
+        .notification {
+            max-width: none;
+        }
+    }
+</style>
+
+<script>
+    // Sample users for FOMO notifications
+    const sampleUsers = [
+        { name: "Sarah M.", location: "New York, NY" },
+        { name: "Michael R.", location: "Los Angeles, CA" },
+        { name: "Jennifer L.", location: "Chicago, IL" },
+        { name: "David K.", location: "Miami, FL" },
+        { name: "Amanda P.", location: "Seattle, WA" },
+        { name: "Robert T.", location: "Austin, TX" },
+        { name: "Lisa W.", location: "Denver, CO" },
+        { name: "James H.", location: "Phoenix, AZ" },
+        { name: "Maria S.", location: "San Diego, CA" },
+        { name: "Thomas B.", location: "Portland, OR" }
+    ];
+
+    let currentUserIndex = 0;
+    let notificationTimeout;
+    let notificationsActive = true;
+    let formInteractionTimeout;
+
+    function updateNotification(user) {
+        const notification = document.querySelector('.notification');
+        if (!notification) return;
+
+        const nameElement = notification.querySelector('.notification-name');
+        const locationElement = notification.querySelector('.notification-location');
+
+        if (nameElement && locationElement) {
+            nameElement.textContent = user.name;
+            locationElement.textContent = `just registered from ${user.location}`;
+        }
+    }
+
+    function showNotification() {
+        const notification = document.querySelector('.notification');
+        if (!notification || !notificationsActive) return;
+
+        // Update text while notification is hidden
+        const user = sampleUsers[currentUserIndex];
+        updateNotification(user);
+
+        // Show notification
+        notification.classList.add('show');
+        notification.classList.remove('hide');
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.add('hide');
+            notification.classList.remove('show');
+            // After random time (3-8 seconds) hidden, show next notification
+            const randomDelay = Math.random() * 5000 + 3000; // 3-8 seconds
+            notificationTimeout = setTimeout(() => {
+                if (notificationsActive) {
+                    currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
+                    showNotification();
+                }
+            }, randomDelay);
+        }, 3000);
+    }
+
+    function startNotifications() {
+        // Show first notification after random time (2-6 seconds)
+        const initialDelay = Math.random() * 4000 + 2000; // 2-6 seconds
+        setTimeout(() => {
+            showNotification();
+        }, initialDelay);
+    }
+
+    // Stop notifications when user interacts with forms
+    function stopNotifications() {
+        notificationsActive = false;
+        if (notificationTimeout) {
+            clearTimeout(notificationTimeout);
+        }
+        const notification = document.querySelector('.notification');
+        if (notification) {
+            notification.classList.add('hide');
+            notification.classList.remove('show');
+        }
+    }
+
+    // Restart notifications when user leaves forms
+    function restartNotifications() {
+        if (!notificationsActive) {
+            notificationsActive = true;
+            startNotifications();
+        }
+    }
+
+    // Start notifications when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        startNotifications();
+        
+        // Monitor form interactions
+        const forms = document.querySelectorAll('form, input, textarea, select');
+        forms.forEach(form => {
+            form.addEventListener('focus', () => {
+                stopNotifications();
+                // Clear any existing timeout
+                if (formInteractionTimeout) {
+                    clearTimeout(formInteractionTimeout);
+                }
+            });
+            form.addEventListener('input', () => {
+                stopNotifications();
+                // Clear any existing timeout
+                if (formInteractionTimeout) {
+                    clearTimeout(formInteractionTimeout);
+                }
+            });
+            form.addEventListener('change', () => {
+                stopNotifications();
+                // Clear any existing timeout
+                if (formInteractionTimeout) {
+                    clearTimeout(formInteractionTimeout);
+                }
+            });
+            form.addEventListener('blur', () => {
+                // Restart notifications after 2 seconds of leaving the form
+                if (formInteractionTimeout) {
+                    clearTimeout(formInteractionTimeout);
+                }
+                formInteractionTimeout = setTimeout(() => {
+                    restartNotifications();
+                }, 2000);
+            });
+        });
+    });
+
+    // Clean up timeout when page is hidden
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+        } else {
+            if (notificationsActive) {
+                startNotifications();
+            }
+        }
+    });
+</script> 

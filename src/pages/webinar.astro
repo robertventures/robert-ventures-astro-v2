@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 
-import HeroboxWebinar from "../sections/HeroboxWebinar.astro";
+import HeroboxWebinar10 from "../sections/HeroboxWebinar10.astro";
 import WhyNowWebinar from "../sections/WhyNowWebinar.astro";
 import JoeRobertWebinar from "../sections/JoeRobertWebinar.astro";
 import Testimonials from "../sections/Testimonials.astro";
@@ -10,6 +10,7 @@ import Testimonials from "../sections/Testimonials.astro";
 import FooterNew from "../components/FooterNew.astro";
 import Calculator from "../sections/Calculator.astro";
 import HowItWorksV2 from "../sections/HowItWorksV2.astro";
+import InvestmentOptions from "../sections/InvestmentOptions.astro";
 
 const pageTitle = "Robert Ventures: Webinar";
 const pageDescription =
@@ -19,6 +20,7 @@ const pageDescription =
 export const prerender = false
 
 ---
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -28,8 +30,9 @@ export const prerender = false
     </head>
     <body>
         <Header />
-        <HeroboxWebinar />
+        <HeroboxWebinar10 />
         <!-- <Calculator showFormCTA={false}/> -->
+        <InvestmentOptions/>
         <HowItWorksV2/>
         <WhyNowWebinar />
         <JoeRobertWebinar />
