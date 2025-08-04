@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
 import NotificationBar from "../components/NotificationBar.astro";
 
 import HeroboxWebinar10WithLogo from "../sections/HeroboxWebinar10WithLogo.astro";
@@ -29,6 +30,7 @@ export const prerender = false
         <meta name="robots" content="noindex, nofollow" />
     </head>
     <body>
+        <Header />
         <HeroboxWebinar10WithLogo />
         <!-- <Calculator showFormCTA={false}/> -->
         <InvestmentOptions/>
