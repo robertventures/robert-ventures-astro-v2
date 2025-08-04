@@ -52,11 +52,13 @@ export const POST: APIRoute = async ({ request }) => {
         let ghlContactId = null;
         if (ghlApiKey) {
             try {
-                // Get current date in MM-DD-YYYY format
+                // Get current date in MM-DD-YYYY format using user's timezone
+                const userTimezone = body.user_timezone || "America/New_York";
                 const now = new Date();
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const yyyy = now.getFullYear();
+                const userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
+                const mm = String(userLocalTime.getMonth() + 1).padStart(2, '0');
+                const dd = String(userLocalTime.getDate()).padStart(2, '0');
+                const yyyy = userLocalTime.getFullYear();
                 const currentDate = `${mm}-${dd}-${yyyy}`;
                 // Only forward the main UTM fields if present
                 let customField = {

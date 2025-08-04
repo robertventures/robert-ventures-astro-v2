@@ -263,25 +263,25 @@ const analyticsEvents = {
       return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
     },
 
-    // Get EST/EDT timestamp with correct timezone offset
-    getESTTimestamp: () => {
+    // Get timestamp in user's timezone with correct timezone offset
+    getESTTimestamp: (userTimezone = "America/New_York") => {
       const now = new Date();
       
-      // Create a date in Eastern timezone to get the correct offset
-      const easternTime = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+      // Create a date in user's timezone to get the correct offset
+      const userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
       const utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
       
       // Calculate the offset in minutes
-      const offsetMinutes = easternTime.getTime() - utcTime.getTime();
+      const offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
       const offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
       const offsetSign = offsetMinutes >= 0 ? '+' : '-';
       
-      const year = easternTime.getFullYear();
-      const month = String(easternTime.getMonth() + 1).padStart(2, '0');
-      const day = String(easternTime.getDate()).padStart(2, '0');
-      const hours = String(easternTime.getHours()).padStart(2, '0');
-      const minutes = String(easternTime.getMinutes()).padStart(2, '0');
-      const seconds = String(easternTime.getSeconds()).padStart(2, '0');
+      const year = userLocalTime.getFullYear();
+      const month = String(userLocalTime.getMonth() + 1).padStart(2, '0');
+      const day = String(userLocalTime.getDate()).padStart(2, '0');
+      const hours = String(userLocalTime.getHours()).padStart(2, '0');
+      const minutes = String(userLocalTime.getMinutes()).padStart(2, '0');
+      const seconds = String(userLocalTime.getSeconds()).padStart(2, '0');
       
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}0${offsetHours}:00`;
     },
@@ -712,7 +712,7 @@ const analyticsEvents = {
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // Only send the main UTM fields
         utm_campaign: localStorage.getItem("utm_campaign") || undefined,
-        webinar_sign_up_date: utils.getESTTimestamp(),
+        webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
         device_type: localStorage.getItem("device_type") || undefined,
@@ -721,7 +721,7 @@ const analyticsEvents = {
       };
 
       console.log("Payload being sent:", payload);
-      localStorage.setItem("webinar_sign_up_date", utils.getESTTimestamp());
+      localStorage.setItem("webinar_sign_up_date", utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")));
 
       try {
         const res = await fetch("/api/webinar-registration", {
