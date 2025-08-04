@@ -149,23 +149,21 @@
         setTimeout(() => {
             notification.classList.add('hide');
             notification.classList.remove('show');
-            // After random time (3-8 seconds) hidden, show next notification
-            const randomDelay = Math.random() * 5000 + 3000; // 3-8 seconds
+            // Show next notification after 5 seconds
             notificationTimeout = setTimeout(() => {
                 if (notificationsActive) {
                     currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
                     showNotification();
                 }
-            }, randomDelay);
+            }, 5000);
         }, 3000);
     }
 
     function startNotifications() {
-        // Show first notification after random time (2-6 seconds)
-        const initialDelay = Math.random() * 4000 + 2000; // 2-6 seconds
+        // Show first notification after 3 seconds
         setTimeout(() => {
             showNotification();
-        }, initialDelay);
+        }, 3000);
     }
 
     // Stop notifications when user interacts with forms
@@ -185,7 +183,12 @@
     function restartNotifications() {
         if (!notificationsActive) {
             notificationsActive = true;
-            startNotifications();
+            // Wait 3 seconds before resuming notifications
+            setTimeout(() => {
+                if (notificationsActive) {
+                    showNotification();
+                }
+            }, 3000);
         }
     }
 
