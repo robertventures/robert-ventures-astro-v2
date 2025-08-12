@@ -20,6 +20,13 @@ function mapSenjaToTestimonial(raw: any): Testimonial {
     };
 }
 
+function getInitials(name: string): string {
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'A';
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
 let testimonials: Testimonial[] = [];
 
 try {
@@ -105,11 +112,7 @@ try {
     }
 
     /* Decorative quote icon using brand color */
-    .quote-icon {
-        color: var(--accent);
-        width: clamp(24px, 4vw, 36px);
-        height: auto;
-    }
+    .quote-icon { color: #281480; width: clamp(24px, 4vw, 36px); height: auto; }
 
     .slide-text {
         font-size: clamp(1rem, 2.2vw, 1.125rem);
@@ -130,7 +133,20 @@ try {
         border-radius: 999px;
         object-fit: cover;
         background: rgb(var(--gray-light));
-        border: 2px solid var(--accent);
+        border: 2px solid #281480;
+    }
+
+    .avatar-fallback {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: rgb(var(--gray-light));
+        color: #281480;
+        font-weight: 700;
+        font-family: "Satoshi", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        border: 2px solid #281480;
     }
 
     .name {
@@ -190,9 +206,9 @@ try {
                                 </div>
                                 <div class="slide-footer">
                                     {t.avatar ? (
-                                        <img class="avatar" src={t.avatar} alt={t.name} loading="lazy" decoding="async" fetchpriority="low" />
+                                        <img class="avatar" src={t.avatar} alt={t.name} loading="lazy" decoding="async" fetchpriority="low" draggable="false" />
                                     ) : (
-                                        <div class="avatar" aria-hidden="true"></div>
+                                        <div class="avatar-fallback" aria-hidden="true">{getInitials(t.name || 'A')}</div>
                                     )}
                                     <div>
                                         <div class="name">{t.name || 'Anonymous'}</div>
@@ -214,7 +230,7 @@ try {
     if (!viewport) return;
     const isDesktopPointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (!isDesktopPointer) {
-      // On touch devices, rely on native horizontal pan (touch-action: pan-x)
+      // On touch devices, rely on native horizontal pan (touch-action: auto)
       return;
     }
     let isDown = false;
@@ -272,7 +288,5 @@ try {
 
     // Prevent native image drag interfering with scroll
     viewport.addEventListener('dragstart', (e) => e.preventDefault());
-
-    // Do not intercept wheel; allow normal vertical page scroll
   })();
 </script>
