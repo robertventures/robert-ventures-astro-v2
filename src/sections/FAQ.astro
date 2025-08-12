@@ -1,5 +1,43 @@
 ---
 import Opener from "../images/svg/opener.svg";
+const formatAnswer = (raw) => {
+    if (!raw) return "";
+    const normalized = String(raw).trim().replace(/\r\n/g, "\n");
+    const paragraphs = normalized.split(/\n{2,}/);
+    return paragraphs
+        .map((p) => `<p>${p.trim().replace(/\n/g, '<br />')}</p>`) 
+        .join("");
+};
+const faqs = [
+    {
+        question: "Is it FDIC-insured? What's the real risk?",
+        answer: `FDIC insurance only applies to bank deposits, such as savings accounts, not to most investments people already own, including stocks, bonds, mutual funds, and REITs.<br/>
+        Like any investment, there's risk. We mitigate this risk through diversification in real estate and blue-chip digital assets. Additionally, our CEO, Joe Robert, has over 20 years of experience, has raised over $10 million in past offerings, and has never missed a payment. One in four investors reinvest within ~40 days, typically with four times their initial amount.`,
+    },
+    {
+        question: "How can we realistically pay 10% in this market?",
+        answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we also generate long-term growth from investments in Bitcoin and Ethereum. Both sectors have delivered double-digit returns over time, and we don't rely on leverage.<br/>
+        The 10% rate is achievable because we operate efficiently, investing only when the timing and demand are right. We build on lots as the market demands it, and if conditions cool, we can shift capital into digital assets instead of being forced to deploy it like significant funds.`,
+    },
+    {
+        question: "Are There Any Fees?",
+        answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
+    },
+    {
+        question: "How Are My Investments Taxed? ",
+        answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
+    },
+    {
+        question: "How experienced is Robert Ventures?",
+        answer: `Although this offering is relatively new, having been launched to the public in October 2024 after a year of SEC qualification, it's backed by extensive experience. Over the last 15 years, our manager, Joe Robert, has secured over $10 million from 60 private investors through various partnerships, including Silver Bay Capital. During that time, he has managed 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full.<br/> 
+        Now operating under Robert Ventures, he works directly with investors, offering full transparency, eliminating middlemen, and potentially achieving better yields.`,
+    },
+    {
+        question: "Why are our digital assets as part of our treasuries important in 2025?",
+        answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
+        They've been the best-performing assets of the past decade and complement the stability of our real estate. We're preparing ourselves for a digital economy.`,
+    },
+];
 ---
 
 <style>
@@ -107,127 +145,28 @@ import Opener from "../images/svg/opener.svg";
         <div class="section-content">
             <h2>Frequently Asked Questions</h2>
             <div class="faqs">
-                <div class="faq-container">
-                    <button class="accordion"
-                        >How does Robert Ventures affords to pay those rates?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            We invest in new assets designed to generate
-                            predictable monthly revenue and long-term value
-                            growth for the company.
-                        </p>
+                {faqs.map((faq, index) => (
+                    <div class="faq-container">
+                        <button
+                            class="accordion"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls={`faq-panel-${index}`}
+                            id={`faq-button-${index}`}
+                        >
+                            {faq.question}
+                            <Opener />
+                        </button>
+                        <div
+                            class="panel"
+                            id={`faq-panel-${index}`}
+                            role="region"
+                            aria-labelledby={`faq-button-${index}`}
+                        >
+                            <div set:html={formatAnswer(faq.answer)}></div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="faq-container">
-                    <button class="accordion"
-                        >Is This FDIC Insured?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            No, the bonds are not FDIC (Federal Deposit
-                            Insurance Corporation) insured. FDIC insurance is
-                            designed to protect depositors' funds in banks and
-                            savings institutions in the event of a bank failure.<br
-                            />
-                            The company's bonds are a type of investment in privately
-                            held companies or securities that are not publicly traded.
-                            These investments carry inherent risks and are not guaranteed
-                            or insured by the FDIC or any other government agency.<br
-                            /> Our bonds are issued according to SEC's Reg A+.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="faq-container">
-                    <button class="accordion"
-                        >Why Should I Invest With Robert Ventures?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            For any investment/allocation decision, you should
-                            always answer to those questions:<br />
-                            - Do I believe in the asset class I am about to invest?<br
-                            />
-                            - Do I like the expected returns?<br />
-                            - Do they make sense to my portfolio?<br />
-                            - Do I trust the manager?<br />
-                            Our product is made for qualified investors who intend
-                            to outpace inflation and earn high yields, especially
-                            given the current macroeconomic conditions.<br />
-                            Joe has over 20 years of experience in the real estate
-                            sector and 6 years in the technology industry. He is
-                            in constant contact with people from the sector, and
-                            the team has a detailed due diligence process before
-                            investing in any asset.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="faq-container">
-                    <button class="accordion"
-                        >Are There Any Fees?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            No.<br />
-                            The bonds are structured to eliminate intermediary fees
-                            and reduce overall expenses, meaning any additional fees
-                            do not reduce your monthly payments.<br />
-                            Bondholders can be confident that excessive fees and
-                            expenses do not impact their returns. Transparency and
-                            fairness are crucial elements in building trust with
-                            our investors, and this fee structure reflects that commitment.<br
-                            />
-                            By investing in the Robert Ventures Bonds, you're getting
-                            the most out of your investment, and your interests are
-                            always a top priority.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="faq-container">
-                    <button class="accordion"
-                        >How Are My Investments Taxed?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            Robert Ventures' investments are taxed the same as
-                            any other high-yield bond or interest-bearing
-                            investment. You will receive a form 1099-INT at the
-                            beginning of every tax year for the previous year,
-                            covering all interest paid during the calendar/tax
-                            year.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="faq-container">
-                    <button class="accordion"
-                        >Can I Invest With An IRA? What Are The Benefits?
-                        <Opener />
-                    </button>
-                    <div class="panel">
-                        <p>
-                            Yes, you can invest with your self-directed
-                            retirement accounts.<br /> Here are some of the benefits
-                            of investing in the Robert Ventures Bonds through an
-                            IRA account:<br />
-                            - Interest not taxable when realized;<br />
-                            -In a Roth IRA account: the interest income is tax-free
-                            when paid and withdrawn;<br />
-                            - In a Traditional IRA Account: the interest income is
-                            tax-deferred, which means it's only taxed when taking
-                            distributions.
-                        </p>
-                    </div>
-                </div>
+                ))}
             </div>
 
             <div class="book-a-call">
@@ -240,29 +179,36 @@ import Opener from "../images/svg/opener.svg";
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var acc = document.getElementsByClassName("accordion");
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function () {
-                // Close all other panels
-                for (var j = 0; j < acc.length; j++) {
-                    if (acc[j] !== this) {
-                        acc[j].classList.remove("active");
-                        var otherPanel = acc[j].nextElementSibling;
-                        if (otherPanel instanceof HTMLElement && otherPanel.style.maxHeight) {
-                            otherPanel.style.maxHeight = null;
-                        }
-                    }
-                }
+        const container = document.querySelector(".faqs");
+        if (!container) return;
 
-                // Toggle the clicked panel
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
+        container.addEventListener("click", function (event) {
+            const target = event.target;
+            const button = target instanceof Element ? target.closest("button.accordion") : null;
+            if (!button || !container.contains(button)) return;
+
+            const allButtons = container.querySelectorAll("button.accordion");
+            const allPanels = container.querySelectorAll<HTMLElement>(".panel");
+
+            allButtons.forEach((btn) => {
+                if (btn !== button) {
+                    btn.classList.remove("active");
+                    btn.setAttribute("aria-expanded", "false");
                 }
             });
-        }
+
+            allPanels.forEach((panel) => {
+                if (panel.previousElementSibling !== button) {
+                    panel.style.maxHeight = null;
+                }
+            });
+
+            const isOpen = button.classList.toggle("active");
+            button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+            const panel = button.nextElementSibling as HTMLElement | null;
+            if (!panel) return;
+            panel.style.maxHeight = isOpen ? panel.scrollHeight + "px" : null;
+        });
     });
 </script>

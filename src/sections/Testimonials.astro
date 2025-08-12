@@ -1,5 +1,46 @@
 ---
+// Minimal, DRY data loader for testimonials
+// - Fetches from our backend API (uses server env key)
+// - Prefers approved; falls back to all if none approved (dev-friendly)
+// - Maps to the exact fields we will use in the UI next
 
+interface Testimonial {
+    name: string;
+    avatar: string;
+    text: string;
+    date: string;
+}
+
+function mapSenjaToTestimonial(raw: any): Testimonial {
+    return {
+        name: raw?.customer_name ?? "Anonymous",
+        avatar: raw?.customer_avatar ?? "",
+        text: raw?.text ?? "",
+        date: raw?.date ?? raw?.created_at ?? "",
+    };
+}
+
+let testimonials: Testimonial[] = [];
+
+try {
+    const apiUrl = new URL("/api/testimonials", Astro.url);
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+        const payload = await response.json();
+        const rawList = Array.isArray(payload)
+            ? payload
+            : (payload?.testimonials ?? payload?.data ?? []);
+
+        const mapped = (rawList as any[]).map(mapSenjaToTestimonial);
+        const approvedOnly = (rawList as any[])
+            .filter((t) => t?.approved === true)
+            .map(mapSenjaToTestimonial);
+
+        testimonials = approvedOnly.length > 0 ? approvedOnly : mapped;
+    }
+} catch {
+    // Silently fail; frontend can handle empty list if needed
+}
 ---
 
 <style>
@@ -9,29 +50,120 @@
         margin-bottom: 2rem;
     }
 
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .cw_testimonial_flexible__carousel::-webkit-scrollbar {
+    /* Reduce outer padding and allow overflows so shadows are not clipped */
+    .section-container { padding-inline: 0.25rem; overflow: visible; }
+    .section-content { overflow: visible; }
+
+    /* Slider Layout (no nav buttons) */
+    .testimonials-slider { position: relative; }
+
+    .slider-viewport {
+        overflow-x: auto;
+        overflow-y: visible; /* allow shadows to extend vertically */
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Inner padding on small screens to prevent shadow clipping */
+        padding-inline: 1.25rem;
+        padding-block: 1rem;
+        scroll-padding-inline: 1.25rem; /* snap aligns accounting for padding */
+        cursor: default;
+        user-select: none;
+        touch-action: auto; /* allow both vertical page scroll and horizontal pan */
+        width: 100%;
+        /* no decorative fades; pure content */
+    }
+    .slider-viewport::-webkit-scrollbar {
         display: none;
     }
 
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .cw_testimonial_flexible__carousel {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+    .slider-track {
+        display: grid;
+        grid-auto-flow: column;
+        /* control gap consistently across breakpoints */
+        --card-gap: 1rem;
+        gap: var(--card-gap);
+        /* Mobile: 1 card with a peek of the next one */
+        grid-auto-columns: calc(100% - 4rem);
+        padding: 0.25rem;
+        margin: 0; /* reset UL defaults */
+        list-style: none;
     }
 
-    #wf1d73bd5-0d74-4c9c-8aa6-4192848316de .cw_testimonial_flexible__carousel {
-        padding: 0px;
+    .slide-card {
+        scroll-snap-align: start;
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        /* simpler, softer shadow */
+        box-shadow: 0 8px 20px rgba(15, 18, 25, 0.08), 0 2px 6px rgba(15, 18, 25, 0.05);
+        padding: clamp(1rem, 3.2vw, 1.5rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 320px;
     }
 
-    #wf1d73bd5-0d74-4c9c-8aa6-4192848316de.cw-testimonial-widget {
-        margin: 0px auto;
+    /* Decorative quote icon using brand color */
+    .quote-icon {
+        color: var(--accent);
+        width: clamp(24px, 4vw, 36px);
+        height: auto;
     }
 
-    #wf1d73bd5-0d74-4c9c-8aa6-4192848316de.cw-testimonial-widget
-        .cw_testimonial_flexible_userrow.flexible6
-        .cw_testimonial_flexible_userrow__info__title {
-        font-family: "Satoshi";
+    .slide-text {
+        font-size: clamp(1rem, 2.2vw, 1.125rem);
+        line-height: 1.7;
+        color: rgb(var(--gray-dark));
+        margin: 0.75rem 0 1.25rem;
+    }
+
+    .slide-footer {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        object-fit: cover;
+        background: rgb(var(--gray-light));
+        border: 2px solid var(--accent);
+    }
+
+    .name {
+        font-family:
+            "Satoshi",
+            system-ui,
+            -apple-system,
+            Segoe UI,
+            Roboto,
+            sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        color: rgb(var(--black));
+    }
+
+    /* Tablet: 2 full cards -> subtract one gap */
+    @media (min-width: 640px) and (max-width: 1023.98px) {
+        .slider-track { grid-auto-columns: calc((100% - var(--card-gap)) / 2); }
+        .section-container { padding-inline: 1rem; }
+        .slider-viewport { padding-inline: 1rem; scroll-padding-inline: 1rem; }
+    }
+
+    /* Desktop: 3 cards, but wider per card */
+    @media (min-width: 1024px) {
+        /* Exact 3 full cards; no peek */
+        .slider-track { --card-gap: 0.75rem; grid-auto-columns: calc((100% - (2 * var(--card-gap))) / 3 - 6px); padding: 0; margin: 0; }
+        .section-container { padding-inline: 2rem; }
+        /* Add viewport padding so card shadows aren’t clipped while keeping 3-up layout */
+        .slider-viewport { padding-inline: 1rem; scroll-padding-inline: 1rem; }
+        /* Slightly smaller text so cards feel more compact */
+        .slide-text { font-size: 0.9rem; }
+        /* Reasonable content width for three cards */
+        .section-content { max-width: 1100px; }
     }
 </style>
 
@@ -39,42 +171,108 @@
     <div class="section-container">
         <div class="section-content">
             <h2>Manager's Testimonials</h2>
-            <div id="wf1d73bd5-0d74-4c9c-8aa6-4192848316de" class="cw-testimonial-widget"></div>
+            <!-- Slider root (no navigation controls) -->
+            <div
+                class="testimonials-slider"
+                id="testimonials-root"
+                aria-label="Testimonials"
+                role="region"
+            >
+                <div class="slider-viewport" id="slider-viewport">
+                    <ul class="slider-track">
+                        {testimonials.map((t) => (
+                            <li class="slide-card">
+                                <div>
+                                    <svg class="quote-icon" viewBox="0 0 607 439" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                        <path d="M261.776 0.949219V110.449H202.859C135.526 110.449 101.859 144.142 101.859 211.526V236.795H202.859V438.949H0.859375V203.103C0.859375 68.3339 76.6094 0.949219 202.859 0.949219H261.776ZM345.943 438.949V203.103C345.943 68.3339 421.693 0.949219 547.943 0.949219H606.859V110.449H547.943C480.609 110.449 446.943 144.142 446.943 211.526V236.795H547.943V438.949H345.943Z" fill="currentColor"></path>
+                                    </svg>
+                                    <p class="slide-text">{t.text}</p>
+                                </div>
+                                <div class="slide-footer">
+                                    {t.avatar ? (
+                                        <img class="avatar" src={t.avatar} alt={t.name} loading="lazy" decoding="async" fetchpriority="low" />
+                                    ) : (
+                                        <div class="avatar" aria-hidden="true"></div>
+                                    )}
+                                    <div>
+                                        <div class="name">{t.name || 'Anonymous'}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-
 <script>
-    function loadTestimonial() {
-        // Create a script element
-        const script = document.createElement("script");
-        script.id = "trust-tracking";
-        script.defer = true;
-        script.async = true;
-        // Set the script source
-        script.src = "https://cdn.usetrust.app/trust.min.js";
-        // Inject the script into the document
-        const firstScript = document.getElementsByTagName("script")[0];
-        firstScript.parentNode.insertBefore(script, firstScript);
-        // Define your customer and type IDs
-        window.__TRUST__ = window.__TRUST__ || {};
-        window.__TRUST__["customerId"] = "f97e48f0-cc33-4b3d-8271-f6fc6f7b9515";
-        window.__TRUST__["typeId"] = "dfbea9f7-2122-44ba-9ec7-b39291e25893";
+  // Enable drag-to-scroll for desktop users
+  (function () {
+    const viewport = document.getElementById('slider-viewport');
+    if (!viewport) return;
+    const isDesktopPointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!isDesktopPointer) {
+      // On touch devices, rely on native horizontal pan (touch-action: pan-x)
+      return;
+    }
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+
+    function onPointerDown(e) {
+      isDown = true;
+      startX = e.clientX;
+      scrollStart = viewport.scrollLeft;
+      if ('setPointerCapture' in viewport && e.pointerId != null) {
+        try { viewport.setPointerCapture(e.pointerId); } catch {}
+      }
+      e.preventDefault();
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
     }
 
-    window.addEventListener("load", loadTestimonial);
-</script>
-
-<script >
-    declare global {
-        interface Window {
-            __TRUST__?: {
-                customerId?: string;
-                typeId?: string;
-            };
-        }
+    function onPointerMove(e) {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      viewport.scrollLeft = scrollStart - dx;
+      e.preventDefault();
     }
 
-    export {};
+    function endDrag() {
+      isDown = false;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', endDrag);
+      window.removeEventListener('pointercancel', endDrag);
+    }
+    viewport.addEventListener('pointerdown', onPointerDown, { passive: false });
+    viewport.addEventListener('pointerleave', endDrag);
+
+    // Mouse fallback
+    viewport.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.clientX;
+      scrollStart = viewport.scrollLeft;
+      function onMouseMove(ev) {
+        if (!isDown) return;
+        const dx = ev.clientX - startX;
+        viewport.scrollLeft = scrollStart - dx;
+        ev.preventDefault();
+      }
+      function onMouseUp() {
+        isDown = false;
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      }
+      window.addEventListener('mousemove', onMouseMove, { passive: false });
+      window.addEventListener('mouseup', onMouseUp);
+    }, { passive: false });
+
+    // Prevent native image drag interfering with scroll
+    viewport.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // Do not intercept wheel; allow normal vertical page scroll
+  })();
 </script>

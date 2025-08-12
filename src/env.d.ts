@@ -6,3 +6,13 @@ declare namespace astroHTML.JSX {
     humblytics?: string;
   }
 }
+
+// Environment variables
+interface ImportMetaEnv {
+  readonly SENJA_API_KEY: string;
+  readonly SITE: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
