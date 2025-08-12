@@ -17,10 +17,14 @@ const investmentAmounts = [
     { value: "100000", label: "$100,000+" }
 ];
 
-// Alternative assets options
-const alternativeAssetsOptions = [
-    { value: "yes", label: "Yes" },
-    { value: "no", label: "No" }
+// Primary investment objective options (single select)
+const investmentObjectivesOptions = [
+    { value: "monthly income", label: "Generate monthly or passive income" },
+    { value: "long term growth", label: "Achieve long-term capital growth" },
+    { value: "portfolio diversification", label: "Diversify my portfolio for risk reduction" },
+    { value: "inflation protection", label: "Protect savings from inflation" },
+    { value: "tax advantaged ira growth", label: "Pursue tax-advantaged growth" },
+    { value: "short term returns", label: "Seek short-term gains or quick returns" }
 ];
 ---
 
@@ -65,32 +69,26 @@ const alternativeAssetsOptions = [
                 line-height: 1.75;
             }
             
-            .portfolio-value-container, 
-            .investment-urgency-options {
-                display: flex;
-                flex-direction: column;
+            /* Portfolio value as a grid of selectable boxes */
+            .portfolio-value-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
                 margin-bottom: 1rem;
             }
 
-            .investment-method-options {
-                display: flex;
-                flex-direction: row;
-                gap: 0;
-                justify-content: space-between;
-                width: 100%;
-                margin: 0 auto 1rem auto;
-            }
-
-            .investment-method-options label {
-                width: 50%;
-                justify-content: flex-start;
-                min-width: unset;
+            /* Objectives as a grid of selectable boxes */
+            .objectives-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                margin-bottom: 2rem;
             }
 
             form {
                 display: flex;
                 flex-direction: column;
-                max-width: 366px;
+                max-width: 640px;
                 margin: 0 auto;
             }
 
@@ -104,7 +102,6 @@ const alternativeAssetsOptions = [
                 font-weight: 500;
                 border-radius: 0.75rem;
                 border: 1px solid #5028ff;
-                margin-top: 2rem;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
@@ -166,6 +163,70 @@ const alternativeAssetsOptions = [
                 background-color: #f8f9fa;
             }
 
+            /* Portfolio grid item styles */
+            .portfolio-option-label {
+                display: block;
+                padding: 0;
+            }
+            .portfolio-option-label input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+                width: 0;
+                height: 0;
+                pointer-events: none;
+            }
+            .option-box {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 0.75rem 1rem;
+                border: 1px solid #e5e7eb; /* gray-200 */
+                border-radius: 0.75rem;
+                background: #ffffff;
+                color: #111827; /* gray-900 */
+                font-family: Inter, sans-serif;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+            }
+            .portfolio-option-label:hover .option-box {
+                background-color: #f8f9fa;
+            }
+            .portfolio-option-label input[type="radio"]:focus + .option-box {
+                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.2) inset;
+            }
+            .portfolio-option-label input[type="radio"]:checked + .option-box {
+                border-color: #5028ff;
+                background-color: #f2f0ff;
+                color: #1f2937; /* gray-800 */
+                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.1) inset;
+            }
+
+            /* Objectives grid item styles (radios) */
+            .objectives-option-label {
+                display: block;
+                padding: 0;
+            }
+            .objectives-option-label input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+                width: 0;
+                height: 0;
+                pointer-events: none;
+            }
+            .objectives-option-label:hover .option-box {
+                background-color: #f8f9fa;
+            }
+            .objectives-option-label input[type="radio"]:focus + .option-box {
+                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.2) inset;
+            }
+            .objectives-option-label input[type="radio"]:checked + .option-box {
+                border-color: #5028ff;
+                background-color: #f2f0ff;
+                color: #1f2937;
+                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.1) inset;
+            }
+
             span.defocus {
                 font-weight: 300;
                 font-size: 1.125rem;
@@ -175,6 +236,12 @@ const alternativeAssetsOptions = [
             @media only screen and (min-width: 768px) {
                 section {
                     padding: 0 2rem;
+                }
+                .portfolio-value-container {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .objectives-container {
+                    grid-template-columns: 1fr;
                 }
             }
 
@@ -206,32 +273,31 @@ const alternativeAssetsOptions = [
                         </p>
                         <div class="portfolio-value-container">
                             {investmentAmounts.map((option) => (
-                                <label>
+                                <label class="portfolio-option-label">
                                     <input
                                         type="radio"
                                         name="invest_intent"
                                         value={option.value}
                                         required={option.value === "1000"}
                                     />
-                                    {option.label}
+                                    <span class="option-box">{option.label}</span>
                                 </label>
                             ))}
                         </div>
 
                         <p class="portfolio-info">
-                            Have you invested in alternative assets before? 
-                            <span class="defocus"> (private companies, real estate, debt funds, bonds, crypto, etc.) </span>
+                            What is your primary investment objective?
                         </p>
-                        <div class="investment-method-options">
-                            {alternativeAssetsOptions.map((option) => (
-                                <label>
+                        <div class="objectives-container">
+                            {investmentObjectivesOptions.map((option) => (
+                                <label class="objectives-option-label">
                                     <input
                                         type="radio"
-                                        name="investment_method"
+                                        name="primary_investment_objective"
                                         value={option.value}
-                                        required={option.value === "yes"}
+                                        required={option.value === "monthly_income"}
                                     />
-                                    {option.label}
+                                    <span class="option-box">{option.label}</span>
                                 </label>
                             ))}
                         </div>
@@ -276,6 +342,8 @@ const alternativeAssetsOptions = [
         const form = document.getElementById("questions") as HTMLFormElement;
         if (!form) return;
 
+        // No multi-select limit needed for primary objective (single select)
+
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -300,9 +368,10 @@ const alternativeAssetsOptions = [
 
             // Store form answers in localStorage
             const investIntent = formData.get("invest_intent");
-            const alternativeAssets = formData.get("investment_method");
+            const primaryInvestmentObjective = formData.get("primary_investment_objective");
+
             localStorage.setItem("invest_intent", investIntent?.toString() || "");
-            localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
+            localStorage.setItem("primary_investment_objective", primaryInvestmentObjective?.toString() || "");
 
             // Add webinar sign-up date from localStorage if available
             const webinarSignUpDate = localStorage.getItem("webinar_sign_up_date");
@@ -315,7 +384,7 @@ const alternativeAssetsOptions = [
 
             console.log("Stored answers in localStorage:", {
                 investIntent,
-                alternativeAssets,
+                primaryInvestmentObjective,
             });
 
             try {

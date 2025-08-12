@@ -5,7 +5,7 @@ export const prerender = false; // Ensure this route is server-rendered
 export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
     const investIntent = formData.get("invest_intent")?.toString();
-    const alternativeAssets = formData.get("investment_method")?.toString();
+    const primaryObjective = formData.get("primary_investment_objective")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
     const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
 
@@ -17,9 +17,9 @@ export const POST: APIRoute = async ({ request }) => {
         );
     }
 
-    if (!investIntent || !alternativeAssets) {
+    if (!investIntent || !primaryObjective) {
         return new Response(
-            JSON.stringify({ error: "All fields are required" }),
+            JSON.stringify({ error: "Please provide invest intent and your primary investment objective" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
         );
     }
@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
     // ✅ These are the unique field keys from your GoHighLevel system.
     const customFields = {
         "invest_intent": investIntent,
-        "alternative_assets": alternativeAssets
+        "primary_investment_objective": primaryObjective
     };
 
     // Add webinar sign-up date if available
