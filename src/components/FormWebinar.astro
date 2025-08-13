@@ -61,6 +61,18 @@ const analyticsEvents = {
         required
         class="email-input"
       />
+      <div class="select-container">
+        <select name="invest_intent" required>
+          <option value="" disabled selected>How much are you looking to invest?</option>
+          <option value="1000">$1,000</option>
+          <option value="5000">$5,000</option>
+          <option value="10000">$10,000</option>
+          <option value="25000">$25,000</option>
+          <option value="50000">$50,000</option>
+          <option value="100000">$100,000+</option>
+        </select>
+        <Opener />
+      </div>
       <div class="phone-input-wrapper">
         <Image src={usFlag} alt="US Flag" height={22} class="phone-flag" />
         <input
@@ -400,6 +412,7 @@ const analyticsEvents = {
 
   function getFormElements(form, formContainer) {
     const selectEl = form.querySelector("select[name='session']");
+    const investSelectEl = form.querySelector("select[name='invest_intent']");
     const phoneInput = form.querySelector("input[name='phone_number']");
     const daysSpan = formContainer.querySelector(".days span");
     const hoursSpan = formContainer.querySelector(".hours span");
@@ -410,7 +423,7 @@ const analyticsEvents = {
     const buttonText = submitButton.querySelector(".button-text");
     const loader = submitButton.querySelector(".loader");
 
-    if (!selectEl || !daysSpan || !hoursSpan || !minutesSpan || !secondsSpan || 
+    if (!selectEl || !investSelectEl || !daysSpan || !hoursSpan || !minutesSpan || !secondsSpan || 
         !signupError || !submitButton || !buttonText || !loader) {
       console.error("Required form elements not found");
       return null;
@@ -418,6 +431,7 @@ const analyticsEvents = {
 
     return {
       selectEl,
+      investSelectEl,
       phoneInput,
       timeElements: { daysSpan, hoursSpan, minutesSpan, secondsSpan },
       signupError,
@@ -639,7 +653,7 @@ const analyticsEvents = {
   }
 
   function setupFormSubmission(form, elements) {
-    const { selectEl, signupError, submitButton, buttonText, loader, phoneInput } = elements;
+    const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } = elements;
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -663,12 +677,24 @@ const analyticsEvents = {
 
       const formData = new FormData(form);
       const selectedOption = selectEl.querySelector("option:checked");
+      const selectedInvest = investSelectEl && investSelectEl.value ? investSelectEl.value : "";
       
       if (!selectedOption) {
         signupError.textContent = "Please select a session.";
         resetFormState(buttonText, loader, submitButton);
         return;
       }
+
+      if (!selectedInvest) {
+        signupError.textContent = "Please select how much you are looking to invest.";
+        resetFormState(buttonText, loader, submitButton);
+        return;
+      }
+
+      // Persist selected investment amount
+      try {
+        localStorage.setItem("invest_intent", selectedInvest);
+      } catch {}
 
       const isoDateUTC = selectedOption.getAttribute("data-date");
       const sessionValue = selectedOption.value;
@@ -759,7 +785,26 @@ const analyticsEvents = {
         
         // Trigger analytics events
         utils.triggerEvent('webinar_registered', 'webinarRegistered');
-        
+
+        // Fire Meta Pixel with filtered value based on invest intent
+        try {
+          const investValue = parseInt(selectedInvest, 10);
+          const pixelFiredKey = 'pixel_complete_registration_fired';
+          const alreadyFired = localStorage.getItem(pixelFiredKey) === 'true';
+          if (Number.isFinite(investValue) && investValue > 1000 && !alreadyFired) {
+            (function(f,b,e,v,n,t,s){
+              if ((f as any).fbq) return; n=(f as any).fbq=function(){ n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+              if (!(f as any)._fbq) (f as any)._fbq=n; n.push=n; (n as any).loaded=!0; (n as any).version='2.0'; (n as any).queue=[]; t=b.createElement(e); (t as any).async=!0; (t as any).src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
+            })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+            (window as any).fbq('init', '652212003052612');
+            (window as any).fbq('track', 'CompleteRegistration', { value: investValue, currency: 'USD' });
+            localStorage.setItem(pixelFiredKey, 'true');
+            console.log('✅ Meta Pixel CompleteRegistration fired with value:', investValue);
+          } else {
+            console.log('ℹ️ Meta Pixel not fired (invest_intent <= 1000 or already fired).');
+          }
+        } catch {}
+
         window.location.href = "/questions";
       } catch (err) {
         signupError.textContent = "An error occurred during registration.";

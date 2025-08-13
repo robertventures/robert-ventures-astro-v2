@@ -275,22 +275,6 @@ const investmentObjectivesOptions = [
                         action="/api/questions"
                         method="post"
                     >
-                        <p class="portfolio-info">
-                            How Much Are You Looking to Invest?
-                        </p>
-                        <div class="portfolio-value-container">
-                            {investmentAmounts.map((option) => (
-                                <label class="portfolio-option-label">
-                                    <input
-                                        type="radio"
-                                        name="invest_intent"
-                                        value={option.value}
-                                        required={option.value === "1000"}
-                                    />
-                                    <span class="option-box">{option.label}</span>
-                                </label>
-                            ))}
-                        </div>
 
                         <p class="portfolio-info">
                             Have You Invested in Alternative Assets Before?
@@ -391,11 +375,9 @@ const investmentObjectivesOptions = [
             }
 
             // Store form answers in localStorage
-            const investIntent = formData.get("invest_intent");
             const alternativeAssets = formData.get("alternative_assets");
             const primaryInvestmentObjective = formData.get("primary_investment_objective");
 
-            localStorage.setItem("invest_intent", investIntent?.toString() || "");
             localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
             localStorage.setItem("primary_investment_objective", primaryInvestmentObjective?.toString() || "");
 
@@ -408,10 +390,7 @@ const investmentObjectivesOptions = [
 
 
 
-            console.log("Stored answers in localStorage:", {
-                investIntent,
-                primaryInvestmentObjective,
-            });
+            console.log("Stored answers in localStorage:", { primaryInvestmentObjective });
 
             try {
                 const response = await fetch(form.action, {

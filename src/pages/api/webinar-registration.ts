@@ -120,7 +120,8 @@ export const POST: APIRoute = async ({ request }) => {
             date: body.date,
             fullDate: body.fullDate,
             customField1: webinarTest,
-            customField2: webinarVariant
+            customField2: webinarVariant,
+            customField3: body.invest_intent
         });
         
         console.log("📤 Sending to WebinarKit:", JSON.stringify(JSON.parse(raw), null, 2));

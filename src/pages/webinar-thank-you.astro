@@ -31,9 +31,11 @@ const pageDescription =
 
         <FooterNew />
         <script is:inline>
-            // Check invest_intent in localStorage and fire Meta Pixel if > 1000
-            const investIntent = parseInt(localStorage.getItem("invest_intent"), 10);
-            if (investIntent > 1000) {
+            // Prevent duplicate pixel fires if already sent on the form
+            const pixelFiredKey = 'pixel_complete_registration_fired';
+            const alreadyFired = localStorage.getItem(pixelFiredKey) === 'true';
+            const investIntent = parseInt(localStorage.getItem('invest_intent'), 10);
+            if (!alreadyFired && Number.isFinite(investIntent) && investIntent > 1000) {
                 !(function (f, b, e, v, n, t, s) {
                     if (f.fbq) return;
                     n = f.fbq = function () {
@@ -44,7 +46,7 @@ const pageDescription =
                     if (!f._fbq) f._fbq = n;
                     n.push = n;
                     n.loaded = !0;
-                    n.version = "2.0";
+                    n.version = '2.0';
                     n.queue = [];
                     t = b.createElement(e);
                     t.async = !0;
@@ -54,14 +56,15 @@ const pageDescription =
                 })(
                     window,
                     document,
-                    "script",
-                    "https://connect.facebook.net/en_US/fbevents.js"
+                    'script',
+                    'https://connect.facebook.net/en_US/fbevents.js'
                 );
-                fbq("init", "652212003052612");
-                fbq("track", "CompleteRegistration", { value: investIntent, currency: "USD" });
-                console.log("✅ Meta Pixel tag fired: Lead");
+                fbq('init', '652212003052612');
+                fbq('track', 'CompleteRegistration', { value: investIntent, currency: 'USD' });
+                localStorage.setItem(pixelFiredKey, 'true');
+                console.log('✅ Meta Pixel tag fired: CompleteRegistration', investIntent);
                 // Add noscript fallback dynamically
-                const noscript = document.createElement("noscript");
+                const noscript = document.createElement('noscript');
                 noscript.innerHTML = `
                     <img
                         height="1"
@@ -72,7 +75,7 @@ const pageDescription =
                 `;
                 document.head.appendChild(noscript);
             } else {
-                console.log("❌ Meta Pixel tag not fired: invest_intent not > 1000");
+                console.log('ℹ️ Meta Pixel not fired on thank-you (already fired or invest_intent ≤ 1000).');
             }
         </script>
     </body>
