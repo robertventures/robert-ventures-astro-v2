@@ -6,9 +6,9 @@ import HeroboxWebinar10 from "../sections/HeroboxWebinar10.astro";
 import WhyNowWebinar from "../sections/WhyNowWebinar.astro";
 import JoeRobertWebinar from "../sections/JoeRobertWebinar.astro";
 import Testimonials from "../sections/Testimonials.astro";
+import NotificationBar from "../components/NotificationBar.astro";
 
 import FooterNew from "../components/FooterNew.astro";
-import Calculator from "../sections/Calculator.astro";
 import HowItWorksV2 from "../sections/HowItWorksV2.astro";
 import InvestmentOptions from "../sections/InvestmentOptions.astro";
 
@@ -31,12 +31,12 @@ export const prerender = false
     <body>
         <Header />
         <HeroboxWebinar10 />
-        <!-- <Calculator showFormCTA={false}/> -->
         <InvestmentOptions/>
         <HowItWorksV2/>
         <WhyNowWebinar />
         <JoeRobertWebinar />
         <Testimonials />
         <FooterNew />
+        <NotificationBar />
     </body>
 </html>
