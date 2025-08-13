@@ -80,7 +80,7 @@ const investmentObjectivesOptions = [
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
 
             /* Objectives as a grid of selectable boxes */
@@ -88,7 +88,7 @@ const investmentObjectivesOptions = [
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 0.75rem;
-                margin-bottom: 2rem;
+                margin-bottom: 2.5rem;
             }
 
             form {
@@ -276,7 +276,7 @@ const investmentObjectivesOptions = [
                         method="post"
                     >
                         <p class="portfolio-info">
-                            How much are you looking to invest?
+                            How Much Are You Looking to Invest?
                         </p>
                         <div class="portfolio-value-container">
                             {investmentAmounts.map((option) => (
@@ -293,7 +293,7 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
-                            Have you invested in alternative assets before?
+                            Have You Invested in Alternative Assets Before?
                         </p>
                         <div class="portfolio-value-container">
                             {alternativeAssetsOptions.map((option) => (
@@ -310,7 +310,7 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
-                            What is your primary investment objective?
+                            What Is Your Primary Investment Objective?
                         </p>
                         <div class="objectives-container">
                             {investmentObjectivesOptions.map((option) => (
