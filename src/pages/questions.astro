@@ -17,6 +17,12 @@ const investmentAmounts = [
     { value: "100000", label: "$100,000+" }
 ];
 
+// Alternative assets experience options (yes/no)
+const alternativeAssetsOptions = [
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" }
+];
+
 // Primary investment objective options (single select)
 const investmentObjectivesOptions = [
     { value: "Long Term Growth", label: "Long-Term Capital Growth" },
@@ -187,6 +193,7 @@ const investmentObjectivesOptions = [
                 font-family: Inter, sans-serif;
                 font-size: 1rem;
                 font-weight: 500;
+                line-height: 1;
                 transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
             }
             .portfolio-option-label:hover .option-box {
@@ -286,6 +293,23 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
+                            Have you invested in alternative assets before?
+                        </p>
+                        <div class="portfolio-value-container">
+                            {alternativeAssetsOptions.map((option) => (
+                                <label class="portfolio-option-label">
+                                    <input
+                                        type="radio"
+                                        name="alternative_assets"
+                                        value={option.value}
+                                        required={option.value === "yes"}
+                                    />
+                                    <span class="option-box">{option.label}</span>
+                                </label>
+                            ))}
+                        </div>
+
+                        <p class="portfolio-info">
                             What is your primary investment objective?
                         </p>
                         <div class="objectives-container">
@@ -368,9 +392,11 @@ const investmentObjectivesOptions = [
 
             // Store form answers in localStorage
             const investIntent = formData.get("invest_intent");
+            const alternativeAssets = formData.get("alternative_assets");
             const primaryInvestmentObjective = formData.get("primary_investment_objective");
 
             localStorage.setItem("invest_intent", investIntent?.toString() || "");
+            localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
             localStorage.setItem("primary_investment_objective", primaryInvestmentObjective?.toString() || "");
 
             // Add webinar sign-up date from localStorage if available
