@@ -30,53 +30,6 @@ const pageDescription =
         <Testimonials />
 
         <FooterNew />
-        <script is:inline>
-            // Prevent duplicate pixel fires if already sent on the form
-            const pixelFiredKey = 'pixel_complete_registration_fired';
-            const alreadyFired = localStorage.getItem(pixelFiredKey) === 'true';
-            const investIntent = parseInt(localStorage.getItem('invest_intent'), 10);
-            if (!alreadyFired && Number.isFinite(investIntent) && investIntent > 1000) {
-                !(function (f, b, e, v, n, t, s) {
-                    if (f.fbq) return;
-                    n = f.fbq = function () {
-                        n.callMethod
-                            ? n.callMethod.apply(n, arguments)
-                            : n.queue.push(arguments);
-                    };
-                    if (!f._fbq) f._fbq = n;
-                    n.push = n;
-                    n.loaded = !0;
-                    n.version = '2.0';
-                    n.queue = [];
-                    t = b.createElement(e);
-                    t.async = !0;
-                    t.src = v;
-                    s = b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t, s);
-                })(
-                    window,
-                    document,
-                    'script',
-                    'https://connect.facebook.net/en_US/fbevents.js'
-                );
-                fbq('init', '652212003052612');
-                fbq('track', 'CompleteRegistration', { value: investIntent, currency: 'USD' });
-                localStorage.setItem(pixelFiredKey, 'true');
-                console.log('✅ Meta Pixel tag fired: CompleteRegistration', investIntent);
-                // Add noscript fallback dynamically
-                const noscript = document.createElement('noscript');
-                noscript.innerHTML = `
-                    <img
-                        height="1"
-                        width="1"
-                        style="display:none"
-                        src="https://www.facebook.com/tr?id=652212003052612&ev=PageView&noscript=1"
-                    />
-                `;
-                document.head.appendChild(noscript);
-            } else {
-                console.log('ℹ️ Meta Pixel not fired on thank-you (already fired or invest_intent ≤ 1000).');
-            }
-        </script>
+        
     </body>
 </html>
