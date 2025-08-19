@@ -23,14 +23,22 @@ const alternativeAssetsOptions = [
     { value: "no", label: "No" }
 ];
 
+// Age bracket options
+const ageBracketOptions = [
+    { value: "18_34", label: "18 to 34" },
+    { value: "35_44", label: "35 to 44" },
+    { value: "45_54", label: "45 to 54" },
+    { value: "55_plus", label: "55+" }
+];
+
 // Primary investment objective options (single select)
 const investmentObjectivesOptions = [
     { value: "Long Term Growth", label: "Long-Term Capital Growth" },
     { value: "Portfolio Diversification", label: "Diversify My Portfolio for Risk Reduction" },
     { value: "Monthly Income", label: "Generate Monthly or Passive Income" },
-    { value: "Inflation Protection", label: "Protect Savings from Inflation" },
     { value: "Tax Advantaged IRA Growth", label: "Pursue Tax-Advantaged Growth" },
-    { value: "Short Term Returns", label: "Short-Term Gains or Quick Returns" }
+    // { value: "Inflation Protection", label: "Protect Savings from Inflation" },
+    // { value: "Short Term Returns", label: "Short-Term Gains or Quick Returns" }
 ];
 ---
 
@@ -88,7 +96,7 @@ const investmentObjectivesOptions = [
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 0.75rem;
-                margin-bottom: 2.5rem;
+                margin-bottom: 2rem;
             }
 
             form {
@@ -245,7 +253,7 @@ const investmentObjectivesOptions = [
                     padding: 0 2rem;
                 }
                 .portfolio-value-container {
-                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-columns: repeat(2, 1fr);
                 }
                 .objectives-container {
                     grid-template-columns: 1fr;
@@ -286,7 +294,24 @@ const investmentObjectivesOptions = [
                                         type="radio"
                                         name="alternative_assets"
                                         value={option.value}
-                                        required={option.value === "yes"}
+                                        required={true}
+                                    />
+                                    <span class="option-box">{option.label}</span>
+                                </label>
+                            ))}
+                        </div>
+
+                        <p class="portfolio-info">
+                            What is your age range?
+                        </p>
+                        <div class="portfolio-value-container">
+                            {ageBracketOptions.map((option) => (
+                                <label class="portfolio-option-label">
+                                    <input
+                                        type="radio"
+                                        name="age_bracket"
+                                        value={option.value}
+                                        required={true}
                                     />
                                     <span class="option-box">{option.label}</span>
                                 </label>
@@ -303,7 +328,7 @@ const investmentObjectivesOptions = [
                                         type="radio"
                                         name="primary_investment_objective"
                                         value={option.value}
-                                        required={option.value === "monthly_income"}
+                                        required={true}
                                     />
                                     <span class="option-box">{option.label}</span>
                                 </label>
@@ -377,9 +402,11 @@ const investmentObjectivesOptions = [
             // Store form answers in localStorage
             const alternativeAssets = formData.get("alternative_assets");
             const primaryInvestmentObjective = formData.get("primary_investment_objective");
+            const ageBracket = formData.get("age_bracket");
 
             localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
             localStorage.setItem("primary_investment_objective", primaryInvestmentObjective?.toString() || "");
+            localStorage.setItem("age_bracket", ageBracket?.toString() || "");
 
             // Add webinar sign-up date from localStorage if available
             const webinarSignUpDate = localStorage.getItem("webinar_sign_up_date");

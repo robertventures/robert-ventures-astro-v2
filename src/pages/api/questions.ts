@@ -8,6 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
     const primaryObjective = formData.get("primary_investment_objective")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
     const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
+    const ageBracket = formData.get("age_bracket")?.toString();
 
 
     if (!ghlContactId) {
@@ -17,9 +18,9 @@ export const POST: APIRoute = async ({ request }) => {
         );
     }
 
-    if (!primaryObjective || !alternativeAssets) {
+    if (!primaryObjective || !alternativeAssets || !ageBracket) {
         return new Response(
-            JSON.stringify({ error: "Please provide whether you've invested in alternative assets and your primary investment objective" }),
+            JSON.stringify({ error: "Please provide whether you've invested in alternative assets, your age bracket, and your primary investment objective" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
         );
     }
@@ -27,7 +28,8 @@ export const POST: APIRoute = async ({ request }) => {
     // ✅ These are the unique field keys from your GoHighLevel system.
     const customFields: Record<string, string> = {
         "alternative_assets": alternativeAssets,
-        "primary_investment_objective": primaryObjective
+        "primary_investment_objective": primaryObjective,
+        "age_bracket": ageBracket
     };
 
     // Add webinar sign-up date if available
