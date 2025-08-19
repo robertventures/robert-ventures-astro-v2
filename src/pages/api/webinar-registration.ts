@@ -40,8 +40,43 @@ export const POST: APIRoute = async ({ request }) => {
         // --- REMOVED PHONE VALIDATION ---
         // (No phone validation here, always process registration)
         // --- END REMOVAL ---
+
+        // Derive values with server-side fallbacks
+        const referer = request.headers.get("referer") || "";
+        let refUrl: URL | null = null;
+        try { refUrl = referer ? new URL(referer) : null; } catch {}
+
+        const allowedUtms = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'];
+        const utmMerged: Record<string, string> = {};
+        if (body.utm && typeof body.utm === 'object') {
+            for (const key of allowedUtms) {
+                if (body.utm[key]) utmMerged[key] = body.utm[key];
+            }
+        }
+        if (refUrl) {
+            for (const key of allowedUtms) {
+                if (!utmMerged[key]) {
+                    const v = refUrl.searchParams.get(key);
+                    if (v) utmMerged[key] = v;
+                }
+            }
+        }
+
+        const ua = request.headers.get("user-agent") || "";
+        const serverDevice = (() => {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+            if (!isMobile) return "desktop";
+            if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+            if (/Android/i.test(ua)) return "android";
+            return "android";
+        })();
+
         const webinarTest = body.webinar_test || 'unknown';
-        const webinarVariant = body.webinar_variant || 'unknown';
+        const variantFromRef = (refUrl?.pathname || "").includes("webinar-2") ? "v1.1" : "v1.0";
+        const webinarVariant = body.webinar_variant || variantFromRef || 'unknown';
+        const utmCampaignFinal = body.utm_campaign || utmMerged.utm_campaign || "Webinar";
+        const deviceFinal = body.device_type || serverDevice || "unknown";
+
         console.log("📥 Received form data:", JSON.stringify(body, null, 2));
 
         // Split full name into first and last name
@@ -60,30 +95,25 @@ export const POST: APIRoute = async ({ request }) => {
                 const dd = String(userLocalTime.getDate()).padStart(2, '0');
                 const yyyy = userLocalTime.getFullYear();
                 const currentDate = `${mm}-${dd}-${yyyy}`;
-                // Only forward the main UTM fields if present
+                // Only forward the main UTM fields if present (merged from body and referer)
                 let customField = {
                     invest_intent: body.invest_intent,
                     webinar_sign_up_date: body.webinar_sign_up_date,
                     webinar_signup_date: currentDate,
                     userip: body.user_ip || "unknown",
-                    webinar_ab_test_variant: body.webinar_variant || "unknown",
-                    device_type: body.device_type || "unknown"
+                    webinar_ab_test_variant: webinarVariant,
+                    device_type: deviceFinal
                 };
-                if (body.utm && typeof body.utm === 'object') {
-                    const allowedUtms = [
-                        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id'
-                    ];
-                    for (const key of allowedUtms) {
-                        if (body.utm[key]) {
-                            customField[key] = body.utm[key];
-                        }
+                for (const key of allowedUtms) {
+                    if (utmMerged[key]) {
+                        customField[key] = utmMerged[key];
                     }
                 }
                 const ghlPayload = {
                     name: body.name,
                     phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                     email: body.email,
-                    source: body.utm_campaign || "Webinar",
+                    source: utmCampaignFinal,
                     timezone: body.user_timezone || "America/New_York",
                     customField
                 };

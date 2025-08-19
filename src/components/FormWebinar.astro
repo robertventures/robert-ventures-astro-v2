@@ -715,15 +715,39 @@ const analyticsEvents = {
         return;
       }
 
-      // Only collect the main UTM parameters
+      // Collect UTM parameters, prioritizing URL params, fallback to localStorage
       const utmParams = [
         "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
       ];
+      const urlParams = new URLSearchParams(window.location.search);
       const utmData = {};
       utmParams.forEach(param => {
-        const value = localStorage.getItem(param);
+        let value = urlParams.get(param);
+        if (!value) {
+          try { value = localStorage.getItem(param) || undefined; } catch {}
+        }
         if (value) utmData[param] = value;
       });
+
+      // Device detection fallback
+      function detectDeviceFromUA(ua) {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        if (!isMobile) return "desktop";
+        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+        if (/Android/i.test(ua)) return "android";
+        return "android";
+      }
+      let deviceType;
+      try { deviceType = localStorage.getItem("device_type"); } catch {}
+      if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
+
+      // Variant fallback
+      let variant;
+      try { variant = localStorage.getItem('webinar_ab_test_variant'); } catch {}
+      if (!variant) variant = window.location.pathname.includes('webinar-2') ? 'v1.1' : 'v1.0';
+
+      // Provide top-level utm_campaign for systems expecting it
+      const utmCampaignTop = utmData.utm_campaign || (() => { try { return localStorage.getItem("utm_campaign"); } catch { return null; } })();
 
       const payload = {
         session: sessionDetails.id,
@@ -738,13 +762,13 @@ const analyticsEvents = {
         date: isoDateUTC,
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // Only send the main UTM fields
-        utm_campaign: localStorage.getItem("utm_campaign") || undefined,
+        utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         user_ip: localStorage.getItem("userIP") || undefined,
-        device_type: localStorage.getItem("device_type") || undefined,
+        device_type: deviceType || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
-        webinar_variant: localStorage.getItem('webinar_ab_test_variant')
+        webinar_variant: variant
       };
 
       console.log("Payload being sent:", payload);
