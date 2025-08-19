@@ -720,7 +720,7 @@ const analyticsEvents = {
         "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
       ];
       const urlParams = new URLSearchParams(window.location.search);
-      const utmData = {};
+      const utmData: Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_content" | "utm_term" | "utm_id", string>> = {};
       utmParams.forEach(param => {
         let value = urlParams.get(param);
         if (!value) {
