@@ -102,7 +102,12 @@ export const POST: APIRoute = async ({ request }) => {
                     webinar_signup_date: currentDate,
                     userip: body.user_ip || "unknown",
                     webinar_ab_test_variant: webinarVariant,
-                    device_type: deviceFinal
+                    device_type: deviceFinal,
+                    // Include the actual webinar selection datetime values
+                    webinar_date: body.date,          // ISO string in UTC from frontend
+                    webinar_full_date: body.fullDate,  // Human-readable with timezone from frontend
+                    // Match GHL handler key
+                    webinar_date__time: body.fullDate
                 };
                 for (const key of allowedUtms) {
                     if (utmMerged[key]) {
