@@ -59,6 +59,24 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Meta Conversions API (Server-side)
+
+On successful webinar registration, the server triggers a Meta Conversions API "CompleteRegistration" event with hashed user data.
+
+Set these environment variables (e.g., in your deployment environment):
+
+```
+META_PIXEL_ID=<your_meta_pixel_id>
+META_ACCESS_TOKEN=<your_long_lived_or_system_user_token>
+# Optional for testing via Events Manager Test Events:
+META_TEST_EVENT_CODE=<your_test_event_code>
+```
+
+Notes:
+- Email and phone are normalized and SHA-256 hashed server-side.
+- Client IP and User-Agent are forwarded when available.
+- `custom_data.value` uses the selected `invest_intent` amount; currency is `USD`.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

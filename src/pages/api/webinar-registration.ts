@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
+import { createHash } from "crypto";
 
 export const POST: APIRoute = async ({ request }) => {
     const apiKey = import.meta.env.WEBINARKIT_API_KEY;
@@ -190,6 +191,73 @@ export const POST: APIRoute = async ({ request }) => {
                 JSON.stringify({ error: "Webinar registration failed", details: responseText }),
                 { status: response.status }
             );
+        }
+
+        // 3. Meta Conversions API (server-side) for CompleteRegistration
+        try {
+            const pixelId = import.meta.env.META_PIXEL_ID as string | undefined;
+            const accessToken = import.meta.env.META_ACCESS_TOKEN as string | undefined;
+            const testEventCode = import.meta.env.META_TEST_EVENT_CODE as string | undefined;
+
+            if (pixelId && accessToken) {
+                const normalizedEmail = (body.email || "").toString().trim().toLowerCase();
+                const normalizedPhone = (body.phone_number || "").toString().replace(/\D/g, "").replace(/^1/, "");
+                const emHashed = normalizedEmail ? createHash("sha256").update(normalizedEmail).digest("hex") : "";
+                const phHashed = normalizedPhone ? createHash("sha256").update(normalizedPhone).digest("hex") : "";
+
+                const xff = request.headers.get("x-forwarded-for") || "";
+                const clientIp = (xff.split(",")[0] || "").trim() || request.headers.get("cf-connecting-ip") || request.headers.get("x-real-ip") || "";
+
+                const investValue = Number(body.invest_intent) || 0;
+
+                const fbBody: Record<string, unknown> = {
+                    data: [
+                        {
+                            event_name: "CompleteRegistration",
+                            event_time: Math.floor(Date.now() / 1000),
+                            action_source: "website",
+                            event_source_url: referer || "",
+                            user_data: {
+                                ...(emHashed ? { em: [emHashed] } : {}),
+                                ...(phHashed ? { ph: [phHashed] } : {}),
+                                client_user_agent: ua,
+                                client_ip_address: clientIp
+                            },
+                            custom_data: {
+                                value: investValue,
+                                currency: "USD"
+                            }
+                        }
+                    ]
+                };
+
+                if (testEventCode) {
+                    (fbBody as any).test_event_code = testEventCode;
+                }
+
+                const fbRes = await fetch(`https://graph.facebook.com/v17.0/${pixelId}/events?access_token=${accessToken}`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(fbBody)
+                    }
+                );
+                const fbText = await fbRes.text();
+                if (!fbRes.ok) {
+                    console.warn("⚠️ Meta Conversions API error:", fbText);
+                } else {
+                    try {
+                        const parsed = JSON.parse(fbText);
+                        console.log("✅ Meta Conversions API response:", JSON.stringify(parsed, null, 2));
+                    } catch {
+                        console.log("✅ Meta Conversions API response:", fbText);
+                    }
+                }
+            } else {
+                console.warn("⚠️ META_PIXEL_ID or META_ACCESS_TOKEN not set. Skipping Meta Conversions API call.");
+            }
+        } catch (err) {
+            console.error("❌ Failed to send Meta Conversions API event:", err);
         }
 
         return new Response(

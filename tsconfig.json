@@ -2,5 +2,11 @@
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "strictNullChecks": false
-  }
+  },
+  "include": [
+    "src/env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.astro"
+  ]
 }
