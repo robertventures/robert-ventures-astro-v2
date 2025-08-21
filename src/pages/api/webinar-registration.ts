@@ -195,7 +195,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         // 3. Meta Conversions API (server-side) for CompleteRegistration
         try {
-            const pixelId = import.meta.env.META_PIXEL_ID as string | undefined;
+            const pixelId = "652212003052612"; // Public Pixel ID; safe to hardcode
             const accessToken = import.meta.env.META_ACCESS_TOKEN as string | undefined;
             const testEventCode = import.meta.env.META_TEST_EVENT_CODE as string | undefined;
 
