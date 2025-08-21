@@ -119,7 +119,7 @@ export const POST: APIRoute = async ({ request }) => {
                     phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
                     email: body.email,
                     source: utmCampaignFinal,
-                    timezone: body.user_timezone || "America/New_York",
+                    timezone: body.user_timezone || "Unknown",
                     customField
                 };
                 console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
