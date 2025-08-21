@@ -47,141 +47,125 @@ try {
         testimonials = approvedOnly.length > 0 ? approvedOnly : mapped;
     }
 } catch (error) {
-    console.error('Error fetching testimonials:', error);
     // Silently fail; frontend can handle empty list if needed
 }
 ---
 
+<!-- Splide.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
+
 <style>
+    /* Base styles */
     h2 {
         text-align: center;
         font-size: clamp(1.75rem, 8.2vw, 2.125rem);
         margin-bottom: 2rem;
     }
 
-    /* Reduce outer padding and allow overflows so shadows are not clipped */
-    .section-container { padding-inline: 0.25rem; overflow: visible; }
-    .section-content { overflow: visible; }
-
-    /* Slider Layout (no nav buttons) */
-    .testimonials-slider { position: relative; }
-
-    .slider-viewport {
-        overflow-x: auto;
-        overflow-y: visible; /* allow shadows to extend vertically */
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        /* Inner padding on small screens to prevent shadow clipping */
-        padding-inline: 1.25rem;
-        padding-block: 1rem;
-        scroll-padding-inline: 1.25rem; /* snap aligns accounting for padding */
-        cursor: default;
-        user-select: none;
-        touch-action: auto; /* allow both vertical page scroll and horizontal pan */
-        width: 100%;
-        /* no decorative fades; pure content */
+    /* Container styles - allow shadows to show */
+    .section-container { 
+        padding-inline: 0; /* No padding here to avoid shadow clipping */
+        overflow-x: hidden; /* Only hide horizontal page scroll */
+        overflow-y: visible;
     }
-    .slider-viewport::-webkit-scrollbar {
-        display: none;
+    .section-content { 
+        overflow: visible; /* Allow shadows to extend */
+        max-width: 100%; 
+        padding-inline: 1.5rem; /* Match standard horizontal padding */
+        box-sizing: border-box;
     }
-
-    .slider-track {
-        display: grid;
-        grid-auto-flow: column;
-        /* control gap consistently across breakpoints */
-        --card-gap: 1rem;
-        gap: var(--card-gap);
-        /* Mobile: 1 card with a peek of the next one */
-        grid-auto-columns: calc(100% - 4rem);
-        padding: 0.25rem;
-        margin: 0; /* reset UL defaults */
+    
+    /* Splide container */
+    .testimonials-slider {
+        position: relative;
+        overflow: visible; /* Allow shadows */
+    }
+    
+    .splide {
+        position: relative;
+        overflow: visible; /* Allow shadows */
+    }
+    
+    .splide__track {
+        overflow: visible;
+        padding: 1rem 0; /* Vertical padding only; horizontal via Splide padding option */
+    }
+    
+    .splide__list {
+        display: flex;
+        margin: 0;
+        padding: 0;
         list-style: none;
     }
+    
+    .splide__slide {
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+    
+    /* Hide Splide default UI elements */
+    .splide__arrows,
+    .splide__pagination {
+        display: none !important;
+    }
 
+    /* Card styles */
     .slide-card {
-        scroll-snap-align: start;
         background: #fff;
-        border-radius: 16px;
         border: 1px solid rgba(0, 0, 0, 0.06);
-        /* simpler, softer shadow */
+        border-radius: 16px;
         box-shadow: 0 8px 20px rgba(15, 18, 25, 0.08), 0 2px 6px rgba(15, 18, 25, 0.05);
         padding: clamp(1rem, 3.2vw, 1.5rem);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         min-height: 320px;
+        height: 100%;
+        width: 100%;
     }
 
-    /* Decorative quote icon using brand color */
     .quote-icon { color: #281480; width: clamp(24px, 4vw, 36px); height: auto; }
-
     .slide-text {
         font-size: clamp(1rem, 2.2vw, 1.125rem);
         line-height: 1.7;
         color: rgb(var(--gray-dark));
         margin: 0.75rem 0 1.25rem;
     }
+    .slide-footer { display: flex; align-items: center; gap: 0.75rem; }
 
-    .slide-footer {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .avatar {
+    /* Avatar styles */
+    .avatar, .avatar-fallback {
         width: 36px;
         height: 36px;
         border-radius: 999px;
-        object-fit: cover;
-        background: rgb(var(--gray-light));
         border: 2px solid #281480;
+        background: rgb(var(--gray-light));
     }
-
+    .avatar { object-fit: cover; }
     .avatar-fallback {
-        width: 36px;
-        height: 36px;
-        border-radius: 999px;
         display: grid;
         place-items: center;
-        background: rgb(var(--gray-light));
         color: #281480;
         font-weight: 700;
         font-family: "Satoshi", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        border: 2px solid #281480;
     }
 
     .name {
-        font-family:
-            "Satoshi",
-            system-ui,
-            -apple-system,
-            Segoe UI,
-            Roboto,
-            sans-serif;
+        font-family: "Satoshi", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
         font-weight: 700;
         font-size: 1rem;
         color: rgb(var(--black));
     }
 
-    /* Tablet: 2 full cards -> subtract one gap */
+    /* Responsive adjustments */
     @media (min-width: 640px) and (max-width: 1023.98px) {
-        .slider-track { grid-auto-columns: calc((100% - var(--card-gap)) / 2); }
-        .section-container { padding-inline: 1rem; }
-        .slider-viewport { padding-inline: 1rem; scroll-padding-inline: 1rem; }
+        .splide__track { padding: 1rem 1.5rem 1rem 2rem; } /* Proper spacing + shadow protection */
     }
 
-    /* Desktop: 3 cards, but wider per card */
     @media (min-width: 1024px) {
-        /* Exact 3 full cards; no peek */
-        .slider-track { --card-gap: 0.75rem; grid-auto-columns: calc((100% - (2 * var(--card-gap))) / 3 - 6px); padding: 0; margin: 0; }
-        .section-container { padding-inline: 2rem; }
-        /* Add viewport padding so card shadows aren’t clipped while keeping 3-up layout */
-        .slider-viewport { padding-inline: 1rem; scroll-padding-inline: 1rem; }
-        /* Slightly smaller text so cards feel more compact */
+        .splide__track { padding: 1rem 1.5rem 1rem 2rem; } /* Proper spacing + shadow protection */
         .slide-text { font-size: 0.9rem; }
-        /* Reasonable content width for three cards */
-        .section-content { max-width: 1100px; }
+        .section-content { max-width: 1200px; margin: 0 auto; }
     }
 </style>
 
@@ -189,115 +173,84 @@ try {
     <div class="section-container">
         <div class="section-content">
             <h2>Trusted By 50+ Investors</h2>
-            <!-- Slider root (no navigation controls) -->
-            <div
-                class="testimonials-slider"
-                id="testimonials-root"
-                aria-label="Testimonials"
-                role="region"
-            >
-                <div class="slider-viewport" id="slider-viewport">
-                    <ul class="slider-track">
-                        {testimonials.map((t) => (
-                            <li class="slide-card">
-                                <div>
-                                    <svg class="quote-icon" viewBox="0 0 607 439" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                        <path d="M261.776 0.949219V110.449H202.859C135.526 110.449 101.859 144.142 101.859 211.526V236.795H202.859V438.949H0.859375V203.103C0.859375 68.3339 76.6094 0.949219 202.859 0.949219H261.776ZM345.943 438.949V203.103C345.943 68.3339 421.693 0.949219 547.943 0.949219H606.859V110.449H547.943C480.609 110.449 446.943 144.142 446.943 211.526V236.795H547.943V438.949H345.943Z" fill="currentColor"></path>
-                                    </svg>
-                                    <p class="slide-text">{t.text}</p>
-                                </div>
-                                <div class="slide-footer">
-                                    {t.avatar ? (
-                                        <img 
-                                            class="avatar" 
-                                            src={t.avatar} 
-                                            alt={t.name} 
-                                            loading="lazy" 
-                                            decoding="async" 
-                                            fetchpriority="low" 
-                                            draggable="false"
-                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-                                        />
-                                    ) : null}
-                                    <div class="avatar-fallback" aria-hidden="true" style={t.avatar ? 'display: none;' : 'display: grid;'}>{getInitials(t.name || 'A')}</div>
+            <!-- Testimonials Slider -->
+            <div class="testimonials-slider">
+                <div class="splide" id="testimonials-slider" aria-label="Testimonials">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            {testimonials.map((t) => (
+                                <li class="splide__slide">
+                                    <div class="slide-card">
                                     <div>
-                                        <div class="name">{t.name || 'Anonymous'}</div>
+                                        <svg class="quote-icon" viewBox="0 0 607 439" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                            <path d="M261.776 0.949219V110.449H202.859C135.526 110.449 101.859 144.142 101.859 211.526V236.795H202.859V438.949H0.859375V203.103C0.859375 68.3339 76.6094 0.949219 202.859 0.949219H261.776ZM345.943 438.949V203.103C345.943 68.3339 421.693 0.949219 547.943 0.949219H606.859V110.449H547.943C480.609 110.449 446.943 144.142 446.943 211.526V236.795H547.943V438.949H345.943Z" fill="currentColor"></path>
+                                        </svg>
+                                        <p class="slide-text">{t.text}</p>
+                                    </div>
+                                    <div class="slide-footer">
+                                        {t.avatar ? (
+                                            <img 
+                                                class="avatar" 
+                                                src={t.avatar} 
+                                                alt={t.name} 
+                                                loading="lazy" 
+                                                decoding="async" 
+                                                fetchpriority="low" 
+                                                draggable="false"
+                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+                                            />
+                                        ) : null}
+                                        <div class="avatar-fallback" aria-hidden="true" style={t.avatar ? 'display: none;' : 'display: grid;'}>{getInitials(t.name || 'A')}</div>
+                                        <div>
+                                            <div class="name">{t.name || 'Anonymous'}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
                         ))}
                     </ul>
-
                 </div>
+            </div>
             </div>
         </div>
     </div>
 </section>
 
-<script>
-  // Enable drag-to-scroll for desktop users
-  (function () {
-    const viewport = document.getElementById('slider-viewport');
-    if (!viewport) return;
-    const isDesktopPointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (!isDesktopPointer) {
-      // On touch devices, rely on native horizontal pan (touch-action: auto)
-      return;
-    }
-    let isDown = false;
-    let startX = 0;
-    let scrollStart = 0;
+<!-- Splide.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
-    function onPointerDown(e) {
-      isDown = true;
-      startX = e.clientX;
-      scrollStart = viewport.scrollLeft;
-      if ('setPointerCapture' in viewport && e.pointerId != null) {
-        try { viewport.setPointerCapture(e.pointerId); } catch {}
-      }
-      e.preventDefault();
-      window.addEventListener('pointermove', onPointerMove, { passive: false });
-      window.addEventListener('pointerup', endDrag);
-      window.addEventListener('pointercancel', endDrag);
-    }
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    const splide = new Splide('#testimonials-slider', {
+      type: 'slide',
+      rewind: false,
+      pagination: false,
+      arrows: false,
+      drag: true,
+      snap: true,
+      focus: 0,
+      omitEnd: true,
+      gap: '1rem',
+      padding: { left: '0.5rem', right: '1.5rem' },
+      perPage: 3.1,
+      perMove: 1,
+      breakpoints: {
+        1023: {
+          perPage: 2.1,
+          perMove: 1,
+        },
+        639: {
+          perPage: 1.15,
+          perMove: 1,
+        },
+      },
+      speed: 600,
+      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+      flickPower: 600,
+      flickMaxPages: 1,
+      waitForTransition: false,
+    });
 
-    function onPointerMove(e) {
-      if (!isDown) return;
-      const dx = e.clientX - startX;
-      viewport.scrollLeft = scrollStart - dx;
-      e.preventDefault();
-    }
-
-    function endDrag() {
-      isDown = false;
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', endDrag);
-      window.removeEventListener('pointercancel', endDrag);
-    }
-    viewport.addEventListener('pointerdown', onPointerDown, { passive: false });
-    viewport.addEventListener('pointerleave', endDrag);
-
-    // Mouse fallback
-    viewport.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.clientX;
-      scrollStart = viewport.scrollLeft;
-      function onMouseMove(ev) {
-        if (!isDown) return;
-        const dx = ev.clientX - startX;
-        viewport.scrollLeft = scrollStart - dx;
-        ev.preventDefault();
-      }
-      function onMouseUp() {
-        isDown = false;
-        window.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('mouseup', onMouseUp);
-      }
-      window.addEventListener('mousemove', onMouseMove, { passive: false });
-      window.addEventListener('mouseup', onMouseUp);
-    }, { passive: false });
-
-    // Prevent native image drag interfering with scroll
-    viewport.addEventListener('dragstart', (e) => e.preventDefault());
-  })();
+    splide.mount();
+  });
 </script>
