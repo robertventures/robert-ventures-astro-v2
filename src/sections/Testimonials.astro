@@ -13,10 +13,10 @@ interface Testimonial {
 
 function mapSenjaToTestimonial(raw: any): Testimonial {
     return {
-        name: raw?.customer_name ?? "Anonymous",
-        avatar: raw?.customer_avatar ?? "",
-        text: raw?.text ?? "",
-        date: raw?.date ?? raw?.created_at ?? "",
+        name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+        avatar: raw?.customer_avatar ?? raw?.avatar ?? raw?.profile_picture ?? raw?.profile_pic ?? raw?.customer?.avatar ?? raw?.user?.avatar ?? "",
+        text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+        date: raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "",
     };
 }
 
@@ -34,10 +34,11 @@ try {
     const response = await fetch(apiUrl);
     if (response.ok) {
         const payload = await response.json();
+        
         const rawList = Array.isArray(payload)
             ? payload
-            : (payload?.testimonials ?? payload?.data ?? []);
-
+            : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+        
         const mapped = (rawList as any[]).map(mapSenjaToTestimonial);
         const approvedOnly = (rawList as any[])
             .filter((t) => t?.approved === true)
@@ -45,7 +46,8 @@ try {
 
         testimonials = approvedOnly.length > 0 ? approvedOnly : mapped;
     }
-} catch {
+} catch (error) {
+    console.error('Error fetching testimonials:', error);
     // Silently fail; frontend can handle empty list if needed
 }
 ---
@@ -206,10 +208,18 @@ try {
                                 </div>
                                 <div class="slide-footer">
                                     {t.avatar ? (
-                                        <img class="avatar" src={t.avatar} alt={t.name} loading="lazy" decoding="async" fetchpriority="low" draggable="false" />
-                                    ) : (
-                                        <div class="avatar-fallback" aria-hidden="true">{getInitials(t.name || 'A')}</div>
-                                    )}
+                                        <img 
+                                            class="avatar" 
+                                            src={t.avatar} 
+                                            alt={t.name} 
+                                            loading="lazy" 
+                                            decoding="async" 
+                                            fetchpriority="low" 
+                                            draggable="false"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+                                        />
+                                    ) : null}
+                                    <div class="avatar-fallback" aria-hidden="true" style={t.avatar ? 'display: none;' : 'display: grid;'}>{getInitials(t.name || 'A')}</div>
                                     <div>
                                         <div class="name">{t.name || 'Anonymous'}</div>
                                     </div>

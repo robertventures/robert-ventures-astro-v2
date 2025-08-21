@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
       });
     }
 
-    const response = await fetch('https://api.senja.io/v1/testimonials', {
+    const response = await fetch('https://api.senja.io/v1/testimonials?include=customer,avatar,profile_picture', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
