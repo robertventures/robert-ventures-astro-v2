@@ -768,7 +768,11 @@ const analyticsEvents = {
         user_ip: localStorage.getItem("userIP") || undefined,
         device_type: deviceType || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
-        webinar_variant: variant
+        webinar_variant: variant,
+        // Meta deduplication fields
+        event_id: generateEventId(),
+        fbp: getFbp(),
+        fbc: getFbc()
       };
 
       console.log("Payload being sent:", payload);
@@ -811,14 +815,16 @@ const analyticsEvents = {
         // Trigger analytics events
         utils.triggerEvent('webinar_registered', 'webinarRegistered');
 
-        // Fire Meta Pixel for all registrations (no single-fire safeguard)
+        // Fire Meta Pixel for all registrations with deduplication eventID
         try {
           (function(f,b,e,v,n,t,s){
             if ((f as any).fbq) return; n=(f as any).fbq=function(){ n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
             if (!(f as any)._fbq) (f as any)._fbq=n; n.push=n; (n as any).loaded=!0; (n as any).version='2.0'; (n as any).queue=[]; t=b.createElement(e); (t as any).async=!0; (t as any).src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
           })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
           (window as any).fbq('init', '652212003052612');
-          (window as any).fbq('track', 'CompleteRegistration');
+          // Reuse the exact same event_id as the server-side CAPI call
+          const eventId = (payload as any).event_id;
+          (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
         } catch {}
 
         window.location.href = "/questions";
@@ -848,5 +854,46 @@ const analyticsEvents = {
       timeZoneName: "short",
     } as Intl.DateTimeFormatOptions;
     return date.toLocaleString("en-US", options);
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Meta Pixel helpers for deduplication
+  // ────────────────────────────────────────────────────────────────────────────
+  function generateEventId() {
+    try {
+      const buf = new Uint32Array(2);
+      crypto.getRandomValues(buf);
+      return `rv_reg_${Date.now().toString(36)}_${buf[0].toString(36)}${buf[1].toString(36)}`;
+    } catch {
+      return `rv_reg_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    }
+  }
+
+  function getCookie(name) {
+    try {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    } catch {}
+    return undefined;
+  }
+
+  function getFbp() {
+    return getCookie('_fbp');
+  }
+
+  function getFbc() {
+    const fbcCookie = getCookie('_fbc');
+    if (fbcCookie) return fbcCookie;
+    try {
+      const url = new URL(window.location.href);
+      const fbclid = url.searchParams.get('fbclid');
+      if (fbclid) {
+        // Build fbc from fbclid if cookie is not yet set
+        const ts = Math.floor(Date.now() / 1000);
+        return `fb.1.${ts}.${fbclid}`;
+      }
+    } catch {}
+    return undefined;
   }
 </script>

@@ -204,9 +204,31 @@ export const POST: APIRoute = async ({ request }) => {
                 const normalizedPhone = (body.phone_number || "").toString().replace(/\D/g, "").replace(/^1/, "");
                 const emHashed = normalizedEmail ? createHash("sha256").update(normalizedEmail).digest("hex") : "";
                 const phHashed = normalizedPhone ? createHash("sha256").update(normalizedPhone).digest("hex") : "";
+                const externalIds: string[] = [];
+                if (normalizedEmail) {
+                    externalIds.push(createHash("sha256").update(normalizedEmail).digest("hex"));
+                }
+                if (ghlContactId) {
+                    externalIds.push(createHash("sha256").update(String(ghlContactId)).digest("hex"));
+                }
 
                 const xff = request.headers.get("x-forwarded-for") || "";
                 const clientIp = (xff.split(",")[0] || "").trim() || request.headers.get("cf-connecting-ip") || request.headers.get("x-real-ip") || "";
+
+                // Deduplication and click ids from client
+                const eventIdFromClient = (body.event_id || "").toString();
+                const fbpFromClient = (body.fbp || "").toString();
+                let fbcFromClient = (body.fbc || "").toString();
+                if (!fbcFromClient && referer) {
+                    try {
+                        const ref = new URL(referer);
+                        const fbclid = ref.searchParams.get("fbclid");
+                        if (fbclid) {
+                            const ts = Math.floor(Date.now() / 1000);
+                            fbcFromClient = `fb.1.${ts}.${fbclid}`;
+                        }
+                    } catch {}
+                }
 
                 const investValue = Number(body.invest_intent) || 0;
 
@@ -217,9 +239,13 @@ export const POST: APIRoute = async ({ request }) => {
                             event_time: Math.floor(Date.now() / 1000),
                             action_source: "website",
                             event_source_url: referer || "",
+                            ...(eventIdFromClient ? { event_id: eventIdFromClient } : {}),
                             user_data: {
                                 ...(emHashed ? { em: [emHashed] } : {}),
                                 ...(phHashed ? { ph: [phHashed] } : {}),
+                                ...(externalIds.length ? { external_id: externalIds } : {}),
+                                ...(fbpFromClient ? { fbp: fbpFromClient } : {}),
+                                ...(fbcFromClient ? { fbc: fbcFromClient } : {}),
                                 client_user_agent: ua,
                                 client_ip_address: clientIp
                             },
