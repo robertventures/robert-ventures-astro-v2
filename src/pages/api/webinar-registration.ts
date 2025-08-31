@@ -97,6 +97,24 @@ export const POST: APIRoute = async ({ request }) => {
                 const yyyy = userLocalTime.getFullYear();
                 const currentDate = `${mm}-${dd}-${yyyy}`;
                 // Only forward the main UTM fields if present (merged from body and referer)
+                // Compute the SELECTED SESSION date in MM-DD-YYYY (same format as signup date),
+                // using the user's timezone so both are comparable and distinct.
+                const selectedSessionDate = (() => {
+                    try {
+                        if (body?.date) {
+                            const selectedUTC = new Date(body.date);
+                            if (!isNaN(selectedUTC.getTime())) {
+                                const selectedLocal = new Date(selectedUTC.toLocaleString("en-US", { timeZone: userTimezone }));
+                                const smm = String(selectedLocal.getMonth() + 1).padStart(2, '0');
+                                const sdd = String(selectedLocal.getDate()).padStart(2, '0');
+                                const syyyy = selectedLocal.getFullYear();
+                                return `${smm}-${sdd}-${syyyy}`;
+                            }
+                        }
+                    } catch {}
+                    return undefined;
+                })();
+
                 let customField = {
                     invest_intent: body.invest_intent,
                     webinar_sign_up_date: body.webinar_sign_up_date,
@@ -108,7 +126,8 @@ export const POST: APIRoute = async ({ request }) => {
                     webinar_date: body.date,          // ISO string in UTC from frontend
                     webinar_full_date: body.fullDate,  // Human-readable with timezone from frontend
                     // Match GHL handler key
-                    webinar_date__time: body.fullDate
+                    webinar_date__time: body.fullDate,
+                    webinar_session_date: selectedSessionDate
                 };
                 for (const key of allowedUtms) {
                     if (utmMerged[key]) {
@@ -123,6 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
                     timezone: body.user_timezone || "Unknown",
                     customField
                 };
+                console.log("🧾 GHL customField being sent:", JSON.stringify(customField, null, 2));
                 console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
                 const ghlRes = await fetch("https://rest.gohighlevel.com/v1/contacts", {
                     method: "POST",
