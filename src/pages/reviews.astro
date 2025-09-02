@@ -8,43 +8,39 @@ const pageDescription =
     "Read authentic reviews from Robert Ventures investors. Discover real experiences, returns, and success stories from our community of satisfied investors.";
 ---
 
-<style></style>
+<style>
+    h1{
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    p{
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    @media only screen and (min-width: 1024px){
+        h1{
+            font-size: 3rem;
+        }
+        p{
+            margin-bottom: 4rem;
+        }
+    }
+</style>
 
 <html lang="en">
     <head>
         <BaseHead title={pageTitle} description={pageDescription} />
-
-        <!-- Structured data -->
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "Robert Ventures",
-                "url": "https://robertventures.com/",
-                "logo": "src/images/logos/rv-logo-vertical.svg",
-                "description": "Robert Ventures offers SEC-approved fixed-rate bonds with annual returns up to 10%, backed by diversified investments in real estate and digital assets.",
-                "telephone": "+1 302-404-6341",
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "+1 302-404-6341",
-                    "contactType": "customer service",
-                    "areaServed": "US",
-                    "availableLanguage": ["English"]
-                },
-                "sameAs": [
-                    "https://www.facebook.com/Robertventures",
-                    "https://twitter.com/RobertVentures_",
-                    "https://www.instagram.com/robert_ventures/",
-                    "https://www.youtube.com/@RobertVentures",
-                    "https://www.linkedin.com/company/robertventures"
-                ]
-            }
-        </script>
     </head>
     <body>
         <Header />
         <section>
             <div class="section-container">
+                <h1>Investors Reviews & Testimonials</h1>
+                <p>
+                    Discover real stories and feedback from investors who trust Robert Ventures.<br>
+                    Explore their experiences, results, and why they choose to invest with us.
+                </p>
                 <div
                     class="senja-embed"
                     data-id="6a1ec5a8-74d7-4174-9867-47016915b018"
