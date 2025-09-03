@@ -171,6 +171,34 @@ try {
         .slide-text { font-size: 0.9rem; }
         .section-content { max-width: 1200px; margin: 0 auto; }
     }
+
+    /* Reviews link styles */
+    .reviews-link-container {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .reviews-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "Satoshi", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #281480;
+        text-decoration: none;
+        padding: 0.6875rem 2rem;
+        border: 1px solid #281480;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .reviews-link:hover {
+        background-color: #281480;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 20, 128, 0.3);
+    }
 </style>
 
 <section>
@@ -215,6 +243,12 @@ try {
                     </ul>
                 </div>
             </div>
+
+            <!-- Link to Reviews Page -->
+            <div class="reviews-link-container">
+                <a href="/reviews" class="reviews-link">
+                    See All Reviews →
+                </a>
             </div>
         </div>
     </div>
