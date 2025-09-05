@@ -1,0 +1,140 @@
+---
+import Investing from "../images/svg/investing.svg";
+import Calendar from "../images/svg/calendar.svg";
+---
+
+<style>
+    .deck-iframe {
+        margin-bottom: 3rem;
+    }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    svg {
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    h2 {
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 8px;
+    }
+
+    h3 {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1;
+
+        margin-bottom: 12px;
+    }
+
+    p {
+        color: #2f2f2f;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%; /* 22.4px */
+
+        margin-bottom: 1.5rem;
+    }
+
+    a {
+        border-radius: 12px;
+        background: #ff592c;
+
+        display: flex;
+        padding: 15px 12px;
+        justify-content: center;
+
+        width: 100%;
+        color: #fff;
+        text-decoration: none;
+
+        font-size: 18px;
+
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .option-box a{
+            max-width: 300px;
+        }
+
+
+    }
+
+    @media only screen and (min-width: 1024px){
+        .options{
+            max-width: 1100px;
+
+            margin: 0 auto;
+
+            flex-direction: row;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="intro">
+            <h1>Thanks for joining our webinar!</h1>
+
+            <div
+                class="deck-iframe"
+                style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+     padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; overflow: hidden;
+     border-radius: 8px; will-change: transform;"
+            >
+                <iframe
+                    loading="lazy"
+                    style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+                    src="https://www.canva.com/design/DAGwbwXMvVc/dRrKr0XviTntuk2OztAygQ/view?embed"
+                    allowfullscreen="allowfullscreen"
+                    allow="fullscreen"
+                >
+                </iframe>
+            </div>
+
+            <div class="options">
+                <div class="option-box">
+                    <h2>
+                        <Investing /> Invest in our bonds
+                    </h2>
+                    <h3>Turn your interest into action.</h3>
+
+                    <p>
+                        Complete the quick application, choose your bond term,
+                        and start earning monthly distributions—or compound for
+                        long-term growth.
+                    </p>
+
+                    <a href="https://invest.robertventures.com/offering/rob10/details">Invest Now</a>
+                </div>
+                <div class="option-box">
+                    <h2>
+                        <Calendar /> Schedule an Investor Relations Call
+                    </h2>
+                    <h3>Get your questions answered directly.</h3>
+
+                    <p>
+                        Our Investor Relations team will walk you through the
+                        details and help you decide the best investment strategy
+                        for your goals.
+                    </p>
+
+                    <a href="/calendar">Schedule Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

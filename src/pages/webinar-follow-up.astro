@@ -1,0 +1,26 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+import HeroboxWebinarFollowUp from "../sections/HeroboxWebinarFollowUp.astro";
+import Literature from "../sections/Literature.astro";
+import Testimonials from "../sections/Testimonials.astro";
+
+const pageTitle = "Robert Ventures: Webinar Follow Up";
+const pageDescription = "Webinar Follow Up";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+    </head>
+    <body>
+        <Header />
+        <HeroboxWebinarFollowUp />
+        <Literature />
+        <Testimonials />
+        <FooterNew />
+    </body>
+</html>
+---
