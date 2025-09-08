@@ -57,7 +57,7 @@ export const GET: APIRoute = async () => {
     );
   }
 
-  console.log("🔗 Fetching webinar dates from WebinarKit API...");
+  
 
   try {
     // ========================================
@@ -76,7 +76,7 @@ export const GET: APIRoute = async () => {
       redirect: "follow" as RequestRedirect,
     });
 
-    console.log("📥 WebinarKit API response status:", response.status);
+    
 
     // ========================================
     // ERROR HANDLING
@@ -115,7 +115,7 @@ export const GET: APIRoute = async () => {
     // USED BY: Extracting webinar date/time information
     const data = await response.json();
 
-    console.log("✅ Successfully fetched webinar dates");
+    
 
     // Return the webinar data to the frontend
     // USED BY: Frontend components for displaying available sessions
