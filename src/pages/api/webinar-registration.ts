@@ -135,6 +135,40 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             const utmCampaignFinal = body.utm_campaign || utmMerged.utm_campaign || "Webinar";
             const deviceFinal = body.device_type || serverDevice || "unknown";
 
+            // Lookup geolocation from user's IP for GHL address custom fields
+            // Source: ip-api.com JSON endpoint (no key, HTTP only)
+            // Docs: http://ip-api.com/docs/api:json
+            const xffForGeo = request.headers.get("x-forwarded-for") || "";
+            const headerIpForGeo = (xffForGeo.split(",")[0] || "").trim() ||
+                request.headers.get("cf-connecting-ip") ||
+                request.headers.get("x-real-ip") || "";
+            const ipForGeo = (body.user_ip && body.user_ip !== "unknown") ? body.user_ip : (headerIpForGeo || "");
+
+            let geoRegionName: string | undefined;
+            let geoCity: string | undefined;
+            let geoZip: string | undefined;
+
+            try {
+                if (ipForGeo) {
+                    const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,regionName,city,zip`);
+                    if (geoRes.ok) {
+                        const geo = await geoRes.json();
+                        if (geo && geo.status === "success") {
+                            geoRegionName = typeof geo.regionName === "string" && geo.regionName ? geo.regionName : undefined;
+                            geoCity = typeof geo.city === "string" && geo.city ? geo.city : undefined;
+                            geoZip = typeof geo.zip === "string" && geo.zip ? geo.zip : undefined;
+                            console.log("📍 IP geolocation:", { ipForGeo, geoRegionName, geoCity, geoZip });
+                        } else {
+                            console.warn("⚠️ IP geolocation lookup failed:", geo?.message || "unknown error");
+                        }
+                    } else {
+                        console.warn("⚠️ IP geolocation HTTP error:", geoRes.status);
+                    }
+                }
+            } catch (e) {
+                console.warn("⚠️ IP geolocation lookup threw:", e);
+            }
+
             // Split full name into first and last name components
             // USED BY: GoHighLevel (not used), WebinarKit (firstName, lastName), Meta (not used)
             const { firstName, lastName } = splitFullName(body.name);
@@ -213,6 +247,10 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         email: body.email,
                         source: utmCampaignFinal,
                         timezone: body.user_timezone || "Unknown",
+                        // Default contact address fields (not customField)
+                        ...(geoRegionName ? { state: geoRegionName } : {}),
+                        ...(geoCity ? { city: geoCity } : {}),
+                        ...(geoZip ? { postalCode: geoZip } : {}),
                         customField
                     };
 
