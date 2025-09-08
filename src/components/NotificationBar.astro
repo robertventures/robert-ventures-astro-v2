@@ -115,13 +115,25 @@
         { name: "Thomas B.", location: "Portland, OR" }
     ];
 
+    // Timing constants
+    const INITIAL_DELAY_MS = 3000; // first show
+    const SHOW_DURATION_MS = 3000; // visible
+    const GAP_DURATION_MS = 5000;  // gap between items
+    const RESUME_DELAY_MS = 3000;  // resume after tab visible or restart
+    const RESTART_AFTER_FORM_BLUR_MS = 2000; // after leaving a form
+
     let currentUserIndex = 0;
-    let notificationTimeout;
-    let notificationsActive = true;
-    let formInteractionTimeout;
+    let notificationsActive = true; // overall enable/disable flag
+    let scheduledTaskId = null; // single scheduler for all phases
+    let formInteractionTimeout = null;
+    let isVisible = false; // current DOM visibility state of the bar
+
+    function getNotificationElement() {
+        return document.querySelector('.notification');
+    }
 
     function updateNotification(user) {
-        const notification = document.querySelector('.notification');
+        const notification = getNotificationElement();
         if (!notification) return;
 
         const nameElement = notification.querySelector('.notification-name');
@@ -133,115 +145,119 @@
         }
     }
 
-    function showNotification() {
-        const notification = document.querySelector('.notification');
-        if (!notification || !notificationsActive) return;
+    function scheduleNext(delayMs, task) {
+        if (scheduledTaskId) {
+            clearTimeout(scheduledTaskId);
+        }
+        scheduledTaskId = setTimeout(() => {
+            scheduledTaskId = null;
+            task();
+        }, delayMs);
+    }
 
-        // Update text while notification is hidden
+    function showNextNotification() {
+        if (!notificationsActive || document.hidden) return;
+        const notification = getNotificationElement();
+        if (!notification) return;
+
         const user = sampleUsers[currentUserIndex];
         updateNotification(user);
 
-        // Show notification
         notification.classList.add('show');
         notification.classList.remove('hide');
+        isVisible = true;
 
-        // Hide after 3 seconds
-        setTimeout(() => {
-            notification.classList.add('hide');
-            notification.classList.remove('show');
-            // Show next notification after 5 seconds
-            notificationTimeout = setTimeout(() => {
-                if (notificationsActive) {
-                    currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
-                    showNotification();
-                }
-            }, 5000);
-        }, 3000);
+        scheduleNext(SHOW_DURATION_MS, hideNotification);
     }
 
-    function startNotifications() {
-        // Show first notification after 3 seconds
-        setTimeout(() => {
-            showNotification();
-        }, 3000);
-    }
-
-    // Stop notifications when user interacts with forms
-    function stopNotifications() {
-        notificationsActive = false;
-        if (notificationTimeout) {
-            clearTimeout(notificationTimeout);
-        }
-        const notification = document.querySelector('.notification');
+    function hideNotification() {
+        const notification = getNotificationElement();
         if (notification) {
             notification.classList.add('hide');
             notification.classList.remove('show');
         }
+        isVisible = false;
+
+        if (!notificationsActive || document.hidden) return;
+        currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
+        scheduleNext(GAP_DURATION_MS, maybeShowIfActive);
     }
 
-    // Restart notifications when user leaves forms
+    function maybeShowIfActive() {
+        if (!notificationsActive || document.hidden) return;
+        showNextNotification();
+    }
+
+    function startNotifications() {
+        notificationsActive = true;
+        scheduleNext(INITIAL_DELAY_MS, maybeShowIfActive);
+    }
+
+    function stopNotifications() {
+        notificationsActive = false;
+        if (scheduledTaskId) {
+            clearTimeout(scheduledTaskId);
+            scheduledTaskId = null;
+        }
+        const notification = getNotificationElement();
+        if (notification) {
+            notification.classList.add('hide');
+            notification.classList.remove('show');
+        }
+        isVisible = false;
+    }
+
     function restartNotifications() {
-        if (!notificationsActive) {
-            notificationsActive = true;
-            // Wait 3 seconds before resuming notifications
-            setTimeout(() => {
-                if (notificationsActive) {
-                    showNotification();
-                }
-            }, 3000);
+        if (notificationsActive) return; // already running
+        notificationsActive = true;
+        if (!document.hidden) {
+            scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
         }
     }
 
-    // Start notifications when page loads
     document.addEventListener('DOMContentLoaded', () => {
         startNotifications();
-        
+
         // Monitor form interactions
-        const forms = document.querySelectorAll('form, input, textarea, select');
-        forms.forEach(form => {
-            form.addEventListener('focus', () => {
+        const fields = document.querySelectorAll('form, input, textarea, select, button');
+        fields.forEach(el => {
+            el.addEventListener('focus', () => {
                 stopNotifications();
-                // Clear any existing timeout
-                if (formInteractionTimeout) {
-                    clearTimeout(formInteractionTimeout);
-                }
+                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
             });
-            form.addEventListener('input', () => {
+            el.addEventListener('input', () => {
                 stopNotifications();
-                // Clear any existing timeout
-                if (formInteractionTimeout) {
-                    clearTimeout(formInteractionTimeout);
-                }
+                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
             });
-            form.addEventListener('change', () => {
+            el.addEventListener('change', () => {
                 stopNotifications();
-                // Clear any existing timeout
-                if (formInteractionTimeout) {
-                    clearTimeout(formInteractionTimeout);
-                }
+                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
             });
-            form.addEventListener('blur', () => {
-                // Restart notifications after 2 seconds of leaving the form
-                if (formInteractionTimeout) {
-                    clearTimeout(formInteractionTimeout);
-                }
+            el.addEventListener('blur', () => {
+                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
                 formInteractionTimeout = setTimeout(() => {
                     restartNotifications();
-                }, 2000);
+                }, RESTART_AFTER_FORM_BLUR_MS);
             });
         });
     });
 
-    // Clean up timeout when page is hidden
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            if (notificationTimeout) {
-                clearTimeout(notificationTimeout);
+            if (scheduledTaskId) {
+                clearTimeout(scheduledTaskId);
+                scheduledTaskId = null;
             }
+            const notification = getNotificationElement();
+            if (notification) {
+                notification.classList.add('hide');
+                notification.classList.remove('show');
+            }
+            isVisible = false;
         } else {
             if (notificationsActive) {
-                startNotifications();
+                scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
             }
         }
     });
-</script> 
+</script>

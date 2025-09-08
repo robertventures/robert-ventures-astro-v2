@@ -116,7 +116,6 @@ export const GET: APIRoute = async () => {
     const data = await response.json();
 
     console.log("✅ Successfully fetched webinar dates");
-    console.log("📊 Webinar data received:", JSON.stringify(data, null, 2));
 
     // Return the webinar data to the frontend
     // USED BY: Frontend components for displaying available sessions
