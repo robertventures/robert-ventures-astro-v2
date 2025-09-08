@@ -801,6 +801,14 @@ const analyticsEvents = {
           localStorage.setItem("userEmail", typeof userEmail === "string" ? userEmail : "");
         }
         
+        // Identify the user in Microsoft Clarity using their email after successful registration
+        try {
+          const emailStr = typeof userEmail === "string" ? userEmail : "";
+          if (emailStr && typeof (window as any).clarity === 'function') {
+            (window as any).clarity('identify', emailStr);
+          }
+        } catch {}
+        
         // Store full session details for calendar
         localStorage.setItem("webinarSession", JSON.stringify({
           title: sessionDetails.title || "Robert Ventures Webinar",
