@@ -35,6 +35,77 @@ import { createHash } from "crypto";
 // ========================================
 
 /**
+ * Auto-corrects common email typos to improve user experience
+ * Fixes domain typos without requiring user intervention
+ */
+function autoCorrectEmail(email: string): { correctedEmail: string; wasCorrected: boolean; originalDomain?: string; correctedDomain?: string } {
+    if (!email || typeof email !== 'string') {
+        return { correctedEmail: email, wasCorrected: false };
+    }
+
+    const trimmedEmail = email.trim().toLowerCase();
+    const [localPart, domain] = trimmedEmail.split('@');
+    
+    if (!domain) {
+        return { correctedEmail: email, wasCorrected: false };
+    }
+
+    // Common email domain typos and their corrections
+    const domainCorrections: Record<string, string> = {
+        // Gmail typos
+        'gmail.con': 'gmail.com',
+        'gmail.co': 'gmail.com',
+        'gmail.cm': 'gmail.com',
+        'gmail.coom': 'gmail.com',
+        'gmial.com': 'gmail.com',
+        'gmai.com': 'gmail.com',
+        'gmail.om': 'gmail.com',
+        // Yahoo typos
+        'yahoo.co': 'yahoo.com',
+        'yahoo.cm': 'yahoo.com',
+        'yahoo.con': 'yahoo.com',
+        'hahoo.com': 'yahoo.com',
+        'yahoo.om': 'yahoo.com',
+        'yaho.com': 'yahoo.com',
+        
+        // Hotmail typos
+        'hotmail.co': 'hotmail.com',
+        'hotmail.con': 'hotmail.com',
+        'hotmail.cm': 'hotmail.com',
+        'hotmai.com': 'hotmail.com',
+        'hotmail.om': 'hotmail.com',
+        
+        // Outlook typos
+        'outlook.co': 'outlook.com',
+        'outlook.con': 'outlook.com',
+        'outlook.cm': 'outlook.com',
+        'outloo.com': 'outlook.com',
+        'outlook.om': 'outlook.com',
+        
+        // Other common domains
+        'icloud.co': 'icloud.com',
+        'icloud.con': 'icloud.com',
+        'aol.co': 'aol.com',
+        'aol.con': 'aol.com',
+        'live.co': 'live.com',
+        'live.con': 'live.com'
+    };
+
+    const correctedDomain = domainCorrections[domain];
+    if (correctedDomain) {
+        const correctedEmail = `${localPart}@${correctedDomain}`;
+        return {
+            correctedEmail,
+            wasCorrected: true,
+            originalDomain: domain,
+            correctedDomain: correctedDomain
+        };
+    }
+
+    return { correctedEmail: email, wasCorrected: false };
+}
+
+/**
  * Splits a full name into first and last name components
  * Handles various name formats gracefully
  */
@@ -167,6 +238,21 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 }
             } catch (e) {
                 console.warn("⚠️ IP geolocation lookup threw:", e);
+            }
+
+            // Auto-correct email typos to improve user experience
+            // USED BY: All services - ensures correct email delivery
+            const emailCorrection = autoCorrectEmail(body.email);
+            const correctedEmail = emailCorrection.correctedEmail;
+            
+            if (emailCorrection.wasCorrected) {
+                console.log("📧 Email auto-corrected:", {
+                    original: body.email,
+                    corrected: correctedEmail,
+                    domainFixed: `${emailCorrection.originalDomain} → ${emailCorrection.correctedDomain}`
+                });
+                // Update the email in the body for all subsequent processing
+                body.email = correctedEmail;
             }
 
             // Split full name into first and last name components
