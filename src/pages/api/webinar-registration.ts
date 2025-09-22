@@ -167,25 +167,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             let refUrl: URL | null = null;
             try { refUrl = referer ? new URL(referer) : null; } catch {}
 
-            const allowedUtms = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id'];
-            const utmMerged: Record<string, string> = {};
-
-            // Merge UTM parameters from request body first
-            if (body.utm && typeof body.utm === 'object') {
-                for (const key of allowedUtms) {
-                    if (body.utm[key]) utmMerged[key] = body.utm[key];
-                }
-            }
-
-            // Fallback to UTM parameters from referer URL if not provided in body
-            if (refUrl) {
-                for (const key of allowedUtms) {
-                    if (!utmMerged[key]) {
-                        const v = refUrl.searchParams.get(key);
-                        if (v) utmMerged[key] = v;
-                    }
-                }
-            }
+            // UTM values are read inline where needed (from body first, then referer query)
 
             // Detect device type from user agent as fallback
             // USED BY: GoHighLevel (custom field), WebinarKit (not used), Meta (user agent data)
@@ -203,7 +185,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             const webinarTest = body.webinar_test || 'unknown';
             const variantFromRef = (refUrl?.pathname || "").includes("webinar-2") ? "v1.1" : "v1.0";
             const webinarVariant = body.webinar_variant || variantFromRef || 'unknown';
-            const utmCampaignFinal = body.utm_campaign || utmMerged.utm_campaign || "Webinar";
+            const utmCampaignFinal = body.utm_campaign
+                || (body?.utm && typeof body.utm === 'object' ? body.utm.utm_campaign : undefined)
+                || "Webinar";
             const deviceFinal = body.device_type || serverDevice || "unknown";
 
             // Lookup geolocation from user's IP for GHL address custom fields
@@ -295,7 +279,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
 
                     // Prepare custom fields for GoHighLevel contact (CRM segmentation and analytics)
                     // USED BY: GoHighLevel only - these fields help segment contacts for sales follow-up
-                    let customField = {
+                    let customField: Record<string, any> = {
                         // Investment intent amount for lead qualification
                         invest_intent: body.invest_intent,
                         // Original signup date from frontend
@@ -315,16 +299,15 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         // Duplicate field to match GHL handler expectations
                         webinar_date__time: body.fullDate,
                         // Selected session date formatted in user's timezone
-                        webinar_session_date: selectedSessionDate
+                        webinar_session_date: selectedSessionDate,
+                        // UTM parameters for marketing attribution (always send with defaults)
+                        utm_source: (body?.utm?.utm_source ?? "direct"),
+                        utm_medium: (body?.utm?.utm_medium ?? "none"),
+                        utm_campaign: (body?.utm?.utm_campaign ?? (body?.utm_campaign ?? "none")),
+                        utm_content: (body?.utm?.utm_content ?? "none"),
+                        utm_term: (body?.utm?.utm_term ?? "none"),
+                        utm_id: (body?.utm?.utm_id ?? "none")
                     };
-
-                    // Add UTM parameters to GoHighLevel custom fields for marketing attribution
-                    // USED BY: GoHighLevel only - tracks marketing source and campaign performance
-                    for (const key of allowedUtms) {
-                        if (utmMerged[key]) {
-                            customField[key] = utmMerged[key];
-                        }
-                    }
 
                     // Prepare the complete payload for GoHighLevel API
                     const ghlPayload = {
