@@ -38,8 +38,9 @@ import DualCTA from "../components/DualCTA.astro";
         margin: 0 auto;
         margin-bottom: 2rem;
 
-        max-width: 300px;
-        max-height: 96px;
+        max-width: 250px;
+        height: auto;
+        object-fit: contain;
     }
 
     .info p {
@@ -65,7 +66,7 @@ import DualCTA from "../components/DualCTA.astro";
         <div class="section-content">
             <h2>Our Experienced Team</h2>
             <div class="info">
-                <Image src={team} alt="herobox" width={600} height={192} />
+                <Image src={team} alt="herobox" width={464} />
 
                 <p>
                     At Robert Ventures, our mission is to leverage Joe's decades
