@@ -5,7 +5,7 @@ import usFlag from "../images/usflag.png";
 
 // Component configuration
 const formConfig = {
-  maxSessions: 3,
+  maxSessions: 2,
   defaultTimezone: "America/New_York",
   estOffset: -5
 };
@@ -464,8 +464,8 @@ const analyticsEvents = {
 
     selectEl.innerHTML = '<option value="" disabled selected>Select an Upcoming Session</option>';
     
-    // Only show the next 3 sessions
-    sessionsWithDates.slice(0, 3).forEach((item) => {
+    // Only show the next 2 sessions
+    sessionsWithDates.slice(0, 2).forEach((item) => {
       const { session, nextDate } = item;
       const details = JSON.parse(session.id);
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
