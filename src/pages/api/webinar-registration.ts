@@ -16,7 +16,7 @@
  * 3. META CONVERSIONS API (Facebook Advertising)
  *    - Tracks CompleteRegistration events for ad optimization
  *    - Uses privacy-compliant hashed user identifiers
- *    - Includes investment intent value for conversion tracking
+ *    - Includes investment intent as predicted_ltv for lead quality scoring
  *
  * Data Flow:
  * Input → Process Data → Send to All 3 Services → Return Success Response
@@ -462,8 +462,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         } catch {}
                     }
 
-                    // Prepare investment value for Meta conversion tracking
-                    // USED BY: Meta only - tracks monetary value of the registration event
+                    // Prepare investment intent as predicted LTV for Meta audience building
+                    // USED BY: Meta only - tracks lead quality without counting as revenue
                     const investValue = Number(body.invest_intent) || 0;
 
                     // Construct Meta Conversions API payload for CompleteRegistration event
@@ -500,9 +500,10 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                                 },
                                 // Custom data for the conversion event
                                 custom_data: {
-                                    // Investment intent value for conversion value tracking
-                                    value: investValue,
-                                    currency: "USD"
+                                    // Investment intent as predicted lifetime value (not actual revenue)
+                                    predicted_ltv: investValue,
+                                    currency: "USD",
+                                    content_type: "webinar_registration"
                                 }
                             }
                         ]
