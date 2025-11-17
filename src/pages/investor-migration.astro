@@ -1,0 +1,345 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+import Opener from "../images/svg/opener.svg";
+
+const pageTitle = "Investor Portal Migration | Robert Ventures";
+const pageDescription =
+    "Important information about the migration from Wealthblock to our new InvestorDesk portal. Access will be available soon.";
+
+const faqs = [
+    {
+        question: "What happened to my Wealthblock access?",
+        answer: `We have disconnected from Wealthblock as part of our migration to a better investor portal solution. This is a planned transition to improve your investment management experience with enhanced features and better support.`,
+    },
+    {
+        question: "When will InvestorDesk be available?",
+        answer: `Our new InvestorDesk portal will be available in approximately 2 weeks. We are working diligently to ensure a smooth transition and will notify all investors via email as soon as the portal is ready for access.`,
+    },
+    {
+        question: "Will my investment information transfer automatically?",
+        answer: `Yes, all your investment information, including your portfolio details, transaction history, and account information, will be automatically transferred to the new InvestorDesk platform. You will not lose any data during this migration.`,
+    },
+    {
+        question: "How will I access the new portal?",
+        answer: `Once InvestorDesk is available, you will receive an email with detailed instructions on how to access your account, including login credentials and a link to the new portal. The process will be simple and straightforward.`,
+    },
+    {
+        question: "What if I have urgent questions or need support?",
+        answer: `Our team is here to help during this transition. If you have urgent questions or concerns, please book a call with our team through our calendar system, or contact us directly. We appreciate your patience as we work to improve your investor experience.`,
+    },
+];
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+    </head>
+    <body>
+        <Header />
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="section-container">
+                <div class="section-content">
+                    <h1>Investor Portal Migration</h1>
+                    <p class="main-message">
+                        We're upgrading to a better investor experience with
+                        InvestorDesk.
+                    </p>
+                    <p class="timeline-text">Available in</p>
+                    <p class="timeline-highlight">2 Weeks</p>
+                    <p class="sub-message">
+                        Our team is working to migrate from Wealthblock to our
+                        new InvestorDesk portal. You'll receive an email with
+                        access instructions as soon as it's ready.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="section-container">
+                <div class="section-content">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faqs">
+                        {
+                            faqs.map((faq, index) => (
+                                <div class="faq-container">
+                                    <button
+                                        class="accordion"
+                                        type="button"
+                                        aria-expanded="false"
+                                        aria-controls={`faq-panel-${index}`}
+                                        id={`faq-button-${index}`}
+                                    >
+                                        {faq.question}
+                                        <Opener />
+                                    </button>
+                                    <div
+                                        class="panel"
+                                        id={`faq-panel-${index}`}
+                                        role="region"
+                                        aria-labelledby={`faq-button-${index}`}
+                                    >
+                                        <p>{faq.answer}</p>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <div class="contact-support">
+                        <p>Need immediate assistance?</p>
+                        <a href="/calendar">Book a call with our team</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <FooterNew />
+    </body>
+</html>
+
+<style>
+    /* Hero Section */
+    .hero-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-section .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .hero-section .section-content {
+        max-width: 640px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h1 {
+        color: #281480;
+        text-align: center;
+        font-size: 2.5625rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+    }
+
+    .main-message {
+        color: #505050;
+        text-align: center;
+        font-family: "Inter";
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 150%;
+        margin-bottom: 2rem;
+    }
+
+    .timeline-text {
+        color: #505050;
+        text-align: center;
+        font-family: "Inter";
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 150%;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-highlight {
+        font-family: "Satoshi", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 100%;
+        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 2rem;
+    }
+
+    .sub-message {
+        color: #505050;
+        text-align: center;
+        font-family: "Inter";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 150%;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .faq-section .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+    }
+
+    .faq-section .section-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        color: #281480;
+        text-align: center;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+    }
+
+    .faqs {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .accordion {
+        background-color: #ffffff;
+        cursor: pointer;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: background-color 0.4s;
+        padding-bottom: 1rem;
+    }
+
+    button.accordion {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 160%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    button.accordion svg {
+        flex-shrink: 0;
+    }
+
+    .panel {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        background-color: white;
+    }
+
+    .panel p {
+        color: #1d1d1f;
+        font-family: "Inter";
+        font-size: 0.85rem;
+        font-weight: 500;
+        line-height: 160%;
+        padding-bottom: 1rem;
+    }
+
+    .faq-container {
+        border-bottom: 1px solid #afb5bc;
+    }
+
+    .contact-support {
+        text-align: center;
+    }
+
+    .contact-support p {
+        color: #505050;
+        font-family: "Inter";
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 160%;
+        margin-bottom: 0.75rem;
+    }
+
+    .contact-support a {
+        color: #396afb;
+        font-family: Inter;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 100%;
+        text-decoration: none;
+    }
+
+    .contact-support a:hover {
+        text-decoration: underline;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .hero-section {
+            padding: 0 2rem;
+        }
+
+        .faq-section {
+            padding: 0 2rem;
+        }
+    }
+
+    @media only screen and (min-width: 990px) {
+        h1 {
+            font-size: 3.25rem;
+        }
+
+        .timeline-highlight {
+            font-size: 3.5rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector(".faqs");
+        if (!container) return;
+
+        container.addEventListener("click", function (event) {
+            const target = event.target;
+            const button =
+                target instanceof Element
+                    ? target.closest("button.accordion")
+                    : null;
+            if (!button || !container.contains(button)) return;
+
+            const allButtons = container.querySelectorAll("button.accordion");
+            const allPanels =
+                container.querySelectorAll<HTMLElement>(".panel");
+
+            allButtons.forEach((btn) => {
+                if (btn !== button) {
+                    btn.classList.remove("active");
+                    btn.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            allPanels.forEach((panel) => {
+                if (panel.previousElementSibling !== button) {
+                    panel.style.maxHeight = null;
+                }
+            });
+
+            const isOpen = button.classList.toggle("active");
+            button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+            const panel = button.nextElementSibling as HTMLElement | null;
+            if (!panel) return;
+            panel.style.maxHeight = isOpen ? panel.scrollHeight + "px" : null;
+        });
+    });
+</script>
+
