@@ -1,8 +1,9 @@
 ---
-import CreateAccountImg from '../images/create-account.svg';
-import ChooseTermsImg from '../images/choose-terms.svg';
-import TrackProgressImg from '../images/track-progress.svg';
-import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
+import { Image } from 'astro:assets';
+import createAccountImg from '../images/create-account.png';
+import chooseTermsImg from '../images/choose-terms.png';
+import trackProgressImg from '../images/track-progress.png';
+import withdrawEarningsImg from '../images/withdraw-earnings.png';
 ---
 
 <style>
@@ -94,13 +95,6 @@ import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
         width: 100%;
         max-width: 326px;
         height: auto;
-        max-height: 140px;
-    }
-
-    .step-image svg {
-        width: 100%;
-        height: auto;
-        max-width: 326px;
         max-height: 140px;
     }
 
@@ -214,9 +208,7 @@ import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
             <div class="content-block">
                 <p class="step-label">Step One</p>
                 <h4 class="step-title">Create Account</h4>
-                <div class="step-image">
-                    <CreateAccountImg />
-                </div>
+                <Image src={createAccountImg} alt="Create Account" class="step-image" />
                 <p class="step-description">
                     Takes less than 5 minutes to complete.
                 </p>
@@ -225,9 +217,7 @@ import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
             <div class="content-block">
                 <p class="step-label">Step Two</p>
                 <h4 class="step-title">Choose Terms</h4>
-                <div class="step-image">
-                    <ChooseTermsImg />
-                </div>
+                <Image src={chooseTermsImg} alt="Choose Terms" class="step-image" />
                 <p class="step-description">
                     Select your preferred investment option.
                 </p>
@@ -236,9 +226,7 @@ import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
             <div class="content-block">
                 <p class="step-label">Step Three</p>
                 <h4 class="step-title">Track Progress</h4>
-                <div class="step-image">
-                    <TrackProgressImg />
-                </div>
+                <Image src={trackProgressImg} alt="Track Progress" class="step-image" />
                 <p class="step-description">
                     Track and manage your investment progress.
                 </p>
@@ -247,9 +235,7 @@ import WithdrawEarningsImg from '../images/withdraw-earnings.svg';
             <div class="content-block">
                 <p class="step-label">Step Four</p>
                 <h4 class="step-title">Withdraw Earnings</h4>
-                <div class="step-image">
-                    <WithdrawEarningsImg />
-                </div>
+                <Image src={withdrawEarningsImg} alt="Withdraw Earnings" class="step-image" />
                 <p class="step-description">
                     Earnings are directly connected to your bank.
                 </p>

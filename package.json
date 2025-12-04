@@ -20,5 +20,8 @@
     "dotenv": "^16.4.7",
     "gsap": "^3.13.0",
     "untun": "^0.1.3"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }
