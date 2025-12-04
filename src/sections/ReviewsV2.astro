@@ -23,11 +23,72 @@
         font-family: 'Roboto Serif', serif;
         font-size: 32px;
         font-weight: 500;
-        margin: 0;
+        margin: 0 0 32px 0;
         line-height: 125%;
         text-align: left;
         color: #152429;
         font-variant-numeric: lining-nums;
+    }
+
+    .reviews-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .review-card {
+        background: linear-gradient(to bottom, #152429, #30414D);
+        border-radius: 8px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .quote {
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        font-style: italic;
+        color: #E1EEEA;
+        line-height: 150%;
+        margin: 0;
+    }
+
+    .reviewer-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .reviewer-image {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .reviewer-name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        color: #E1EEEA;
+        margin: 0;
+        line-height: 100%;
+    }
+
+    .stars {
+        display: flex;
+        gap: 2px;
+        margin-left: auto;
+        background: #30414D;
+        padding: 8px 12px;
+        border-radius: 20px;
+    }
+
+    .star {
+        color: #FACC15;
+        font-size: 16px;
     }
 
     @media only screen and (min-width: 600px) and (max-width: 1135px) {
@@ -37,6 +98,15 @@
 
         h3 {
             font-size: 40px;
+        }
+
+        .reviews-grid {
+            flex-direction: row;
+            gap: 16px;
+        }
+
+        .review-card {
+            flex: 1;
         }
     }
 
@@ -54,6 +124,15 @@
         h3 {
             font-size: 40px;
         }
+
+        .reviews-grid {
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .review-card {
+            flex: 1;
+        }
     }
 
     @media only screen and (min-width: 1920px) {
@@ -70,5 +149,49 @@
 <section>
     <div class="section-container">
         <h3>Trusted by 60+ Investors</h3>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <p class="quote">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
+                <div class="reviewer-info">
+                    <img src="/placeholder.jpg" alt="Francisco Landaverde" class="reviewer-image" />
+                    <p class="reviewer-name">Francisco Landaverde</p>
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card">
+                <p class="quote">"The consistent returns and transparent communication have made this my go-to investment platform. Highly recommend."</p>
+                <div class="reviewer-info">
+                    <img src="/placeholder.jpg" alt="Sarah M." class="reviewer-image" />
+                    <p class="reviewer-name">Sarah M.</p>
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card">
+                <p class="quote">"I've been impressed with the professionalism and reliability. My portfolio has grown steadily over time."</p>
+                <div class="reviewer-info">
+                    <img src="/placeholder.jpg" alt="Michael R." class="reviewer-image" />
+                    <p class="reviewer-name">Michael R.</p>
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
