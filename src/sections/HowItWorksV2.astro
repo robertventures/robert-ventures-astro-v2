@@ -8,7 +8,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
 <style>
     section {
-        background: #ffffff;
+        background: linear-gradient(to bottom, #101B1F, #111111);
         color: #152429;
         padding: 0;
         margin: 0;
@@ -20,6 +20,8 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
         width: 100%;
         max-width: 100%;
         margin: 0 auto;
+        background: #f2f2f2;
+        border-radius: 16px;
     }
 
     h2 {
@@ -124,10 +126,6 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
     }
 
     @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        section {
-            padding: 0;
-        }
-
         .section-container {
             padding: 64px 32px;
         }
@@ -150,8 +148,12 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
     }
 
     @media only screen and (min-width: 1136px) {
+        section {
+            padding: 0 56px;
+        }
+
         .section-container {
-            padding: 96px 112px;
+            padding: 96px 56px;
             margin: 0;
             width: 100%;
         }
@@ -185,8 +187,12 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
     }
 
     @media only screen and (min-width: 1920px) {
+        section {
+            padding: 0 156px;
+        }
+
         .section-container {
-            padding: 96px 312px;
+            padding: 96px 156px;
         }
 
         .blocks {
