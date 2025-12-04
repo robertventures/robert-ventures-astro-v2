@@ -14,6 +14,9 @@ export default defineConfig({
   integrations: [mdx(), sitemap({
     exclude: ['/test', '/test2'], // Exclude the /test page from the sitemap
   }), tunnel()],
+  server: {
+    port: 4321
+  },
   devToolbar: {
     enabled: false
   },

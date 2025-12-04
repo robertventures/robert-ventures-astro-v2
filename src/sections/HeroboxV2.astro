@@ -1,161 +1,288 @@
 ---
 import DualCTA from "../components/DualCTA.astro";
-
-import Ten from "../images/svg/10-rv.svg";
-import Business from "../images/svg/business-logos/business-insider.svg";
-import Market from "../images/svg/business-logos/market-watch.svg";
-import Ap from "../images/svg/business-logos/ap.svg";
-import Street from "../images/svg/business-logos/street-insider.svg";
-import Benzinga from "../images/svg/business-logos/benzinga.svg";
-import Morning from "../images/svg/business-logos/morning.svg";
 ---
 
 <style>
-    .section-container {
-        padding: 3rem 1.5rem 3rem 1.5rem;
-
-        background-image: url('/images/svg/waves.svg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-
-        text-align: center;
+    section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        position: relative;
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
     }
 
-    .section-content svg {
+    .staircase-svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 800px;
+        height: 800px;
+        min-width: 800px;
+        min-height: 800px;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+
+    .staircase-svg rect {
+        fill: none;
+        stroke: #152429;
+        stroke-width: 1;
+    }
+
+
+    .section-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .section-container {
+        padding: 48px 16px;
+        background: transparent;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .section-container svg {
         margin: 0 auto;
     }
 
     h1 {
-        font-size: 2.875rem;
-        margin: 0 auto;
-        margin-bottom: 2rem;
+        font-size: 56px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 110%;
+        text-decoration-style: solid;
+        text-align: left;
+        color: #E1EEEA;
 
         max-width: 640px;
     }
 
-    p.hero-text {
-        font-family: "Satoshi", sans-serif;
-        font-display: swap;
-        font-size: 1.8125rem;
-
-        font-weight: 700;
-        line-height: 100%;
-        /* 1.8125rem */
-
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        margin-bottom: 2rem;
-        margin-top: 1.5rem;
+    .hero-subtitle {
+        font-size: 20px;
+        line-height: 150%;
+        color: #BFD1D7;
+        text-align: left;
+        margin-bottom: 32px;
+        max-width: 480px;
     }
 
-    p.pre-hero-text {
-        font-family: "Satoshi", sans-serif;
-        font-display: swap;
-        font-size: 1.8125rem;
-
-        font-weight: 700;
-        line-height: 100%;
-        /* 1.8125rem */
-
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        margin-bottom: 1.5rem;
+    h1 .underlined-value {
+        font-family: 'Roboto Serif', serif;
+        font-weight: 500;
+        color: #D3FBD8;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: auto;
+        text-decoration-thickness: 5%;
+        text-underline-offset: 0px;
+        text-underline-position: from-font;
+        font-variant-numeric: lining-nums;
     }
+
 
     .form-cta {
         margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 384px;
     }
 
-    hr {
-        height: 0.0625rem;
-        background: #afb5bc;
-        margin-bottom: 1rem;
+    .form-cta :global(a) {
+        margin: 0;
     }
 
-    .business {
-        display: grid;
-        grid-auto-columns: auto;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        justify-items: center;
-        gap: 0.5rem;
-    }
-
-    p.featured {
-        color: #abbbd3;
-        font-size: 0.6875rem;
-        font-weight: 400;
-        line-height: 1; /* 0.6875rem */
-
-        margin-bottom: 0.75rem;
-    }
 
     @media only screen and (min-width: 768px) {
         section {
-            padding: 0 2rem;
+            padding: 0;
+            margin: 0;
         }
     }
 
-    @media only screen and (min-width: 990px) {
-        .section-container{
-            padding: 4rem 1.5rem 4rem 1.5rem;
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
         }
 
         h1 {
-            margin-bottom: 2rem;
-            font-size: 52px;
+            font-size: 64px;
+            line-height: 110%;
         }
-        .section-content {
-            max-width: 921px;
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container{
+            padding: 96px 112px;
+            margin: 0;
+            width: 100%;
         }
 
-        .business {
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        h1 {
+            margin-bottom: 32px;
+            font-size: 80px;
+            line-height: 110%;
         }
+    }
 
-        p.featured{
-            margin-bottom: 0;
+    @media only screen and (min-width: 1920px) {
+        .section-container{
+            padding: 96px 312px;
         }
     }
 </style>
 
 <section>
+    <svg class="staircase-svg" width="800" height="800" xmlns="http://www.w3.org/2000/svg" id="staircase-svg">
+        <rect x="0.5" y="735.5" width="64" height="64"/>
+        <rect x="80.5" y="655.5" width="64" height="64"/>
+        <rect x="80.5" y="735.5" width="64" height="64"/>
+        <rect x="160.5" y="575.5" width="64" height="64"/>
+        <rect x="160.5" y="655.5" width="64" height="64"/>
+        <rect x="160.5" y="735.5" width="64" height="64"/>
+        <rect x="240.5" y="495.5" width="64" height="64"/>
+        <rect x="240.5" y="575.5" width="64" height="64"/>
+        <rect x="240.5" y="655.5" width="64" height="64"/>
+        <rect x="240.5" y="735.5" width="64" height="64"/>
+        <rect x="320.5" y="415.5" width="64" height="64"/>
+        <rect x="320.5" y="495.5" width="64" height="64"/>
+        <rect x="320.5" y="575.5" width="64" height="64"/>
+        <rect x="320.5" y="655.5" width="64" height="64"/>
+        <rect x="320.5" y="735.5" width="64" height="64"/>
+        <rect x="400.5" y="335.5" width="64" height="64"/>
+        <rect x="400.5" y="415.5" width="64" height="64"/>
+        <rect x="400.5" y="495.5" width="64" height="64"/>
+        <rect x="400.5" y="575.5" width="64" height="64"/>
+        <rect x="400.5" y="655.5" width="64" height="64"/>
+        <rect x="400.5" y="735.5" width="64" height="64"/>
+        <rect x="480.5" y="255.5" width="64" height="64"/>
+        <rect x="480.5" y="335.5" width="64" height="64"/>
+        <rect x="480.5" y="415.5" width="64" height="64"/>
+        <rect x="480.5" y="495.5" width="64" height="64"/>
+        <rect x="480.5" y="575.5" width="64" height="64"/>
+        <rect x="480.5" y="655.5" width="64" height="64"/>
+        <rect x="480.5" y="735.5" width="64" height="64"/>
+        <rect x="560.5" y="175.5" width="64" height="64"/>
+        <rect x="560.5" y="255.5" width="64" height="64"/>
+        <rect x="560.5" y="335.5" width="64" height="64"/>
+        <rect x="560.5" y="415.5" width="64" height="64"/>
+        <rect x="560.5" y="495.5" width="64" height="64"/>
+        <rect x="560.5" y="575.5" width="64" height="64"/>
+        <rect x="560.5" y="655.5" width="64" height="64"/>
+        <rect x="560.5" y="735.5" width="64" height="64"/>
+        <rect x="640.5" y="95.5" width="64" height="64"/>
+        <rect x="640.5" y="175.5" width="64" height="64"/>
+        <rect x="640.5" y="255.5" width="64" height="64"/>
+        <rect x="640.5" y="335.5" width="64" height="64"/>
+        <rect x="640.5" y="415.5" width="64" height="64"/>
+        <rect x="640.5" y="495.5" width="64" height="64"/>
+        <rect x="640.5" y="575.5" width="64" height="64"/>
+        <rect x="640.5" y="655.5" width="64" height="64"/>
+        <rect x="640.5" y="735.5" width="64" height="64"/>
+        <rect x="720.5" y="15.5" width="64" height="64"/>
+        <rect x="720.5" y="95.5" width="64" height="64"/>
+        <rect x="720.5" y="175.5" width="64" height="64"/>
+        <rect x="720.5" y="255.5" width="64" height="64"/>
+        <rect x="720.5" y="335.5" width="64" height="64"/>
+        <rect x="720.5" y="415.5" width="64" height="64"/>
+        <rect x="720.5" y="495.5" width="64" height="64"/>
+        <rect x="720.5" y="575.5" width="64" height="64"/>
+        <rect x="720.5" y="655.5" width="64" height="64"/>
+        <rect x="720.5" y="735.5" width="64" height="64"/>
+    </svg>
     <div class="section-container">
-        <div class="section-content">
-            <h1>Compound Your Wealth Passively</h1>
+        <h1>Earn <span class="underlined-value">10%</span> Fixed Annual Returns</h1>
 
-            <p class="pre-hero-text">Up to</p>
-            <Ten />
-            <p class="hero-text">Fixed Annual Returns</p>
+        <p class="hero-subtitle">Access high yield passive wealth growth, backed by Real Estate & U.S. Treasury assets.</p>
 
             <div class="form-cta">
                 <DualCTA />
-            </div>
-
-            <hr />
-
-            <p class="featured">Featured in</p>
-
-            <div class="business">
-                <Business />
-
-                <Morning />
-
-                <Market />
-
-                <Street />
-
-                <Benzinga />
-
-                <Ap />
-            </div>
         </div>
     </div>
 </section>
+
+<script is:inline>
+    (function() {
+        function initAnimation() {
+            // Check if GSAP is loaded
+            if (!window.gsapLoaded || typeof window.gsap === 'undefined') {
+                return;
+            }
+
+            const gsapLib = window.gsap;
+            
+            // Wait for SVG to be in DOM
+            const svg = document.getElementById('staircase-svg');
+            if (!svg) {
+                return;
+            }
+
+            const rects = svg.querySelectorAll('rect');
+            
+            if (rects.length === 0) {
+                return;
+            }
+            
+            // Set initial stroke color
+            gsapLib.set(rects, { stroke: "#152429" });
+            
+            // Create a timeline for continuous left-to-right shimmer effect
+            const tl = gsapLib.timeline({ repeat: -1 });
+            
+            // Delay at the start of each animation loop
+            tl.to({}, { duration: 3 });
+            
+            // Animate from left to right (fade to highlight color)
+            tl.to(rects, {
+                stroke: "#30414D",
+                duration: 0.2,
+                stagger: {
+                    amount: 0.5,
+                    from: "start"
+                }
+            });
+            
+            // Fade back to base color in the same staggered manner
+            tl.to(rects, {
+                stroke: "#152429",
+                duration: 0.5,
+                stagger: {
+                    amount: 1,
+                    from: "start"
+                }
+            });
+        }
+
+        // Wait for GSAP to load, then initialize animation
+        function startAnimation() {
+            if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
+                // GSAP already loaded, check if DOM is ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initAnimation);
+                } else {
+                    initAnimation();
+                }
+            } else {
+                // Wait for GSAP to load
+                window.addEventListener('gsapLoaded', function() {
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', initAnimation);
+                    } else {
+                        initAnimation();
+                    }
+                });
+            }
+        }
+
+        // Start the process
+        startAnimation();
+    })();
+</script>

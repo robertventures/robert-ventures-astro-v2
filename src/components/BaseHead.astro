@@ -1,4 +1,5 @@
 ---
+
 import "../styles/global.css";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -8,10 +9,8 @@ const {
   description,
   image = "/images/svg/rv-logo.svg",
 } = Astro.props;
-
-import { join } from "node:path";
-import { AstroFont } from "astro-font";
 ---
+
 
 
 <!-- Sitemap -->
@@ -48,70 +47,30 @@ import { AstroFont } from "astro-font";
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
 
-<AstroFont
-  config={[
-    {
-      name: "Satoshi",
-      src: [
-        {
-          style: "bold",
-          weight: "700",
-          path: join(process.cwd(), "public", "fonts", "Satoshi-Bold.woff2"),
-          preload: true
-        },
-        {
-          style: "medium",
-          weight: "500",
-          path: join(process.cwd(), "public", "fonts", "Satoshi-Medium.woff2"),
-          preload: false
-        },
-      ],
-      display: "swap",
-      selector: "body",
-      fallback: "sans-serif",
-    },
-    {
-      name: "Inter",
-      src: [
-        {
-          style: "medium",
-          weight: "500",
-          path: join(process.cwd(), "public", "fonts", "Inter-Medium.woff2"),
-          preload: true
-        },
-        {
-          style: "regular",
-          weight: "400",
-          path: join(process.cwd(), "public", "fonts", "Inter-Regular.woff2"),
-          preload: true
-        },
-        {
-          style: "italic",
-          weight: "400",
-          path: join(process.cwd(), "public", "fonts", "Inter-Italic.woff2"),
-          preload: false
-        },
-        {
-          style: "semibold",
-          weight: "600",
-          path: join(process.cwd(), "public", "fonts", "Inter-SemiBold.woff2"),
-          preload: false
-        },
-        {
-          style: "black",
-          weight: "900",
-          path: join(process.cwd(), "public", "fonts", "Inter-Black.woff2"),
-          preload: false
-        }
-      ],
-      display: "swap",
-      selector: "body",
-      fallback: "sans-serif",
-    },
-  ]}
-/>
+
+<!-- Google Fonts: Roboto & Roboto Serif -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script>
+    window.gsapLoaded = false;
+    function loadGSAP() {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+        script.onload = function() {
+            window.gsapLoaded = true;
+            // Dispatch custom event when GSAP is loaded
+            window.dispatchEvent(new Event('gsapLoaded'));
+        };
+        document.head.appendChild(script);
+    }
+    loadGSAP();
+</script>
 
 <link rel="preload" href="/images/svg/waves.svg" as="image" />
+
 
 
 <!-- GOOGLE TAG MANAGER -->

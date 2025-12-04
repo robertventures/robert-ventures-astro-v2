@@ -1,0 +1,247 @@
+---
+// Updated
+---
+
+<style>
+    section {
+        background: linear-gradient(to bottom, #111111, #101B1F);
+        color: #152429;
+        padding: 0;
+        margin: 0;
+    }
+
+    .section-container {
+        padding: 48px 16px;
+        text-align: left;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        background: transparent;
+        border-radius: 0;
+    }
+
+    h3 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 125%;
+        text-align: left;
+        color: #E1EEEA;
+    }
+
+    .columns-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .column {
+        width: 100%;
+        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-left: 4px solid #30414D;
+        padding: 24px 0 24px 24px;
+    }
+
+    .stat-value {
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
+        font-weight: 500;
+        color: #D3FBD8;
+        line-height: 1;
+        font-variant-numeric: lining-nums;
+        opacity: 0;
+    }
+
+    .description {
+        font-size: 20px;
+        color: #E1EEEA;
+        line-height: 1.5;
+        opacity: 0;
+    }
+
+    .results-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 32px;
+    }
+
+    .results-label svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+    }
+
+    .results-text {
+        font-size: 20px;
+        color: #E1EEEA;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+
+        .columns-container {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 0 0 calc(50% - 8px);
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 96px 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+
+        .columns-container {
+            flex-direction: row;
+        }
+
+        .column {
+            flex: 1;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding: 96px 312px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <h3>Bonds Trusted by the Numbers</h3>
+        
+        <div class="results-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
+                <circle cx="6" cy="6" r="6" fill="#79EAAD"/>
+            </svg>
+            <span class="results-text">Q3 2025 Results</span>
+        </div>
+        
+        <div class="columns-container">
+            <div class="column">
+                <span class="stat-value" data-value="1.07" data-suffix="M">0</span>
+                <span class="description">Total Raised</span>
+            </div>
+            <div class="column">
+                <span class="stat-value" data-value="24" data-suffix="%">0</span>
+                <span class="description">Reinvestment Rate</span>
+            </div>
+            <div class="column">
+                <span class="stat-value" data-value="64" data-suffix="">0</span>
+                <span class="description">Unique Investors</span>
+            </div>
+            <div class="column">
+                <span class="stat-value" data-value="100" data-suffix="%">0</span>
+                <span class="description">On-Time Distributions</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+    (function() {
+        let hasAnimated = false;
+
+        function initAnimation() {
+            // Check if GSAP is loaded
+            if (!window.gsapLoaded || typeof window.gsap === 'undefined') {
+                return;
+            }
+
+            const gsapLib = window.gsap;
+            
+            const section = document.querySelector('.columns-container');
+            const statValues = document.querySelectorAll('.stat-value');
+            const descriptions = document.querySelectorAll('.column .description');
+            
+            if (!section || statValues.length === 0) {
+                return;
+            }
+
+            // Intersection Observer to trigger animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !hasAnimated) {
+                        hasAnimated = true;
+                        
+                        // Animate each stat value with counter effect
+                        statValues.forEach((stat, index) => {
+                            const finalValue = parseFloat(stat.getAttribute('data-value'));
+                            const suffix = stat.getAttribute('data-suffix') || '';
+                            
+                            gsapLib.to(stat, {
+                                innerHTML: finalValue,
+                                duration: 0.8,
+                                delay: index * 0.1,
+                                opacity: 1,
+                                ease: "power2.out",
+                                snap: { innerHTML: suffix === 'M' ? 0.01 : 1 },
+                                onUpdate: function() {
+                                    const currentValue = parseFloat(stat.innerHTML);
+                                    stat.innerHTML = currentValue.toFixed(suffix === 'M' ? 2 : 0) + suffix;
+                                }
+                            });
+                        });
+
+                        // Fade in descriptions with stagger
+                        gsapLib.to(descriptions, {
+                            opacity: 1,
+                            duration: 0.5,
+                            stagger: 0.1,
+                            delay: 0.2,
+                            ease: "power2.out"
+                        });
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            observer.observe(section);
+        }
+
+        // Wait for GSAP to load, then initialize animation
+        function startAnimation() {
+            if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initAnimation);
+                } else {
+                    initAnimation();
+                }
+            } else {
+                window.addEventListener('gsapLoaded', function() {
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', initAnimation);
+                    } else {
+                        initAnimation();
+                    }
+                });
+            }
+        }
+
+        startAnimation();
+    })();
+</script>

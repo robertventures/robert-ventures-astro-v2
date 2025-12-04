@@ -6,7 +6,9 @@ import Arrow from "../images/svg/right-arrow.svg";
     .cta-block {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 12px;
+        width: 100%;
+        max-width: 384px;
     }
 
     a {
@@ -14,45 +16,59 @@ import Arrow from "../images/svg/right-arrow.svg";
         text-align: center;
         border-radius: 8px;
 
-        font-size: 20px;
-        font-weight: 700;
-        font-family: "Satoshi", sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 100%;
+        font-family: 'Roboto', sans-serif;
 
         padding: 12px;
 
-        max-width: 366px;
         width: 100%;
+        box-sizing: border-box;
 
-        margin: 0 auto;
+        margin: 0;
     }
 
     .invest {
-        background-color: #5028ff;
-        border: 1px solid #5028ff;
+        background-color: #D3FBD8;
+        border: 1px solid #D3FBD8;
 
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
 
-        color: #fff;
+        color: #152429;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .invest:active {
+        background-color: #9ebca2;
+        border-color: #9ebca2;
     }
 
     .webinar {
-        color: #281480;
+        color: #E1EEEA;
         font-weight: 500;
 
-        border: 1px solid #281480;
+        border: none;
 
-        background-color: #fff;
+        background-color: #152429;
+        transition: background-color 0.2s ease;
+    }
+
+    .webinar:active {
+        background-color: #101B1F;
     }
     svg{
+        width: 20px;
+        height: 20px;
         transform: translateY(1px);
     }
 </style>
 
 <div class="cta-block">
-    <a class="invest invest-cta-homepage" href="/investor-migration" humblytics="invest-cta-homepage-click">Invest<Arrow /></a>
+    <a class="invest invest-cta-homepage" href="/investor-migration" humblytics="invest-cta-homepage-click">Get Started</a>
     <a class="webinar webinar-cta-homepage" href="/webinar" humblytics="webinar-cta-homepage-click">Join Our Webinar</a>
 </div>
 

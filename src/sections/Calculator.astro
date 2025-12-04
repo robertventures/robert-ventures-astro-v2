@@ -1,701 +1,304 @@
 ---
-import DualCTA from "../components/DualCTA.astro";
-
-interface Props {
-    showFormCTA?: boolean;
-}
-
-const { showFormCTA = true } = Astro.props;
+// Calculate Your Returns - Redesigned
 ---
 
 <style>
-    input[type="radio"] {
-        height: 1.5rem;
-        width: 1.5rem;
-        accent-color: #281480;
-    }
-
-    /* SLIDER STYLE */
-    input[type="range"].styled-slider {
-        height: 24px;
-        -webkit-appearance: none;
-        background-color: transparent;
-    }
-
-    input[type="range"].styled-slider.slider-progress {
-        --range: calc(var(--max) - var(--min));
-        --ratio: calc((var(--value) - var(--min)) / var(--range));
-        --sx: calc(0.5 * 24px + var(--ratio) * (100% - 24px));
-    }
-
-    input[type="range"].styled-slider:focus {
-        outline: 0;
-    }
-
-    input[type="range"].styled-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 24px;
-        height: 24px;
-        border-radius: 16px;
-        background: #281480;
-        border: none;
-        box-shadow: none;
-        margin-top: calc(2px * 0.5 - 32px * 0.5);
-    }
-
-    input[type="range"].styled-slider::-webkit-slider-runnable-track {
-        height: 2px;
-        border: none;
-        border-radius: 0;
-        background: #efefef;
-        box-shadow: none;
-    }
-
-    input[type="range"].styled-slider.slider-progress::-webkit-slider-runnable-track {
-        background:
-            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
-            #efefef;
-    }
-
-    input[type="range"].styled-slider::-moz-range-thumb {
-        width: 24px;
-        height: 24px;
-        border-radius: 16px;
-        background: #281480;
-        border: none;
-        box-shadow: none;
-    }
-
-    input[type="range"].styled-slider::-moz-range-track {
-        height: 2px;
-        border: none;
-        border-radius: 0;
-        background: #efefef;
-        box-shadow: none;
-    }
-
-    input[type="range"].styled-slider.slider-progress::-moz-range-track {
-        background:
-            linear-gradient(#281480, #281480) 0 / var(--sx) 100% no-repeat,
-            #efefef;
-    }
-
-    input[type="range"].styled-slider::-ms-fill-upper {
-        background: 0 0;
-        border-color: transparent;
-    }
-
-    input[type="range"].styled-slider::-ms-fill-lower {
-        background: 0 0;
-        border-color: transparent;
-    }
-
-    input[type="range"].styled-slider::-ms-thumb {
-        width: 24px;
-        height: 24px;
-        border-radius: 16px;
-        background: #281480;
-        border: none;
-        box-shadow: none;
-        margin-top: 0;
-        box-sizing: border-box;
-    }
-
-    input[type="range"].styled-slider::-ms-track {
-        height: 2px;
-        border-radius: 0;
-        background: #efefef;
-        border: none;
-        box-shadow: none;
-        box-sizing: border-box;
-    }
-
-    input[type="range"].styled-slider.slider-progress::-ms-fill-lower {
-        height: 2px;
-        border-radius: 0;
-        margin: -undefined 0 -undefined -undefined;
-        background: #281480;
-        border: none;
-        border-right-width: 0;
-    }
-
-    /* FORM */
-    .form-cta {
-        margin-top: 1.5rem;
-        width: 100%;
-    }
-    /* FORM */
-
-    .section-content {
-        display: flex;
-        flex-direction: column;
-        gap: 1.56rem;
-        width: 100%;
-    }
-
-    .calculate-content {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-
-    h2 {
-        margin-bottom: 2rem;
-        text-align: center;
-        color: #281480;
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 110%;
-    }
-
-    .calculate-block {
-        margin-bottom: 0.5rem;
-    }
-
-    p.calculate-heading {
-        color: #505050;
-        font-size: 1.125rem;
-        font-weight: 400;
-        line-height: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    .return-option {
-        display: flex;
-        flex-direction: row-reverse;
-        position: relative;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .return-option input {
-        position: absolute;
-        right: 1rem;
-    }
-
-    .select-return {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .return-option {
-        border-radius: 0.5rem;
-        border: 1px solid #afb5bc;
-    }
-
-    .investment-value {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .styled-input {
-        border-radius: 0.5rem;
-        border: 1px solid #7f8ca0;
-        padding: 1rem;
-        color: #281480;
-        font-size: 1.4375rem;
-        font-weight: 600;
-        line-height: 100%;
-        -moz-appearance: textfield;
-    }
-
-    input[type="number"].styled-input::-webkit-outer-spin-button,
-    input[type="number"].styled-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .input-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-        display: none;
-    }
-
-    .dollar-sign {
-        position: absolute;
-        left: 10px;
-        font-size: 1.4375rem;
-        color: #281480;
-        font-family: "Inter", sans-serif;
-    }
-
-    .styled-input {
-        padding-left: 1.5rem;
-        width: 100%;
-    }
-
-    /* RESULT SECTION */
-    .result-section .total-value {
-        text-align: center;
-    }
-
-    #total-profit {
-        text-align: center;
-        font-size: 2.875rem;
-        font-weight: 900;
-        line-height: 100%;
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .title.small {
-        line-height: 1;
-        text-align: center;
-        white-space: nowrap;
-        font-size: 1.5rem !important;
-        font-weight: 500 !important;
-    }
-
-    .value.small {
-        color: #281480;
-        text-align: center;
-        font-family: "Inter", sans-serif;
-        font-size: 1.5rem;
-        font-weight: 500;
-        line-height: 100%;
-
-    }
-
-    p.title.small {
-        color: #281480;
-        text-align: center;
-        font-family: "Inter", sans-serif;
-        font-size: 1.625rem;
-        font-weight: 700;
-        line-height: 100%;
-    }
-
-    .extra-text {
-        text-align: center;
-        line-height: 1.6;
-    }
-
-    .calc-final-block {
-        margin-top: 1rem;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    @media only screen and (min-width: 990px) {
-        .section-content {
-            flex-direction: row;
-            justify-content: space-between;
-            width: 100%;
-            align-items: center;
-            min-height: 400px;
-        }
-        .left-side,
-        .right-side,
-        .result-section {
-            min-width: 366px;
-            max-width: 366px;
-        }
-        .section-container {
-            padding-left: 0;
-            padding-right: 0;
-        }
-        .left-side {
-            max-width: 366px;
-            flex: 1;
-        }
-        .right-side {
-            max-width: 366px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.25rem;
-            height: 100%;
-        }
-    }
-
-    .initial-investment-text {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    p.investment-amount-number {
-        color: #281480;
-        font-weight: 700;
-        line-height: 100%;
-    }
-
-    .investment-value-limits {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .investment-value-limits p {
-        color: #505050;
-        text-align: right;
-        font-family: Inter;
-        font-size: 0.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 100%;
-        margin-top: 0.5rem;
-    }
-
-    .form-cta p {
-        margin-bottom: 1rem;
-    }
-
-    .return-options-block {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-    }
-
-    .return-options-block p {
-        line-height: 1;
-    }
-
-    .extra-text {
-        font-size: 13px;
-        span {
-            background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-feature-settings: "cv01" on;
-            font-family: Inter;
-            font-size: 0.8125rem;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 100%;
-        }
-    }
-
-    .desktop-only {
-        display: none !important;
-    }
-    @media only screen and (min-width: 990px) {
-        .desktop-only {
-            display: block !important;
-        }
-    }
-
-    .get-started-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-    .get-started-btn {
-        background-color: #5028ff;
-        border: none;
-        color: #fff;
-        border-radius: 0.75rem;
-        padding: 1rem 0.75rem;
-        font-size: 1.125rem;
-        font-weight: 500;
-        width: 100%;
-        max-width: 366px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
-    .get-started-btn:hover {
-        background-color: #3c1fbf;
-    }
-    .get-started-btn .button-text {
-        font-weight: 500;
-    }
-
-    .risk-info {
-        color: #737373;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 130%;
-        text-align: left;
-        margin-top: 1rem;
-        max-width: 366px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    /* Compact year slider styles */
-    .year-slider-container {
-        margin-bottom: 0.5rem;
-    }
-
-    .year-display {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-    }
-
-    .year-display .year-value {
-        color: #281480;
-        font-size: 1.4375rem;
-        font-weight: 600;
-        line-height: 100%;
-        font-family: "Inter", sans-serif;
-    }
-
-    .year-display .apy-rate {
-        color: #5028ff;
-        font-size: 1rem;
-        font-weight: 500;
-    }
-
-    .apy-display-subtle {
-        text-align: center;
-        margin-top: 0.5rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .apy-display-subtle .apy-rate-subtle {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        color: #281480;
-        line-height: 100%;
-    }
-
-    .selection-active {
-        background-color: #f2f5f8;
-    }
-
-    .left-side {
-        flex: 1 1 0;
-        min-width: 366px;
-    }
-    .right-side {
-        flex: 1 1 0;
-        min-width: 366px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 1.25rem;
-    }
-    .result-section {
-        min-width: 366px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-    }
-    .result-block.wrapper.total-value {
-        margin-bottom: 0;
-    }
-    .result-section p.title {
-        margin: 0;
-    }
-    .apy-display-subtle {
-        margin: 0;
-    }
-    @media only screen and (min-width: 990px) {
-        .result-section {
-            min-width: 366px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-    }
-
-    .result-section,
-    .result-section p,
-    .result-section .apy-rate-subtle,
-    .result-section .total-value {
-        line-height: 100%;
-    }
-
-    @media only screen and (min-width: 990px) {
-        .get-started-btn {
-            width: 366px;
-            max-width: 366px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .get-started-container {
-            margin-top: 1rem;
-        }
-    }
-
     section {
-        margin-bottom: 1.5rem;
+        background: linear-gradient(to bottom, #111111, #101B1F);
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
     }
+
     .section-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        border-radius: 1rem;
-        background: #fff;
-        padding: 3rem 1.5rem;
-        box-sizing: border-box;
-    }
-    .section-content {
+        padding: 48px 16px;
         width: 100%;
-        max-width: 100vw;
+        max-width: 100%;
         margin: 0 auto;
+        background: transparent;
+        border-radius: 0;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container::before {
+            top: 32px;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container::before {
+            top: 48px;
+        }
+    }
+
+    h3 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin: 0 0 32px 0;
+        line-height: 125%;
+        text-align: left;
+        color: #E1EEEA;
+    }
+
+    .calculator-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 1.56rem;
+        gap: 24px;
+        margin: 0;
     }
-    @media only screen and (min-width: 990px) {
-        .section-container {
-            padding: 4rem 1.5rem;
-        }
-        .section-content {
-            max-width: 921px;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 400px;
-        }
-        .left-side,
-        .right-side,
-        .result-section {
-            min-width: 366px;
-            max-width: 366px;
-        }
-    }
-    .left-side,
-    .right-side,
-    .result-section {
+
+    .controls-section {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin: 0;
         width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
+    }
+
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .control-label {
+        font-size: 20px;
+        color: #E1EEEA;
+        font-weight: 400;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 12px;
+    }
+
+    .button-group.stacked {
+        flex-direction: column;
+    }
+
+    .calc-button {
+        background: #152429;
+        border: 1px solid transparent;
+        color: #E1EEEA;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 100%;
+        cursor: pointer;
+        text-align: center;
+        flex: 1;
+    }
+
+    .calc-button.active {
+        border-color: #D3FBD8;
+        background: linear-gradient(to bottom, #152429, #30414D);
+    }
+
+    .lockup-button {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+    }
+
+    .lockup-period {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 100%;
+        color: #BFD1D7;
+    }
+
+    .lockup-apy {
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
+        font-weight: 500;
+        line-height: 100%;
+        color: #E1EEEA;
+        font-variant-numeric: lining-nums;
+    }
+
+    .amount-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .results-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        margin: 0;
+        width: 100%;
+    }
+
+    .result-label {
+        font-size: 20px;
+        color: #E1EEEA;
+        text-align: left;
+    }
+
+    .result-value {
+        font-family: 'Roboto Serif', serif;
+        font-size: 56px;
+        font-weight: 500;
+        color: #D3FBD8;
+        line-height: 1;
+        text-align: left;
+        font-variant-numeric: lining-nums;
+    }
+
+    .result-divider {
+        width: 100%;
+        height: 1px;
+        background: #30414D;
+    }
+
+    .cta-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .cta-button {
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 100%;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+    }
+
+    .cta-primary {
+        background: #D3FBD8;
+        color: #152429;
+        border: 1px solid #D3FBD8;
+    }
+
+    .cta-secondary {
+        background: transparent;
+        color: #E1EEEA;
+        border: 2px solid #79EAAD;
+    }
+
+    .disclaimer-text {
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: #BFD1D7;
+        line-height: 150%;
+        margin: 0;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        .controls-section {
+            max-width: 480px;
+        }
+
+        .results-section {
+            max-width: 384px;
+        }
+
+        .calculator-wrapper {
+            flex-direction: row;
+            gap: 64px;
+            align-items: flex-start;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 96px 112px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+
+        .controls-section {
+            max-width: 480px;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding: 96px 312px;
+        }
+
+        .calculator-wrapper {
+            gap: 96px;
+        }
     }
 </style>
 
 <section id="calculator">
-
     <div class="section-container">
-        <h2>Earnings Calculator</h2>
-        <div class="section-content">
-            <div class="left-side">
-                <div class="terms-section">
-                    <div class="financial-future-section">
-                        <div class="calculate-content">
-                            <div class="calculate-block">
-                                <div class="initial-investment-text">
-                                    <p class="calculate-heading-investment-value">
-                                        Investment Amount:
-                                    </p>
-                                    <p class="investment-amount-number"></p>
-                                </div>
-                                <div class="investment-value calculator-option">
-                                    <input
-                                        id="amount-slider"
-                                        class="styled-slider slider-progress"
-                                        type="range"
-                                        name="amount-slider"
-                                        value="50000"
-                                        step="1000"
-                                        min="1000"
-                                        max="100000"
-                                    />
-                                </div>
-                                <div class="investment-value-limits">
-                                    <p>$1,000</p>
-                                    <p>$100,000+</p>
-                                </div>
-                            </div>
-                            <div class="calculate-block">
-                                <div class="initial-investment-text">
-                                    <p class="calculate-heading">Investment Duration:</p>
-                                    <p class="investment-amount-number" id="year-display">5 year</p>
-                                </div>
-                                <div class="investment-value calculator-option">
-                                    <input
-                                        id="year-slider"
-                                        class="styled-slider slider-progress"
-                                        type="range"
-                                        name="year-slider"
-                                        value="5"
-                                        step="1"
-                                        min="1"
-                                        max="20"
-                                    />
-                                </div>
-                                <div class="investment-value-limits">
-                                    <p>1 Year</p>
-                                    <p>20 Years</p>
-                                </div>
-                            </div>
-                            <div class="calculate-block">
-                                <div class="return-options-block">
-                                    <p class="calculate-heading-2">
-                                        Return Options:
-                                    </p>
-                                    <p class="more-with-compound extra-text">
-                                        hello
-                                    </p>
-                                </div>
-                                <div class="calculate-data select-return">
-                                    <div class="calculate-data-group return-option calculator-option">
-                                        <input
-                                            type="radio"
-                                            name="payment-term"
-                                            value="compound"
-                                            checked
-                                        />
-                                        <label for="css">Compound</label>
-                                    </div>
-                                    <div class="calculate-data-group return-option calculator-option">
-                                        <input
-                                            type="radio"
-                                            name="payment-term"
-                                            value="monthly"
-                                        />
-                                        <label for="html">Monthly</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <h3>Calculate Your Returns</h3>
+        
+        <div class="calculator-wrapper">
+            <!-- Controls Section -->
+            <div class="controls-section">
+                <!-- Lock-up Period -->
+                <div class="control-group">
+                    <label class="control-label">Lock-Up Period:</label>
+                    <div class="button-group">
+                        <button class="calc-button lockup-button active" data-lockup="3" data-apy="10">
+                            <span class="lockup-period">3 Years</span>
+                            <span class="lockup-apy">10%</span>
+                        </button>
+                        <button class="calc-button lockup-button" data-lockup="1" data-apy="8">
+                            <span class="lockup-period">1 Year</span>
+                            <span class="lockup-apy">8%</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Return Options -->
+                <div class="control-group">
+                    <label class="control-label">Return Options:</label>
+                    <div class="button-group stacked">
+                        <button class="calc-button active" data-return="compound">Compound</button>
+                        <button class="calc-button" data-return="monthly">Monthly</button>
+                    </div>
+                </div>
+
+                <!-- Investment Amount -->
+                <div class="control-group">
+                    <label class="control-label">Investment Amount:</label>
+                    <div class="amount-buttons">
+                        <button class="calc-button" data-amount="1000">1k</button>
+                        <button class="calc-button" data-amount="10000">10k</button>
+                        <button class="calc-button" data-amount="50000">50k</button>
+                        <button class="calc-button active" data-amount="100000">100k</button>
                     </div>
                 </div>
             </div>
-            <div class="right-side">
-                <div class="result-section">
-                    <div class="result-block wrapper total-value">
-                        <p id="total-profit">TotalAmount</p>
-                        <div class="value"></div>
-                    </div>
-                    <p class="title" style="text-align:center;">Total value with interest</p>
-                    <div class="apy-display-subtle">
-                        <p class="apy-rate-subtle" id="apy-display">10% APY</p>
-                    </div>
-                    <div class="result-block calc-final-block">
-                        <p class="title small">Compound interest:</p>
-                        <p class="value small" id="return-value">CompoundReturn</p>
-                    </div>
-                    {showFormCTA && (
-                        <div class="form-cta desktop-only">
-                            <DualCTA />
-                            <p class="risk-info">Important Risk Information: Investing involves risk. There is a potential that we may not be able to make the scheduled payments of interest or principal on the bonds. This calculator is for illustrative purposes only.</p>
-                        </div>
-                    )}
-                    {!showFormCTA && (
-                        <div class="get-started-container desktop-only">
-                            <a class="get-started-btn" href="#main-form">
-                                <span class="button-text">GET STARTED</span>
-                            </a>
-                            <p class="risk-info">Important Risk Information: Investing involves risk. There is a potential that we may not be able to make the scheduled payments of interest or principal on the bonds. This calculator is for illustrative purposes only.</p>
-                        </div>
-                    )}
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <span class="result-label">Total with Interest:</span>
+                <span class="result-value" id="total-result">$133,100</span>
+                <div class="result-divider"></div>
+                <div class="cta-buttons">
+                    <a href="/access" class="cta-button cta-primary">Get Started</a>
+                    <p class="disclaimer-text">Investing involves risk, including potential inability to make scheduled payments. This calculator is for illustrative purposes only.</p>
                 </div>
             </div>
         </div>
@@ -703,207 +306,84 @@ const { showFormCTA = true } = Astro.props;
 </section>
 
 <script>
-    // Track interactions with calculator inputs
-    const calculatorInputs = document.querySelectorAll(".calculator-option");
-    const rangeInputs = document.querySelectorAll('input[type="range"]');
-    let hasInteracted = false;
-
-    const handleInteraction = () => {
-        if (!hasInteracted) {
-            hasInteracted = true;
-            console.log("User interacted with the calculator");
-            triggerEvent("calculator_interaction", "CalculatorInteraction");
-        } else {
-            console.log(
-                "User already interacted with the calculator. Skipping.",
-            );
-        }
-    };
-
-    calculatorInputs.forEach((input) => {
-        input.addEventListener("click", handleInteraction);
-    });
-
-    rangeInputs.forEach((input) => {
-        input.addEventListener("input", handleInteraction);
-    });
+    // State
+    let selectedLockup = 3;
+    let selectedApy = 10;
+    let selectedReturn = 'compound';
+    let selectedAmount = 100000;
 
     // Selectors
-    const yearSlider = document.getElementById("year-slider") as HTMLInputElement;
-    const yearDisplay = document.getElementById("year-display");
-    const apyDisplay = document.getElementById("apy-display");
-    const investmentAmountSlider = document.getElementById("amount-slider") as HTMLInputElement;
-    const investmentAmountNumber = document.querySelector(
-        ".investment-amount-number",
-    );
-    const totalProfitElement = document.getElementById("total-profit");
-    const returnValueElement = document.getElementById("return-value");
-    const extraTextElement = document.querySelector(".extra-text");
-    const resultTitles = document.querySelectorAll(".result-section p.title");
-    const returnOptions = document.querySelectorAll(".return-option");
+    const lockupButtons = document.querySelectorAll('[data-lockup]');
+    const returnButtons = document.querySelectorAll('[data-return]');
+    const amountButtons = document.querySelectorAll('[data-amount]');
+    const totalResult = document.getElementById('total-result');
 
-    // Helper function for formatting currency and wrapping cents
-    function formatCurrencyWithCents(value) {
-        const formatted = value.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-        const [dollars, cents] = formatted.split(".");
-        return `${dollars}<span class="cents">.${cents}</span>`;
+    // Helper to toggle active state
+    function setActive(buttons, activeButton) {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        activeButton.classList.add('active');
     }
 
-    // Helper function to handle toggling active class
-    function toggleActiveClass(group) {
-        group.forEach((item) => {
-            const input = item.querySelector("input");
-            if (input?.checked) {
-                item.classList.add("selection-active");
-            } else {
-                item.classList.remove("selection-active");
-            }
-        });
-    }
-
-    // Update year display and APY
-    function updateYearDisplay() {
-        const years = parseInt(yearSlider.value);
-        const yearText = years === 1 ? 'year' : 'years';
-        yearDisplay.textContent = `${years} ${yearText}`;
-        
-        // Set APY based on years
-        const apy = years >= 3 ? 10 : 8;
-        apyDisplay.textContent = `${apy}% APY`;
-    }
-
-    // Calculate Returns
+    // Calculate returns
     function calculateReturns() {
-        const paymentTerm = (document.querySelector(
-            'input[name="payment-term"]:checked',
-        ) as HTMLInputElement)?.value;
-        const investmentAmount = parseFloat(investmentAmountSlider.value) || 0;
-        const investmentDuration = parseInt(yearSlider.value) || 3;
+        const principal = selectedAmount;
+        const years = selectedLockup;
+        const annualRate = selectedApy / 100;
+        
+        let total = 0;
 
-        // Determine APY based on duration
-        const nominalAnnualRate = investmentDuration >= 3 ? 0.1 : 0.08;
-        const totalMonths = investmentDuration * 12;
-
-        let totalInterest = 0;
-        let totalPrincipal = investmentAmount;
-        let monthlyPayment = 0;
-
-        if (paymentTerm === "monthly") {
-            // Monthly Payments Calculation
-            const monthlyRate = nominalAnnualRate / 12;
-            monthlyPayment = investmentAmount * monthlyRate;
-
-            // Total Interest over the period
-            totalInterest = monthlyPayment * totalMonths;
-
-            // Total Principal includes the total interest
-            totalPrincipal = investmentAmount + totalInterest;
+        if (selectedReturn === 'compound') {
+            // Compound interest formula: A = P(1 + r/n)^(nt)
+            // With monthly compounding: n = 12
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            total = principal * Math.pow(1 + monthlyRate, months);
         } else {
-            // Compound Interest Calculation
-            const monthlyRate = nominalAnnualRate / 12;
-            totalPrincipal =
-                investmentAmount * Math.pow(1 + monthlyRate, totalMonths);
-            totalInterest = totalPrincipal - investmentAmount;
+            // Monthly payments (simple interest paid out monthly)
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            const monthlyInterest = principal * monthlyRate;
+            const totalInterest = monthlyInterest * months;
+            total = principal + totalInterest;
         }
 
-        // Update UI
-        investmentAmountNumber.textContent = `$${investmentAmount.toLocaleString()}`;
+        // Format and display
+        const formatted = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(total);
 
-        if (paymentTerm === "monthly") {
-            resultTitles[0].textContent = "Total with Interest:";
-            resultTitles[1].textContent = "Monthly Returns:";
-            const formattedTotalPrincipal =
-                formatCurrencyWithCents(totalPrincipal);
-            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
-
-            // Calculate compound value for comparison
-            const compoundedValue =
-                investmentAmount *
-                Math.pow(1 + nominalAnnualRate / 12, totalMonths);
-            const extraEarnings = compoundedValue - totalPrincipal;
-
-            const formattedMonthlyPayment =
-                formatCurrencyWithCents(monthlyPayment);
-            const formattedExtraEarnings =
-                formatCurrencyWithCents(extraEarnings);
-
-            const calcFinalBlock = document.querySelector(".calc-final-block");
-            if (calcFinalBlock) {
-                if (calcFinalBlock instanceof HTMLElement) {
-                    calcFinalBlock.style.display = "flex";
-                }
-            }
-
-            returnValueElement.innerHTML = `$${formattedMonthlyPayment}`;
-            extraTextElement.innerHTML = `
-                Compound earns <span class="hello">$${formattedExtraEarnings}</span> more
-            `;
-        } else {
-            resultTitles[0].textContent = "Total with Interest";
-            resultTitles[1].textContent = "Compound interest";
-            const formattedTotalPrincipal =
-                formatCurrencyWithCents(totalPrincipal);
-            const formattedTotalInterest =
-                formatCurrencyWithCents(totalInterest);
-            totalProfitElement.innerHTML = `$${formattedTotalPrincipal}`;
-            returnValueElement.innerHTML = `
-            $${formattedTotalInterest} 
-            <span class="result-block-extra-info">
-                (${investmentDuration >= 3 ? "10% APY" : "8% APY"})
-            </span>`;
-            const calcFinalBlock = document.querySelector(".calc-final-block");
-            if (calcFinalBlock instanceof HTMLElement) {
-                calcFinalBlock.style.display = "none";
-            }
-            extraTextElement.innerHTML = ""; // Clear extra text when not monthly
-        }
+        totalResult.textContent = formatted;
     }
 
-    // Initialize sliders with style updates
-    document
-        .querySelectorAll('input[type="range"].slider-progress')
-        .forEach((slider) => {
-            const updateSliderStyle = () => {
-                const inputSlider = slider as HTMLInputElement;
-                inputSlider.style.setProperty("--value", inputSlider.value);
-                inputSlider.style.setProperty("--min", inputSlider.min || "0");
-                inputSlider.style.setProperty("--max", inputSlider.max || "200");
-            };
-
-            updateSliderStyle(); // Set initial styles
-            slider.addEventListener("input", () => {
-                updateSliderStyle(); // Update on input
-                if (slider.id === "year-slider") {
-                    updateYearDisplay();
-                }
-                calculateReturns();
-            });
-        });
-
-    // Add Event Listeners for return options
-    returnOptions.forEach((option) => {
-        const radioButton = option.querySelector("input");
-
-        if (radioButton?.checked) {
-            option.classList.add("selection-active"); // Apply active class to default selected option
-        }
-
-        option.addEventListener("click", () => {
-            // Ensure radio buttons are toggled correctly
-            if (radioButton) radioButton.checked = true;
-
-            // Update active classes dynamically
-            toggleActiveClass(returnOptions);
+    // Event Listeners
+    lockupButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectedLockup = parseInt(button.dataset.lockup);
+            selectedApy = parseInt(button.dataset.apy);
+            setActive(lockupButtons, button);
             calculateReturns();
         });
     });
 
-    // Initialize year display
-    updateYearDisplay();
-    
-    // Initial Calculation
+    returnButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectedReturn = button.dataset.return;
+            setActive(returnButtons, button);
+            calculateReturns();
+        });
+    });
+
+    amountButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectedAmount = parseInt(button.dataset.amount);
+            setActive(amountButtons, button);
+            calculateReturns();
+        });
+    });
+
+    // Initial calculation
     calculateReturns();
 </script>

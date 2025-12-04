@@ -1,4 +1,6 @@
 :root {
+	--font-body: 'Roboto', sans-serif;
+	--font-heading: 'Roboto Serif', serif;
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
 	--black: 15, 18, 25;
@@ -14,77 +16,13 @@
 
 }
 
-/* @font-face {
-	font-family: 'Satoshi';
-	src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
-		 url('/fonts/Satoshi-Bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Satoshi';
-	src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
-		 url('/fonts/Satoshi-Medium.woff') format('woff');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-
-@font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-Regular.woff2') format('woff2'),
-         url('/fonts/Inter-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-Medium.woff2') format('woff2'),
-         url('/fonts/Inter-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-Italic.woff2') format('woff2'),
-         url('/fonts/Inter-Italic.woff') format('woff');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-SemiBold.woff2') format('woff2'),
-         url('/fonts/Inter-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Inter';
-    src: url('/fonts/Inter-Black.woff2') format('woff2'),
-         url('/fonts/Inter-Black.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-} */
-
 
 html {
 	scroll-behavior: smooth;
 }
 
 body {
-	font-family: 'Inter', sans-serif;
+	font-family: var(--font-body);
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -108,7 +46,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: 'Satoshi', arial;
+	font-family: var(--font-heading);
 	font-weight: bold;
 	color: rgb(var(--black));
 	line-height: 1.2;
@@ -306,7 +244,7 @@ h6 {
 /* 8. Improve line wrapping */
 p {
 	text-wrap: pretty;
-	font-family: "Inter", sans-serif;
+	font-family: var(--font-body);
 }
 
 h1,
@@ -339,32 +277,51 @@ section {
 }
 
 .section-container {
-	max-width: 1280px;
 	margin: 0 auto;
 	border-radius: 1rem;
 	background: #fff;
 	padding: 3rem 1.5rem;
+	
+	/* Small (Base): 320px - 599px */
+	width: 100%;
 }
 
 .section-content {
-	max-width: 640px;
 	margin: 0 auto;
+	width: 100%;
 }
 
-
-@media only screen and (min-width: 768px) {
+/* Medium: 600px - 1135px */
+@media only screen and (min-width: 600px) {
 	section {
 		padding: 0 2rem;
 	}
-}
-
-
-@media only screen and (min-width: 990px) {
+	
 	.section-container {
-		padding: 4rem 1.5rem;
+		max-width: 100%;
+		padding: 4rem 2rem;
 	}
 
 	.section-content {
+		max-width: 640px;
+	}
+}
+
+/* Large: 1136px - 1919px */
+@media only screen and (min-width: 1136px) {
+	.section-container {
+		max-width: 1136px; /* Or align to grid max-width */
+		padding: 4rem 2rem;
+	}
+    
+    .section-content {
 		max-width: 921px;
+	}
+}
+
+/* Extra Large: 1920px - Larger */
+@media only screen and (min-width: 1920px) {
+	.section-container {
+		max-width: 1440px; /* Constrain heavily on ultra-wide */
 	}
 }

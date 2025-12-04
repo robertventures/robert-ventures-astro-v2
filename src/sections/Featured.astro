@@ -1,0 +1,126 @@
+---
+import Business from "../images/svg/business-logos/business-insider.svg";
+import Market from "../images/svg/business-logos/market-watch.svg";
+import Ap from "../images/svg/business-logos/ap.svg";
+import Street from "../images/svg/business-logos/street-insider.svg";
+import Benzinga from "../images/svg/business-logos/benzinga.svg";
+import Morning from "../images/svg/business-logos/morning.svg";
+---
+
+<style>
+    .featured-section {
+        background: #111111;
+        padding: 0;
+        margin: 0;
+    }
+
+    .featured-container {
+        padding: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .business {
+        width: 100%;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        border-top: 1px solid #30414D;
+        border-bottom: 1px solid #30414D;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .business-track {
+        display: flex;
+        gap: 48px;
+        align-items: center;
+        width: max-content;
+        animation: scroll 20s linear infinite;
+    }
+
+    @keyframes scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    .logo-item {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .logo-item.duplicate {
+        display: flex;
+    }
+
+    .logo-item :global(svg) {
+        fill: #BFD1D7;
+        flex-shrink: 0;
+        width: auto;
+        height: auto;
+        max-height: 40px;
+    }
+
+    .logo-item :global(path) {
+        fill: #BFD1D7;
+    }
+
+    p.featured {
+        color: #BFD1D7;
+        font-size: 16px;
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+        line-height: 100%;
+        text-align: center;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    /* Desktop - static centered logos */
+    @media only screen and (min-width: 1136px) {
+        .business {
+            display: flex;
+            justify-content: center;
+        }
+
+        .business-track {
+            animation: none;
+            justify-content: center;
+        }
+
+        .logo-item.duplicate {
+            display: none;
+        }
+    }
+</style>
+
+<section class="featured-section">
+    <div class="featured-container">
+        <p class="featured">Featured in</p>
+
+        <div class="business">
+            <div class="business-track">
+                <!-- Original logos -->
+                <div class="logo-item"><Business /></div>
+                <div class="logo-item"><Morning /></div>
+                <div class="logo-item"><Market /></div>
+                <div class="logo-item"><Street /></div>
+                <div class="logo-item"><Benzinga /></div>
+                <div class="logo-item"><Ap /></div>
+                <!-- Duplicate logos for seamless loop (hidden on large screens) -->
+                <div class="logo-item duplicate"><Business /></div>
+                <div class="logo-item duplicate"><Morning /></div>
+                <div class="logo-item duplicate"><Market /></div>
+                <div class="logo-item duplicate"><Street /></div>
+                <div class="logo-item duplicate"><Benzinga /></div>
+                <div class="logo-item duplicate"><Ap /></div>
+            </div>
+        </div>
+    </div>
+</section>
+

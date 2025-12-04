@@ -1,5 +1,5 @@
 ---
-import Rvlogo from "../images/svg/rv-logo.svg";
+import Rvlogo from "../images/svg/logo-rv.svg";
 
 import Opener from "../images/svg/link-icon.svg";
 
@@ -12,31 +12,60 @@ import Opener from "../images/svg/link-icon.svg";
 
 	header {
 		margin: 0;
-		padding: 0 1em;
+		padding: 0 16px;
 		position: relative;
 		z-index: 1001; /* Ensure the header is above the mobile menu */
+		background-color: #101B1F;
+		height: 64px;
 	}
 
 	.header-container {
-		max-width: 1280px;
 		margin: 0 auto;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		width: 100%;
 	}
 	h2 {
 		margin: 0;
+		padding: 0;
 		font-size: 1em;
+		line-height: 0;
+	}
+
+	h2 a {
+		display: block;
+		line-height: 0;
+		margin: 0;
+		padding: 0;
+		text-decoration: none;
+		width: fit-content;
+	}
+
+	h2 a svg {
+		display: block;
+		margin: 0;
+		padding: 0;
 	}
 
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
+		height: 100%;
 	}
 
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: #E1EEEA;
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+	}
+
+	nav h2 a {
+		padding: 0;
+		border-bottom: none;
 	}
 	nav a.active {
 		text-decoration: none;
@@ -58,24 +87,13 @@ import Opener from "../images/svg/link-icon.svg";
 	}
 
 	.hamburger {
-		display: none;
+		display: block;
 		cursor: pointer;
-	}
-
-	@media (max-width: 720px) {
-		.hamburger {
-			display: block;
-		}
-	}
-
-	@media (max-width: 990px) {
-		.hamburger {
-			display: block;
-		}
 	}
 
 	.hamburger svg {
 		transition: transform 0.3s ease-in-out;
+		color: #E1EEEA;
 	}
 
 	.mobile-menu {
@@ -124,7 +142,7 @@ import Opener from "../images/svg/link-icon.svg";
 		margin-bottom: 1rem;
 		line-height: 1;
 		color: #737373;
-		font-family: "Inter" sans-serif;
+		font-family: var(--font-body);
 		font-size: 1rem;
 		font-weight: 400;
 	}
@@ -143,7 +161,7 @@ import Opener from "../images/svg/link-icon.svg";
 		justify-content: space-between;
 		align-items: center;
 		color: #1d1d1f;
-		font-family: "Inter";
+		font-family: var(--font-body);
 		font-size: 1.25rem;
 		font-style: normal;
 		font-weight: 500;
@@ -186,10 +204,21 @@ import Opener from "../images/svg/link-icon.svg";
 		max-height: none;
 	}
 
-	@media only screen and (min-width: 768px) {
+	.desktop-links {
+		display: none;
+	}
+
+	.login-link {
+		display: none;
+	}
+
+	@media only screen and (min-width: 600px) and (max-width: 1135px) {
 		header {
-			padding: 0 3rem;
+			padding: 0 32px;
 		}
+	}
+
+	@media only screen and (min-width: 768px) {
 		.mobile-menu {
 			padding: 4rem 3rem;
 		}
@@ -207,22 +236,14 @@ import Opener from "../images/svg/link-icon.svg";
 		}
 	}
 
-	.desktop-links {
-		display: none;
-	}
-
-	.login-link {
-		display: none;
-	}
-
-	@media (min-width: 991px) {
+	@media (min-width: 1024px) {
 		.hamburger {
 			display: none;
 		}
 
 		.desktop-links {
 			display: flex;
-			gap: 2rem;
+			gap: 16px;
 			align-items: center;
 		}
 
@@ -233,35 +254,40 @@ import Opener from "../images/svg/link-icon.svg";
 
 		nav {
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-end;
 			align-items: center;
+			gap: 32px;
 		}
 
 		nav h2 {
-			flex: 1;
+			margin-right: auto;
 		}
 
 		.desktop-links {
-			flex: 2;
-			justify-content: center;
-		}
-
-		.login-link {
-			flex: 1;
 			justify-content: flex-end;
 		}
 
-		.desktop-links a,
-		.login-link a {
-			color: var(--black);
+		.login-link {
+			margin-left: 0;
+		}
+
+		.desktop-links a {
+			color: #E1EEEA;
 			text-decoration: none;
 			font-size: 1rem;
 			font-weight: 500;
+			font-family: var(--font-body);
+			line-height: 100%; /* 1rem */
+			white-space: nowrap;
+			padding: 16px;
+		}
 
-			color: #1d1d1f;
-			font-family: "Inter";
+		.login-link a {
+			color: #E1EEEA;
+			text-decoration: none;
 			font-size: 1rem;
 			font-weight: 500;
+			font-family: var(--font-body);
 			line-height: 100%; /* 1rem */
 			white-space: nowrap;
 		}
@@ -278,8 +304,21 @@ import Opener from "../images/svg/link-icon.svg";
 			gap: 0.625rem;
 
 			border-radius: 1.5625rem;
-			border: 1px solid #afb5bc;
-			background: #fff;
+			border: 1px solid #30414D;
+			background: #152429;
+			color: #E1EEEA;
+		}
+	}
+
+	@media (min-width: 1136px) {
+		header {
+			padding: 0 112px;
+		}
+	}
+
+	@media (min-width: 1920px) {
+		header {
+			padding: 0 312px;
 		}
 	}
 </style>
@@ -288,8 +327,7 @@ import Opener from "../images/svg/link-icon.svg";
 		<div class="header-container">
 			<nav>
 				<h2>
-					<a href="/"
-						><Rvlogo />
+					<a href="/"><Rvlogo /></a>
 				</h2>
 				<div class="desktop-links">
 					<a href="/strategy">Strategy</a>
@@ -299,7 +337,7 @@ import Opener from "../images/svg/link-icon.svg";
 					<a href="/reviews">Reviews</a>
 				</div>
 				<div class="login-link">
-					<a href="/investor-migration">Login</a>
+					<a href="/investor-migration">Sign in</a>
 				</div>
 				<div class="hamburger" id="hamburger">
 					<svg
