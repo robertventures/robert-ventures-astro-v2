@@ -32,7 +32,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
         margin: 0;
         margin-bottom: 16px;
         line-height: 110%;
-        text-align: center;
+        text-align: left;
         color: #E1EEEA;
     }
 
@@ -43,7 +43,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
         color: #BFD1D7;
         line-height: 150%;
         margin: 0 0 32px 0;
-        text-align: center;
+        text-align: left;
     }
 
     .blocks {
@@ -134,18 +134,24 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         h2 {
             font-size: 48px;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
         }
 
         .blocks {
             flex-direction: row;
             flex-wrap: wrap;
             align-items: stretch;
+            justify-content: center;
             gap: 8px;
         }
 
         .content-block {
             flex: 1 1 calc(50% - 4px);
-            max-width: calc(50% - 4px);
+            max-width: 480px;
         }
     }
 
@@ -158,18 +164,24 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         h2 {
             font-size: 56px;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
         }
 
         .blocks {
             flex-direction: row;
             flex-wrap: wrap;
             align-items: stretch;
+            justify-content: center;
             gap: 8px;
         }
 
         .content-block {
             flex: 1 1 calc(50% - 4px);
-            max-width: calc(50% - 4px);
+            max-width: 480px;
         }
     }
 
@@ -180,7 +192,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         .content-block {
             flex: 1 1 calc(25% - 6px);
-            max-width: calc(25% - 6px);
+            max-width: 480px;
         }
     }
 
@@ -195,7 +207,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         .content-block {
             flex: 1 1 calc(25% - 6px);
-            max-width: calc(25% - 6px);
+            max-width: 480px;
         }
     }
 </style>
