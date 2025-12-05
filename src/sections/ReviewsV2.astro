@@ -3,8 +3,8 @@
 
 <style>
     section {
-        background: linear-gradient(to bottom, #111111, #101B1F);
-        color: #E1EEEA;
+        background: #f2f2f2;
+        color: #152429;
         padding: 0;
         margin: 0;
     }
@@ -19,14 +19,15 @@
         border-radius: 0;
     }
 
-    h3 {
+    h2 {
         font-family: 'Roboto Serif', serif;
-        font-size: 32px;
+        font-size: 40px;
         font-weight: 500;
-        margin: 0 0 32px 0;
-        line-height: 125%;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 110%;
         text-align: left;
-        color: #E1EEEA;
+        color: #152429;
         font-variant-numeric: lining-nums;
     }
 
@@ -37,7 +38,7 @@
     }
 
     .review-card {
-        background: linear-gradient(to bottom, #152429, #30414D);
+        background: #ffffff;
         border-radius: 8px;
         padding: 24px;
         display: flex;
@@ -50,7 +51,7 @@
         font-size: 18px;
         font-weight: 400;
         font-style: italic;
-        color: #E1EEEA;
+        color: #152429;
         line-height: 150%;
         margin: 0;
     }
@@ -65,14 +66,28 @@
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        object-fit: cover;
+        display: block;
+        background: #D3FBD8;
+        flex-shrink: 0;
+    }
+
+    .review-card:nth-child(1) .reviewer-image {
+        background: #D3FBD8;
+    }
+
+    .review-card:nth-child(2) .reviewer-image {
+        background: #BEE2C2;
+    }
+
+    .review-card:nth-child(3) .reviewer-image {
+        background: #79EAAD;
     }
 
     .reviewer-name {
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
         font-weight: 500;
-        color: #E1EEEA;
+        color: #152429;
         margin: 0;
         line-height: 100%;
     }
@@ -81,7 +96,7 @@
         display: flex;
         gap: 2px;
         margin-left: auto;
-        background: #30414D;
+        background: #f2f2f2;
         padding: 8px 12px;
         border-radius: 20px;
     }
@@ -96,8 +111,8 @@
             padding: 64px 32px;
         }
 
-        h3 {
-            font-size: 40px;
+        h2 {
+            font-size: 48px;
         }
 
         .reviews-grid {
@@ -111,14 +126,18 @@
     }
 
     @media only screen and (min-width: 1136px) {
+        section {
+            padding: 0 56px;
+        }
+
         .section-container {
-            padding: 96px 112px;
+            padding: 96px 56px;
             margin: 0;
             width: 100%;
         }
 
-        h3 {
-            font-size: 40px;
+        h2 {
+            font-size: 56px;
         }
 
         .reviews-grid {
@@ -132,20 +151,24 @@
     }
 
     @media only screen and (min-width: 1920px) {
+        section {
+            padding: 0 156px;
+        }
+
         .section-container {
-            padding: 96px 312px;
+            padding: 96px 156px;
         }
     }
 </style>
 
 <section>
     <div class="section-container">
-        <h3>Trusted by 60+ Investors</h3>
+        <h2>Trusted by 60+ Investors</h2>
         <div class="reviews-grid">
             <div class="review-card">
                 <p class="quote">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
                 <div class="reviewer-info">
-                    <img src="/placeholder.jpg" alt="Francisco Landaverde" class="reviewer-image" />
+                    <div class="reviewer-image"></div>
                     <p class="reviewer-name">Francisco Landaverde</p>
                     <div class="stars">
                         <span class="star">★</span>
@@ -159,7 +182,7 @@
             <div class="review-card">
                 <p class="quote">"The consistent returns and transparent communication have made this my go-to investment platform. Highly recommend."</p>
                 <div class="reviewer-info">
-                    <img src="/placeholder.jpg" alt="Sarah M." class="reviewer-image" />
+                    <div class="reviewer-image"></div>
                     <p class="reviewer-name">Sarah M.</p>
                     <div class="stars">
                         <span class="star">★</span>
@@ -173,7 +196,7 @@
             <div class="review-card">
                 <p class="quote">"I've been impressed with the professionalism and reliability. My portfolio has grown steadily over time."</p>
                 <div class="reviewer-info">
-                    <img src="/placeholder.jpg" alt="Michael R." class="reviewer-image" />
+                    <div class="reviewer-image"></div>
                     <p class="reviewer-name">Michael R.</p>
                     <div class="stars">
                         <span class="star">★</span>
