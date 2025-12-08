@@ -306,21 +306,19 @@ const faqs = [
 
             // Toggle the clicked button and panel
             if (isCurrentlyOpen) {
-                // Collapsing: remove classes together for smooth animation
+                // Collapsing: remove classes immediately
                 button.classList.remove("active");
                 button.setAttribute("aria-expanded", "false");
                 clickedPanel.classList.remove("expanded");
                 clickedPanel.style.maxHeight = "";
                 clickedPanel.style.height = "";
             } else {
-                // Expanding: add active class, then expand panel
+                // Expanding: add classes immediately for instant response
                 button.classList.add("active");
                 button.setAttribute("aria-expanded", "true");
                 clickedPanel.style.maxHeight = "";
                 clickedPanel.style.height = "";
-                requestAnimationFrame(() => {
-                    clickedPanel.classList.add("expanded");
-                });
+                clickedPanel.classList.add("expanded");
             }
         });
     });
