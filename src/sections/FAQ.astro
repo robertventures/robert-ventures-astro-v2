@@ -1,5 +1,5 @@
 ---
-import Opener from "../images/svg/opener.svg";
+import Opener from "../images/caretdown.svg";
 const formatAnswer = (raw) => {
     if (!raw) return "";
     const normalized = String(raw).trim().replace(/\r\n/g, "\n");
@@ -92,7 +92,7 @@ const faqs = [
         border-radius: 8px;
         padding: 0;
         border: none;
-        transition: all 0.3s ease;
+        transition: none;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -108,7 +108,6 @@ const faqs = [
         text-align: left;
         outline: none;
         font-size: 15px;
-        transition: background-color 0.4s;
         padding: 16px;
         display: flex;
         flex-direction: row;
@@ -127,6 +126,10 @@ const faqs = [
     button.accordion svg {
         flex-shrink: 0;
         margin-left: 16px;
+    }
+
+    button.accordion.active svg {
+        transform: rotate(180deg);
     }
 
     .active,
@@ -179,7 +182,7 @@ const faqs = [
             padding-bottom: 64px;
             padding-left: 32px;
             padding-right: 32px;
-        }
+    }
 
         .section-content {
             max-width: 100%;
@@ -198,7 +201,7 @@ const faqs = [
             padding-right: 112px;
             margin: 0;
             width: 100%;
-        }
+    }
 
         .section-content {
             max-width: 100%;
@@ -268,9 +271,9 @@ const faqs = [
         // Initialize all panels to be closed
         const allPanels = container.querySelectorAll<HTMLElement>(".panel");
         allPanels.forEach((panel) => {
-            panel.style.maxHeight = "0";
-            panel.style.height = "0";
             panel.classList.remove("expanded");
+            panel.style.maxHeight = "";
+            panel.style.height = "";
         });
 
         container.addEventListener("click", function (event) {
@@ -279,10 +282,13 @@ const faqs = [
             if (!button || !container.contains(button)) return;
 
             const clickedPanel = button.nextElementSibling as HTMLElement | null;
-            
+            if (!clickedPanel) return;
+
+            const isCurrentlyOpen = button.classList.contains("active");
             const allButtons = container.querySelectorAll("button.accordion");
             const allPanels = container.querySelectorAll<HTMLElement>(".panel");
 
+            // Close all other buttons and panels
             allButtons.forEach((btn) => {
                 if (btn !== button) {
                     btn.classList.remove("active");
@@ -292,25 +298,29 @@ const faqs = [
 
             allPanels.forEach((panel) => {
                 if (panel !== clickedPanel) {
-                    panel.style.maxHeight = "0";
-                    panel.style.height = "0";
                     panel.classList.remove("expanded");
+                    panel.style.maxHeight = "";
+                    panel.style.height = "";
                 }
             });
 
-            const isOpen = button.classList.toggle("active");
-            button.setAttribute("aria-expanded", isOpen ? "true" : "false");
-
-            if (!clickedPanel) return;
-            if (isOpen) {
-                clickedPanel.classList.add("expanded");
-                // Remove inline styles to let CSS handle it
+            // Toggle the clicked button and panel
+            if (isCurrentlyOpen) {
+                // Collapsing: remove classes together for smooth animation
+                button.classList.remove("active");
+                button.setAttribute("aria-expanded", "false");
+                clickedPanel.classList.remove("expanded");
                 clickedPanel.style.maxHeight = "";
                 clickedPanel.style.height = "";
             } else {
-                clickedPanel.style.maxHeight = "0";
-                clickedPanel.style.height = "0";
-                clickedPanel.classList.remove("expanded");
+                // Expanding: add active class, then expand panel
+                button.classList.add("active");
+                button.setAttribute("aria-expanded", "true");
+                clickedPanel.style.maxHeight = "";
+                clickedPanel.style.height = "";
+                requestAnimationFrame(() => {
+                    clickedPanel.classList.add("expanded");
+                });
             }
         });
     });
