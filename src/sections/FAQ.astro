@@ -269,7 +269,7 @@ const faqs = [
         if (!container) return;
 
         // Initialize all panels to be closed
-        const allPanels = container.querySelectorAll<HTMLElement>(".panel");
+        const allPanels = container.querySelectorAll(".panel");
         allPanels.forEach((panel) => {
             panel.classList.remove("expanded");
             panel.style.maxHeight = "";
@@ -281,12 +281,12 @@ const faqs = [
             const button = target instanceof Element ? target.closest("button.accordion") : null;
             if (!button || !container.contains(button)) return;
 
-            const clickedPanel = button.nextElementSibling as HTMLElement | null;
+            const clickedPanel = button.nextElementSibling;
             if (!clickedPanel) return;
 
             const isCurrentlyOpen = button.classList.contains("active");
             const allButtons = container.querySelectorAll("button.accordion");
-            const allPanels = container.querySelectorAll<HTMLElement>(".panel");
+            const allPanels = container.querySelectorAll(".panel");
 
             // Close all other buttons and panels
             allButtons.forEach((btn) => {
