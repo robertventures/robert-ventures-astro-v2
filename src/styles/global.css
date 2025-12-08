@@ -19,6 +19,14 @@
 
 html {
 	scroll-behavior: smooth;
+	display: block;
+	overflow-x: hidden;
+}
+
+html::before,
+html::after {
+	display: none !important;
+	content: none !important;
 }
 
 body {

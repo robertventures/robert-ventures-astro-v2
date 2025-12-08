@@ -1,5 +1,11 @@
 ---
+import { Image } from 'astro:assets';
+import ReviewStar from '../images/review-star.svg';
+import avatarPlaceholder from '../images/avatar-image.png';
 ---
+
+<!-- Splide.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
 
 <style>
     section {
@@ -7,34 +13,82 @@
         color: #152429;
         padding: 0;
         margin: 0;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .section-container {
-        padding: 48px 16px;
+        padding-top: 48px;
+        padding-bottom: 48px;
+        padding-left: 16px;
+        padding-right: 16px;
         text-align: left;
         width: 100%;
         max-width: 100%;
         margin: 0 auto;
         background: transparent;
         border-radius: 0;
+        overflow-x: hidden;
     }
 
-    h2 {
+    .slider-wrapper {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        overflow-x: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+    }
+
+    h3 {
         font-family: 'Roboto Serif', serif;
-        font-size: 40px;
+        font-size: 32px;
         font-weight: 500;
-        margin: 0;
-        margin-bottom: 32px;
-        line-height: 110%;
+        margin: 0 0 32px 0;
+        line-height: 125%;
         text-align: left;
         color: #152429;
         font-variant-numeric: lining-nums;
     }
 
-    .reviews-grid {
+    /* Splide container */
+    .reviews-slider {
+        position: relative;
+        overflow-y: visible;
+    }
+
+    .splide {
+        position: relative;
+        overflow-y: visible;
+    }
+
+    .splide__track {
+        overflow: visible;
+        padding: 0;
+    }
+
+    .splide__list {
         display: flex;
-        flex-direction: column;
-        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .splide__slide {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        height: auto;
+        width: auto;
+    }
+
+    /* Hide Splide default UI elements */
+    .splide__arrows,
+    .splide__pagination {
+        display: none !important;
     }
 
     .review-card {
@@ -44,43 +98,30 @@
         display: flex;
         flex-direction: column;
         gap: 24px;
-    }
-
-    .quote {
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 400;
-        font-style: italic;
-        color: #152429;
-        line-height: 150%;
-        margin: 0;
+        min-width: 320px;
+        max-width: 384px;
+        height: 100%;
     }
 
     .reviewer-info {
         display: flex;
-        align-items: center;
-        gap: 12px;
+        align-items: flex-start;
     }
 
     .reviewer-image {
-        width: 48px;
-        height: 48px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         display: block;
-        background: #D3FBD8;
+        object-fit: cover;
         flex-shrink: 0;
     }
 
-    .review-card:nth-child(1) .reviewer-image {
-        background: #D3FBD8;
-    }
-
-    .review-card:nth-child(2) .reviewer-image {
-        background: #BEE2C2;
-    }
-
-    .review-card:nth-child(3) .reviewer-image {
-        background: #79EAAD;
+    .reviewer-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 
     .reviewer-name {
@@ -95,118 +136,367 @@
     .stars {
         display: flex;
         gap: 2px;
-        margin-left: auto;
-        background: #f2f2f2;
-        padding: 8px 12px;
-        border-radius: 20px;
+        align-items: center;
     }
 
     .star {
-        color: #FACC15;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .star svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .quote-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .quote {
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        color: #152429;
+        line-height: 150%;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .quote.expanded {
+        display: block;
+        -webkit-line-clamp: unset;
+    }
+
+    .read-more {
+        font-family: 'Roboto', sans-serif;
         font-size: 16px;
+        font-weight: 400;
+        line-height: 150%;
+        color: #0066cc;
+        text-decoration: none;
+        cursor: pointer;
+        align-self: flex-start;
+        margin-top: 0;
+    }
+
+    .read-more:hover {
+        text-decoration: underline;
+    }
+
+    .review-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: auto;
+    }
+
+    .review-date {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 100%;
+        color: #718288;
+        text-align: right;
+        margin: 0;
+    }
+
+    @media only screen and (max-width: 599px) {
+        .review-card {
+            max-width: 320px;
+        }
     }
 
     @media only screen and (min-width: 600px) and (max-width: 1135px) {
         .section-container {
-            padding: 64px 32px;
+            padding-top: 64px;
+            padding-bottom: 64px;
+            padding-left: 32px;
+            padding-right: 32px;
         }
 
-        h2 {
-            font-size: 48px;
+        h3 {
+            font-size: 40px;
         }
 
-        .reviews-grid {
-            flex-direction: row;
-            gap: 16px;
+        .slider-wrapper {
+            padding-left: 32px;
+            padding-right: 32px;
         }
 
-        .review-card {
-            flex: 1;
+        .splide__track {
+            padding: 0;
         }
     }
 
     @media only screen and (min-width: 1136px) {
-        section {
-            padding: 0 56px;
-        }
-
         .section-container {
-            padding: 96px 56px;
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 112px;
+            padding-right: 112px;
             margin: 0;
             width: 100%;
         }
 
-        h2 {
-            font-size: 56px;
+        h3 {
+            font-size: 40px;
         }
 
-        .reviews-grid {
-            flex-direction: row;
-            gap: 24px;
+        .slider-wrapper {
+            padding-left: 112px;
+            padding-right: 112px;
         }
 
-        .review-card {
-            flex: 1;
+        .splide__track {
+            padding: 0;
         }
     }
 
     @media only screen and (min-width: 1920px) {
-        section {
-            padding: 0 156px;
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 312px;
+            padding-right: 312px;
         }
 
-        .section-container {
-            padding: 96px 156px;
+        .slider-wrapper {
+            padding-left: 312px;
+            padding-right: 312px;
         }
     }
 </style>
 
 <section>
     <div class="section-container">
-        <h2>Trusted by 60+ Investors</h2>
-        <div class="reviews-grid">
-            <div class="review-card">
-                <p class="quote">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
-                <div class="reviewer-info">
-                    <div class="reviewer-image"></div>
-                    <p class="reviewer-name">Francisco Landaverde</p>
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card">
-                <p class="quote">"The consistent returns and transparent communication have made this my go-to investment platform. Highly recommend."</p>
-                <div class="reviewer-info">
-                    <div class="reviewer-image"></div>
-                    <p class="reviewer-name">Sarah M.</p>
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                </div>
-            </div>
-            <div class="review-card">
-                <p class="quote">"I've been impressed with the professionalism and reliability. My portfolio has grown steadily over time."</p>
-                <div class="reviewer-info">
-                    <div class="reviewer-image"></div>
-                    <p class="reviewer-name">Michael R.</p>
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
+        <h3>Trusted by 60+ Investors</h3>
+        <div class="slider-wrapper">
+            <div class="reviews-slider">
+                <div class="splide" id="reviews-slider" aria-label="Reviews">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="Stephen Romesburg" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="1">"Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments."</p>
+                                    <a class="read-more" data-readmore="1" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">Stephen Romesburg</p>
+                                    </div>
+                                    <p class="review-date">Nov 1, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="Michael J Francis" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="2">"I like that with Robert Ventures, I can always talk to a real person when I have questions. Everything isn't just online or with a robot. If I have any concerns, I can reach someone directly, and that makes me feel comfortable and confident with my investment."</p>
+                                    <a class="read-more" data-readmore="2" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">Michael J Francis</p>
+                                    </div>
+                                    <p class="review-date">Nov 1, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="Francisco Landaverde" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="3">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
+                                    <a class="read-more" data-readmore="3" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">Francisco Landaverde</p>
+                                    </div>
+                                    <p class="review-date">Sep 16, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="Sarah Johnson" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="4">"The investment process was straightforward and transparent. I appreciate the monthly updates and the ability to track my returns in real-time. The team is responsive and professional, making this a reliable investment option."</p>
+                                    <a class="read-more" data-readmore="4" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">Sarah Johnson</p>
+                                    </div>
+                                    <p class="review-date">Oct 15, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="David Chen" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="5">"I've been investing with Robert Ventures for several months now and the returns have been consistent. The platform is user-friendly and the customer support team is always available to answer questions. Highly recommend for anyone looking for stable returns."</p>
+                                    <a class="read-more" data-readmore="5" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">David Chen</p>
+                                    </div>
+                                    <p class="review-date">Oct 28, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="review-card">
+                                <div class="reviewer-info">
+                                    <Image src={avatarPlaceholder} alt="Emily Rodriguez" class="reviewer-image" />
+                                </div>
+                                <div class="quote-container">
+                                    <p class="quote" data-quote="6">"What I love most about Robert Ventures is the transparency and regular communication. They provide detailed reports and keep investors informed every step of the way. The returns are exactly as promised and the process is seamless."</p>
+                                    <a class="read-more" data-readmore="6" href="javascript:void(0)">Read more</a>
+                                </div>
+                                <div class="review-footer">
+                                    <div class="reviewer-details">
+                                        <div class="stars">
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                            <span class="star"><ReviewStar /></span>
+                                        </div>
+                                        <p class="reviewer-name">Emily Rodriguez</p>
+                                    </div>
+                                    <p class="review-date">Nov 5, 2025</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </section>
+
+<!-- Splide.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Splide slider
+        const splide = new Splide('#reviews-slider', {
+            type: 'slide',
+            rewind: false,
+            pagination: false,
+            arrows: false,
+            drag: true,
+            snap: true,
+            focus: 0,
+            omitEnd: true,
+            gap: '16px',
+            padding: { left: '0', right: '0' },
+            autoWidth: true,
+            perMove: 1,
+            speed: 600,
+            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            flickPower: 600,
+            flickMaxPages: 1,
+            waitForTransition: false,
+        });
+
+        splide.mount();
+
+        // Read more functionality
+        const readMoreLinks = document.querySelectorAll('.read-more');
+        
+        readMoreLinks.forEach(link => {
+            const quoteId = link.getAttribute('data-readmore');
+            const quote = document.querySelector(`[data-quote="${quoteId}"]`);
+            
+            if (!quote) return;
+            
+            // Check if quote exceeds line-clamp limit by comparing scrollHeight with clientHeight
+            const scrollHeight = quote.scrollHeight;
+            const clientHeight = quote.clientHeight;
+            
+            // Only show read more if content exceeds the visible height (truncated)
+            if (scrollHeight <= clientHeight + 2) { // Add small buffer for rounding
+                link.style.display = 'none';
+                return;
+            }
+            
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isExpanded = quote.classList.contains('expanded');
+                
+                if (isExpanded) {
+                    quote.classList.remove('expanded');
+                    link.textContent = 'Read more';
+                } else {
+                    quote.classList.add('expanded');
+                    link.textContent = 'Read less';
+                }
+            });
+        });
+    });
+</script>

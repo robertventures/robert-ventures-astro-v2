@@ -20,11 +20,11 @@ const faqs = [
         The 10% rate is achievable because we operate efficiently, investing only when the timing and demand are right. We build on lots as the market demands it, and if conditions cool, we can shift capital into digital assets instead of being forced to deploy it like significant funds.`,
     },
     {
-        question: "Are There Any Fees?",
+        question: "Are there any fees?",
         answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
     },
     {
-        question: "How Are My Investments Taxed? ",
+        question: "How are my investments taxed?",
         answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
     },
     {
@@ -33,7 +33,7 @@ const faqs = [
         Now operating under Robert Ventures, he works directly with investors, offering full transparency, eliminating middlemen, and potentially achieving better yields.`,
     },
     {
-        question: "Why are our digital assets as part of our treasuries important in 2025?",
+        question: "Why digital assets are part of our treasuries?",
         answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
         They've been the best-performing assets of the past decade and complement the stability of our real estate. We're preparing ourselves for a digital economy.`,
     },
@@ -42,31 +42,66 @@ const faqs = [
 
 <style>
     section {
+        background: #f2f2f2;
         margin-bottom: 0;
+        padding: 0;
+        border-top: 1px solid #BFD1D7;
     }
 
-    h2 {
-        color: #281480;
-        text-align: center;
+    .section-container {
+        background: transparent;
+        border-radius: 0;
+        padding-top: 48px;
+        padding-bottom: 48px;
+        padding-left: 16px;
+        padding-right: 16px;
+        text-align: left;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
 
-        font-size: 2.25rem;
+    .section-content {
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        width: 100%;
+    }
 
-        font-weight: 700;
-        line-height: 1.1; /* 2.475rem */
-
-        margin-bottom: 2rem;
+    h3 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin: 0 0 32px 0;
+        line-height: 125%;
+        text-align: left;
+        color: #152429;
+        font-variant-numeric: lining-nums;
     }
 
     .faqs {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-
-        margin-bottom: 3rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 0;
+        align-items: start;
     }
 
+    .faq-container {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 0;
+        border: none;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 0;
+    }
+
+
     .accordion {
-        background-color: #ffffff;
+        background-color: transparent;
         cursor: pointer;
         width: 100%;
         border: none;
@@ -74,24 +109,24 @@ const faqs = [
         outline: none;
         font-size: 15px;
         transition: background-color 0.4s;
-
-        padding-bottom: 1rem;
-    }
-
-    button.accordion {
-        color: #1d1d1f;
-        font-family: var(--font-body);
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 160%; /* 2rem */
-
+        padding: 16px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
+    }
+
+    button.accordion {
+        color: #152429;
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 125%;
     }
 
     button.accordion svg {
         flex-shrink: 0;
+        margin-left: 16px;
     }
 
     .active,
@@ -100,50 +135,103 @@ const faqs = [
     }
 
     .panel {
-        padding: 0 18px;
+        padding: 0;
         max-height: 0;
+        height: 0;
+        min-height: 0;
         overflow: hidden;
-        transition: max-height 0.4s ease-out;
-        background-color: white;
+        background-color: transparent;
+        display: block;
+        flex-shrink: 0;
+        margin: 0;
+        border: 0;
+        line-height: 0;
+    }
+
+    .panel.expanded {
+        padding: 0 16px 16px 16px;
+        height: auto;
+        max-height: 2000px;
+        line-height: normal;
+    }
+
+    .panel > div {
+        display: block;
     }
 
     .panel p {
-        color: #1d1d1f;
+        color: #152429;
         font-family: var(--font-body);
         font-size: 0.85rem;
         font-weight: 500;
-        line-height: 160%; /* 2rem */
-
-        padding-bottom: 1rem;
-    }
-
-    .faq-container {
-        /* margin-bottom: 1rem; */
-        border-bottom: 1px solid #afb5bc;
-    }
-
-    .book-a-call {
-        text-align: center;
-    }
-
-    .book-a-call p {
         line-height: 160%;
-        margin-bottom: 0.75rem;
+        padding-bottom: 0;
+        margin: 0;
     }
 
-    .book-a-call a {
-        color: #396afb;
-        font-family: var(--font-body);
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 100%;
+    .panel p:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding-top: 64px;
+            padding-bottom: 64px;
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+
+        .section-content {
+            max-width: 100%;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 112px;
+            padding-right: 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        .section-content {
+            max-width: 100%;
+        }
+
+        .faqs {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 312px;
+            padding-right: 312px;
+        }
+
+        .section-content {
+            max-width: 100%;
+        }
     }
 </style>
 
 <section>
     <div class="section-container">
         <div class="section-content">
-            <h2>Frequently Asked Questions</h2>
+            <h3>Frequently Asked Questions</h3>
             <div class="faqs">
                 {faqs.map((faq, index) => (
                     <div class="faq-container">
@@ -168,11 +256,6 @@ const faqs = [
                     </div>
                 ))}
             </div>
-
-            <div class="book-a-call">
-                <p>Do you have more questions?</p>
-                				<a href="/calendar">Book a call</a>
-            </div>
         </div>
     </div>
 </section>
@@ -182,11 +265,21 @@ const faqs = [
         const container = document.querySelector(".faqs");
         if (!container) return;
 
+        // Initialize all panels to be closed
+        const allPanels = container.querySelectorAll<HTMLElement>(".panel");
+        allPanels.forEach((panel) => {
+            panel.style.maxHeight = "0";
+            panel.style.height = "0";
+            panel.classList.remove("expanded");
+        });
+
         container.addEventListener("click", function (event) {
             const target = event.target;
             const button = target instanceof Element ? target.closest("button.accordion") : null;
             if (!button || !container.contains(button)) return;
 
+            const clickedPanel = button.nextElementSibling as HTMLElement | null;
+            
             const allButtons = container.querySelectorAll("button.accordion");
             const allPanels = container.querySelectorAll<HTMLElement>(".panel");
 
@@ -198,17 +291,27 @@ const faqs = [
             });
 
             allPanels.forEach((panel) => {
-                if (panel.previousElementSibling !== button) {
-                    panel.style.maxHeight = null;
+                if (panel !== clickedPanel) {
+                    panel.style.maxHeight = "0";
+                    panel.style.height = "0";
+                    panel.classList.remove("expanded");
                 }
             });
 
             const isOpen = button.classList.toggle("active");
             button.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
-            const panel = button.nextElementSibling as HTMLElement | null;
-            if (!panel) return;
-            panel.style.maxHeight = isOpen ? panel.scrollHeight + "px" : null;
+            if (!clickedPanel) return;
+            if (isOpen) {
+                clickedPanel.classList.add("expanded");
+                // Remove inline styles to let CSS handle it
+                clickedPanel.style.maxHeight = "";
+                clickedPanel.style.height = "";
+            } else {
+                clickedPanel.style.maxHeight = "0";
+                clickedPanel.style.height = "0";
+                clickedPanel.classList.remove("expanded");
+            }
         });
     });
 </script>

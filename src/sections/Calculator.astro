@@ -28,7 +28,7 @@
     @media only screen and (min-width: 1136px) {
         .section-container::before {
             top: 48px;
-        }
+    }
     }
 
     h3 {
@@ -220,7 +220,7 @@
             flex-direction: row;
             gap: 64px;
             align-items: flex-start;
-        }
+    }
     }
 
     @media only screen and (min-width: 1136px) {
@@ -267,8 +267,8 @@
                             <span class="lockup-period">1 Year</span>
                             <span class="lockup-apy">8%</span>
                         </button>
-                    </div>
-                </div>
+                                </div>
+                            </div>
 
                 <!-- Return Options -->
                 <div class="control-group">
@@ -276,8 +276,8 @@
                     <div class="button-group stacked">
                         <button class="calc-button active" data-return="compound">Compound</button>
                         <button class="calc-button" data-return="monthly">Monthly</button>
-                    </div>
-                </div>
+                                </div>
+                            </div>
 
                 <!-- Investment Amount -->
                 <div class="control-group">
@@ -329,7 +329,7 @@
         const principal = selectedAmount;
         const years = selectedLockup;
         const annualRate = selectedApy / 100;
-        
+
         let total = 0;
 
         if (selectedReturn === 'compound') {
@@ -364,9 +364,9 @@
             selectedLockup = parseInt(button.dataset.lockup);
             selectedApy = parseInt(button.dataset.apy);
             setActive(lockupButtons, button);
-            calculateReturns();
+                calculateReturns();
+            });
         });
-    });
 
     returnButtons.forEach(button => {
         button.addEventListener('click', () => {

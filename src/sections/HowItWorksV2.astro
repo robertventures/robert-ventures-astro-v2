@@ -157,7 +157,10 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
     @media only screen and (min-width: 1136px) {
         .section-container {
-            padding: 96px 56px;
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 112px;
+            padding-right: 112px;
             margin: 0;
             width: 100%;
         }
@@ -198,12 +201,15 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
     @media only screen and (min-width: 1920px) {
         .section-container {
-            padding: 96px 156px;
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 312px;
+            padding-right: 312px;
         }
 
         .blocks {
             flex-wrap: nowrap;
-        }
+    }
 
         .content-block {
             flex: 1 1 calc(25% - 6px);
@@ -215,15 +221,15 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 <section>
     <div class="section-container">
         <h2>Your Path To Investing</h2>
-        <div class="blocks">
-            <div class="content-block">
+            <div class="blocks">
+                <div class="content-block">
                 <p class="step-label">Step One</p>
                 <h4 class="step-title">Create Account</h4>
                 <Image src={createAccountImg} alt="Create Account" class="step-image" />
                 <p class="step-description">
                     Takes less than 5 minutes to complete.
                 </p>
-            </div>
+                    </div>
 
             <div class="content-block">
                 <p class="step-label">Step Two</p>
@@ -231,8 +237,8 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
                 <Image src={chooseTermsImg} alt="Choose Terms" class="step-image" />
                 <p class="step-description">
                     Select your preferred investment option.
-                </p>
-            </div>
+                            </p>
+                        </div>
 
             <div class="content-block">
                 <p class="step-label">Step Three</p>
@@ -242,7 +248,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
                     Track and manage your investment progress.
                 </p>
             </div>
-
+            
             <div class="content-block">
                 <p class="step-label">Step Four</p>
                 <h4 class="step-title">Withdraw Earnings</h4>
