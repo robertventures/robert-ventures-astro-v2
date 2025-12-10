@@ -1,0 +1,324 @@
+---
+import { Image } from 'astro:assets';
+import graphAllocationImg from '../images/graph-allocation.png';
+---
+
+<style>
+    section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        position: relative;
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .section-container {
+        position: relative;
+        z-index: 1;
+        padding: 48px 16px;
+        background: transparent;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 56px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 110%;
+        text-decoration-style: solid;
+        text-align: left;
+        color: #E1EEEA;
+        max-width: 640px;
+        font-family: var(--font-heading);
+    }
+
+    .hero-subtitle {
+        font-size: 20px;
+        line-height: 150%;
+        color: #BFD1D7;
+        text-align: left;
+        margin-bottom: 32px;
+        max-width: 512px;
+        font-family: var(--font-body);
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        width: 100%;
+    }
+
+    .hero-left {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .top-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .section-divider {
+        width: 100%;
+        height: 1px;
+        background-color: #30414D;
+        margin: 24px 0;
+    }
+
+    .aum-section {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .aum-value {
+        font-family: var(--font-heading);
+        font-size: 40px;
+        font-weight: 500;
+        line-height: 1;
+        color: #D3FBD8;
+        font-variant-numeric: lining-nums;
+        text-align: left;
+    }
+
+    .aum-label {
+        font-family: var(--font-body);
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 100%;
+        color: #E1EEEA;
+        text-align: left;
+    }
+
+    .allocation-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .allocation-label {
+        font-family: var(--font-body);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 100%;
+        color: #E1EEEA;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .allocation-bullet {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #79EAAD;
+        display: inline-block;
+    }
+
+    .chart-legend-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 32px;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .chart-container {
+        flex: 0 1 auto;
+        max-height: 192px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-width: 0;
+    }
+
+    .chart-image {
+        max-width: 100%;
+        max-height: 192px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .legend {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 0 0 auto;
+        align-items: flex-start;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .legend-color {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    .legend-color.real-estate {
+        background-color: #1F6469;
+    }
+
+    .legend-color.digital-assets {
+        background-color: #79EAAD;
+    }
+
+    .legend-text {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 100%;
+        color: #E1EEEA;
+    }
+
+
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
+        }
+
+        h1 {
+            font-size: 64px;
+            line-height: 110%;
+        }
+
+        .aum-value {
+            font-size: 40px;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        .hero-content {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 48px;
+        }
+
+        .hero-left {
+            flex: 1;
+        }
+
+        .hero-right {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .chart-legend-wrapper {
+            max-height: 192px;
+            overflow: hidden;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 96px 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            font-size: 80px;
+            line-height: 110%;
+        }
+
+        .hero-content {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 64px;
+        }
+
+        .hero-left {
+            flex: 1;
+        }
+
+        .hero-right {
+            flex: 1;
+            max-width: 480px;
+        }
+
+        .aum-value {
+            font-size: 40px;
+        }
+
+        .chart-legend-wrapper {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding: 96px 312px;
+        }
+
+        .hero-content {
+            gap: 96px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <div class="hero-content">
+            <div class="hero-left">
+                <h1>Dual Sector Strategy</h1>
+                <p class="hero-subtitle">A strategy that delivers consistent fixed-rate returns – blending the security of real estate with the growth of digital assets.</p>
+            </div>
+            <div class="hero-right">
+                <div class="top-section">
+                    <div class="aum-value">$3.83M</div>
+                    <div class="aum-label">Total Portfolio AUM</div>
+                    <div class="allocation-label">
+                        <span class="allocation-bullet"></span>
+                        Q3 2025 Allocation
+                    </div>
+                </div>
+                <div class="section-divider"></div>
+                <div class="allocation-section">
+                    <div class="chart-legend-wrapper">
+                        <div class="chart-container">
+                            <Image src={graphAllocationImg} alt="Portfolio Allocation Chart" class="chart-image" />
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <span class="legend-color real-estate"></span>
+                                <span class="legend-text">75.6% Real Estate</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color digital-assets"></span>
+                                <span class="legend-text">24.4% Digital Assets</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

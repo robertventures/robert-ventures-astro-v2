@@ -161,6 +161,7 @@
         flex-direction: column;
         gap: 16px;
         width: 100%;
+        max-width: 384px;
         margin-top: 20px;
     }
 
@@ -209,18 +210,18 @@
 
     @media only screen and (min-width: 800px) {
         .controls-section {
-            max-width: 480px;
+            max-width: 512px;
         }
 
         .results-section {
-            max-width: 384px;
+            max-width: 512px;
         }
 
         .calculator-wrapper {
             flex-direction: row;
-            gap: 64px;
+            justify-content: space-between;
             align-items: flex-start;
-    }
+        }
     }
 
     @media only screen and (min-width: 1136px) {
@@ -233,17 +234,13 @@
         }
 
         .controls-section {
-            max-width: 480px;
+            max-width: 512px;
         }
     }
 
     @media only screen and (min-width: 1920px) {
         .section-container {
             padding: 96px 312px;
-        }
-
-        .calculator-wrapper {
-            gap: 96px;
         }
     }
 </style>
