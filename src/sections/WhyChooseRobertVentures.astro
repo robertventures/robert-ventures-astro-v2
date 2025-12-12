@@ -35,8 +35,8 @@ import opentoallImg from '../images/opentoall-img.png';
     }
 
     .cards-container {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr;
         gap: 16px;
         width: 100%;
     }
@@ -96,14 +96,8 @@ import opentoallImg from '../images/opentoall-img.png';
         }
 
         .cards-container {
-            flex-direction: row;
-            flex-wrap: wrap;
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
-        }
-
-        .benefit-card {
-            flex: 1;
-            min-width: calc(50% - 12px);
         }
     }
 
@@ -123,12 +117,8 @@ import opentoallImg from '../images/opentoall-img.png';
         }
 
         .cards-container {
-            flex-direction: row;
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-        }
-
-        .benefit-card {
-            flex: 1;
         }
     }
 

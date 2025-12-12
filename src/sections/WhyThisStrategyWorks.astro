@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import theUnitedStatesImg from '../images/the-united-states.png';
 import fidelityImg from '../images/fidelity.png';
 import teslaImg from '../images/tesla.png';
+import bitgoBannerImg from '../images/bitgo-banner.jpg';
+import houseImg from '../images/house-169-1.jpg';
 ---
 
 <style>
@@ -76,6 +78,19 @@ import teslaImg from '../images/tesla.png';
 
         .card-header {
             padding: 24px 32px;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        .card-content-wrapper {
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 32px;
+        }
+
+        .card-content-wrapper > .card-content {
+            flex: 1;
+            max-width: 512px;
         }
     }
 
@@ -240,7 +255,13 @@ import teslaImg from '../images/tesla.png';
         width: 100%;
         aspect-ratio: 16 / 9;
         background-color: #ffffff;
-        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .card-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .card-stats-container,
@@ -628,7 +649,9 @@ import teslaImg from '../images/tesla.png';
                             <p>Home values in the Outer Banks, NC. have increased by 117% over the last 10 years, proving long-term resilience.</p>
                         </div>
                         <div class="card-content-column">
-                            <div class="card-image-container"></div>
+                            <div class="card-image-container">
+                                <Image src={houseImg} alt="House" />
+                            </div>
                         </div>
                     </div>
                     <div class="card-content">
@@ -671,7 +694,9 @@ import teslaImg from '../images/tesla.png';
                             <p>We use Bitcoin and Ethereum as part of a risk-managed, institutional-grade custody provided by our partner, BitGo.</p>
                         </div>
                         <div class="card-content-column">
-                            <div class="card-image-container"></div>
+                            <div class="card-image-container">
+                                <Image src={bitgoBannerImg} alt="BitGo" />
+                            </div>
                         </div>
                     </div>
                     <div class="card-content">
