@@ -1,0 +1,183 @@
+---
+import { Image } from 'astro:assets';
+import outpaceImg from '../images/outpace-img.png';
+import consistentImg from '../images/consistent-img.png';
+import opentoallImg from '../images/opentoall-img.png';
+---
+
+<style>
+    section {
+        background: #f2f2f2;
+        position: relative;
+        color: #152429;
+        padding: 0;
+        margin: 0;
+    }
+
+    .section-container {
+        padding: 48px 16px;
+        text-align: left;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        background: transparent;
+    }
+
+    h3 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 100%;
+        text-align: left;
+        color: #152429;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .benefit-card {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .benefit-card-image {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .benefit-card-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .benefit-card-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        color: #152429;
+        line-height: 100%;
+        margin: 0;
+    }
+
+    .benefit-card-description {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: #152429;
+        line-height: 150%;
+        margin: 0;
+    }
+
+    .benefit-card-text {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+
+        .cards-container {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .benefit-card {
+            flex: 1;
+            min-width: calc(50% - 12px);
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        section {
+            padding: 0 56px 0 56px;
+        }
+
+        .section-container {
+            padding: 96px 56px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+
+        .cards-container {
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .benefit-card {
+            flex: 1;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        section {
+            padding: 0 156px 0 156px;
+        }
+
+        .section-container {
+            padding: 96px 156px;
+        }
+    }
+</style>
+
+<section>
+    <div class="section-container">
+        <h3>Why Choose Robert Ventures</h3>
+        
+        <div class="cards-container">
+            <div class="benefit-card">
+                <div class="benefit-card-image">
+                    <Image src={outpaceImg} alt="Outpace Inflation" />
+                </div>
+                <div class="benefit-card-text">
+                    <h4 class="benefit-card-title">Outpace Inflation</h4>
+                    <p class="benefit-card-description">CDs and savings rates are not sustainable for maintaining wealth.</p>
+                </div>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-card-image">
+                    <Image src={consistentImg} alt="Consistent and Predictable" />
+                </div>
+                <div class="benefit-card-text">
+                    <h4 class="benefit-card-title">Consistent and Predictable</h4>
+                    <p class="benefit-card-description">No market volatility, your investment earns consistent returns.</p>
+                </div>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-card-image">
+                    <Image src={opentoallImg} alt="Open to all U.S. Investors" />
+                </div>
+                <div class="benefit-card-text">
+                    <h4 class="benefit-card-title">Open to all U.S. Investors</h4>
+                    <p class="benefit-card-description">Available to accredited and unaccredited investors.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
