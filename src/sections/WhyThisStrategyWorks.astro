@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import theUnitedStatesImg from '../images/the-united-states.png';
+import fidelityImg from '../images/fidelity.png';
+import teslaImg from '../images/tesla.png';
 ---
 
 <style>
@@ -310,18 +314,27 @@
         display: flex;
         flex-direction: row;
         gap: 12px;
-        align-items: flex-start;
+        align-items: center;
         background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
         border-left: 4px solid #30414D;
         padding: 24px 0 24px 24px;
     }
 
     .entity-logo {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        background-color: #ffffff;
-        border-radius: 4px;
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .entity-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .entity-info {
@@ -668,21 +681,27 @@
                                     <h5 class="list-heading">Most widely accepted digital asset</h5>
                                     <ul class="entity-list">
                                         <li class="entity-item">
-                                            <div class="entity-logo"></div>
+                                            <div class="entity-logo">
+                                                <Image src={theUnitedStatesImg} alt="The United States" />
+                                            </div>
                                             <div class="entity-info">
                                                 <div class="entity-name">The United States</div>
                                                 <div class="entity-amount">$21 billion in BTC</div>
                                             </div>
                                         </li>
                                         <li class="entity-item">
-                                            <div class="entity-logo"></div>
+                                            <div class="entity-logo">
+                                                <Image src={fidelityImg} alt="Fidelity" />
+                                            </div>
                                             <div class="entity-info">
                                                 <div class="entity-name">Fidelity</div>
                                                 <div class="entity-amount">$30 billion in BTC</div>
                                             </div>
                                         </li>
                                         <li class="entity-item">
-                                            <div class="entity-logo"></div>
+                                            <div class="entity-logo">
+                                                <Image src={teslaImg} alt="Tesla" />
+                                            </div>
                                             <div class="entity-info">
                                                 <div class="entity-name">Tesla</div>
                                                 <div class="entity-amount">$1 billion in BTC</div>
