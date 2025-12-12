@@ -49,7 +49,7 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
     .blocks {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
         align-items: flex-start;
         width: 100%;
         background: transparent;
@@ -146,12 +146,11 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
             flex-wrap: wrap;
             align-items: stretch;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .content-block {
-            flex: 1 1 calc(50% - 4px);
-            max-width: 480px;
+            flex: 1 1 calc(50% - 6px);
         }
     }
 
@@ -176,26 +175,25 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         .blocks {
             flex-direction: row;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: stretch;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .content-block {
-            flex: 1 1 calc(50% - 4px);
-            max-width: 480px;
+            flex: 1 1 calc(25% - 9px);
         }
     }
 
     @media only screen and (min-width: 1440px) {
         .blocks {
             flex-wrap: nowrap;
+            gap: 12px;
         }
 
         .content-block {
-            flex: 1 1 calc(25% - 6px);
-            max-width: 480px;
+            flex: 1 1 calc(25% - 9px);
         }
     }
 
@@ -209,11 +207,11 @@ import withdrawEarningsImg from '../images/withdraw-earnings.png';
 
         .blocks {
             flex-wrap: nowrap;
+            gap: 12px;
     }
 
         .content-block {
-            flex: 1 1 calc(25% - 6px);
-            max-width: 480px;
+            flex: 1 1 calc(25% - 9px);
         }
     }
 </style>
