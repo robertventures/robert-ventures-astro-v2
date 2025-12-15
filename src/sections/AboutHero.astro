@@ -1,62 +1,232 @@
 ---
 import Image from "astro/components/Image.astro";
-
-import team from "../images/design-elements/rv-team.png";
-import DualCTA from "../components/DualCTA.astro";
+import joe from "../images/joerobertaboutus.jpg";
+import matheus from "../images/mattaboutus.jpg";
+import eduardo from "../images/eduardoaboutus.jpg";
 ---
 
 <style>
     section {
-        margin-bottom: 1.5rem;
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
     }
 
     .section-container {
-        max-width: 1280px;
+        padding: 48px 16px;
+        width: 100%;
+        max-width: 100%;
         margin: 0 auto;
-        border-radius: 1rem;
-        background: #fff;
-        padding: 3rem 1.5rem;
+        background: transparent;
+        border-radius: 0;
     }
 
     .section-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 56px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 110%;
+        text-decoration-style: solid;
+        text-align: left;
+        color: #E1EEEA;
         max-width: 640px;
-        margin: 0 auto;
-    }
-
-    h2 {
-        color: #281480;
-        text-align: center;
-        font-size: 2.5625rem;
-
-        font-weight: 700;
-        line-height: 1.1; /* 2.475rem */
-
-        margin-bottom: 2rem;
-    }
-
-    .info img {
-        margin: 0 auto;
-        margin-bottom: 2rem;
-
-        max-width: 250px;
-        height: auto;
-        object-fit: contain;
+        font-family: var(--font-heading);
     }
 
     .info p {
-        color: #505050;
-        text-align: center;
+        color: #BFD1D7;
+        text-align: left;
         font-family: var(--font-body);
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 150%; /* 1.875rem */
-
-        margin-bottom: 3rem;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 150%;
+        margin: 0;
+        max-width: 512px;
+        margin-bottom: 32px;
     }
 
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0 2rem;
+    .team-cards-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        width: 100%;
+    }
+
+    .team-card {
+        background: #152429;
+        border-radius: 8px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .team-card-full-width {
+        grid-column: 1 / -1;
+    }
+
+    .team-card-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 0;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .team-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .team-card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .team-card-name {
+        font-family: var(--font-body);
+        font-size: 24px;
+        font-weight: 500;
+        color: #E1EEEA;
+        margin: 0;
+        line-height: 100%;
+    }
+
+    .team-card-position {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        color: #BFD1D7;
+        margin: 0;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 100%;
+    }
+
+    .team-card-description {
+        font-family: var(--font-body);
+        font-size: 20px;
+        font-weight: 400;
+        color: #E1EEEA;
+        line-height: 150%;
+        margin: 0;
+        margin-top: 32px;
+    }
+
+    .track-record-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        margin-top: 32px;
+    }
+
+    .track-record-stat {
+        width: 100%;
+        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-left: 4px solid #30414D;
+        padding: 24px 0 24px 24px;
+    }
+
+    .track-record-value {
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
+        font-weight: 500;
+        color: #D3FBD8;
+        line-height: 100%;
+        font-variant-numeric: lining-nums;
+        margin: 0;
+    }
+
+    .track-record-label {
+        font-size: 20px;
+        color: #E1EEEA;
+        line-height: 100%;
+        margin: 0;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
+        }
+
+        h1 {
+            font-size: 64px;
+            line-height: 110%;
+        }
+
+        .team-cards-container {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .team-card-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .track-record-stats {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .track-record-stat {
+            flex: 0 0 calc(50% - 8px);
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 112px;
+            padding-right: 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            font-size: 80px;
+            line-height: 110%;
+        }
+
+        .team-cards-container {
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .team-card-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .track-record-stats {
+            flex-direction: row;
+        }
+
+        .track-record-stat {
+            flex: 1;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 312px;
+            padding-right: 312px;
         }
     }
 </style>
@@ -64,19 +234,70 @@ import DualCTA from "../components/DualCTA.astro";
 <section>
     <div class="section-container">
         <div class="section-content">
-            <h2>Our Experienced Team</h2>
+            <h1>Meet the Team</h1>
             <div class="info">
-                <Image src={team} alt="herobox" width={464} />
-
                 <p>
-                    At Robert Ventures, our mission is to leverage Joe's decades
-                    of experience in real estate and digital assets to maximize
-                    growth and deliver strong returns for our investors.
+                    Our mission is to help investors grow and protect their wealth through secure, long-term opportunities.
                 </p>
             </div>
 
-            <div class="form-cta">
-                <DualCTA />
+            <div class="team-cards-container">
+                <div class="team-card team-card-full-width">
+                    <div class="team-card-image">
+                        <Image src={joe} alt="Joe Robert" width={120} height={120} />
+                    </div>
+                    <div class="team-card-header">
+                        <h3 class="team-card-name">Joe Robert</h3>
+                        <p class="team-card-position">Manager of Operations and Founder</p>
+                    </div>
+                    <p class="team-card-description">
+                        Joe Robert is the CEO and Founder of Robert Ventures with over 20 years of asset management experience in real estate investing. He has raised capital from individuals and partners that paid double-digit preferred returns annually for years, and has never lost private investors' capital. Over the last five years, he has made multiple investments into the tech sector, providing venture capital and acquiring digital assets.
+                    </p>
+                    <div class="track-record-stats">
+                        <div class="track-record-stat">
+                            <span class="track-record-value">20 yrs</span>
+                            <span class="track-record-label">Experience</span>
+                        </div>
+                        <div class="track-record-stat">
+                            <span class="track-record-value">200+</span>
+                            <span class="track-record-label">Properties</span>
+                        </div>
+                        <div class="track-record-stat">
+                            <span class="track-record-value">1.500+</span>
+                            <span class="track-record-label">Mortgages</span>
+                        </div>
+                        <div class="track-record-stat">
+                            <span class="track-record-value">40+</span>
+                            <span class="track-record-label">Tech Investments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-card-image">
+                        <Image src={matheus} alt="Matt Brandão" width={120} height={120} />
+                    </div>
+                    <div class="team-card-header">
+                        <h3 class="team-card-name">Matt Brandão</h3>
+                        <p class="team-card-position">Investor Relations</p>
+                    </div>
+                    <p class="team-card-description">
+                        Matheus Brandão has been actively researching and investing in digital assets since 2017, leveraging his dual expertise in economics and accounting. With a bachelor's degree in both fields and extensive experience in blockchain development and wealth management, Matheus plays a vital role in analyzing market trends and managing portfolio growth. His consulting background at PwC ensures that Robert Ventures adheres to the highest financial standards while maintaining trust and transparency with investors.
+                    </p>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-card-image">
+                        <Image src={eduardo} alt="Eduardo De Matos" width={120} height={120} />
+                    </div>
+                    <div class="team-card-header">
+                        <h3 class="team-card-name">Eduardo De Matos</h3>
+                        <p class="team-card-position">Engineering & Analytics</p>
+                    </div>
+                    <p class="team-card-description">
+                        Eduardo De Matos leads web design, full-stack development, analytics, CRM operations, and AI systems at Robert Ventures. With eight years of software engineering experience, he builds and maintains the website, data pipelines, and automations that support investor onboarding and reporting, with a focus on performance, reliability, and measurable outcomes.
+                    </p>
+                </div>
             </div>
         </div>
     </div>

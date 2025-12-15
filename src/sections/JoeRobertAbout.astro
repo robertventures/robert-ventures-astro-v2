@@ -1,133 +1,161 @@
 ---
-import Image from "astro/components/Image.astro";
-import arrow from "../images/design-elements/Arrow-right.svg";
-import joe from "../images/design-elements/joe-robert.jpg";
-import DualCTA from "../components/DualCTA.astro";
 ---
 
 <style>
-    section > * {
-        text-align: center;
+    section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
     }
 
-    .intro img {
+    .section-container {
+        padding: 48px 16px;
+        width: 100%;
+        max-width: 100%;
         margin: 0 auto;
-        margin-bottom: 1.5rem;
+        background: transparent;
+        border-radius: 0;
+    }
 
-        max-width: 96px;
-        max-height: 96px;
+    .section-content {
+        width: 100%;
+        margin: 0;
     }
 
     .intro {
-        margin-bottom: 3rem;
+        margin-bottom: 48px;
     }
 
     h2 {
-        color: #281480;
-        margin-bottom: 3rem;
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 32px;
+        line-height: 110%;
+        text-align: left;
+        color: #E1EEEA;
     }
 
     p.name {
-        font-size: 1.25rem;
-        color: #1d1d1f;
-        margin-bottom: 0.75rem;
+        font-size: 24px;
+        color: #E1EEEA;
+        margin-bottom: 8px;
         font-weight: 500;
-
-        line-height: 1;
+        line-height: 100%;
+        text-align: left;
+        font-family: var(--font-body);
     }
 
     p.position {
-        color: #505050;
-        text-align: center;
-        font-weight: 500;
-        line-height: 160%; /* 1.8rem */
-        font-size: 0.875rem;
-        margin-bottom: 1.5rem;
+        color: #BFD1D7;
+        text-align: left;
+        font-weight: 400;
+        line-height: 150%;
+        font-size: 16px;
+        margin-bottom: 32px;
+        font-family: var(--font-body);
     }
 
-    .info{
+    .info {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
-
-        max-width: 600px;
-        margin: 0 auto;
+        gap: 20px;
+        max-width: 640px;
+        margin: 0;
+        margin-bottom: 48px;
     }
 
-    .info p{
-        color: #505050;
+    .info p {
+        color: #BFD1D7;
         font-family: var(--font-body);
-        font-size: 1rem;
-        font-style: normal;
+        font-size: 20px;
         font-weight: 400;
-        line-height: 160%; /* 1.6rem */
-
+        line-height: 150%;
         text-align: left;
+        margin: 0;
     }
 
     .info-blocks {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin-bottom: 3rem;
+        gap: 12px;
+        margin-bottom: 32px;
     }
+
     .info-block {
         text-align: left;
-        padding: 1rem;
-
-        border-radius: 0.5rem;
-        border: 1px solid #afb5bc;
-
-        /* max-width: 177px; */
+        padding: 24px;
+        border-radius: 8px;
+        background: #152429;
+        border: none;
     }
 
     .block-title {
-        color: #1d1d1f;
-        font-size: 0.875rem;
-        font-weight: 500;
-        line-height: 100%; /* 0.875rem */
-
-        margin-bottom: 0.38rem;
+        color: #BFD1D7;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 100%;
+        margin-bottom: 8px;
+        font-family: var(--font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
     }
 
     .block-value {
-        font-size: 2rem;
-        color: #281480;
-        font-weight: 600;
-        line-height: 100%; /* 2rem */
+        font-size: 40px;
+        color: #D3FBD8;
+        font-weight: 500;
+        line-height: 100%;
+        font-family: var(--font-heading);
     }
 
     .extra-info {
-        color: #505050;
-        font-size: 1rem;
+        color: #BFD1D7;
+        font-size: 20px;
         font-weight: 400;
-        line-height: 160%; /* 1.6rem */
-
-        margin: 0 auto;
-        margin-bottom: 1rem;
-
-        max-width: 39rem;
-    }
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0 2rem;
-        }
-        .account {
-            margin-bottom: 0;
-        }
+        line-height: 150%;
+        margin: 0;
+        max-width: 640px;
+        font-family: var(--font-body);
     }
 
-    @media only screen and (min-width: 990px) {
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
         .section-container {
-            padding: 4rem 1.5rem;
+            padding: 64px 32px;
         }
 
-        .section-content {
-            max-width: 921px;
+        h2 {
+            font-size: 48px;
         }
 
         .info-blocks {
             grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 112px;
+            padding-right: 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 56px;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding-top: 96px;
+            padding-bottom: 96px;
+            padding-left: 312px;
+            padding-right: 312px;
         }
     }
 </style>
@@ -137,7 +165,6 @@ import DualCTA from "../components/DualCTA.astro";
         <div class="section-content">
             <div class="intro">
                 <h2>Manager Track Record</h2>
-                <Image src={joe} alt="herobox" width={192} height={192} />
                 <p class="name">Joe Robert</p>
                 <p class="position">Manager</p>
 
@@ -190,10 +217,6 @@ import DualCTA from "../components/DualCTA.astro";
                 Trust your investments with a proven manager that hasn't missed
                 an investor payment and returned all capital with interest.
             </p>
-
-            <div class="form-cta">
-                <DualCTA />
-            </div>
         </div>
     </div>
 </section>
