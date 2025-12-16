@@ -1,6 +1,9 @@
 ---
 import Quote from "../images/quote.svg";
+import Image from "astro/components/Image.astro";
 
+import checkRegistered from "../images/check-registered.png";
+import thankYouBanner from "../images/thank-you-image-banner.png";
 
 import Apple from "../images/svg/apple.svg";
 import Google from "../images/svg/google.svg";
@@ -11,85 +14,113 @@ import Outlook from "../images/svg/outlook.svg";
 ---
 
 <style>
+    section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        position: relative;
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
     .section-container {
-        padding: 3rem 1.5rem 3rem 1.5rem;
-        background-image: url(/images/svg/waves.svg);
-        background-repeat: no-repeat;
-        background-position: top;
+        position: relative;
+        z-index: 1;
+        padding: 48px 16px;
+        background: transparent;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .section-content {
         max-width: none;
     }
 
-    .thank {
-        font-family: var(--font-heading);
-        font-size: 14px;
-        color: #ff592c;
-        line-height: 1;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
 
     h1 {
-        font-size: 2.625rem;
-        margin: 0 auto 1.5rem auto;
-        max-width: 656px;
+        font-family: 'Roboto Serif', serif;
+        font-size: 48px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 110%;
         text-align: center;
-        margin-bottom: 2rem;
+        color: #E1EEEA;
+        max-width: 640px;
+    }
+
+    .email-message {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 150%;
+        margin: 0;
+        text-align: center;
+        color: #BFD1D7;
+        max-width: 512px;
+    }
+
+    .email-highlight {
+        color: #D3FBD8;
+        text-decoration: underline;
+        background: none;
+        background-clip: unset;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: #D3FBD8;
     }
 
     .intro {
-        /* margin-bottom: 3rem; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 32px;
+        overflow-x: visible;
     }
 
-    .intro a, .intro .add-to-calendar, .intro .add-to-google-calendar {
-        border: 1px solid red;
-        padding: 1rem;
+    .checkmark-image {
+        width: auto;
+        height: auto;
+        max-width: 48px;
+        max-height: 48px;
         display: block;
-        text-align: center;
-        text-decoration: none;
-        color: #ffffff;
-        font-weight: 500;
-        font-size: 1.125rem;
-        line-height: 1;
-        background-color: #ff592c;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 366px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 1rem;
+    }
+
+    .thank-you-banner {
+        width: auto;
+        height: 192px;
+        display: block;
+        object-fit: cover;
     }
 
     /* Calendar Dropdown Styles */
     .calendar-dropdown {
         position: relative;
         width: 100%;
-        max-width: 366px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 1rem;
+        max-width: 384px;
+        margin: 0;
     }
     .calendar-dropdown-btn {
         width: 100%;
-        padding: 0.75rem 1rem;
-        background-color: #ff592c;
-        border: 1px solid #ff592c;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 700;
-        font-size: 1.125rem;
+        max-width: 384px;
+        padding: 12px;
+        background-color: #D3FBD8;
+        border: 1px solid #D3FBD8;
+        border-radius: 8px;
+        color: #152429;
+        font-weight: 600;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         cursor: pointer;
-        transition: background 0.2s, border 0.2s;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .calendar-dropdown-btn:hover {
-        background-color: #e54a19;
-        border-color: #e54a19;
+        background-color: #9ebca2;
+        border-color: #9ebca2;
     }
     .dropdown-arrow {
         width: 1.125em;
@@ -105,10 +136,10 @@ import Outlook from "../images/svg/outlook.svg";
         top: 100%;
         left: 0;
         right: 0;
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        background: #152429;
+        border: 1px solid #30414D;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         margin-top: 0.5rem;
         opacity: 0;
         visibility: hidden;
@@ -130,7 +161,7 @@ import Outlook from "../images/svg/outlook.svg";
         border: none;
         text-align: left;
         cursor: pointer;
-        color: #2f2f2f;
+        color: #E1EEEA;
         font-weight: 500;
         font-size: 1rem;
         transition: background 0.2s;
@@ -139,167 +170,125 @@ import Outlook from "../images/svg/outlook.svg";
         gap: 0.75rem;
     }
     .calendar-option:hover {
-        background: #f9fafb;
+        background: #30414D;
     }
     .calendar-option:not(:last-child) {
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid #30414D;
     }
 
     .calendar-option svg {
         flex-shrink: 0;
-        color: #6b7280;
+        color: #BFD1D7;
     }
 
     .countdown-section {
+        display: flex;
+        flex-direction: column;
         text-align: center;
-        margin-bottom: 1rem;
-        max-width: 366px;
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0;
+        width: 100%;
+        max-width: 640px;
+        gap: 16px;
     }
 
     .countdown-section h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: #2f2f2f;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 100%;
+        margin: 0;
+        color: #E1EEEA;
+        text-align: center;
+        width: 100%;
     }
 
     span.heading {
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #D3FBD8;
+        text-decoration: underline;
     }
 
     .time {
         display: flex;
-        justify-content: space-around;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 100%;
+        max-width: 640px;
     }
 
     .time div {
-        font-weight: 600;
-    }
-
-    .testimonial {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        /* margin-bottom: 5rem; */
-        max-width: 366px;
-    }
-
-    .testimonial svg {
-        margin-bottom: 0.75rem;
-    }
-
-    .testimonial .text {
-        color: #2f2f2f;
-        line-height: 1.4;
-        margin-bottom: 1.5rem;
-    }
-
-    .testimonial .name {
-        color: #505050;
-        font-size: 14px;
-        font-weight: 700;
-        font-family: var(--font-heading);
-        line-height: 1;
-    }
-
-    .testimonial span {
         font-weight: 400;
-    }
-
-    .next {
-        margin-bottom: 4rem;
-    }
-
-    h2 {
-        font-size: 42px;
-        margin-bottom: 0.75rem;
-    }
-
-    p.subheadline {
-        font-size: 1.25rem;
-        line-height: 1.6;
-        font-weight: 500;
-    }
-
-    .blocks {
+        color: #E1EEEA;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        align-items: center;
+        border: 1px solid #152429;
+        border-radius: 4px;
+        flex: 1;
+        min-width: 0;
+        padding: 16px;
     }
 
-    .block {
-        padding: 2rem 1.5rem;
-        border-radius: 1rem;
-        background-color: #f2f5f8;
-    }
-
-    .block svg {
-        margin-bottom: 1.5rem;
-    }
-
-    .block h3 {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .block p {
-        line-height: 1.6;
-        font-size: 1.25rem;
-        margin-bottom: 3rem;
-    }
-
-    .block a {
-        display: block;
-        padding: 1rem;
-        background-color: #5028ff;
-        border-radius: 12px;
-        text-align: center;
-        color: #ffffff;
-        line-height: 1;
-        text-decoration: none;
+    .time div span {
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
         font-weight: 500;
-        font-size: 1.125rem;
+        line-height: 100%;
+        color: #D3FBD8;
+        font-variant-numeric: lining-nums;
+        background: none;
+        -webkit-text-fill-color: #D3FBD8;
+        background-clip: unset;
+        -webkit-background-clip: unset;
     }
+
+    .time div p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 100%;
+        margin: 0;
+        margin-top: 0.25rem;
+        color: #BFD1D7;
+    }
+
 
     @media only screen and (min-width: 768px) {
         section {
-            padding: 0 2rem;
+            padding: 0;
+            margin: 0;
         }
-
-        .intro {
-            text-align: center;
-        }
-
-        h2 {
-            max-width: 656px;
-            margin-inline: auto;
-        }
-
-        /* Remove display: inline-block for .add-to-calendar to keep it full width */
     }
 
-    @media only screen and (min-width: 990px) {
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
         .section-container {
-            padding: 4rem 1.5rem 4rem 1.5rem;
-        }
-        
-        .blocks {
-            flex-direction: row;
-            justify-content: center;
-            align-items: stretch;
+            padding: 64px 32px;
         }
 
-        .block {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        h1 {
+            font-size: 48px;
+            line-height: 110%;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 96px 112px;
+            margin: 0;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 0;
+            font-size: 48px;
+            line-height: 110%;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding: 96px 312px;
         }
     }
 
@@ -320,11 +309,13 @@ import Outlook from "../images/svg/outlook.svg";
         <div class="section-content">
             <div class="intro">
                 <!-- <p class="thank">THANK YOU!</p> -->
+                <Image src={checkRegistered} alt="Registration confirmed" class="checkmark-image" />
                 <h1>
-                    You've Registered! Add Webinar to Your Calendar
+                    You've Registered!
                 </h1>
+                <p class="email-message"><span class="email-highlight">We have sent you an email</span> with all the necessary details, including your unique access link.</p>
                 <div class="countdown-section">
-                    <h3>Your <span class="heading">Live</span> Webinar starts in:</h3>
+                    <h3>Your Webinar starts in:</h3>
                     <div class="time">
                         <div class="days">
                             <span>0</span>
@@ -366,6 +357,7 @@ import Outlook from "../images/svg/outlook.svg";
                         </button>
                     </div>
                 </div>
+                <Image src={thankYouBanner} alt="Thank you banner" class="thank-you-banner" />
             </div>
 
             <!-- <div class="testimonial">
