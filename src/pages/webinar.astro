@@ -3,14 +3,15 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 
 import HeroboxWebinar10 from "../sections/HeroboxWebinar10.astro";
-import WhyNowWebinar from "../sections/WhyNowWebinar.astro";
-import JoeRobertWebinar from "../sections/JoeRobertWebinar.astro";
-import Testimonials from "../sections/Testimonials.astro";
-import NotificationBar from "../components/NotificationBar.astro";
+import Featured from "../sections/Featured.astro";
+import BondsTrustedByNumbers from "../sections/BondsTrustedByNumbers.astro";
+import AvailableBondsOfferings from "../sections/AvailableBondsOfferings.astro";
+import Calculator from "../sections/Calculator.astro";
+import HowItWorksV2 from "../sections/HowItWorksV2.astro";
+import ReviewsV2 from "../sections/ReviewsV2.astro";
+import FAQ from "../sections/FAQ.astro";
 
 import FooterNew from "../components/FooterNew.astro";
-import HowItWorksV2 from "../sections/HowItWorksV2.astro";
-import InvestmentOptions from "../sections/InvestmentOptions.astro";
 
 const pageTitle = "Robert Ventures: Webinar";
 const pageDescription =
@@ -31,12 +32,13 @@ export const prerender = false
     <body>
         <Header />
         <HeroboxWebinar10 />
-        <InvestmentOptions/>
-        <HowItWorksV2/>
-        <WhyNowWebinar />
-        <JoeRobertWebinar />
-        <Testimonials />
+        <Featured />
+        <BondsTrustedByNumbers />
+        <AvailableBondsOfferings />
+        <Calculator />
+        <HowItWorksV2 />
+        <ReviewsV2 />
+        <FAQ />
         <FooterNew />
-        <NotificationBar />
     </body>
 </html>

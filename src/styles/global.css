@@ -303,7 +303,10 @@ section {
 
 .section-content {
 	margin: 0 auto;
+	margin-left: 0;
+	margin-right: 0;
 	width: 100%;
+	height: 100%;
 }
 
 /* Medium: 600px - 1135px */
