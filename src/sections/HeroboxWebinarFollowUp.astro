@@ -4,83 +4,399 @@ import Calendar from "../images/svg/calendar.svg";
 ---
 
 <style>
+    section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        position: relative;
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .section-container {
+        position: relative;
+        z-index: 1;
+        padding: 48px 16px;
+        background: transparent;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 32px;
+    }
+
+    .intro-left {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 480px;
+    }
+
+    .intro-right {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 32px;
+    }
+
+    h1 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 48px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 110%;
+        text-align: left;
+        color: #E1EEEA;
+        width: 100%;
+        font-variant-numeric: lining-nums;
+    }
+
+    h1 .highlight-returns {
+        font-family: 'Roboto Serif', serif;
+        font-weight: 500;
+        color: #D3FBD8;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: auto;
+        text-decoration-thickness: 5%;
+        text-underline-offset: 0px;
+        text-underline-position: from-font;
+        font-variant-numeric: lining-nums;
+        background: none;
+        background-clip: unset;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: #D3FBD8;
+    }
+
     .deck-iframe {
-        margin-bottom: 3rem;
+        width: 100%;
+        max-width: 100%;
     }
 
     .options {
         display: flex;
         flex-direction: column;
-        gap: 3rem;
+        gap: 32px;
+        width: 100%;
+    }
+
+    .option-box {
+        background: #152429;
+        border: 1px solid #30414D;
+        border-radius: 8px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
     svg {
         display: inline-block;
         flex-shrink: 0;
     }
-    
 
     h2 {
+        font-family: 'Roboto Serif', serif;
         font-size: 28px;
+        font-weight: 500;
         display: flex;
         align-items: center;
         gap: 8px;
-
+        margin: 0;
         margin-bottom: 8px;
+        color: #E1EEEA;
     }
 
     h3 {
+        font-family: 'Roboto', sans-serif;
         font-size: 18px;
         font-weight: 500;
         line-height: 1;
-
+        margin: 0;
         margin-bottom: 12px;
+        color: #BFD1D7;
     }
 
     p {
-        color: #2f2f2f;
-        font-family: var(--font-body);
-        font-size: 16px;
+        color: #BFD1D7;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
         font-style: normal;
         font-weight: 400;
-        line-height: 140%; /* 22.4px */
+        line-height: 150%;
+        margin: 0;
+    }
 
-        margin-bottom: 1.5rem;
+    .intro-left p {
+        margin-top: 32px;
+    }
+
+    .intro-right p {
+        font-size: 24px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        line-height: 100%;
+        text-align: left;
+    }
+
+    .offering-circular {
+        text-decoration: underline;
+    }
+
+    .intro-right .sms-consent {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        line-height: 150%;
+        font-size: 16px;
+    }
+
+    .investment-details-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .investment-details-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .investment-detail-stat {
+        width: 100%;
+        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-left: 4px solid #30414D;
+        padding: 16px 0 16px 16px;
+    }
+
+    .investment-detail-value {
+        font-family: 'Roboto Serif', serif;
+        font-size: 24px;
+        font-weight: 500;
+        color: #D3FBD8;
+        line-height: 100%;
+        font-variant-numeric: lining-nums;
+        margin: 0;
+    }
+
+    .investment-detail-label {
+        font-size: 16px;
+        color: #BFD1D7;
+        line-height: 100%;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+    }
+
+    /* Form Styles */
+    .form {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        margin-top: 32px;
+        background: transparent;
+        border-radius: 1rem;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .form-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 auto;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 32px;
+    }
+
+    .form input {
+        border: 1px solid transparent;
+        flex-grow: 1;
+        background-color: #152429;
+        padding: 1rem 0.75rem;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 0.75rem;
+        color: #E1EEEA;
+        transition: border-color 0.2s ease;
+        font-size: 1rem;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .form input:focus {
+        outline: none;
+        border: 1px solid #D3FBD8;
+    }
+
+    .form input::placeholder {
+        color: #a0a0a0;
+        opacity: 1;
+    }
+
+    .form button {
+        background-color: #D3FBD8;
+        border: 1px solid #D3FBD8;
+        color: #152429;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 100%;
+        font-family: 'Roboto', sans-serif;
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+        text-align: center;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .form button:active {
+        background-color: #9ebca2;
+        border-color: #9ebca2;
+    }
+
+    .form button:hover {
+        background-color: #b8f5c4;
+        border-color: #b8f5c4;
+    }
+
+    .form button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .form .signup-error {
+        display: none;
+        color: red;
+        text-align: center;
+        margin-top: 0.5rem;
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+    }
+
+    .form .loader {
+        border: 2px solid #ffffff80;
+        border-top: 2px solid #152429;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: none;
+        margin-left: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     a {
-        border-radius: 12px;
-        background: #ff592c;
-
+        border-radius: 8px;
+        background: #D3FBD8;
+        border: 1px solid #D3FBD8;
         display: flex;
-        padding: 15px 12px;
+        padding: 12px;
         justify-content: center;
-
         width: 100%;
-        color: #fff;
+        max-width: 300px;
+        color: #152429;
         text-decoration: none;
-
         font-size: 18px;
-
-        font-weight: 500;
+        font-weight: 600;
+        font-family: 'Roboto', sans-serif;
         line-height: 1;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
-    @media only screen and (min-width: 768px) {
-        .option-box a{
-            max-width: 300px;
+    a:hover {
+        background-color: #9ebca2;
+        border-color: #9ebca2;
+    }
+
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        .section-container {
+            padding: 64px 32px;
         }
 
+        h1 {
+            font-size: 48px;
+            line-height: 110%;
+        }
 
+        .investment-details-stats {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .investment-detail-stat {
+            flex: 0 0 calc(50% - 8px);
+        }
     }
 
-    @media only screen and (min-width: 1024px){
-        .options{
-            max-width: 1100px;
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 96px 112px;
+            margin: 0;
+            width: 100%;
+        }
 
-            margin: 0 auto;
+        .intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
 
-            flex-direction: row;
+        .intro-left {
+            width: 100%;
+        }
+
+        .intro-right {
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 48px;
+            line-height: 110%;
+            margin-bottom: 0;
+        }
+
+        .investment-details-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .investment-detail-stat {
+            width: 100%;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .section-container {
+            padding: 96px 312px;
         }
     }
 </style>
@@ -88,54 +404,139 @@ import Calendar from "../images/svg/calendar.svg";
 <section>
     <div class="section-container">
         <div class="intro">
-            <h1>Thanks for Joining Our Webinar!</h1>
-
-            <div
-                class="deck-iframe"
-                style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
-     padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; overflow: hidden;
-     border-radius: 8px; will-change: transform;"
-            >
-                <iframe
-                    loading="lazy"
-                    style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-                    src="https://www.canva.com/design/DAG3AOaNOws/mwRkhNFyb30ApZTG8Di_8g/view?embed"
-                    allowfullscreen="allowfullscreen"
-                    allow="fullscreen"
-                >
-                </iframe>
+            <div class="intro-left">
+                <h1>Diversify your portfolio with <span class="highlight-returns">10%</span> fixed returns</h1>
+                <p>Start by creating your profile, then set your investment.</p>
+                <div class="form">
+                    <form class="form-cta" id="registration-form">
+                        <div class="form-block">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Enter Your Email"
+                                required
+                                class="email-input"
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                required
+                                class="password-input"
+                            />
+                            <input
+                                type="password"
+                                name="confirm_password"
+                                placeholder="Confirm Password"
+                                required
+                                class="password-input"
+                            />
+                        </div>
+                        <button type="submit">
+                            <span class="button-text">Register Now</span>
+                            <span class="loader"></span>
+                        </button>
+                        <p class="signup-error"></p>
+                    </form>
+                </div>
             </div>
-
-            <div class="options">
-                <div class="option-box">
-                    <h2>
-                        <Investing /> Invest in Our Bonds
-                    </h2>
-                    <h3>Turn your interest into action.</h3>
-
-                    <p>
-                        Complete the quick application, choose your bond term,
-                        and start earning monthly distributions—or compound for
-                        long-term growth.
-                    </p>
-
-                    <a href="/investor-migration">Invest Now</a>
+            <div class="intro-right">
+                <div
+                    class="deck-iframe"
+                    style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+         padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.3); margin-top: 0; overflow: hidden;
+         border-radius: 8px; will-change: transform;"
+                >
+                    <iframe
+                        loading="lazy"
+                        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+                        src="https://www.canva.com/design/DAG3AOaNOws/mwRkhNFyb30ApZTG8Di_8g/view?embed"
+                        allowfullscreen="allowfullscreen"
+                        allow="fullscreen"
+                    >
+                    </iframe>
                 </div>
-                <div class="option-box">
-                    <h2>
-                        <Calendar /> Schedule an Investor Relations Call
-                    </h2>
-                    <h3>Get your questions answered directly.</h3>
-
-                    <p>
-                        Our Investor Relations team will walk you through the
-                        details and help you decide the best investment strategy
-                        for your goals.
-                    </p>
-
-                    <a href="/calendar">Schedule Now</a>
+                <div class="investment-details-wrapper">
+                    <p>Investments details</p>
+                    <div class="investment-details-stats">
+                        <div class="investment-detail-stat">
+                            <span class="investment-detail-label">Minimum Amount</span>
+                            <span class="investment-detail-value">$1,000</span>
+                        </div>
+                        <div class="investment-detail-stat">
+                            <span class="investment-detail-label">Annual Returns</span>
+                            <span class="investment-detail-value">8% or 10%</span>
+                        </div>
+                        <div class="investment-detail-stat">
+                            <span class="investment-detail-label">Bond Maturity</span>
+                            <span class="investment-detail-value">10 Years</span>
+                        </div>
+                        <div class="investment-detail-stat">
+                            <span class="investment-detail-label">Lock-up</span>
+                            <span class="investment-detail-value">1 or 3 years</span>
+                        </div>
+                    </div>
                 </div>
+                <p class="offering-circular">Offering Circular</p>
+                <p class="sms-consent">I consent to receive SMS notifications, alerts and occasional marketing communication from Robert Ventures, LLC. Message frequency varies. Message and Data Rates may apply. You can reply STOP to unsbscribe at any time.</p>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('registration-form');
+        if (!form) return;
+
+        const submitButton = form.querySelector('button[type="submit"]');
+        const buttonText = form.querySelector('.button-text');
+        const loader = form.querySelector('.loader');
+        const signupError = form.querySelector('.signup-error');
+
+        function resetFormState() {
+            if (buttonText) buttonText.style.display = '';
+            if (loader) loader.style.display = 'none';
+            if (submitButton) submitButton.disabled = false;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (signupError) {
+                signupError.textContent = '';
+                signupError.style.display = 'none';
+            }
+            
+            if (buttonText) buttonText.style.display = 'none';
+            if (loader) loader.style.display = 'inline-block';
+            if (submitButton) submitButton.disabled = true;
+
+            // Placeholder submission logic
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // For now, just log the form data
+                const formData = new FormData(form);
+                const data = {
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    confirm_password: formData.get('confirm_password')
+                };
+                console.log('Form submitted:', data);
+                
+                // Reset form state
+                resetFormState();
+                
+                // You can add success handling here
+            } catch (error) {
+                if (signupError) {
+                    signupError.textContent = 'An error occurred. Please try again.';
+                    signupError.style.display = 'block';
+                }
+                resetFormState();
+            }
+        });
+    });
+</script>
