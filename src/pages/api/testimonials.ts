@@ -5,7 +5,10 @@ export const GET: APIRoute = async () => {
     const apiKey = import.meta.env.SENJA_API_KEY;
     
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
+      return new Response(JSON.stringify({ 
+        error: 'API key not configured',
+        message: 'SENJA_API_KEY environment variable is not set. Please set it in your .env file or environment variables.'
+      }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json'
@@ -22,7 +25,19 @@ export const GET: APIRoute = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Senja API error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('Senja API error:', response.status, response.statusText, errorText);
+      return new Response(JSON.stringify({ 
+        error: 'Senja API error',
+        status: response.status,
+        statusText: response.statusText,
+        details: errorText
+      }), {
+        status: response.status,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     }
 
     const testimonials = await response.json();
@@ -34,7 +49,11 @@ export const GET: APIRoute = async () => {
       }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch testimonials' }), {
+    console.error('Error fetching testimonials:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to fetch testimonials',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json'

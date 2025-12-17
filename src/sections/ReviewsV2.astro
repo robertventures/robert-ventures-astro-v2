@@ -2,6 +2,75 @@
 import { Image } from 'astro:assets';
 import ReviewStar from '../images/review-star.svg';
 import avatarPlaceholder from '../images/avatar-image.png';
+
+// Interface for review data from Senja
+interface Review {
+    name: string;
+    avatar: string;
+    text: string;
+    date: string;
+    rating: number;
+}
+
+function mapSenjaToReview(raw: any): Review {
+    // Format date - Senja typically returns ISO dates
+    const dateStr = raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "";
+    let formattedDate = "";
+    if (dateStr) {
+        try {
+            const date = new Date(dateStr);
+            formattedDate = date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        } catch (e) {
+            formattedDate = dateStr;
+        }
+    }
+
+    return {
+        name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+        avatar: raw?.customer_avatar ?? raw?.avatar ?? raw?.profile_picture ?? raw?.profile_pic ?? raw?.customer?.avatar ?? raw?.user?.avatar ?? "",
+        text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+        date: formattedDate,
+        rating: raw?.rating ?? raw?.stars ?? 5, // Default to 5 if not provided
+    };
+}
+
+let reviews: Review[] = [];
+
+// Get placeholder image URL for fallback
+const placeholderImageUrl = avatarPlaceholder.src;
+
+try {
+    const apiUrl = new URL("/api/testimonials", Astro.url);
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+        const payload = await response.json();
+        
+        const rawList = Array.isArray(payload)
+            ? payload
+            : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+        
+        // Filter for approved, non-video testimonials and map to Review format
+        const approvedOnly = (rawList as any[])
+            .filter((t) => t?.approved === true)
+            .filter((t) => !t?.video_url && !t?.video && t?.type !== 'video' && !t?.has_video)
+            .map(mapSenjaToReview)
+            .filter((r) => r.text && r.text.trim().length > 0); // Only include reviews with text
+
+        const nonVideoOnly = (rawList as any[])
+            .filter((t) => !t?.video_url && !t?.video && t?.type !== 'video' && !t?.has_video)
+            .map(mapSenjaToReview)
+            .filter((r) => r.text && r.text.trim().length > 0);
+
+        reviews = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+    }
+} catch (error) {
+    // Silently fail; fallback to empty array (will show hardcoded reviews)
+    console.error('Failed to fetch reviews from Senja:', error);
+}
 ---
 
 <!-- Splide.js CSS -->
@@ -286,150 +355,188 @@ import avatarPlaceholder from '../images/avatar-image.png';
                 <div class="splide" id="reviews-slider" aria-label="Reviews">
                 <div class="splide__track">
                     <ul class="splide__list">
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="Stephen Romesburg" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="1">"Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments."</p>
-                                    <a class="read-more" data-readmore="1" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                        </div>
-                                        <p class="reviewer-name">Stephen Romesburg</p>
+                        {reviews.length > 0 ? reviews.map((review, index) => (
+                            <li class="splide__slide">
+                                <div class="review-card">
+                                    <div class="reviewer-info">
+                                        {review.avatar ? (
+                                            <img 
+                                                src={review.avatar} 
+                                                alt={review.name} 
+                                                class="reviewer-image"
+                                                loading="lazy"
+                                                onerror={`this.onerror=null; this.src='${placeholderImageUrl}';`}
+                                            />
+                                        ) : (
+                                            <Image src={avatarPlaceholder} alt={review.name} class="reviewer-image" />
+                                        )}
                                     </div>
-                                    <p class="review-date">Nov 1, 2025</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="Michael J Francis" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="2">"I like that with Robert Ventures, I can always talk to a real person when I have questions. Everything isn't just online or with a robot. If I have any concerns, I can reach someone directly, and that makes me feel comfortable and confident with my investment."</p>
-                                    <a class="read-more" data-readmore="2" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                        </div>
-                                        <p class="reviewer-name">Michael J Francis</p>
+                                    <div class="quote-container">
+                                        <p class="quote" data-quote={index + 1}>{review.text}</p>
+                                        <a class="read-more" data-readmore={index + 1} href="javascript:void(0)">Read more</a>
                                     </div>
-                                    <p class="review-date">Nov 1, 2025</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="Francisco Landaverde" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="3">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
-                                    <a class="read-more" data-readmore="3" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
+                                    <div class="review-footer">
+                                        <div class="reviewer-details">
+                                            <div class="stars">
+                                                {Array.from({ length: Math.min(Math.max(Math.round(review.rating), 1), 5) }).map((_, i) => (
+                                                    <span class="star"><ReviewStar /></span>
+                                                ))}
+                                            </div>
+                                            <p class="reviewer-name">{review.name}</p>
                                         </div>
-                                        <p class="reviewer-name">Francisco Landaverde</p>
+                                        {review.date && <p class="review-date">{review.date}</p>}
                                     </div>
-                                    <p class="review-date">Sep 16, 2025</p>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="Sarah Johnson" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="4">"The investment process was straightforward and transparent. I appreciate the monthly updates and the ability to track my returns in real-time. The team is responsive and professional, making this a reliable investment option."</p>
-                                    <a class="read-more" data-readmore="4" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
+                            </li>
+                        )) : (
+                            // Fallback to hardcoded reviews if API fails or returns no data
+                            <>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="Stephen Romesburg" class="reviewer-image" />
                                         </div>
-                                        <p class="reviewer-name">Sarah Johnson</p>
-                                    </div>
-                                    <p class="review-date">Oct 15, 2025</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="David Chen" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="5">"I've been investing with Robert Ventures for several months now and the returns have been consistent. The platform is user-friendly and the customer support team is always available to answer questions. Highly recommend for anyone looking for stable returns."</p>
-                                    <a class="read-more" data-readmore="5" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="1">"Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments."</p>
+                                            <a class="read-more" data-readmore="1" href="javascript:void(0)">Read more</a>
                                         </div>
-                                        <p class="reviewer-name">David Chen</p>
-                                    </div>
-                                    <p class="review-date">Oct 28, 2025</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="review-card">
-                                <div class="reviewer-info">
-                                    <Image src={avatarPlaceholder} alt="Emily Rodriguez" class="reviewer-image" />
-                                </div>
-                                <div class="quote-container">
-                                    <p class="quote" data-quote="6">"What I love most about Robert Ventures is the transparency and regular communication. They provide detailed reports and keep investors informed every step of the way. The returns are exactly as promised and the process is seamless."</p>
-                                    <a class="read-more" data-readmore="6" href="javascript:void(0)">Read more</a>
-                                </div>
-                                <div class="review-footer">
-                                    <div class="reviewer-details">
-                                        <div class="stars">
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
-                                            <span class="star"><ReviewStar /></span>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">Stephen Romesburg</p>
+                                            </div>
+                                            <p class="review-date">Nov 1, 2025</p>
                                         </div>
-                                        <p class="reviewer-name">Emily Rodriguez</p>
                                     </div>
-                                    <p class="review-date">Nov 5, 2025</p>
-                                </div>
-                            </div>
-                        </li>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="Michael J Francis" class="reviewer-image" />
+                                        </div>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="2">"I like that with Robert Ventures, I can always talk to a real person when I have questions. Everything isn't just online or with a robot. If I have any concerns, I can reach someone directly, and that makes me feel comfortable and confident with my investment."</p>
+                                            <a class="read-more" data-readmore="2" href="javascript:void(0)">Read more</a>
+                                        </div>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">Michael J Francis</p>
+                                            </div>
+                                            <p class="review-date">Nov 1, 2025</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="Francisco Landaverde" class="reviewer-image" />
+                                        </div>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="3">"I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them."</p>
+                                            <a class="read-more" data-readmore="3" href="javascript:void(0)">Read more</a>
+                                        </div>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">Francisco Landaverde</p>
+                                            </div>
+                                            <p class="review-date">Sep 16, 2025</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="Sarah Johnson" class="reviewer-image" />
+                                        </div>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="4">"The investment process was straightforward and transparent. I appreciate the monthly updates and the ability to track my returns in real-time. The team is responsive and professional, making this a reliable investment option."</p>
+                                            <a class="read-more" data-readmore="4" href="javascript:void(0)">Read more</a>
+                                        </div>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">Sarah Johnson</p>
+                                            </div>
+                                            <p class="review-date">Oct 15, 2025</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="David Chen" class="reviewer-image" />
+                                        </div>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="5">"I've been investing with Robert Ventures for several months now and the returns have been consistent. The platform is user-friendly and the customer support team is always available to answer questions. Highly recommend for anyone looking for stable returns."</p>
+                                            <a class="read-more" data-readmore="5" href="javascript:void(0)">Read more</a>
+                                        </div>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">David Chen</p>
+                                            </div>
+                                            <p class="review-date">Oct 28, 2025</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="review-card">
+                                        <div class="reviewer-info">
+                                            <Image src={avatarPlaceholder} alt="Emily Rodriguez" class="reviewer-image" />
+                                        </div>
+                                        <div class="quote-container">
+                                            <p class="quote" data-quote="6">"What I love most about Robert Ventures is the transparency and regular communication. They provide detailed reports and keep investors informed every step of the way. The returns are exactly as promised and the process is seamless."</p>
+                                            <a class="read-more" data-readmore="6" href="javascript:void(0)">Read more</a>
+                                        </div>
+                                        <div class="review-footer">
+                                            <div class="reviewer-details">
+                                                <div class="stars">
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                    <span class="star"><ReviewStar /></span>
+                                                </div>
+                                                <p class="reviewer-name">Emily Rodriguez</p>
+                                            </div>
+                                            <p class="review-date">Nov 5, 2025</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>
