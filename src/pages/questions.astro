@@ -39,13 +39,23 @@ const investmentObjectivesOptions = [
         <BaseHead title={pageTitle} description={pageDescription} />
         <meta name="robots" content="noindex, nofollow" />
         <style>
+            section {
+                background: linear-gradient(to bottom, #101B1F, #111111);
+                color: #E1EEEA;
+                min-height: 80vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 0;
+            }
 
             .section-container {
                 max-width: 1280px;
                 margin: 0 auto;
                 border-radius: 1rem;
-                background: #fff;
-                padding: 3rem 1.5rem;
+                background: transparent;
+                padding: 48px 16px;
+                width: 100%;
             }
 
             .section-content {
@@ -54,24 +64,24 @@ const investmentObjectivesOptions = [
             }
 
             h1 {
-                color: #000;
-                text-align: center;
+                color: #E1EEEA;
+                text-align: left;
                 font-family: var(--font-heading);
-                font-size: 1.75rem;
-                font-weight: 700;
-                margin-bottom: 1.5rem;
-                max-width: 366px;
-                margin-left: auto;
+                font-size: 32px;
+                font-weight: 500;
+                margin-bottom: 2rem;
+                max-width: 460px;
+                margin-left: 0;
                 margin-right: auto;
             }
 
             .portfolio-info {
-                font-size: 1.25rem;
+                font-size: 20px;
                 font-family: var(--font-body);
-                color: #000000;
+                color: #BFD1D7;
                 font-weight: 500;
-                margin-bottom: 0.5rem;
-                line-height: 1.75;
+                margin-bottom: 0.75rem;
+                line-height: 1.5;
             }
             
             /* Portfolio value as a grid of selectable boxes */
@@ -79,7 +89,7 @@ const investmentObjectivesOptions = [
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
-                margin-bottom: 1.5rem;
+                margin-bottom: 2rem;
             }
 
             /* Objectives as a grid of selectable boxes */
@@ -87,7 +97,17 @@ const investmentObjectivesOptions = [
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 0.75rem;
-                margin-bottom: 2rem;
+                margin-bottom: 2.5rem;
+            }
+
+            /* Grid column adjustments for larger screens */
+            @media only screen and (min-width: 768px) {
+                .portfolio-value-container {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .objectives-container {
+                    grid-template-columns: 1fr;
+                }
             }
 
             form {
@@ -98,60 +118,58 @@ const investmentObjectivesOptions = [
             }
 
             button {
-                background-color: #5028ff;
-                color: #fff;
+                background-color: #D3FBD8;
+                color: #152429;
                 padding: 15px;
                 line-height: 1;
                 font-family: var(--font-body);
                 font-size: 1.125rem;
-                font-weight: 500;
-                border-radius: 0.75rem;
-                border: 1px solid #5028ff;
+                font-weight: 600;
+                border-radius: 8px;
+                border: 1px solid #D3FBD8;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: background-color 0.2s ease;
+                transition: background-color 0.2s ease, transform 0.1s ease;
             }
 
             button:hover {
-                background-color: #3f1fd1;
+                background-color: #b8f5c4;
+                border-color: #b8f5c4;
+            }
+
+            button:active {
+                background-color: #9ebca2;
+                transform: translateY(1px);
             }
 
             button:disabled {
-                background-color: #6b5b7b;
+                opacity: 0.6;
                 cursor: not-allowed;
             }
 
+            /* Dark spinner to contrast with light button */
             .loader {
-                width: 10px;
-                height: 10px;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #152429;
+                border-top: 2px solid transparent;
                 border-radius: 50%;
-                background-color: white;
                 display: inline-block;
-                animation: pulse 1s infinite;
+                animation: spin 1s linear infinite;
                 margin-left: 10px;
             }
 
-            @keyframes pulse {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-                50% {
-                    transform: scale(1.5);
-                    opacity: 0.5;
-                }
-                100% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
 
             input[type="radio"] {
                 width: 18px;
                 height: 18px;
-                accent-color: #5028ff;
+                accent-color: #D3FBD8;
             }
 
             label {
@@ -159,13 +177,8 @@ const investmentObjectivesOptions = [
                 align-items: center;
                 gap: 0.75rem;
                 cursor: pointer;
-                padding: 0.5rem;
+                padding: 0;
                 border-radius: 0.5rem;
-                transition: background-color 0.2s ease;
-            }
-
-            label:hover {
-                background-color: #f8f9fa;
             }
 
             /* Portfolio grid item styles */
@@ -180,32 +193,39 @@ const investmentObjectivesOptions = [
                 height: 0;
                 pointer-events: none;
             }
+            
             .option-box {
                 display: block;
                 width: 100%;
                 text-align: center;
-                padding: 0.75rem 1rem;
-                border: 1px solid #e5e7eb; /* gray-200 */
-                border-radius: 0.75rem;
-                background: #ffffff;
-                color: #111827; /* gray-900 */
+                padding: 1rem 1rem;
+                border: 1px solid transparent;
+                border-radius: 8px;
+                background: #152429;
+                color: #BFD1D7;
                 font-family: var(--font-body);
                 font-size: 1rem;
                 font-weight: 500;
-                line-height: 1;
-                transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+                line-height: 1.2;
+                transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
             }
-            .portfolio-option-label:hover .option-box {
-                background-color: #f8f9fa;
+            
+            .portfolio-option-label:hover .option-box,
+            .objectives-option-label:hover .option-box {
+                border-color: #30414D;
             }
-            .portfolio-option-label input[type="radio"]:focus + .option-box {
-                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.2) inset;
+            
+            .portfolio-option-label input[type="radio"]:focus + .option-box,
+            .objectives-option-label input[type="radio"]:focus + .option-box {
+                border-color: #D3FBD8;
             }
-            .portfolio-option-label input[type="radio"]:checked + .option-box {
-                border-color: #5028ff;
-                background-color: #f2f0ff;
-                color: #1f2937; /* gray-800 */
-                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.1) inset;
+            
+            .portfolio-option-label input[type="radio"]:checked + .option-box,
+            .objectives-option-label input[type="radio"]:checked + .option-box {
+                border-color: #D3FBD8;
+                background-color: #152429;
+                color: #E1EEEA;
+                border-width: 1px;
             }
 
             /* Objectives grid item styles (radios) */
@@ -220,18 +240,6 @@ const investmentObjectivesOptions = [
                 height: 0;
                 pointer-events: none;
             }
-            .objectives-option-label:hover .option-box {
-                background-color: #f8f9fa;
-            }
-            .objectives-option-label input[type="radio"]:focus + .option-box {
-                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.2) inset;
-            }
-            .objectives-option-label input[type="radio"]:checked + .option-box {
-                border-color: #5028ff;
-                background-color: #f2f0ff;
-                color: #1f2937;
-                box-shadow: 0 0 0 2px rgba(80, 40, 255, 0.1) inset;
-            }
 
             span.defocus {
                 font-weight: 300;
@@ -239,24 +247,24 @@ const investmentObjectivesOptions = [
                 color: #6b7280;
             }
 
-            @media only screen and (min-width: 768px) {
-                section {
-                    padding: 0 2rem;
-                }
-                .portfolio-value-container {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-                .objectives-container {
-                    grid-template-columns: 1fr;
+            @media only screen and (min-width: 600px) and (max-width: 1135px) {
+                .section-container {
+                    padding: 64px 32px;
                 }
             }
 
-            @media only screen and (min-width: 990px) {
+            @media only screen and (min-width: 1136px) {
                 .section-container {
-                    padding: 4rem 1.5rem;
+                    padding: 96px 112px;
                 }
                 .section-content {
-                    max-width: 921px;
+                    max-width: 580px;
+                }
+            }
+
+            @media only screen and (min-width: 1920px) {
+                .section-container {
+                    padding: 96px 312px;
                 }
             }
         </style>
@@ -276,7 +284,7 @@ const investmentObjectivesOptions = [
                     >
 
                         <p class="portfolio-info">
-                            Have You Invested in Alternative Assets Before?
+                            Have you invested in alternative assets before?
                         </p>
                         <div class="portfolio-value-container">
                             {alternativeAssetsOptions.map((option) => (
@@ -293,7 +301,7 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
-                            What is your Age Range?
+                            What is your age range?
                         </p>
                         <div class="portfolio-value-container">
                             {ageBracketOptions.map((option) => (
@@ -310,7 +318,7 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
-                            What Is Your Primary Investment Objective?
+                            What is your primary investment objective?
                         </p>
                         <div class="objectives-container">
                             {investmentObjectivesOptions.map((option) => (
@@ -327,7 +335,7 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <button type="submit">
-                            <span class="button-text">COMPLETE REGISTRATION</span>
+                            <span class="button-text">Complete Registration</span>
                             <span class="loader" style="display: none;"></span>
                         </button>
                     </form>
