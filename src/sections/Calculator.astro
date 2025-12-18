@@ -64,7 +64,7 @@
 
     .control-label {
         font-size: 20px;
-        color: #E1EEEA;
+        color: #BFD1D7;
         font-weight: 400;
     }
 
@@ -136,13 +136,48 @@
 
     .result-label {
         font-size: 20px;
-        color: #E1EEEA;
+        color: #BFD1D7;
         text-align: left;
     }
 
     .result-value {
         font-family: 'Roboto Serif', serif;
         font-size: 56px;
+        font-weight: 500;
+        color: #D3FBD8;
+        line-height: 1;
+        text-align: left;
+        font-variant-numeric: lining-nums;
+    }
+
+    .comparison-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+        margin-top: 8px;
+    }
+
+    #ten-year-projection,
+    #compound-comparison {
+        margin-top: 0;
+        gap: 8px;
+    }
+
+    #ten-year-result,
+    #comparison-result {
+        font-size: 24px;
+    }
+
+    .comparison-label {
+        font-size: 16px;
+        color: #BFD1D7;
+        text-align: left;
+    }
+
+    .comparison-value {
+        font-family: 'Roboto Serif', serif;
+        font-size: 32px;
         font-weight: 500;
         color: #D3FBD8;
         line-height: 1;
@@ -257,11 +292,11 @@
                     <label class="control-label">Choose term:</label>
                     <div class="button-group">
                         <button class="calc-button lockup-button active" data-lockup="3" data-apy="10">
-                            <span class="lockup-period">3 Years</span>
+                            <span class="lockup-period">3 Years commitment</span>
                             <span class="lockup-apy">10%</span>
                         </button>
                         <button class="calc-button lockup-button" data-lockup="1" data-apy="8">
-                            <span class="lockup-period">1 Year</span>
+                            <span class="lockup-period">1 Year commitment</span>
                             <span class="lockup-apy">8%</span>
                         </button>
                                 </div>
@@ -293,6 +328,14 @@
                 <span class="result-label">Total with Interest:</span>
                 <span class="result-value" id="total-result">$133,100</span>
                 <div class="result-divider"></div>
+                <div class="comparison-field" id="compound-comparison" style="display: none;">
+                    <span class="comparison-label">10 years maturity:</span>
+                    <span class="comparison-value" id="comparison-result">+$3,100</span>
+                </div>
+                <div class="comparison-field" id="ten-year-projection" style="display: none;">
+                    <span class="comparison-label">10 years maturity:</span>
+                    <span class="comparison-value" id="ten-year-result">$0</span>
+                </div>
                 <div class="cta-buttons">
                     <a href="/access" class="cta-button cta-primary">Get Started</a>
                     <p class="disclaimer-text">Investing involves risk, including potential inability to make scheduled payments. This calculator is for illustrative purposes only.</p>
@@ -353,6 +396,62 @@
         }).format(total);
 
         totalResult.textContent = formatted;
+        calculateComparison();
+    }
+
+    // Calculate comparison
+    function calculateComparison() {
+        const comparisonField = document.getElementById('compound-comparison');
+        const comparisonResult = document.getElementById('comparison-result');
+        const tenYearField = document.getElementById('ten-year-projection');
+        const tenYearResult = document.getElementById('ten-year-result');
+        
+        if (selectedReturn === 'monthly') {
+            tenYearField.style.display = 'none';
+
+            // Calculate 10 year monthly projection
+            const principal = selectedAmount;
+            const years = 10;
+            const annualRate = selectedApy / 100;
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            
+            // Monthly payments: interest is paid out monthly, principal stays the same
+            const monthlyInterest = principal * monthlyRate;
+            const totalInterest = monthlyInterest * months;
+            const tenYearTotal = principal + totalInterest;
+
+            // Format and display
+            const formatted = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(tenYearTotal);
+            
+            comparisonResult.textContent = formatted;
+            comparisonField.style.display = 'flex';
+        } else {
+            comparisonField.style.display = 'none';
+
+            // Calculate 10 year projection
+            const principal = selectedAmount;
+            const years = 10;
+            const annualRate = selectedApy / 100;
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            const tenYearTotal = principal * Math.pow(1 + monthlyRate, months);
+
+            const formattedTenYear = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(tenYearTotal);
+
+            tenYearResult.textContent = formattedTenYear;
+            tenYearField.style.display = 'flex';
+        }
     }
 
     // Event Listeners
@@ -361,9 +460,9 @@
             selectedLockup = parseInt(button.dataset.lockup);
             selectedApy = parseInt(button.dataset.apy);
             setActive(lockupButtons, button);
-                calculateReturns();
-            });
+            calculateReturns();
         });
+    });
 
     returnButtons.forEach(button => {
         button.addEventListener('click', () => {
