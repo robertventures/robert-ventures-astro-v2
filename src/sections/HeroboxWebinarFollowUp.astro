@@ -653,13 +653,20 @@ import Calendar from "../images/svg/calendar.svg";
                     throw new Error(data.detail || 'Registration failed. Please try again.');
                 }
                 
-                // Success! Show confirmation message
+                // Success! Redirect to confirmation page
+                const confirmationUrl = new URL('https://invest.robertventures.com/confirmation');
+                confirmationUrl.searchParams.append('email', email);
+                window.location.href = confirmationUrl.toString();
+                
+                /* 
+                // Previous success handling - commented out for redirect
                 form.style.display = 'none';
                 if (signupError) {
                     signupError.style.display = 'block';
                     signupError.style.color = '#28a745'; // Green color
                     signupError.textContent = '✓ Registration successful! Check your email to verify your account.';
                 }
+                */
                 
                 // Optional: Track conversion
                 if (typeof gtag !== 'undefined') {
