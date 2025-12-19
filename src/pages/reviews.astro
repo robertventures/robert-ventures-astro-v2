@@ -9,16 +9,32 @@ const pageDescription =
 ---
 
 <style>
+    section {
+        margin-bottom: 1.5rem;
+        padding: 0;
+    }
+
     .section-container {
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 48px 16px;
         display: flex;
         flex-direction: column;
         gap: 32px;
+        max-width: none;
+    }
+
+    .section-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
     h1{
         text-align: left;
         font-weight: 500;
-        font-size: 48px;
+        font-size: 32px;
         color: #152429;
         margin-left: 0;
         margin-right: 0;
@@ -34,12 +50,39 @@ const pageDescription =
         margin-bottom: 0;
     }
 
-    @media only screen and (min-width: 1024px){
-        h1{
-            font-size: 48px;
+    @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        section {
+            padding: 0;
         }
-        p{
-            margin-bottom: 0;
+        .section-container {
+            padding: 64px 32px;
+            max-width: none;
+        }
+    }
+
+    @media only screen and (min-width: 600px){
+        h1{
+            font-size: 40px;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        section {
+            padding: 0;
+        }
+        .section-container {
+            padding: 96px 112px;
+            max-width: none;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        section {
+            padding: 0;
+        }
+        .section-container {
+            padding: 96px 312px;
+            max-width: none;
         }
     }
 </style>
@@ -52,11 +95,13 @@ const pageDescription =
         <Header />
         <section>
             <div class="section-container">
-                <h1>Investors Reviews & Testimonials</h1>
-                <p>
-                    Discover real stories and feedback from investors who trust Robert Ventures.<br>
-                    Explore their experiences, results, and why they choose to invest with us.
-                </p>
+                <div class="section-heading">
+                    <h1>Investors Reviews & Testimonials</h1>
+                    <p>
+                        Discover real stories and feedback from investors who trust Robert Ventures.<br>
+                        Explore their experiences, results, and why they choose to invest with us.
+                    </p>
+                </div>
                 <div
                     class="senja-embed"
                     data-id="6a1ec5a8-74d7-4174-9867-47016915b018"
