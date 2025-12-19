@@ -25,32 +25,39 @@ const articles = (await getCollection("articles")).sort(
 		<style>
 			section {
 				margin-bottom: 1.5rem;
+				padding: 0;
 			}
 
 			.section-container {
-				max-width: 1280px;
 				margin: 0 auto;
 				border-radius: 1rem;
 				background: #fff;
-				padding: 3rem 1.5rem;
+				padding: 48px 16px;
+				max-width: none;
 			}
 
 			.section-content {
-				max-width: 640px;
 				margin: 0 auto;
+				max-width: none;
 			}
 
 			h1 {
 				color: #152429;
 				text-align: left;
 				font-family: var(--font-heading);
-				font-size: 48px;
+				font-size: 32px;
 				font-weight: 500;
 				line-height: 110%;
 
 				margin-left: 0;
 				margin-right: 0;
 				margin-bottom: 32px;
+			}
+
+			@media only screen and (min-width: 600px) {
+				h1 {
+					font-size: 40px;
+				}
 			}
 
 			h2 {
@@ -66,13 +73,9 @@ const articles = (await getCollection("articles")).sort(
 				padding: 0;
 				margin: 0;
 
-				display: flex;
-				flex-direction: column;
+				display: grid;
+				grid-template-columns: 1fr;
 				gap: 3rem;
-
-				max-width: 366px;
-
-				margin: 0 auto;
 			}
 
 			li a {
@@ -105,23 +108,51 @@ const articles = (await getCollection("articles")).sort(
 				line-height: 1.6; /* 1.6rem */
 			}
 
-			@media only screen and (min-width: 768px) {
+			@media only screen and (min-width: 600px) and (max-width: 1135px) {
 				section {
-					padding: 0 2rem;
+					padding: 0;
 				}
-			}
-			@media only screen and (min-width: 990px) {
 				.section-container {
-					padding: 4rem 0;
+					padding: 64px 32px;
+					max-width: none;
 				}
 				.section-content {
-					max-width: 910px;
+					max-width: none;
 				}
 				ul {
-					max-width: none;
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
 
-					display: grid;
-					grid-template-columns: 1fr 1fr 1fr;
+			@media only screen and (min-width: 1136px) {
+				ul {
+					grid-template-columns: repeat(3, 1fr);
+				}
+			}
+
+			@media only screen and (min-width: 1136px) {
+				section {
+					padding: 0;
+				}
+				.section-container {
+					padding: 96px 112px;
+					max-width: none;
+				}
+				.section-content {
+					max-width: none;
+				}
+			}
+
+			@media only screen and (min-width: 1920px) {
+				section {
+					padding: 0;
+				}
+				.section-container {
+					padding: 96px 312px;
+					max-width: none;
+				}
+				.section-content {
+					max-width: none;
 				}
 			}
 		</style>

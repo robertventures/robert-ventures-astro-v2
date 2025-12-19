@@ -16,14 +16,14 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
         <style>
             section {
                 margin-bottom: 1.5rem;
+                padding: 0;
             }
 
             .section-container {
-                max-width: 1280px;
                 margin: 0 auto;
                 border-radius: 1rem;
                 background: #fff;
-                padding: 3rem 1.5rem;
+                padding: 48px 16px;
             }
 
             .section-content {
@@ -31,13 +31,19 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                 margin: 0 auto;
             }
 
-            h2 {
+            h1 {
                 color: #152429;
-                font-size: 2.5625rem;
+                font-size: 32px;
                 font-weight: 500;
-                line-height: 1.1; /* 2.475rem */
+                line-height: 1.1;
                 margin-bottom: 1rem;
                 font-variant-numeric: lining-nums;
+            }
+
+            @media only screen and (min-width: 600px) {
+                h1 {
+                    font-size: 40px;
+                }
             }
 
             p {
@@ -46,9 +52,52 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                 color: #30414D;
             }
 
-            @media only screen and (min-width: 768px) {
+            .section-heading {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            .section-heading h1 {
+                margin-bottom: 0;
+            }
+
+            .section-heading p {
+                margin-bottom: 0;
+                font-size: 20px;
+                font-weight: 400;
+                line-height: 150%;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            @media only screen and (min-width: 600px) and (max-width: 1135px) {
                 section {
-                    padding: 0 2rem;
+                    padding: 0;
+                }
+                .section-container {
+                    padding: 64px 32px;
+                    max-width: none;
+                }
+            }
+
+            @media only screen and (min-width: 1136px) {
+                section {
+                    padding: 0;
+                }
+                .section-container {
+                    padding: 96px 112px;
+                    max-width: none;
+                }
+            }
+
+            @media only screen and (min-width: 1920px) {
+                section {
+                    padding: 0;
+                }
+                .section-container {
+                    padding: 96px 312px;
+                    max-width: none;
                 }
             }
         </style>
@@ -60,7 +109,7 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
             <div class="section-container">
                 <div class="section-content">
                     <div class="section-heading">
-                        <h2>Ready to Earn 10% Annually?</h2>
+                        <h1>Ready to Earn 10% Annually?</h1>
                         <p>Start with a Personal Concierge Call.</p>
                     </div>
                     <iframe
