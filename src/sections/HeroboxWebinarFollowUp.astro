@@ -309,6 +309,53 @@ import Calendar from "../images/svg/calendar.svg";
         font-size: 14px;
     }
 
+    .form-disclaimer {
+        font-family: 'Roboto', sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 150%;
+        color: #BFD1D7;
+        text-align: center;
+    }
+
+    p.form-disclaimer{
+        margin-top: 12px !important;
+    }
+
+    .form-disclaimer .disclaimer-link {
+        display: inline;
+        padding: 0;
+        border: none;
+        background: transparent;
+        border-radius: 0;
+        width: auto;
+        max-width: none;
+        font-size: 12px;
+        font-weight: 400;
+        text-decoration: underline;
+        transition: color 0.2s ease;
+    }
+
+    .form-disclaimer .terms-link {
+        color: #D3FBD8;
+        font-size: 11px;
+    }
+
+    .form-disclaimer .terms-link:hover {
+        color: #E1EEEA;
+        background: transparent;
+    }
+
+    .form-disclaimer .privacy-link {
+        color: #9DD6A3;
+        font-size: 11px;
+    }
+
+    .form-disclaimer .privacy-link:hover {
+        color: #E1EEEA;
+        background: transparent;
+    }
+
     .password-requirements {
         display: none;
         flex-wrap: wrap;
@@ -478,6 +525,7 @@ import Calendar from "../images/svg/calendar.svg";
                             <span class="button-text">Create Account</span>
                             <span class="loader"></span>
                         </button>
+                        <p class="form-disclaimer">By submitting 'Create Account', I have read and agree to the <a href="/terms-of-use" target="_blank" rel="noopener noreferrer" class="disclaimer-link terms-link">Terms of Use</a> and acknowledge the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" class="disclaimer-link privacy-link">Privacy Policy</a>.</p>
                         <p class="signup-error"></p>
                     </form>
                     <!-- <a href="https://invest.robertventures.com" style="max-width: 100%;">Get Started Now</a> -->
