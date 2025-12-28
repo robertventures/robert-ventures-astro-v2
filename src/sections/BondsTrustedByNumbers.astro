@@ -1,5 +1,40 @@
 ---
-// Updated
+// Fetch stats from API with fallback values
+const API_BASE = import.meta.env.PUBLIC_API_BASE_URL; 
+
+// Construct the full URL for stats
+const STATS_URL = `${API_BASE}/api/stats`;
+
+// Default fallback values
+let totalRaisedValue = 1.07;
+let reinvestmentRate = 24;
+let uniqueInvestors = 68;
+
+try {
+    const response = await fetch(STATS_URL);
+    if (response.ok) {
+        const data = await response.json();
+        
+        // Parse totalAmountRaised (string) and convert to millions
+        const totalRaised = parseFloat(data.totalAmountRaised);
+        if (!isNaN(totalRaised)) {
+            totalRaisedValue = parseFloat((totalRaised / 1000000).toFixed(2));
+        }
+        
+        // Use usersWithInvestments directly
+        if (typeof data.usersWithInvestments === 'number') {
+            uniqueInvestors = data.usersWithInvestments;
+        }
+        
+        // Round reinvestment rate to nearest integer
+        if (typeof data.percentUsersWithMultipleInvestments === 'number') {
+            reinvestmentRate = Math.round(data.percentUsersWithMultipleInvestments);
+        }
+    }
+} catch (error) {
+    console.error('Failed to fetch stats from API:', error);
+    // Fallback values are already set
+}
 ---
 
 <style>
@@ -143,15 +178,15 @@
         
         <div class="columns-container">
             <div class="column">
-                <span class="stat-value" data-value="1.07" data-suffix="M">0</span>
+                <span class="stat-value" data-value={totalRaisedValue} data-suffix="M">0</span>
                 <span class="description">Total Raised</span>
             </div>
             <div class="column">
-                <span class="stat-value" data-value="24" data-suffix="%">0</span>
+                <span class="stat-value" data-value={reinvestmentRate} data-suffix="%">0</span>
                 <span class="description">Reinvestment Rate</span>
             </div>
             <div class="column">
-                <span class="stat-value" data-value="68" data-suffix="">0</span>
+                <span class="stat-value" data-value={uniqueInvestors} data-suffix="">0</span>
                 <span class="description">Unique Investors</span>
             </div>
             <div class="column">
