@@ -180,11 +180,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 return "android";
             })();
 
-            // Determine webinar variant and other final values
-            // USED BY: GoHighLevel (custom fields), WebinarKit (customField1, customField2), Meta (not used)
+            // Determine webinar test and other final values
+            // USED BY: GoHighLevel (custom fields), WebinarKit (customField1), Meta (not used)
             const webinarTest = body.webinar_test || 'unknown';
-            const variantFromRef = (refUrl?.pathname || "").includes("webinar-2") ? "v1.1" : "v1.0";
-            const webinarVariant = body.webinar_variant || variantFromRef || 'unknown';
             const utmCampaignFinal = body.utm_campaign
                 || (body?.utm && typeof body.utm === 'object' ? body.utm.utm_campaign : undefined)
                 || "Webinar";
@@ -288,8 +286,6 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_signup_date: currentDate,
                         // User's IP address for location tracking
                         userip: body.user_ip || "unknown",
-                        // A/B test variant for conversion analysis
-                        webinar_ab_test_variant: webinarVariant,
                         // Device type for user experience insights
                         device_type: deviceFinal,
                         // Webinar selection datetime (ISO UTC format)
@@ -368,9 +364,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 date: body.date,                // ISO datetime for webinar session
                 fullDate: body.fullDate,        // Human-readable datetime for display
                 // Custom fields for WebinarKit analytics and segmentation
-                customField1: webinarTest,      // A/B test variant tracking
-                customField2: webinarVariant,   // Webinar version (v1.0/v1.1)
-                customField3: body.invest_intent // Investment intent for lead scoring
+                customField1: webinarTest,      // Webinar test tracking
+                customField2: body.invest_intent // Investment intent for lead scoring
             };
 
             console.log("📤 Sending to WebinarKit:", JSON.stringify(webinarKitPayload, null, 2));
