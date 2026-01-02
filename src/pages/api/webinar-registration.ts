@@ -303,7 +303,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         utm_campaign: (body?.utm?.utm_campaign ?? (body?.utm_campaign ?? "none")),
                         utm_content: (body?.utm?.utm_content ?? "none"),
                         utm_term: (body?.utm?.utm_term ?? "none"),
-                        utm_id: (body?.utm?.utm_id ?? "none")
+                        utm_id: (body?.utm?.utm_id ?? "none"),
+                        // Google Click ID (custom field for Google Ads attribution)
+                        google_click_id: (body?.gclid ?? "none")
                     };
 
                     // Prepare the complete payload for GoHighLevel API
@@ -313,8 +315,6 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         email: body.email,
                         source: utmCampaignFinal,
                         timezone: body.user_timezone || "Unknown",
-                        // Google Click ID (standard GHL field for Google Ads attribution)
-                        ...(body.gclid ? { gclid: body.gclid } : {}),
                         // Default contact address fields (not customField)
                         ...(geoRegionName ? { state: geoRegionName } : {}),
                         ...(geoCity ? { city: geoCity } : {}),

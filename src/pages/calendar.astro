@@ -163,9 +163,12 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                     // Attribution params to forward to GHL
                     // Note: Google Ads data is mapped to UTM fields in userAttribution.js
                     const paramsToForward = [
-                        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id',
-                        'gclid' // Google Click ID (standard GHL field)
+                        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id'
                     ];
+                    
+                    // Also send gclid as google_click_id custom field
+                    const gclid = localStorage.getItem('gclid');
+                    if (gclid) params.set('google_click_id', gclid);
                     
                     paramsToForward.forEach(key => {
                         try {
