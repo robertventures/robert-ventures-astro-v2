@@ -113,10 +113,10 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                         <p>Start with a Personal Concierge Call.</p>
                     </div>
                     <iframe
-                        src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
+                        src=""
                         style="width: 100%;border:none;overflow: hidden;"
                         scrolling="no"
-                        id="xNXEISjf314X2BFZvdaZ_1727445052062"></iframe><br />
+                        id="calendar-iframe"></iframe><br />
                 </div>
             </div>
         </section>
@@ -154,6 +154,35 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
 
             // Listen for messages from the iframe
             document.addEventListener('DOMContentLoaded', function() {
+                // Dynamically build iframe URL with attribution params
+                const iframe = document.getElementById('calendar-iframe') as HTMLIFrameElement;
+                if (iframe) {
+                    const baseUrl = 'https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ';
+                    const params = new URLSearchParams();
+                    
+                    // All attribution params to forward to GHL
+                    const paramsToForward = [
+                        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id',
+                        'gclid', 'gad_source', 'gad_campaignid', 'h_keyword'
+                    ];
+                    
+                    paramsToForward.forEach(key => {
+                        try {
+                            const value = localStorage.getItem(key);
+                            if (value) params.set(key, value);
+                        } catch {}
+                    });
+                    
+                    const queryString = params.toString();
+                    iframe.src = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+                    console.log('Calendar iframe URL set:', iframe.src);
+
+                    // Monitor iframe load events
+                    iframe.addEventListener('load', function() {
+                        console.log('Calendar iframe loaded');
+                    });
+                }
+
                 window.addEventListener('message', function(event) {
                     // Check if the message is from LeadConnector
                     if (event.origin === 'https://api.leadconnectorhq.com') {
@@ -179,15 +208,6 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                         }
                     }
                 });
-
-                // Alternative: Listen for URL changes in the iframe (if accessible)
-                const iframe = document.getElementById('xNXEISjf314X2BFZvdaZ_1727445052062');
-                if (iframe) {
-                    // Monitor iframe load events as a fallback
-                    iframe.addEventListener('load', function() {
-                        console.log('Calendar iframe loaded');
-                    });
-                }
             });
         </script>
     </body>

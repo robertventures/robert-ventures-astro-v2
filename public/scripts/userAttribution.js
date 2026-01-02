@@ -23,8 +23,24 @@ if (!userIpAddress) {
 const utmParams = [
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
 ];
+
+// --- Capture Google Ads Parameters ---
+const googleAdsParams = [
+  "gclid", "gad_source", "gad_campaignid", "h_keyword"
+];
+
 const urlParams = new URLSearchParams(window.location.search);
+
+// Store UTM params
 utmParams.forEach(param => {
+  const value = urlParams.get(param);
+  if (value) {
+    localStorage.setItem(param, value);
+  }
+});
+
+// Store Google Ads params
+googleAdsParams.forEach(param => {
   const value = urlParams.get(param);
   if (value) {
     localStorage.setItem(param, value);

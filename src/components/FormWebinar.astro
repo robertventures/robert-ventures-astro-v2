@@ -789,6 +789,17 @@ const analyticsEvents = {
         if (value) utmData[param] = value;
       });
 
+      // Collect Google Ads parameters, prioritizing URL params, fallback to localStorage
+      const googleAdsParams = ["gclid", "gad_source", "gad_campaignid", "h_keyword"];
+      const gadsData: Partial<Record<"gclid" | "gad_source" | "gad_campaignid" | "h_keyword", string>> = {};
+      googleAdsParams.forEach(param => {
+        let value = urlParams.get(param);
+        if (!value) {
+          try { value = localStorage.getItem(param) || undefined; } catch {}
+        }
+        if (value) gadsData[param] = value;
+      });
+
       // Device detection fallback
       function detectDeviceFromUA(ua) {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
@@ -817,6 +828,7 @@ const analyticsEvents = {
         date: isoDateUTC,
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // Only send the main UTM fields
+        gads: gadsData, // Google Ads parameters
         utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
