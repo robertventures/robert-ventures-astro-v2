@@ -343,13 +343,21 @@ const analyticsEvents = {
     },
 
     // Trigger analytics events
-    triggerEvent: (eventName, clarityEventName) => {
+    triggerEvent: (eventName, clarityEventName, eventData = {}) => {
       if ((window as any).dataLayer) {
-        (window as any).dataLayer.push({ 'event': eventName });
-        console.log('GA4 event triggered: ' + eventName);
+        (window as any).dataLayer.push({ 
+          'event': eventName, 
+          ...eventData 
+        });
+        console.log('GA4 event triggered: ' + eventName, eventData);
       }
       
       if (typeof (window as any).clarity === 'function') {
+        // Set custom tags for Clarity session so you can filter recordings by these values
+        Object.keys(eventData).forEach(key => {
+          (window as any).clarity('set', key, eventData[key]);
+        });
+        
         (window as any).clarity('event', clarityEventName);
         console.log('Clarity event triggered: ' + clarityEventName);
       }
@@ -423,6 +431,37 @@ const analyticsEvents = {
       if (!formEl.dataset.initialized) {
         setupFormSubmission(form, elements);
         formEl.dataset.initialized = 'true';
+      }
+
+      // Setup form started tracking (fires once on first interaction with any form field)
+      if (!formEl.dataset.formStartedTracked) {
+        let formStartedFired = false;
+        
+        form.addEventListener('focusin', (e) => {
+          if (formStartedFired) return;
+          
+          // Only trigger for actual form input fields
+          const target = e.target as HTMLElement;
+          if (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA') {
+            formStartedFired = true;
+            
+            // Push to dataLayer
+            if ((window as any).dataLayer) {
+              (window as any).dataLayer.push({
+                'event': 'webinar_form_started'
+              });
+              console.log('GA4 event triggered: webinar_form_started');
+            }
+            
+            // Send to Clarity
+            if (typeof (window as any).clarity === 'function') {
+              (window as any).clarity('event', 'webinarFormStarted');
+              console.log('Clarity event triggered: webinarFormStarted');
+            }
+          }
+        });
+        
+        formEl.dataset.formStartedTracked = 'true';
       }
     });
   }
@@ -836,7 +875,10 @@ const analyticsEvents = {
         }));
         
         // Trigger analytics events
-        utils.triggerEvent('webinar_registered', 'webinarRegistered');
+        utils.triggerEvent('webinar_registered', 'webinarRegistered', {
+          invest_intent: formData.get("invest_intent"),
+          session_date: isoDateUTC
+        });
 
         // Fire Meta Pixel for all registrations with deduplication eventID
         try {
