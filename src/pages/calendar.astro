@@ -113,67 +113,10 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                         <p>Start with a Personal Concierge Call.</p>
                     </div>
                     <iframe
-                        src=""
-                        style="width: 100%;border:none;overflow: hidden;"
+                        src="https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ"
+                        style="width: 100%; height: 700px; border: none; overflow: hidden;"
                         scrolling="no"
-                        id="calendar-iframe"></iframe><br />
-                    
-                    <script is:inline>
-                        // Build iframe URL with UTM parameters immediately (before DOMContentLoaded)
-                        // This ensures params are captured from the URL on first page load
-                        (function() {
-                            const iframe = document.getElementById('calendar-iframe');
-                            if (!iframe) return;
-                            
-                            const baseUrl = 'https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ';
-                            const iframeParams = new URLSearchParams();
-                            const urlParams = new URLSearchParams(window.location.search);
-                            
-                            // Helper: get param from URL first, then localStorage
-                            function getParam(key) {
-                                return urlParams.get(key) || localStorage.getItem(key) || null;
-                            }
-                            
-                            // Standard UTM parameters
-                            const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id'];
-                            utmKeys.forEach(key => {
-                                const value = getParam(key);
-                                if (value) iframeParams.set(key, value);
-                            });
-                            
-                            // Google Ads: Check for gclid and map Google params to UTM fields
-                            const gclid = getParam('gclid');
-                            if (gclid) {
-                                // Pass gclid to GHL (standard field)
-                                iframeParams.set('gclid', gclid);
-                                
-                                // Set UTM defaults for Google Ads if not already set
-                                if (!iframeParams.has('utm_source')) {
-                                    iframeParams.set('utm_source', 'google');
-                                }
-                                if (!iframeParams.has('utm_medium')) {
-                                    iframeParams.set('utm_medium', 'cpc');
-                                }
-                                
-                                // Map gad_campaignid to utm_campaign
-                                const gadCampaignId = getParam('gad_campaignid');
-                                if (gadCampaignId && !iframeParams.has('utm_campaign')) {
-                                    iframeParams.set('utm_campaign', gadCampaignId);
-                                }
-                                
-                                // Map h_keyword to utm_term
-                                const hKeyword = getParam('h_keyword');
-                                if (hKeyword && !iframeParams.has('utm_term')) {
-                                    iframeParams.set('utm_term', hKeyword);
-                                }
-                            }
-                            
-                            // Build and set iframe URL
-                            const queryString = iframeParams.toString();
-                            iframe.src = queryString ? `${baseUrl}?${queryString}` : baseUrl;
-                            console.log('Calendar iframe URL:', iframe.src);
-                        })();
-                    </script>
+                        id="calendar-iframe"></iframe>
                 </div>
             </div>
         </section>
