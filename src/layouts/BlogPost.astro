@@ -120,5 +120,110 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<br>
 		<br>
 		<FooterNew />
+
+		<script>
+			// Article Scroll Depth Tracking
+			// Tracks when users scroll to 25%, 50%, 75%, and 100% thresholds on article pages
+			// Each threshold fires only once per page load
+
+			(function() {
+				'use strict';
+
+				// Get article slug from URL
+				function getArticleSlug() {
+					const path = window.location.pathname;
+					const match = path.match(/\/articles\/(.+?)\/?$/);
+					return match ? match[1] : 'unknown';
+				}
+
+				// Thresholds to track
+				const thresholds = [25, 50, 75, 100];
+				
+				// Track which thresholds have been reached
+				const reachedThresholds = new Set<number>();
+				
+				// Flag to prevent multiple rAF calls
+				let ticking = false;
+
+				// Function to trigger article scroll events
+				function triggerArticleScrollEvent(percentage: number, articleSlug: string) {
+					const eventData = {
+						'event': 'article_scroll',
+						'article_slug': articleSlug,
+						'scroll_percentage': percentage
+					};
+
+					// Push event to Google Tag Manager's dataLayer
+					if ((window as any).dataLayer) {
+						(window as any).dataLayer.push(eventData);
+						console.log('GA4 article_scroll event triggered:', eventData);
+					} else {
+						console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+					}
+
+					// Send event to Microsoft Clarity
+					if (typeof (window as any).clarity === 'function') {
+						(window as any).clarity('set', 'article_slug', articleSlug);
+						(window as any).clarity('set', 'article_scroll_percentage', String(percentage));
+						(window as any).clarity('event', 'articleScroll' + percentage);
+						console.log('Clarity article_scroll event triggered:', eventData);
+					} else {
+						console.warn('Microsoft Clarity is not initialized.');
+					}
+				}
+
+				// Calculate current scroll percentage
+				function getScrollPercentage() {
+					const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+					const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+					
+					// Handle edge case where page doesn't scroll
+					if (scrollHeight <= 0) {
+						return 100;
+					}
+					
+					return Math.round((scrollTop / scrollHeight) * 100);
+				}
+
+				// Check and fire threshold events
+				function checkThresholds() {
+					const currentPercentage = getScrollPercentage();
+					const articleSlug = getArticleSlug();
+					
+					thresholds.forEach(function(threshold) {
+						if (currentPercentage >= threshold && !reachedThresholds.has(threshold)) {
+							reachedThresholds.add(threshold);
+							triggerArticleScrollEvent(threshold, articleSlug);
+						}
+					});
+					
+					ticking = false;
+				}
+
+				// Throttled scroll handler using requestAnimationFrame
+				function onScroll() {
+					if (!ticking) {
+						requestAnimationFrame(checkThresholds);
+						ticking = true;
+					}
+				}
+
+				// Initialize scroll tracking
+				function init() {
+					// Add scroll event listener
+					window.addEventListener('scroll', onScroll, { passive: true });
+					
+					// Check initial scroll position
+					setTimeout(checkThresholds, 100);
+				}
+
+				// Start tracking when DOM is ready
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', init);
+				} else {
+					init();
+				}
+			})();
+		</script>
 	</body>
 </html>

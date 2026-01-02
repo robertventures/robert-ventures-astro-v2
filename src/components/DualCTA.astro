@@ -68,48 +68,6 @@ import Arrow from "../images/svg/right-arrow.svg";
 </style>
 
 <div class="cta-block">
-    <a class="invest invest-cta-homepage" href="https://invest.robertventures.com/">Get Started</a>
-    <a class="webinar webinar-cta-homepage" href="/webinar">Join Our Webinar</a>
-</div>
-
-<script>
-  // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName, clarityEventName) {
-    // Push event to Google Tag Manager's dataLayer
-    if ((window as any).dataLayer) {
-      (window as any).dataLayer.push({
-        'event': eventName
-      });
-      console.log('GA4 event triggered: ' + eventName);
-    } else {
-      console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-    }
-
-    // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === 'function') {
-      (window as any).clarity('event', clarityEventName);
-      console.log('Clarity event triggered: ' + clarityEventName);
-    } else {
-      console.warn('Microsoft Clarity is not initialized.');
-    }
-  }
-
-  // Add event listeners when DOM is loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    // Invest CTA event listeners - target all instances
-    const investCTAs = document.querySelectorAll('.invest-cta-homepage');
-    investCTAs.forEach(function(investCTA) {
-      investCTA.addEventListener('click', function() {
-        triggerEvent('invest_cta_homepage_click', 'investCtaHomepageClick');
-      });
-    });
-
-    // Webinar CTA event listeners - target all instances
-    const webinarCTAs = document.querySelectorAll('.webinar-cta-homepage');
-    webinarCTAs.forEach(function(webinarCTA) {
-      webinarCTA.addEventListener('click', function() {
-        triggerEvent('webinar_cta_homepage_click', 'webinarCtaHomepageClick');
-      });
-    });
-  });
-</script> 
+    <a class="invest" href="https://invest.robertventures.com/" data-track-cta="get_started" data-track-location="hero">Get Started</a>
+    <a class="webinar" href="/webinar" data-track-cta="join_our_webinar" data-track-location="hero">Join Our Webinar</a>
+</div> 

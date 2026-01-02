@@ -168,7 +168,12 @@ const articles = (await getCollection("articles")).sort(
 							{
 								articles.map((post) => (
 									<li>
-										<a href={`/articles/${post.slug}`}>
+										<a 
+											href={`/articles/${post.slug}`}
+											data-track-article
+											data-article-title={post.data.title}
+											data-article-slug={post.slug}
+										>
 											<img
 												width={366}
 												height={156}
@@ -189,5 +194,46 @@ const articles = (await getCollection("articles")).sort(
 			</section>
 		</main>
 		<FooterNew />
+
+		<script>
+			// Article click tracking
+			function triggerArticleClickEvent(articleTitle: string, articleSlug: string) {
+				const eventData = {
+					'event': 'article_click',
+					'article_title': articleTitle,
+					'article_slug': articleSlug
+				};
+
+				// Push event to Google Tag Manager's dataLayer
+				if ((window as any).dataLayer) {
+					(window as any).dataLayer.push(eventData);
+					console.log('GA4 article_click event triggered:', eventData);
+				} else {
+					console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+				}
+
+				// Send event to Microsoft Clarity
+				if (typeof (window as any).clarity === 'function') {
+					(window as any).clarity('set', 'article_title', articleTitle);
+					(window as any).clarity('set', 'article_slug', articleSlug);
+					(window as any).clarity('event', 'articleClick');
+					console.log('Clarity article_click event triggered:', eventData);
+				} else {
+					console.warn('Microsoft Clarity is not initialized.');
+				}
+			}
+
+			// Add event listeners when DOM is loaded
+			document.addEventListener('DOMContentLoaded', function() {
+				const articleLinks = document.querySelectorAll('[data-track-article]');
+				articleLinks.forEach(function(link) {
+					link.addEventListener('click', function() {
+						const articleTitle = (link as HTMLElement).dataset.articleTitle || 'unknown';
+						const articleSlug = (link as HTMLElement).dataset.articleSlug || 'unknown';
+						triggerArticleClickEvent(articleTitle, articleSlug);
+					});
+				});
+			});
+		</script>
 	</body>
 </html>

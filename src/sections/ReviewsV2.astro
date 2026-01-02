@@ -550,6 +550,51 @@ try {
 
 <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
+        // Get page name for analytics
+        function getPageName() {
+            const path = window.location.pathname;
+            const pageMap = {
+                '/': 'homepage',
+                '/about-us': 'about_us',
+                '/reviews': 'reviews'
+            };
+            return pageMap[path] || path.replace(/^\//, '').replace(/\/$/, '').replace(/-/g, '_') || 'unknown';
+        }
+
+        // Function to trigger events for Microsoft Clarity and GA4
+        function triggerEvent(eventName, clarityEventName, eventData) {
+            eventData = eventData || {};
+            
+            // Push event to Google Tag Manager's dataLayer
+            if (window.dataLayer) {
+                window.dataLayer.push(Object.assign({ 'event': eventName }, eventData));
+                console.log('GA4 ' + eventName + ' event triggered:', eventData);
+            } else {
+                console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+            }
+
+            // Send event to Microsoft Clarity
+            if (typeof clarity === 'function') {
+                Object.keys(eventData).forEach(function(key) {
+                    clarity('set', key, String(eventData[key]));
+                });
+                clarity('event', clarityEventName);
+                console.log('Clarity ' + clarityEventName + ' event triggered:', eventData);
+            } else {
+                console.warn('Microsoft Clarity is not initialized.');
+            }
+        }
+
+        // Flag to track if carousel interaction has been logged this session
+        var carouselInteractionTracked = false;
+        
+        // Check sessionStorage to see if already tracked this session
+        try {
+            carouselInteractionTracked = sessionStorage.getItem('reviews_carousel_tracked') === 'true';
+        } catch (e) {
+            // sessionStorage not available, use memory flag only
+        }
+
         // Initialize Splide slider
         const splide = new Splide('#reviews-slider', {
             type: 'slide',
@@ -572,6 +617,21 @@ try {
         });
 
         splide.mount();
+
+        // Track carousel interaction (drag/swipe) - fires once per session
+        splide.on('drag', function() {
+            if (!carouselInteractionTracked) {
+                carouselInteractionTracked = true;
+                try {
+                    sessionStorage.setItem('reviews_carousel_tracked', 'true');
+                } catch (e) {
+                    // sessionStorage not available
+                }
+                triggerEvent('reviews_carousel_interaction', 'reviewsCarouselInteraction', {
+                    'page_name': getPageName()
+                });
+            }
+        });
 
         // Read more functionality
         const readMoreLinks = document.querySelectorAll('.read-more');
@@ -602,6 +662,11 @@ try {
                 } else {
                     quote.classList.add('expanded');
                     link.textContent = 'Read less';
+                    
+                    // Track "Read more" click (only when expanding)
+                    triggerEvent('review_read_more_click', 'reviewReadMoreClick', {
+                        'page_name': getPageName()
+                    });
                 }
             });
         });
