@@ -297,17 +297,13 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         // Selected session date formatted in user's timezone
                         webinar_session_date: selectedSessionDate,
                         // UTM parameters for marketing attribution (always send with defaults)
+                        // Note: Google Ads data is mapped to UTM fields in userAttribution.js
                         utm_source: (body?.utm?.utm_source ?? "direct"),
                         utm_medium: (body?.utm?.utm_medium ?? "none"),
                         utm_campaign: (body?.utm?.utm_campaign ?? (body?.utm_campaign ?? "none")),
                         utm_content: (body?.utm?.utm_content ?? "none"),
                         utm_term: (body?.utm?.utm_term ?? "none"),
-                        utm_id: (body?.utm?.utm_id ?? "none"),
-                        // Google Ads parameters for ad attribution
-                        gclid: (body?.gads?.gclid ?? "none"),
-                        gad_source: (body?.gads?.gad_source ?? "none"),
-                        gad_campaignid: (body?.gads?.gad_campaignid ?? "none"),
-                        h_keyword: (body?.gads?.h_keyword ?? "none")
+                        utm_id: (body?.utm?.utm_id ?? "none")
                     };
 
                     // Prepare the complete payload for GoHighLevel API
@@ -317,6 +313,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         email: body.email,
                         source: utmCampaignFinal,
                         timezone: body.user_timezone || "Unknown",
+                        // Google Click ID (standard GHL field for Google Ads attribution)
+                        ...(body.gclid ? { gclid: body.gclid } : {}),
                         // Default contact address fields (not customField)
                         ...(geoRegionName ? { state: geoRegionName } : {}),
                         ...(geoCity ? { city: geoCity } : {}),

@@ -776,6 +776,7 @@ const analyticsEvents = {
       }
 
       // Collect UTM parameters, prioritizing URL params, fallback to localStorage
+      // Note: Google Ads params are mapped to UTM fields in userAttribution.js
       const utmParams = [
         "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
       ];
@@ -789,16 +790,11 @@ const analyticsEvents = {
         if (value) utmData[param] = value;
       });
 
-      // Collect Google Ads parameters, prioritizing URL params, fallback to localStorage
-      const googleAdsParams = ["gclid", "gad_source", "gad_campaignid", "h_keyword"];
-      const gadsData: Partial<Record<"gclid" | "gad_source" | "gad_campaignid" | "h_keyword", string>> = {};
-      googleAdsParams.forEach(param => {
-        let value = urlParams.get(param);
-        if (!value) {
-          try { value = localStorage.getItem(param) || undefined; } catch {}
-        }
-        if (value) gadsData[param] = value;
-      });
+      // Get gclid (Google Click ID) - this is a standard GHL field
+      let gclid = urlParams.get("gclid");
+      if (!gclid) {
+        try { gclid = localStorage.getItem("gclid") || undefined; } catch {}
+      }
 
       // Device detection fallback
       function detectDeviceFromUA(ua) {
@@ -827,8 +823,8 @@ const analyticsEvents = {
         bot_field: formData.get("bot-field"),
         date: isoDateUTC,
         fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
-        utm: utmData, // Only send the main UTM fields
-        gads: gadsData, // Google Ads parameters
+        utm: utmData, // UTM fields (also contains mapped Google Ads data)
+        gclid: gclid || undefined, // Google Click ID (standard GHL field)
         utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),

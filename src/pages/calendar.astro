@@ -160,10 +160,11 @@ const pageDescription = "Book a meeting with the Robert Ventures team.";
                     const baseUrl = 'https://api.leadconnectorhq.com/widget/booking/xNXEISjf314X2BFZvdaZ';
                     const params = new URLSearchParams();
                     
-                    // All attribution params to forward to GHL
+                    // Attribution params to forward to GHL
+                    // Note: Google Ads data is mapped to UTM fields in userAttribution.js
                     const paramsToForward = [
                         'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id',
-                        'gclid', 'gad_source', 'gad_campaignid', 'h_keyword'
+                        'gclid' // Google Click ID (standard GHL field)
                     ];
                     
                     paramsToForward.forEach(key => {
