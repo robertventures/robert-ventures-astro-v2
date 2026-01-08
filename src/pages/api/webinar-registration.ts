@@ -296,6 +296,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_date__time: body.fullDate,
                         // Selected session date formatted in user's timezone
                         webinar_session_date: selectedSessionDate,
+                        // Google Calendar URL for easy calendar integration
+                        webinar_calendar_url: body.webinar_calendar_url || "",
                         // UTM parameters for marketing attribution (always send with defaults)
                         // Note: Google Ads data is mapped to UTM fields in userAttribution.js
                         utm_source: (body?.utm?.utm_source ?? "direct"),
