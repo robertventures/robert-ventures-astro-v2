@@ -356,6 +356,60 @@ import Calendar from "../images/svg/calendar.svg";
         background: transparent;
     }
 
+    .phone-error {
+        display: none;
+        color: #ff4d4f;
+        font-family: 'Roboto', sans-serif;
+        font-size: 12px;
+        margin-top: -8px;
+        margin-bottom: 8px;
+        padding: 0 4px;
+    }
+
+    .phone-error.visible {
+        display: block;
+    }
+
+    .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .password-wrapper .password-input {
+        padding-right: 80px;
+    }
+
+    .form .password-toggle {
+        position: absolute !important;
+        right: 12px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        background: #30414D !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 6px 12px !important;
+        font-family: 'Roboto', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #E1EEEA !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease !important;
+        line-height: 1 !important;
+        width: auto !important;
+        display: inline-block !important;
+        margin: 0 !important;
+    }
+
+    .form .password-toggle:hover {
+        background: #3d5261 !important;
+        border: none !important;
+    }
+
+    .form .password-toggle:active {
+        background: #243038 !important;
+        border: none !important;
+    }
+
     .password-requirements {
         display: none;
         flex-wrap: wrap;
@@ -500,26 +554,43 @@ import Calendar from "../images/svg/calendar.svg";
                                 class="email-input"
                             />
                             <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
+                                type="tel"
+                                name="phone"
+                                placeholder="Phone Number"
                                 required
-                                class="password-input"
-                                id="password-input"
+                                maxlength="14"
+                                class="phone-input"
+                                id="phone-input"
                             />
+                            <p class="phone-error" id="phone-error"></p>
+                            <div class="password-wrapper">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    required
+                                    class="password-input"
+                                    id="password-input"
+                                />
+                                <button type="button" class="password-toggle" data-target="password-input">Show</button>
+                            </div>
                             <div class="password-requirements" id="password-requirements">
                                 <span class="requirement" data-req="length">8 Characters</span> &middot;
                                 <span class="requirement" data-req="uppercase">1 Uppercase letter</span> &middot;
                                 <span class="requirement" data-req="number">1 Number</span> &middot;
                                 <span class="requirement" data-req="special">1 Special character</span>
                             </div>
-                            <input
-                                type="password"
-                                name="confirm_password"
-                                placeholder="Confirm Password"
-                                required
-                                class="password-input"
-                            />
+                            <div class="password-wrapper">
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    placeholder="Confirm Password"
+                                    required
+                                    class="password-input"
+                                    id="confirm-password-input"
+                                />
+                                <button type="button" class="password-toggle" data-target="confirm-password-input">Show</button>
+                            </div>
                         </div>
                         <button type="submit">
                             <span class="button-text">Create Account</span>
@@ -581,6 +652,8 @@ import Calendar from "../images/svg/calendar.svg";
         if (!form) return;
 
         const emailInput = form.querySelector('input[type="email"]');
+        const phoneInput = document.getElementById('phone-input');
+        const phoneError = document.getElementById('phone-error');
         const passwordInput = document.getElementById('password-input');
         const requirementsDiv = document.getElementById('password-requirements');
         const requirements = {
@@ -595,6 +668,33 @@ import Calendar from "../images/svg/calendar.svg";
         const loader = form.querySelector('.loader');
         const signupError = form.querySelector('.signup-error');
 
+        // Format phone number as (XXX) XXX-XXXX for display
+        const formatPhone = (value = '') => {
+            const digits = value.replace(/\D/g, '').slice(0, 10);
+            if (digits.length <= 3) return digits;
+            if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+        };
+
+        // Validate US phone number (10 digits, area code starts with 2-9)
+        const isValidUSPhone = (value = '') => {
+            const digits = value.replace(/\D/g, '');
+            if (digits.length !== 10) return false;
+            return /^[2-9][0-9]{9}$/.test(digits);
+        };
+
+        // Normalize phone number to E.164 format for database storage (+1XXXXXXXXXX)
+        const normalizePhoneForDB = (value = '') => {
+            const digits = value.replace(/\D/g, '');
+            if (digits.length === 10) {
+                return `+1${digits}`;
+            }
+            if (digits.length === 11 && digits.startsWith('1')) {
+                return `+${digits}`;
+            }
+            return value;
+        };
+
         // Email: Force lowercase and prevent uppercase
         if (emailInput) {
             emailInput.addEventListener('input', (e) => {
@@ -602,6 +702,27 @@ import Calendar from "../images/svg/calendar.svg";
                 const end = emailInput.selectionEnd;
                 emailInput.value = emailInput.value.toLowerCase();
                 emailInput.setSelectionRange(start, end);
+            });
+        }
+
+        // Phone: Format as user types
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                const cursorPosition = phoneInput.selectionStart;
+                const previousLength = phoneInput.value.length;
+                const formatted = formatPhone(phoneInput.value);
+                phoneInput.value = formatted;
+                
+                // Adjust cursor position after formatting
+                const lengthDiff = formatted.length - previousLength;
+                const newPosition = cursorPosition + lengthDiff;
+                phoneInput.setSelectionRange(newPosition, newPosition);
+
+                // Clear phone error when user starts typing
+                if (phoneError) {
+                    phoneError.classList.remove('visible');
+                    phoneError.textContent = '';
+                }
             });
         }
 
@@ -635,6 +756,33 @@ import Calendar from "../images/svg/calendar.svg";
             });
         }
 
+        // Password Show/Hide Toggle (both fields toggle together)
+        const passwordToggles = form.querySelectorAll('.password-toggle');
+        const allPasswordInputs = [
+            document.getElementById('password-input'),
+            document.getElementById('confirm-password-input')
+        ];
+        
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                // Check current state from the first password input
+                const isCurrentlyHidden = allPasswordInputs[0]?.type === 'password';
+                
+                // Toggle all password inputs together
+                allPasswordInputs.forEach(input => {
+                    if (input) {
+                        input.type = isCurrentlyHidden ? 'text' : 'password';
+                    }
+                });
+                
+                // Update all toggle button texts
+                const newText = isCurrentlyHidden ? 'Hide' : 'Show';
+                passwordToggles.forEach(btn => {
+                    btn.textContent = newText;
+                });
+            });
+        });
+
         function resetFormState() {
             if (buttonText) buttonText.style.display = '';
             if (loader) loader.style.display = 'none';
@@ -646,13 +794,35 @@ import Calendar from "../images/svg/calendar.svg";
             
             const formData = new FormData(form);
             const email = formData.get('email');
+            const phone = formData.get('phone');
             const password = formData.get('password');
             const confirmPassword = formData.get('confirm_password');
             
-            // Reset error state
+            // Reset error states
             if (signupError) {
                 signupError.style.display = 'none';
                 signupError.textContent = '';
+            }
+            if (phoneError) {
+                phoneError.classList.remove('visible');
+                phoneError.textContent = '';
+            }
+
+            // Validate Phone Number
+            if (!phone || phone.trim() === '') {
+                if (phoneError) {
+                    phoneError.textContent = 'Phone number is required';
+                    phoneError.classList.add('visible');
+                }
+                return;
+            }
+
+            if (!isValidUSPhone(phone)) {
+                if (phoneError) {
+                    phoneError.textContent = 'Please enter a valid 10-digit US phone number';
+                    phoneError.classList.add('visible');
+                }
+                return;
             }
             
             // Validate Password Requirements
@@ -678,6 +848,9 @@ import Calendar from "../images/svg/calendar.svg";
             if (buttonText) buttonText.style.display = 'none';
             if (loader) loader.style.display = 'inline-block';
             if (submitButton) submitButton.disabled = true;
+
+            // Normalize phone to E.164 format for database
+            const normalizedPhone = normalizePhoneForDB(phone);
             
             try {
                 const response = await fetch('https://invest.robertventures.com/api/profile', {
@@ -687,6 +860,7 @@ import Calendar from "../images/svg/calendar.svg";
                     },
                     body: JSON.stringify({ 
                         email: email,
+                        phone: normalizedPhone,
                         password: password 
                     })
                 });
