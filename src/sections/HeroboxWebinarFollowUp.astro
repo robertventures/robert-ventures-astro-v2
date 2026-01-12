@@ -877,9 +877,13 @@ import Calendar from "../images/svg/calendar.svg";
                     throw new Error(data.detail || 'Registration failed. Please try again.');
                 }
                 
-                // Success! Redirect to confirmation page
+                // Success! Redirect to confirmation page with email and user_id
+                const userId = data.user?.id || data.pendingUserId || data.id;
                 const confirmationUrl = new URL('https://invest.robertventures.com/confirmation');
                 confirmationUrl.searchParams.append('email', email);
+                if (userId) {
+                    confirmationUrl.searchParams.append('user_id', userId);
+                }
                 window.location.href = confirmationUrl.toString();
                 
                 /* 
