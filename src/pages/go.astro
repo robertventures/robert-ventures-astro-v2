@@ -1,0 +1,84 @@
+---
+// Redirect page that extracts destination URL from sub5 parameter
+// The destination URL may contain ? and & characters, so we can't use standard URL parsing
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow" />
+        <title>Redirecting...</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                color: #ffffff;
+            }
+            .container {
+                text-align: center;
+                padding: 2rem;
+            }
+            .spinner {
+                width: 50px;
+                height: 50px;
+                border: 4px solid rgba(255, 255, 255, 0.2);
+                border-top-color: #ffffff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1.5rem;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            h1 {
+                font-size: 1.5rem;
+                font-weight: 500;
+                opacity: 0.9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="spinner"></div>
+            <h1>Redirecting...</h1>
+        </div>
+
+        <script>
+            // Get the full URL from the browser
+            const fullUrl = window.location.href;
+            
+            // Find the position of "sub5=" in the URL
+            const sub5Index = fullUrl.indexOf('sub5=');
+            
+            let destination = 'https://robertventures.com';
+            
+            if (sub5Index !== -1) {
+                // Extract everything after "sub5="
+                destination = fullUrl.substring(sub5Index + 5); // 5 is the length of "sub5="
+                
+                // Decode the URL in case it was encoded
+                try {
+                    destination = decodeURIComponent(destination);
+                } catch (e) {
+                    // If decoding fails, use the raw value (it might not be encoded)
+                }
+            }
+            
+            // Redirect to the destination
+            window.location.replace(destination);
+        </script>
+    </body>
+</html>
