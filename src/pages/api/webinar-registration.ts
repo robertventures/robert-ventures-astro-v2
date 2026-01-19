@@ -157,6 +157,20 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             console.log("📥 Received form data:", JSON.stringify(body, null, 2));
 
             // ========================================
+            // SPAM PROTECTION: HONEYPOT VALIDATION
+            // ========================================
+            // The bot-field is a hidden field that humans won't fill out.
+            // If it contains any value, this is likely a bot submission.
+            if (body.bot_field && body.bot_field.trim() !== "") {
+                console.log("🤖 Honeypot triggered - rejecting spam submission");
+                // Return success to avoid giving bots feedback that they were detected
+                return new Response(
+                    JSON.stringify({ message: "Registration successful" }),
+                    { status: 200, headers: { "Content-Type": "application/json" } }
+                );
+            }
+
+            // ========================================
             // DATA PROCESSING & ENRICHMENT
             // ========================================
             // Extract and process form data with server-side fallbacks for all three services
@@ -557,12 +571,23 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // All integrations completed successfully - return data from each service
             const webinarResponse = JSON.parse(responseText);
             
-            // Extract watch/replay URL from WebinarKit response
-            // For on-demand sessions, use replay_url to send user directly to watch the replay
+            // Extract watch room URL from WebinarKit response
+            // For on-demand sessions, transform replay_url to watch room URL
             // WebinarKit returns: url (thank you page), replay_url (replay page)
-            const watchRoomUrl = isInstantSession 
-                ? (webinarResponse?.replay_url || webinarResponse?.url || null)
-                : (webinarResponse?.url || null);
+            // Watch room URL format: /webinar/watch/{id}/?t={timestamp}&r={registrant_id}
+            // The r= parameter is unique per registration and tracks attendance
+            let watchRoomUrl: string | null = null;
+            if (isInstantSession) {
+                const replayUrl = webinarResponse?.replay_url;
+                if (replayUrl) {
+                    // Transform /replay/ to /webinar/watch/ to get the actual watch room
+                    watchRoomUrl = replayUrl.replace('/replay/', '/webinar/watch/');
+                } else {
+                    watchRoomUrl = webinarResponse?.url || null;
+                }
+            } else {
+                watchRoomUrl = webinarResponse?.url || null;
+            }
             
             console.log("🎬 Watch room URL for redirect:", watchRoomUrl);
             
