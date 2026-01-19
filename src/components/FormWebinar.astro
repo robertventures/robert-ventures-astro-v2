@@ -41,8 +41,11 @@ const analyticsEvents = {
         <input
           type="tel"
           name="phone_number"
-          placeholder="Phone Number"
+          placeholder="(555) 555-5555"
           required
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
         />
       </div>
 
@@ -369,6 +372,9 @@ const analyticsEvents = {
   let countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
+    // Setup phone formatting IMMEDIATELY (independent of API)
+    setupAllPhoneInputs();
+    
     await loadAndInitializeWebinarData();
     
     // Refresh webinar data every 5 minutes to ensure we have the latest sessions
@@ -376,6 +382,75 @@ const analyticsEvents = {
       await loadAndInitializeWebinarData();
     }, 5 * 60 * 1000); // 5 minutes
   });
+
+  // Setup phone formatting for all phone inputs on page
+  function setupAllPhoneInputs() {
+    const phoneInputs = document.querySelectorAll("input[name='phone_number']");
+    
+    phoneInputs.forEach((input) => {
+      const phoneInput = input as HTMLInputElement;
+      if (phoneInput.dataset.phoneInitialized === "true") return;
+      
+      phoneInput.addEventListener("input", (e) => {
+        const target = e.target as HTMLInputElement;
+        if (!target) return;
+        
+        // Get raw digits only
+        let digits = target.value.replace(/\D/g, "");
+        
+        // Limit to 10 digits (US phone number)
+        if (digits.length > 10) {
+          digits = digits.slice(0, 10);
+        }
+        
+        // Format the phone number: (XXX) XXX-XXXX
+        let formatted = "";
+        if (digits.length > 0) {
+          if (digits.length <= 3) {
+            formatted = "(" + digits;
+          } else if (digits.length <= 6) {
+            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+          } else {
+            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+          }
+        }
+        
+        target.value = formatted;
+      });
+      
+      // Block non-numeric input
+      phoneInput.addEventListener("keypress", (e) => {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+      
+      // Handle paste - format pasted content
+      phoneInput.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const target = e.target as HTMLInputElement;
+        const clipboardData = e.clipboardData || (window as any).clipboardData;
+        const pastedText = clipboardData.getData("text");
+        let digits = pastedText.replace(/\D/g, "").slice(0, 10);
+        
+        let formatted = "";
+        if (digits.length > 0) {
+          if (digits.length <= 3) {
+            formatted = "(" + digits;
+          } else if (digits.length <= 6) {
+            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+          } else {
+            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+          }
+        }
+        
+        target.value = formatted;
+      });
+      
+      phoneInput.dataset.phoneInitialized = "true";
+      phoneInput.setAttribute("maxlength", "14");
+    });
+  }
 
   async function loadAndInitializeWebinarData() {
     try {
@@ -416,15 +491,12 @@ const analyticsEvents = {
       // Populate sessions dropdown
       populateSessionsDropdown(selectEl, data);
 
-      // Initialize countdown timer
-      initializeCountdown(timeElements, data);
-
-      // Setup phone input formatting (only once)
-      const phoneInputEl = phoneInput as HTMLInputElement;
-      if (!phoneInputEl.dataset.initialized) {
-        setupPhoneInput(phoneInput);
-        phoneInputEl.dataset.initialized = 'true';
+      // Initialize countdown timer (only if time elements exist)
+      if (timeElements) {
+        initializeCountdown(timeElements, data);
       }
+
+      // Phone input formatting is handled by setupAllPhoneInputs() on page load
 
       // Setup form submission (only once)
       const formEl = form as HTMLFormElement;
@@ -470,28 +542,33 @@ const analyticsEvents = {
     const selectEl = form.querySelector("select[name='session']");
     const investSelectEl = form.querySelector("select[name='invest_intent']");
     const phoneInput = form.querySelector("input[name='phone_number']");
-    // Time elements are now siblings of the form-cta container, search in section-content
+    const signupError = form.querySelector(".signup-error");
+    const submitButton = form.querySelector("button[type='submit']");
+    const buttonText = submitButton?.querySelector(".button-text");
+    const loader = submitButton?.querySelector(".loader");
+
+    // Required elements for form to work
+    if (!selectEl || !investSelectEl || !signupError || !submitButton || !buttonText || !loader) {
+      return null;
+    }
+
+    // Time elements are optional (may be commented out in some layouts)
     const sectionContent = formContainer.closest('.section-content');
     const daysSpan = sectionContent?.querySelector(".days span");
     const hoursSpan = sectionContent?.querySelector(".hours span");
     const minutesSpan = sectionContent?.querySelector(".minutes span");
     const secondsSpan = sectionContent?.querySelector(".seconds span");
-    const signupError = form.querySelector(".signup-error");
-    const submitButton = form.querySelector("button[type='submit']");
-    const buttonText = submitButton.querySelector(".button-text");
-    const loader = submitButton.querySelector(".loader");
-
-    if (!selectEl || !investSelectEl || !daysSpan || !hoursSpan || !minutesSpan || !secondsSpan || 
-        !signupError || !submitButton || !buttonText || !loader) {
-      console.error("Required form elements not found");
-      return null;
-    }
+    
+    // Only include time elements if all of them exist
+    const timeElements = (daysSpan && hoursSpan && minutesSpan && secondsSpan) 
+      ? { daysSpan, hoursSpan, minutesSpan, secondsSpan }
+      : null;
 
     return {
       selectEl,
       investSelectEl,
       phoneInput,
-      timeElements: { daysSpan, hoursSpan, minutesSpan, secondsSpan },
+      timeElements,
       signupError,
       submitButton,
       buttonText,
@@ -500,6 +577,24 @@ const analyticsEvents = {
   }
 
   function populateSessionsDropdown(selectEl, data) {
+    const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Clear and add default option
+    selectEl.innerHTML = '<option value="" disabled selected>Select an Upcoming Session</option>';
+    
+    // STEP 1: Add the ON-DEMAND option first (uses separate webinar)
+    if (data.onDemandAvailable) {
+      const instantOption = document.createElement("option");
+      instantOption.value = "instant";
+      instantOption.setAttribute("data-date", "instant");
+      instantOption.setAttribute("data-timezone", userTz);
+      instantOption.setAttribute("data-is-instant", "true");
+      instantOption.setAttribute("data-webinar-id", data.webinarIds?.onDemand || "");
+      instantOption.textContent = "Watch Now - On Demand";
+      selectEl.appendChild(instantOption);
+    }
+    
+    // STEP 2: Get ongoing (scheduled) sessions
     const sessions = data.results.filter((item) => {
       try {
         const parsed = JSON.parse(item.id);
@@ -520,13 +615,10 @@ const analyticsEvents = {
       }
     }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
-    selectEl.innerHTML = '<option value="" disabled selected>Select an Upcoming Session</option>';
-    
-    // Only show the next 2 sessions
+    // STEP 3: Add only the next 2 scheduled sessions
     sessionsWithDates.slice(0, 2).forEach((item) => {
       const { session, nextDate } = item;
       const details = JSON.parse(session.id);
-      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       
       const weekday = nextDate.toLocaleString("en-US", { weekday: "short" });
       const month = nextDate.getMonth() + 1;
@@ -546,6 +638,8 @@ const analyticsEvents = {
       option.setAttribute("data-date", nextDate.toISOString());
       option.setAttribute("data-timezone", userTz);
       option.setAttribute("data-original-timezone", details.timeZone);
+      option.setAttribute("data-is-instant", "false");
+      option.setAttribute("data-webinar-id", data.webinarIds?.scheduled || "");
       option.textContent = `${weekday}, ${month}/${day}, ${time} ${tzShort} - ${timeLeftString}`;
       selectEl.appendChild(option);
     });
@@ -671,47 +765,6 @@ const analyticsEvents = {
     }
   }
 
-  function setupPhoneInput(phoneInput) {
-    if (!phoneInput) return;
-
-    phoneInput.addEventListener("input", (e) => {
-      const input = e.target;
-      if (!input) return;
-      
-      const cursorPosition = input.selectionStart;
-      let value = input.value.replace(/\D/g, "");
-      
-      if (value.length > 10) {
-        value = value.slice(0, 10);
-      }
-      
-      const formatted = utils.formatPhoneNumber(value);
-      input.value = formatted;
-      
-      let newCursorPosition = cursorPosition;
-      if (formatted.length > value.length) {
-        const addedChars = formatted.length - value.length;
-        newCursorPosition = cursorPosition + addedChars;
-      }
-      
-      input.setSelectionRange(newCursorPosition, newCursorPosition);
-    });
-    
-    phoneInput.addEventListener("keydown", (e) => {
-      const input = e.target;
-      if (!input) return;
-      
-      if (e.key === "Backspace" || e.key === "Delete") {
-        const cursorPosition = input.selectionStart;
-        const value = input.value;
-        
-        if (value[cursorPosition - 1] && !/\d/.test(value[cursorPosition - 1])) {
-          e.preventDefault();
-          input.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
-        }
-      }
-    });
-  }
 
   function setupFormSubmission(form, elements) {
     const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } = elements;
@@ -757,22 +810,36 @@ const analyticsEvents = {
         localStorage.setItem("invest_intent", selectedInvest);
       } catch {}
 
-      const isoDateUTC = selectedOption.getAttribute("data-date");
-      const sessionValue = selectedOption.value;
+      // Check if this is an instant (on-demand) session
+      const isInstant = selectedOption.getAttribute("data-is-instant") === "true";
+      
+      let isoDateUTC: string;
+      let sessionValue: string;
+      let sessionDetails: any;
+      
+      if (isInstant) {
+        // Handle instant/on-demand session
+        isoDateUTC = "instant";
+        sessionValue = "instant";
+        sessionDetails = { type: "instant", timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
+      } else {
+        // Handle scheduled sessions
+        isoDateUTC = selectedOption.getAttribute("data-date") || "";
+        sessionValue = selectedOption.value;
 
-      if (!isoDateUTC || !sessionValue) {
-        signupError.textContent = "Invalid session data.";
-        resetFormState(buttonText, loader, submitButton);
-        return;
-      }
+        if (!isoDateUTC || !sessionValue) {
+          signupError.textContent = "Invalid session data.";
+          resetFormState(buttonText, loader, submitButton);
+          return;
+        }
 
-      let sessionDetails;
-      try {
-        sessionDetails = JSON.parse(sessionValue);
-      } catch (error) {
-        signupError.textContent = "Invalid session format.";
-        resetFormState(buttonText, loader, submitButton);
-        return;
+        try {
+          sessionDetails = JSON.parse(sessionValue);
+        } catch (error) {
+          signupError.textContent = "Invalid session format.";
+          resetFormState(buttonText, loader, submitButton);
+          return;
+        }
       }
 
       // Collect UTM parameters, prioritizing URL params, fallback to localStorage
@@ -811,11 +878,14 @@ const analyticsEvents = {
       // Provide top-level utm_campaign for systems expecting it
       const utmCampaignTop = utmData.utm_campaign || (() => { try { return localStorage.getItem("utm_campaign"); } catch { return null; } })();
 
-      // Build Google Calendar URL from selected webinar date
-      const webinarCalendarUrl = buildGoogleCalendarUrl(isoDateUTC);
+      // Build Google Calendar URL from selected webinar date (skip for instant sessions)
+      const webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
+
+      // Get the webinar ID from the selected option
+      const webinarId = selectedOption.getAttribute("data-webinar-id") || "";
 
       const payload = {
-        session: sessionDetails.id,
+        session: isInstant ? "instant" : sessionDetails.id,
         name: formData.get("full_name"),
         email: formData.get("email"),
         phone_number: (() => {
@@ -825,7 +895,7 @@ const analyticsEvents = {
         invest_intent: formData.get("invest_intent"),
         bot_field: formData.get("bot-field"),
         date: isoDateUTC,
-        fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
+        fullDate: isInstant ? "Watch Now - On Demand" : getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // UTM fields (also contains mapped Google Ads data)
         gclid: gclid || undefined, // Google Click ID (standard GHL field)
         utm_campaign: utmCampaignTop || undefined,
@@ -834,12 +904,16 @@ const analyticsEvents = {
         user_ip: localStorage.getItem("userIP") || undefined,
         device_type: deviceType || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
-        // Google Calendar URL for GHL
+        // Google Calendar URL for GHL (empty for instant sessions)
         webinar_calendar_url: webinarCalendarUrl,
         // Meta deduplication fields
         event_id: generateEventId(),
         fbp: getFbp(),
-        fbc: getFbc()
+        fbc: getFbc(),
+        // Flag to indicate instant session
+        is_instant: isInstant,
+        // Webinar ID for registration (different for on-demand vs scheduled)
+        webinar_id: webinarId
       };
 
       console.log("Payload being sent:", payload);
@@ -882,15 +956,17 @@ const analyticsEvents = {
           title: sessionDetails.title || "Robert Ventures Webinar",
           date: isoDateUTC,
           timeZone: sessionDetails.timeZone,
-          fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
+          fullDate: isInstant ? "Watch Now - On Demand" : getFullDateString(isoDateUTC, sessionDetails.timeZone),
           email: formData.get("email"),
           name: formData.get("full_name"),
+          isInstant: isInstant
         }));
         
         // Trigger analytics events
         utils.triggerEvent('webinar_registered', 'webinarRegistered', {
           invest_intent: formData.get("invest_intent"),
-          session_date: isoDateUTC
+          session_date: isoDateUTC,
+          session_type: isInstant ? "instant" : "scheduled"
         });
 
         // Fire Meta Pixel for all registrations with deduplication eventID
@@ -905,7 +981,28 @@ const analyticsEvents = {
           (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
         } catch {}
 
-        window.location.href = "/questions";
+        // Redirect based on session type
+        if (isInstant && result.watch_room_url) {
+          // On-demand: redirect directly to watch room
+          console.log("🎬 Redirecting to watch room:", result.watch_room_url);
+          window.location.href = result.watch_room_url;
+        } else if (isInstant) {
+          // On-demand but no watch room URL in response - try webinar response
+          const watchUrl = result.webinar_response?.watch_url || 
+                          result.webinar_response?.unique_link ||
+                          result.webinar_response?.watchRoomUrl;
+          if (watchUrl) {
+            console.log("🎬 Redirecting to watch room (from webinar_response):", watchUrl);
+            window.location.href = watchUrl;
+          } else {
+            // Fallback to thank you page if no watch URL available
+            console.warn("⚠️ No watch room URL found, redirecting to thank you page");
+            window.location.href = "/webinar-thank-you";
+          }
+        } else {
+          // Scheduled: redirect to thank you page
+          window.location.href = "/webinar-thank-you";
+        }
       } catch (err) {
         signupError.textContent = "An error occurred during registration.";
         resetFormState(buttonText, loader, submitButton);

@@ -242,6 +242,10 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             const { firstName, lastName } = splitFullName(body.name);
             console.log("👤 Name split:", { fullName: body.name, firstName, lastName });
 
+            // Check if this is an instant (on-demand) session
+            // USED BY: GHL (custom field), WebinarKit (webinar ID selection), Response (redirect logic)
+            const isInstantSession = body.date === "instant" || body.is_instant === true;
+
             // ========================================
             // STEP 1: GO HIGH LEVEL INTEGRATION
             // ========================================
@@ -288,15 +292,17 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         userip: body.user_ip || "unknown",
                         // Device type for user experience insights
                         device_type: deviceFinal,
-                        // Webinar selection datetime (ISO UTC format)
+                        // Webinar selection datetime (ISO UTC format or "instant" for on-demand)
                         webinar_date: body.date,
                         // Webinar selection datetime (human-readable with timezone)
                         webinar_full_date: body.fullDate,
                         // Duplicate field to match GHL handler expectations
                         webinar_date__time: body.fullDate,
-                        // Selected session date formatted in user's timezone
+                        // Selected session date formatted in user's timezone (undefined for instant)
                         webinar_session_date: selectedSessionDate,
-                        // Google Calendar URL for easy calendar integration
+                        // Session type: "instant" for on-demand, "scheduled" for live sessions
+                        webinar_session_type: isInstantSession ? "instant" : "scheduled",
+                        // Google Calendar URL for easy calendar integration (empty for instant)
                         webinar_calendar_url: body.webinar_calendar_url || "",
                         // UTM parameters for marketing attribution (always send with defaults)
                         // Note: Google Ads data is mapped to UTM fields in userAttribution.js
@@ -376,9 +382,13 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             console.log("📤 Sending to WebinarKit:", JSON.stringify(webinarKitPayload, null, 2));
 
             // WebinarKit API endpoint configuration
-            const webinarId = "684ae034de7a164da41abe10";
+            // Use the webinar ID from request body, or default to scheduled webinar
+            const scheduledWebinarId = "684ae034de7a164da41abe10";
+            const onDemandWebinarId = "696d0df144dee112a61d5db8";
+            const webinarId = isInstantSession ? onDemandWebinarId : (body.webinar_id || scheduledWebinarId);
             const apiUrl = `https://webinarkit.com/api/webinar/registration/${webinarId}`;
             console.log("🔗 WebinarKit API URL:", apiUrl);
+            console.log("📋 Session type:", isInstantSession ? "on-demand" : "scheduled");
 
             const requestOptions: RequestInit = {
                 method: "POST",
@@ -545,13 +555,28 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // SUCCESS RESPONSE
             // ========================================
             // All integrations completed successfully - return data from each service
+            const webinarResponse = JSON.parse(responseText);
+            
+            // Extract watch/replay URL from WebinarKit response
+            // For on-demand sessions, use replay_url to send user directly to watch the replay
+            // WebinarKit returns: url (thank you page), replay_url (replay page)
+            const watchRoomUrl = isInstantSession 
+                ? (webinarResponse?.replay_url || webinarResponse?.url || null)
+                : (webinarResponse?.url || null);
+            
+            console.log("🎬 Watch room URL for redirect:", watchRoomUrl);
+            
             return new Response(
                 JSON.stringify({
                     message: "Registration successful",
                     // FROM WebinarKit: Registration confirmation and webinar details
-                    webinar_response: JSON.parse(responseText),
+                    webinar_response: webinarResponse,
                     // FROM GoHighLevel: Contact ID for CRM integration
-                    ghl_contact_id: ghlContactId
+                    ghl_contact_id: ghlContactId,
+                    // Session type for frontend redirect logic
+                    is_instant: isInstantSession,
+                    // Watch room URL for on-demand sessions (redirect destination)
+                    watch_room_url: watchRoomUrl
                     // FROM Meta: No response data needed (fire-and-forget conversion tracking)
                 }),
                 { status: 200, headers: { "Content-Type": "application/json" } }
