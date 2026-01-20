@@ -981,28 +981,8 @@ const analyticsEvents = {
           (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
         } catch {}
 
-        // Redirect based on session type
-        if (isInstant && result.watch_room_url) {
-          // On-demand: redirect directly to watch room
-          console.log("🎬 Redirecting to watch room:", result.watch_room_url);
-          window.location.href = result.watch_room_url;
-        } else if (isInstant) {
-          // On-demand but no watch room URL in response - try webinar response
-          const watchUrl = result.webinar_response?.watch_url || 
-                          result.webinar_response?.unique_link ||
-                          result.webinar_response?.watchRoomUrl;
-          if (watchUrl) {
-            console.log("🎬 Redirecting to watch room (from webinar_response):", watchUrl);
-            window.location.href = watchUrl;
-          } else {
-            // Fallback to thank you page if no watch URL available
-            console.warn("⚠️ No watch room URL found, redirecting to thank you page");
-            window.location.href = "/webinar-thank-you";
-          }
-        } else {
-          // Scheduled: redirect to thank you page
-          window.location.href = "/webinar-thank-you";
-        }
+        // Redirect to questions page after registration
+        window.location.href = "/questions";
       } catch (err) {
         signupError.textContent = "An error occurred during registration.";
         resetFormState(buttonText, loader, submitButton);
