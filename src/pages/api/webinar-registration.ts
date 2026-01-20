@@ -106,6 +106,54 @@ function autoCorrectEmail(email: string): { correctedEmail: string; wasCorrected
 }
 
 /**
+ * Normalizes ALL CAPS names to Title Case for better readability
+ * Only transforms if the entire name is uppercase - leaves mixed case names untouched
+ * Handles special cases: O'Brien, McDonald, hyphenated names (Mary-Jane)
+ */
+function normalizeNameCase(name: string): { normalizedName: string; wasNormalized: boolean } {
+    if (!name || typeof name !== 'string') {
+        return { normalizedName: name, wasNormalized: false };
+    }
+
+    const trimmedName = name.trim();
+
+    // Only normalize if the name is ALL CAPS (letters only, ignoring spaces/punctuation)
+    const lettersOnly = trimmedName.replace(/[^a-zA-Z]/g, '');
+    if (lettersOnly.length === 0 || lettersOnly !== lettersOnly.toUpperCase()) {
+        // Not all caps, leave it alone
+        return { normalizedName: trimmedName, wasNormalized: false };
+    }
+
+    // Convert to Title Case, handling special characters
+    const normalized = trimmedName
+        .toLowerCase()
+        .split(/(\s+)/) // Split by spaces but keep the spaces
+        .map(part => {
+            if (part.trim() === '') return part; // Preserve spaces
+
+            // Handle hyphenated names (e.g., MARY-JANE → Mary-Jane)
+            if (part.includes('-')) {
+                return part.split('-').map(p =>
+                    p.charAt(0).toUpperCase() + p.slice(1)
+                ).join('-');
+            }
+
+            // Handle apostrophes (e.g., O'BRIEN → O'Brien)
+            if (part.includes("'")) {
+                return part.split("'").map(p =>
+                    p.charAt(0).toUpperCase() + p.slice(1)
+                ).join("'");
+            }
+
+            // Standard capitalization
+            return part.charAt(0).toUpperCase() + part.slice(1);
+        })
+        .join('');
+
+    return { normalizedName: normalized, wasNormalized: true };
+}
+
+/**
  * Splits a full name into first and last name components
  * Handles various name formats gracefully
  */
@@ -249,6 +297,17 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 });
                 // Update the email in the body for all subsequent processing
                 body.email = correctedEmail;
+            }
+
+            // Normalize ALL CAPS names to Title Case for better readability
+            // Only transforms if the entire name is uppercase - leaves mixed case names untouched
+            const nameNormalization = normalizeNameCase(body.name);
+            if (nameNormalization.wasNormalized) {
+                console.log("📝 Name normalized from ALL CAPS:", {
+                    original: body.name,
+                    normalized: nameNormalization.normalizedName
+                });
+                body.name = nameNormalization.normalizedName;
             }
 
             // Split full name into first and last name components
