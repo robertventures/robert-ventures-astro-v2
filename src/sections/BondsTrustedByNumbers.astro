@@ -1,17 +1,13 @@
 ---
-// Fetch stats from API with fallback values
-const API_BASE = import.meta.env.PUBLIC_API_BASE_URL; 
-
-// Construct the full URL for stats
-const STATS_URL = `${API_BASE}/api/stats`;
-
+// Fetch stats from local API with fallback values
 // Default fallback values
 let totalRaisedValue = 1.07;
 let reinvestmentRate = 24;
 let uniqueInvestors = 68;
 
 try {
-    const response = await fetch(STATS_URL);
+    const statsUrl = new URL("/api/stats", Astro.url);
+    const response = await fetch(statsUrl);
     if (response.ok) {
         const data = await response.json();
         

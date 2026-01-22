@@ -53,6 +53,22 @@ try {
 } catch (error) {
     // Silently fail; frontend can handle empty list if needed
 }
+
+// Fetch unique investors count from local stats API
+let uniqueInvestors = 68; // Default fallback value
+
+try {
+    const statsUrl = new URL("/api/stats", Astro.url);
+    const statsResponse = await fetch(statsUrl);
+    if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        if (typeof statsData.usersWithInvestments === 'number') {
+            uniqueInvestors = statsData.usersWithInvestments;
+        }
+    }
+} catch (error) {
+    // Fallback value is already set
+}
 ---
 
 <!-- Splide.js CSS -->
@@ -204,7 +220,7 @@ try {
 <section>
     <div class="section-container">
         <div class="section-content">
-            <h2>Trusted By 60+ Investors</h2>
+            <h2>Trusted By {uniqueInvestors}+ Investors</h2>
             <!-- Testimonials Slider -->
             <div class="testimonials-slider">
                 <div class="splide" id="testimonials-slider" aria-label="Testimonials">

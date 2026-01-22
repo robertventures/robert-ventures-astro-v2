@@ -71,6 +71,22 @@ try {
     // Silently fail; fallback to empty array (will show hardcoded reviews)
     console.error('Failed to fetch reviews from Senja:', error);
 }
+
+// Fetch unique investors count from local stats API
+let uniqueInvestors = 68; // Default fallback value
+
+try {
+    const statsUrl = new URL("/api/stats", Astro.url);
+    const statsResponse = await fetch(statsUrl);
+    if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        if (typeof statsData.usersWithInvestments === 'number') {
+            uniqueInvestors = statsData.usersWithInvestments;
+        }
+    }
+} catch (error) {
+    // Fallback value is already set
+}
 ---
 
 <!-- Splide.js CSS -->
@@ -349,7 +365,7 @@ try {
 
 <section>
     <div class="section-container">
-        <h3>Trusted by 60+ Investors</h3>
+        <h3>Trusted by {uniqueInvestors}+ Investors</h3>
         <div class="slider-wrapper">
             <div class="reviews-slider">
                 <div class="splide" id="reviews-slider" aria-label="Reviews">
