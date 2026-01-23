@@ -547,6 +547,16 @@ import Calendar from "../images/svg/calendar.svg";
                 <p>Create your account and start investing in less than 5 minutes.</p>
                 <div class="form">
                     <form class="form-cta" id="registration-form">
+                        <!-- Honeypot field - hidden from humans, bots will fill it -->
+                        <input 
+                            type="text" 
+                            name="website" 
+                            id="honeypot-field"
+                            autocomplete="off"
+                            tabindex="-1"
+                            style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;"
+                        />
+                        <input type="hidden" name="form_load_time" id="form-load-time" value="" />
                         <div class="form-block">
                             <input
                                 type="email"
@@ -652,6 +662,17 @@ import Calendar from "../images/svg/calendar.svg";
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('registration-form');
         if (!form) return;
+
+        // Anti-bot: Set form load timestamp
+        const formLoadTime = Date.now();
+        const formLoadTimeInput = document.getElementById('form-load-time');
+        if (formLoadTimeInput) {
+            formLoadTimeInput.value = formLoadTime.toString();
+        }
+
+        // Minimum time (in milliseconds) that must pass before form can be submitted
+        // Humans typically take at least 5 seconds to fill out a form
+        const MIN_FORM_TIME_MS = 3000;
 
         const emailInput = form.querySelector('input[type="email"]');
         const phoneInput = document.getElementById('phone-input');
@@ -799,6 +820,25 @@ import Calendar from "../images/svg/calendar.svg";
             const phone = formData.get('phone');
             const password = formData.get('password');
             const confirmPassword = formData.get('confirm_password');
+            
+            // Anti-bot check 1: Honeypot field
+            const honeypotField = document.getElementById('honeypot-field');
+            if (honeypotField && honeypotField.value !== '') {
+                // Bot detected - silently fail (don't give feedback to bots)
+                console.log('Form validation failed');
+                return;
+            }
+            
+            // Anti-bot check 2: Time-based validation
+            const timeElapsed = Date.now() - formLoadTime;
+            if (timeElapsed < MIN_FORM_TIME_MS) {
+                // Form submitted too quickly - likely a bot
+                if (signupError) {
+                    signupError.textContent = 'Please take your time filling out the form.';
+                    signupError.style.display = 'block';
+                }
+                return;
+            }
             
             // Reset error states
             if (signupError) {
