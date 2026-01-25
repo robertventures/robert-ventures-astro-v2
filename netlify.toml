@@ -1,0 +1,16 @@
+# Netlify configuration for Robert Ventures
+
+# ========================================
+# GEO-BLOCKING: Webinar Registration API
+# ========================================
+# Block all countries except US and Colombia from registering for webinars
+# This prevents spam registrations (commonly from Europe/Moscow timezone)
+# Blocked users receive a 403 error; frontend handles this gracefully
+# and does NOT fire Meta Pixel or GA4 conversion events
+
+[[redirects]]
+  from = "/api/webinar-registration"
+  to = "/blocked.json"
+  status = 403
+  force = true
+  conditions = {Country = ["!US", "!CO"]}
