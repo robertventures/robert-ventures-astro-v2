@@ -372,6 +372,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_full_date: body.fullDate,
                         // Duplicate field to match GHL handler expectations
                         webinar_date__time: body.fullDate,
+                        // Webinar date/time in user's local timezone (for email reminders)
+                        webinar_datetime_user_tz: body.webinar_datetime_user_tz || body.fullDate,
                         // Selected session date formatted in user's timezone (undefined for instant)
                         webinar_session_date: selectedSessionDate,
                         // Session type: "instant" for on-demand, "scheduled" for live sessions

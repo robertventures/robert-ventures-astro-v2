@@ -901,6 +901,8 @@ const analyticsEvents = {
         utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
+        // Webinar date/time formatted in user's timezone (for email reminders)
+        webinar_datetime_user_tz: isInstant ? "Watch Now - On Demand" : getLocalDateTimeString(isoDateUTC, selectedOption.getAttribute("data-timezone")),
         device_type: deviceType || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
         // Google Calendar URL for GHL (empty for instant sessions)
@@ -1008,6 +1010,26 @@ const analyticsEvents = {
       timeZoneName: "short",
     } as Intl.DateTimeFormatOptions;
     return date.toLocaleString("en-US", options);
+  }
+
+  // Format: "Sunday, January 25 at 6:00 PM" (no timezone, with "at")
+  function getLocalDateTimeString(isoDateUTC, userTimeZone) {
+    const date = new Date(isoDateUTC);
+    const dateOptions = {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      timeZone: userTimeZone,
+    } as Intl.DateTimeFormatOptions;
+    const timeOptions = {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: userTimeZone,
+    } as Intl.DateTimeFormatOptions;
+    const datePart = date.toLocaleDateString("en-US", dateOptions);
+    const timePart = date.toLocaleTimeString("en-US", timeOptions);
+    return `${datePart} at ${timePart}`;
   }
 
   /**
