@@ -32,8 +32,7 @@ document.querySelectorAll("#form-cta").forEach(form => {
         // Get the user's timezone using the browser's Intl API
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Retrieve the IP address and utm_campaign from localStorage
-        const storedIpAddress = localStorage.getItem("userIP");
+        // Retrieve utm_campaign from localStorage
         const storedUtmCampaign = localStorage.getItem("utmCampaign");
 
 
@@ -46,7 +45,6 @@ document.querySelectorAll("#form-cta").forEach(form => {
         const requestData = {
             email,
             timeZone,
-            ipAddress: storedIpAddress,
             utmCampaign: storedUtmCampaign // Include the utm_campaign
         };
 

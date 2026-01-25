@@ -250,14 +250,15 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 || "Webinar";
             const deviceFinal = body.device_type || serverDevice || "unknown";
 
-            // Lookup geolocation from user's IP for GHL address custom fields
-            // Source: ip-api.com JSON endpoint (no key, HTTP only)
-            // Docs: http://ip-api.com/docs/api:json
-            const xffForGeo = request.headers.get("x-forwarded-for") || "";
-            const headerIpForGeo = (xffForGeo.split(",")[0] || "").trim() ||
+            // Get client IP from server headers (Netlify provides this automatically)
+            // No client-side IP capture needed - server always has access to the real IP
+            const xffHeader = request.headers.get("x-forwarded-for") || "";
+            const clientIpFromHeaders = (xffHeader.split(",")[0] || "").trim() ||
                 request.headers.get("cf-connecting-ip") ||
                 request.headers.get("x-real-ip") || "";
-            const ipForGeo = (body.user_ip && body.user_ip !== "unknown") ? body.user_ip : (headerIpForGeo || "");
+
+            // Use server-side IP for geolocation and GHL
+            const ipForGeo = clientIpFromHeaders;
 
             let geoRegionName: string | undefined;
             let geoCity: string | undefined;
@@ -362,7 +363,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         // Formatted signup date in user's timezone for GHL
                         webinar_signup_date: currentDate,
                         // User's IP address for location tracking
-                        userip: body.user_ip || "unknown",
+                        userip: ipForGeo || "unknown",
                         // Device type for user experience insights
                         device_type: deviceFinal,
                         // Webinar selection datetime (ISO UTC format or "instant" for on-demand)

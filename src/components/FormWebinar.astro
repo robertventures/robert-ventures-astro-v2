@@ -901,7 +901,6 @@ const analyticsEvents = {
         utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
-        user_ip: localStorage.getItem("userIP") || undefined,
         device_type: deviceType || undefined,
         webinar_test: 'webinar-ux_2025-07-21_v1',
         // Google Calendar URL for GHL (empty for instant sessions)
