@@ -4,7 +4,7 @@
 # EDGE FUNCTIONS
 # ========================================
 # Geo-blocking is handled by the edge function in netlify/edge-functions/geo-block.js
-# It blocks webinar registrations from countries outside US and Colombia
+# It blocks webinar registrations from countries outside the US
 
 [[edge_functions]]
   path = "/api/webinar-registration"

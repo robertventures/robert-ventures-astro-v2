@@ -1,7 +1,7 @@
 /**
  * Netlify Edge Function: Geo-Block Webinar Registration
  * 
- * Blocks webinar registration requests from countries outside US and Colombia.
+ * Blocks webinar registration requests from countries outside the US.
  * This prevents spam registrations (commonly from Europe/Moscow timezone).
  * 
  * Blocked users receive a 403 JSON response; frontend handles this gracefully
@@ -12,8 +12,8 @@ export default async (request, context) => {
   // Get the country code from Netlify's geo data
   const country = context.geo?.country?.code;
   
-  // Allowed countries: US and Colombia
-  const allowedCountries = ['US', 'CO'];
+  // Allowed countries: US only
+  const allowedCountries = ['US'];
   
   // If we can detect the country and it's not in our allowed list, block it
   if (country && !allowedCountries.includes(country)) {
