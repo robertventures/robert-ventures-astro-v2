@@ -1,16 +1,11 @@
 # Netlify configuration for Robert Ventures
 
 # ========================================
-# GEO-BLOCKING: Webinar Registration API
+# EDGE FUNCTIONS
 # ========================================
-# Block all countries except US and Colombia from registering for webinars
-# This prevents spam registrations (commonly from Europe/Moscow timezone)
-# Blocked users receive a 403 error; frontend handles this gracefully
-# and does NOT fire Meta Pixel or GA4 conversion events
+# Geo-blocking is handled by the edge function in netlify/edge-functions/geo-block.js
+# It blocks webinar registrations from countries outside US and Colombia
 
-[[redirects]]
-  from = "/api/webinar-registration"
-  to = "/blocked.json"
-  status = 403
-  force = true
-  conditions = {Country = ["!US", "!CO"]}
+[[edge_functions]]
+  path = "/api/webinar-registration"
+  function = "geo-block"
