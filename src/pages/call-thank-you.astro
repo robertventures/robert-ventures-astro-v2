@@ -1,0 +1,117 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+import Image from "astro/components/Image.astro";
+import checkRegistered from "../images/check-registered.png";
+
+const pageTitle = "Robert Ventures: Call Booked";
+const pageDescription = "Thank you for booking a Q&A call with Robert Ventures.";
+---
+
+<style>
+    .thank-you-section {
+        background: linear-gradient(to bottom, #101B1F, #111111);
+        position: relative;
+        color: #E1EEEA;
+        padding: 0;
+        margin: 0;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .section-container {
+        position: relative;
+        z-index: 1;
+        padding: 96px 16px;
+        background: transparent;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 32px;
+    }
+
+    .checkmark-image {
+        width: auto;
+        height: auto;
+        max-width: 64px;
+        max-height: 64px;
+        display: block;
+    }
+
+    h1 {
+        font-family: 'Roboto Serif', serif;
+        font-size: 40px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 110%;
+        text-align: center;
+        color: #E1EEEA;
+        max-width: 640px;
+    }
+
+    .message {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 150%;
+        margin: 0;
+        text-align: center;
+        color: #BFD1D7;
+        max-width: 512px;
+    }
+
+    .highlight {
+        color: #D3FBD8;
+    }
+
+    @media only screen and (min-width: 600px) {
+        .section-container {
+            padding: 128px 32px;
+        }
+
+        h1 {
+            font-size: 48px;
+        }
+    }
+
+    @media only screen and (min-width: 1136px) {
+        .section-container {
+            padding: 160px 112px;
+        }
+    }
+</style>
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={pageTitle} description={pageDescription} />
+        <meta property="og:url" content="https://robertventures.com/call-thank-you" />
+        <meta name="robots" content="noindex, nofollow" />
+    </head>
+    <body>
+        <Header />
+        <section class="thank-you-section">
+            <div class="section-container">
+                <div class="content">
+                    <Image src={checkRegistered} alt="Call booked" class="checkmark-image" />
+                    <h1>Thank You for Booking a Call</h1>
+                    <p class="message">
+                        We've received your booking and look forward to speaking with you.
+                        <span class="highlight">Check your email</span> for confirmation details and calendar invite.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <FooterNew />
+    </body>
+</html>
