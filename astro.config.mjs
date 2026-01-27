@@ -12,7 +12,13 @@ import tunnel from 'astro-tunnel';
 export default defineConfig({
   site: 'https://robertventures.com',
   integrations: [mdx(), sitemap({
-    exclude: ['/test', '/test2'], // Exclude the /test page from the sitemap
+    exclude: [
+      '/questions',
+      '/webinar-follow-up',
+      '/webinar-thank-you',
+      '/call-thank-you',
+      '/404'
+    ],
   }), tunnel()],
   server: {
     port: 4321
