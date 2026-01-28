@@ -194,6 +194,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
         // ========================================
         const apiKey = import.meta.env.WEBINARKIT_API_KEY;
         const ghlApiKey = import.meta.env.GHL_API_KEY;
+        const censusApiKey = import.meta.env.CENSUS_API_KEY;
 
         try {
             // ========================================
@@ -283,6 +284,38 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 }
             } catch (e) {
                 console.warn("⚠️ IP geolocation lookup threw:", e);
+            }
+
+            // Lookup median household income by zip code using US Census Bureau API
+            // Classifies zip code as "High", "Mid", or "Low" income for lead segmentation
+            let incomeLevel: string | undefined;
+            try {
+                if (geoZip && censusApiKey) {
+                    const censusRes = await fetch(
+                        `https://api.census.gov/data/2022/acs/acs5?get=B19013_001E&for=zip%20code%20tabulation%20area:${encodeURIComponent(geoZip)}&key=${encodeURIComponent(censusApiKey)}`
+                    );
+                    if (censusRes.ok) {
+                        const censusData = await censusRes.json();
+                        // Response format: [["B19013_001E","zip code tabulation area"],["114301","90210"]]
+                        if (Array.isArray(censusData) && censusData.length > 1) {
+                            const medianIncome = Number(censusData[1][0]);
+                            if (!isNaN(medianIncome) && medianIncome > 0) {
+                                if (medianIncome > 80000) {
+                                    incomeLevel = "High";
+                                } else if (medianIncome >= 40000) {
+                                    incomeLevel = "Mid";
+                                } else {
+                                    incomeLevel = "Low";
+                                }
+                                console.log("💰 Zip income lookup:", { geoZip, medianIncome, incomeLevel });
+                            }
+                        }
+                    } else {
+                        console.warn("⚠️ Census API HTTP error:", censusRes.status);
+                    }
+                }
+            } catch (e) {
+                console.warn("⚠️ Census income lookup threw:", e);
             }
 
             // Auto-correct email typos to improve user experience
@@ -389,7 +422,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         utm_term: (body?.utm?.utm_term ?? "none"),
                         utm_id: (body?.utm?.utm_id ?? "none"),
                         // Google Click ID (custom field for Google Ads attribution)
-                        google_click_id: (body?.gclid ?? "none")
+                        google_click_id: (body?.gclid ?? "none"),
+                        // Zip code income level classification (High/Mid/Low) from Census data
+                        zip_income_level: incomeLevel || "unknown"
                     };
 
                     // Prepare the complete payload for GoHighLevel API
