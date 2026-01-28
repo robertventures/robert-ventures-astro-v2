@@ -1,7 +1,6 @@
 ---
 import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FooterNew from "../../components/FooterNew.astro";
 
@@ -13,9 +12,7 @@ const articles = (await getCollection("articles")).sort(
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-
-		<title>Robert Ventures: Articles</title>
+		<BaseHead title="Investment Insights & News | Robert Ventures" description="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions." />
 		<meta
 			name="description"
 			content="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions."
