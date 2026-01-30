@@ -28,7 +28,32 @@ export const prerender = false
         <BaseHead title={pageTitle} description={pageDescription} />
         <meta property="og:url" content="https://robertventures.com/webinar" />
         <!-- RTK Click Tracking -->
-        <script src="https://rt.robertventures.com/uniclick.js?attribution=lastpaid&cookiedomain=robertventures.com&cookieduration=90&defaultcampaignid=697c996793ba48f6ba89582f&regviewonce=false" defer></script>
+        <script is:inline>
+            (function () {
+                const host = window.location.hostname.replace(/^www\./, "");
+                const script = document.createElement("script");
+                script.src =
+                    "https://rt.robertventures.com/uniclick.js?attribution=lastpaid&cookiedomain=" +
+                    encodeURIComponent(host) +
+                    "&cookieduration=90&defaultcampaignid=697c996793ba48f6ba89582f&regviewonce=false";
+                script.defer = true;
+                script.onload = function () {
+                    console.log("[RTK] uniclick.js loaded", { host });
+                    let checks = 0;
+                    const interval = setInterval(function () {
+                        checks += 1;
+                        const match = document.cookie.match(/(?:^|; )rtkclickid-store=([^;]+)/);
+                        const value = match ? match[1] : undefined;
+                        console.log("[RTK] cookie check", { checks, value });
+                        if (value || checks >= 5) clearInterval(interval);
+                    }, 1000);
+                };
+                script.onerror = function (e) {
+                    console.warn("[RTK] uniclick.js failed to load", e);
+                };
+                document.head.appendChild(script);
+            })();
+        </script>
     </head>
     <body>
         <Header />
