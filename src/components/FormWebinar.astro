@@ -377,6 +377,9 @@ const analyticsEvents = {
   let countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
+    // Capture RTK Click ID early (cookie may be async)
+    initializeRtkClickIdCapture();
+
     // Setup phone formatting IMMEDIATELY (independent of API)
     setupAllPhoneInputs();
     
@@ -454,6 +457,27 @@ const analyticsEvents = {
       
       phoneInput.dataset.phoneInitialized = "true";
       phoneInput.setAttribute("maxlength", "14");
+    });
+  }
+
+  // Capture RTK Click ID from cookie/session/query and hydrate hidden field
+  function initializeRtkClickIdCapture() {
+    const maxAttempts = 10;
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts += 1;
+      const clickId = getRtkClickId();
+      if (clickId || attempts >= maxAttempts) {
+        setRtkClickIdField(clickId);
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  function setRtkClickIdField(value) {
+    document.querySelectorAll("input[name='rtk_click_id']").forEach((input) => {
+      const field = input as HTMLInputElement;
+      field.value = value || "";
     });
   }
 
@@ -889,6 +913,9 @@ const analyticsEvents = {
       // Get the webinar ID from the selected option
       const webinarId = selectedOption.getAttribute("data-webinar-id") || "";
 
+      const rtkClickId = getRtkClickId();
+      setRtkClickIdField(rtkClickId);
+
       const payload = {
         session: isInstant ? "instant" : sessionDetails.id,
         name: formData.get("full_name"),
@@ -921,7 +948,7 @@ const analyticsEvents = {
         // Webinar ID for registration (different for on-demand vs scheduled)
         webinar_id: webinarId,
         // RTK Click ID for attribution tracking
-        rtk_click_id: getCookie('rtkclickid-store') || undefined
+        rtk_click_id: rtkClickId || undefined
       };
 
       console.log("Payload being sent:", payload);
@@ -1083,6 +1110,21 @@ const analyticsEvents = {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return parts.pop().split(';').shift();
+    } catch {}
+    return undefined;
+  }
+
+  function getRtkClickId() {
+    const cookieValue = getCookie('rtkclickid-store');
+    if (cookieValue) return cookieValue;
+    try {
+      const sessionValue = sessionStorage.getItem('rtkclickid');
+      if (sessionValue && sessionValue !== 'undefined') return sessionValue;
+    } catch {}
+    try {
+      const url = new URL(window.location.href);
+      const paramValue = url.searchParams.get('rtkcid');
+      if (paramValue) return paramValue;
     } catch {}
     return undefined;
   }
