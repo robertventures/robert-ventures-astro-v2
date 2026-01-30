@@ -75,6 +75,11 @@ const analyticsEvents = {
         class="bot-field"
         style="display: none;"
       />
+      <input
+        type="hidden"
+        name="rtk_click_id"
+        class="rtk-click-id"
+      />
     </div>
     <button type="submit">
       <span class="button-text">Register Now</span>
@@ -914,7 +919,9 @@ const analyticsEvents = {
         // Flag to indicate instant session
         is_instant: isInstant,
         // Webinar ID for registration (different for on-demand vs scheduled)
-        webinar_id: webinarId
+        webinar_id: webinarId,
+        // RTK Click ID for attribution tracking
+        rtk_click_id: getCookie('rtkclickid-store') || undefined
       };
 
       console.log("Payload being sent:", payload);
