@@ -423,6 +423,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         utm_id: (body?.utm?.utm_id ?? "none"),
                         // Google Click ID (custom field for Google Ads attribution)
                         google_click_id: (body?.gclid ?? "none"),
+                        // RTK Click ID for attribution tracking
+                        rtk_click_id: (body?.rtk_click_id ?? "none"),
                         // Zip code income level classification (High/Mid/Low) from Census data
                         zip_income_level: incomeLevel || "unknown"
                     };
