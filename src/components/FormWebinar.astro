@@ -467,7 +467,6 @@ const analyticsEvents = {
     const interval = setInterval(() => {
       attempts += 1;
       const clickId = getRtkClickId();
-      console.log("[RTK] click id check", { attempts, clickId });
       if (clickId || attempts >= maxAttempts) {
         setRtkClickIdField(clickId);
         clearInterval(interval);

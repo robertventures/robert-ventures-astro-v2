@@ -33,11 +33,6 @@ export const prerender = false
                 if (window.__rtkUniclickInit) return;
                 window.__rtkUniclickInit = true;
 
-                if (document.querySelector("script[data-rtk-uniclick]")) {
-                    console.log("[RTK] uniclick.js already present");
-                    return;
-                }
-
                 const host = window.location.hostname.replace(/^www\./, "");
                 const script = document.createElement("script");
                 script.src =
@@ -45,22 +40,6 @@ export const prerender = false
                     encodeURIComponent(host) +
                     "&cookieduration=90&defaultcampaignid=697c996793ba48f6ba89582f&regviewonce=false";
                 script.defer = true;
-                script.setAttribute("data-rtk-uniclick", "true");
-                script.onload = function () {
-                    window.__rtkUniclickLoaded = true;
-                    console.log("[RTK] uniclick.js loaded", { host });
-                    let checks = 0;
-                    const interval = setInterval(function () {
-                        checks += 1;
-                        const match = document.cookie.match(/(?:^|; )rtkclickid-store=([^;]+)/);
-                        const value = match ? match[1] : undefined;
-                        console.log("[RTK] cookie check", { checks, value });
-                        if (value || checks >= 5) clearInterval(interval);
-                    }, 1000);
-                };
-                script.onerror = function (e) {
-                    console.warn("[RTK] uniclick.js failed to load", e);
-                };
                 document.head.appendChild(script);
             })();
         </script>
