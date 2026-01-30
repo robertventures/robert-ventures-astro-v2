@@ -30,6 +30,14 @@ export const prerender = false
         <!-- RTK Click Tracking -->
         <script is:inline>
             (function () {
+                if (window.__rtkUniclickInit) return;
+                window.__rtkUniclickInit = true;
+
+                if (document.querySelector("script[data-rtk-uniclick]")) {
+                    console.log("[RTK] uniclick.js already present");
+                    return;
+                }
+
                 const host = window.location.hostname.replace(/^www\./, "");
                 const script = document.createElement("script");
                 script.src =
@@ -37,7 +45,9 @@ export const prerender = false
                     encodeURIComponent(host) +
                     "&cookieduration=90&defaultcampaignid=697c996793ba48f6ba89582f&regviewonce=false";
                 script.defer = true;
+                script.setAttribute("data-rtk-uniclick", "true");
                 script.onload = function () {
+                    window.__rtkUniclickLoaded = true;
                     console.log("[RTK] uniclick.js loaded", { host });
                     let checks = 0;
                     const interval = setInterval(function () {
