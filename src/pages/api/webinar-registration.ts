@@ -386,6 +386,23 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         return undefined;
                     })();
 
+                    // Compute the SELECTED SESSION date in MM/DD/YYYY format for GHL calendar fields
+                    const selectedSessionCalendar = (() => {
+                        try {
+                            if (body?.date && body.date !== "instant") {
+                                const selectedUTC = new Date(body.date);
+                                if (!isNaN(selectedUTC.getTime())) {
+                                    const selectedLocal = new Date(selectedUTC.toLocaleString("en-US", { timeZone: userTimezone }));
+                                    const smm = selectedLocal.getMonth() + 1;
+                                    const sdd = selectedLocal.getDate();
+                                    const syyyy = selectedLocal.getFullYear();
+                                    return `${smm}/${sdd}/${syyyy}`;
+                                }
+                            }
+                        } catch {}
+                        return undefined;
+                    })();
+
                     // Prepare custom fields for GoHighLevel contact (CRM segmentation and analytics)
                     // USED BY: GoHighLevel only - these fields help segment contacts for sales follow-up
                     let customField: Record<string, any> = {
@@ -409,6 +426,8 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_datetime_user_tz: body.webinar_datetime_user_tz || body.fullDate,
                         // Selected session date formatted in user's timezone (undefined for instant)
                         webinar_session_date: selectedSessionDate,
+                        // Webinar event date in MM/DD/YYYY format for GHL calendar fields (e.g., 11/4/2025)
+                        webinar_event_date: selectedSessionCalendar,
                         // Session type: "instant" for on-demand, "scheduled" for live sessions
                         webinar_session_type: isInstantSession ? "instant" : "scheduled",
                         // Google Calendar URL for easy calendar integration (empty for instant)
