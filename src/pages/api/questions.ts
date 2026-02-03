@@ -4,8 +4,8 @@ export const prerender = false; // Ensure this route is server-rendered
 
 export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
-    const alternativeAssets = formData.get("alternative_assets")?.toString();
-    const primaryObjective = formData.get("primary_investment_objective")?.toString();
+    const investmentTimeline = formData.get("investment_timeline")?.toString();
+    const preferredContactTime = formData.get("preferred_contact_time")?.toString();
     const ghlContactId = formData.get("ghl_contact_id")?.toString();
     const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
     const ageBracket = formData.get("age_bracket")?.toString();
@@ -18,17 +18,17 @@ export const POST: APIRoute = async ({ request }) => {
         );
     }
 
-    if (!primaryObjective || !alternativeAssets || !ageBracket) {
+    if (!investmentTimeline || !preferredContactTime || !ageBracket) {
         return new Response(
-            JSON.stringify({ error: "Please provide whether you've invested in alternative assets, your age bracket, and your primary investment objective" }),
+            JSON.stringify({ error: "Please provide your investment timeline, preferred contact time, and age bracket" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
         );
     }
 
     // ✅ These are the unique field keys from your GoHighLevel system.
     const customFields: Record<string, string> = {
-        "alternative_assets": alternativeAssets,
-        "primary_investment_objective": primaryObjective,
+        "investment_timeline": investmentTimeline,
+        "preferred_contact_time": preferredContactTime,
         "age_bracket": ageBracket
     };
 

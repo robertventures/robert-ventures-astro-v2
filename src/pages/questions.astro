@@ -8,10 +8,12 @@ const pageDescription =
     "Complete the second step of your account setup with Robert Ventures.";
 
     
-// Alternative assets experience options (yes/no)
-const alternativeAssetsOptions = [
-    { value: "yes", label: "Yes" },
-    { value: "no", label: "No" }
+// Investment timeline options
+const investmentTimelineOptions = [
+    { value: "Ready to Invest Now", label: "Ready Now" },
+    { value: "Within the Next Month", label: "This Month" },
+    { value: "Within 3 Months", label: "In 3 Months" },
+    { value: "Just Exploring Options", label: "Just Exploring" }
 ];
 
 // Age bracket options
@@ -22,14 +24,12 @@ const ageBracketOptions = [
     { value: "65_plus", label: "65+" }
 ];
 
-// Primary investment objective options (single select)
-const investmentObjectivesOptions = [
-    { value: "Long Term Growth", label: "Long-Term Capital Growth" },
-    { value: "Portfolio Diversification", label: "Diversify My Portfolio for Risk Reduction" },
-    { value: "Monthly Income", label: "Generate Monthly Passive Income" },
-    { value: "Tax Advantaged IRA Growth", label: "Pursue Tax-Advantaged Growth" },
-    // { value: "Inflation Protection", label: "Protect Savings from Inflation" },
-    // { value: "Short Term Returns", label: "Short-Term Gains or Quick Returns" }
+// Preferred contact time options (single select)
+const contactTimeOptions = [
+    { value: "Morning", label: "Morning (9 AM - 12 PM)" },
+    { value: "Afternoon", label: "Afternoon (12 PM - 5 PM)" },
+    { value: "Evening", label: "Evening (5 PM - 8 PM)" },
+    { value: "Weekends", label: "Weekends (10 AM - 2 PM)" }
 ];
 ---
 
@@ -65,13 +65,13 @@ const investmentObjectivesOptions = [
 
             h1 {
                 color: #E1EEEA;
-                text-align: left;
+                text-align: center;
                 font-family: var(--font-heading);
                 font-size: 32px;
                 font-weight: 500;
                 margin-bottom: 2rem;
                 max-width: 460px;
-                margin-left: 0;
+                margin-left: auto;
                 margin-right: auto;
             }
 
@@ -284,14 +284,14 @@ const investmentObjectivesOptions = [
                     >
 
                         <p class="portfolio-info">
-                            Have you invested in alternative assets before?
+                            When are you looking to invest?
                         </p>
                         <div class="portfolio-value-container">
-                            {alternativeAssetsOptions.map((option) => (
+                            {investmentTimelineOptions.map((option) => (
                                 <label class="portfolio-option-label">
                                     <input
                                         type="radio"
-                                        name="alternative_assets"
+                                        name="investment_timeline"
                                         value={option.value}
                                         required={true}
                                     />
@@ -318,14 +318,14 @@ const investmentObjectivesOptions = [
                         </div>
 
                         <p class="portfolio-info">
-                            What is your primary investment objective?
+                            When is the best time to contact you?
                         </p>
                         <div class="objectives-container">
-                            {investmentObjectivesOptions.map((option) => (
+                            {contactTimeOptions.map((option) => (
                                 <label class="objectives-option-label">
                                     <input
                                         type="radio"
-                                        name="primary_investment_objective"
+                                        name="preferred_contact_time"
                                         value={option.value}
                                         required={true}
                                     />
@@ -399,12 +399,12 @@ const investmentObjectivesOptions = [
             }
 
             // Store form answers in localStorage
-            const alternativeAssets = formData.get("alternative_assets");
-            const primaryInvestmentObjective = formData.get("primary_investment_objective");
+            const investmentTimeline = formData.get("investment_timeline");
+            const preferredContactTime = formData.get("preferred_contact_time");
             const ageBracket = formData.get("age_bracket");
 
-            localStorage.setItem("alternative_assets", alternativeAssets?.toString() || "");
-            localStorage.setItem("primary_investment_objective", primaryInvestmentObjective?.toString() || "");
+            localStorage.setItem("investment_timeline", investmentTimeline?.toString() || "");
+            localStorage.setItem("preferred_contact_time", preferredContactTime?.toString() || "");
             localStorage.setItem("age_bracket", ageBracket?.toString() || "");
 
             // Add webinar sign-up date from localStorage if available
@@ -416,7 +416,7 @@ const investmentObjectivesOptions = [
 
 
 
-            console.log("Stored answers in localStorage:", { primaryInvestmentObjective });
+            console.log("Stored answers in localStorage:", { investmentTimeline, preferredContactTime, ageBracket });
 
             try {
                 const response = await fetch(form.action, {
