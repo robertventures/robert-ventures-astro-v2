@@ -136,18 +136,20 @@ const {
 
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
-      if (typeof arguments[1] === "string" && arguments[1].indexOf(rtkOrigin) === 0) {
-        arguments[1] = arguments[1].replace(rtkOrigin, rtkProxy);
+      var args = Array.prototype.slice.call(arguments);
+      if (typeof args[1] === "string" && args[1].indexOf(rtkOrigin) === 0) {
+        args[1] = args[1].replace(rtkOrigin, rtkProxy);
       }
-      return origOpen.apply(this, arguments);
+      return origOpen.apply(this, args);
     };
 
     var origFetch = window.fetch;
-    window.fetch = function (input) {
-      if (typeof input === "string" && input.indexOf(rtkOrigin) === 0) {
-        arguments[0] = input.replace(rtkOrigin, rtkProxy);
+    window.fetch = function () {
+      var args = Array.prototype.slice.call(arguments);
+      if (typeof args[0] === "string" && args[0].indexOf(rtkOrigin) === 0) {
+        args[0] = args[0].replace(rtkOrigin, rtkProxy);
       }
-      return origFetch.apply(this, arguments);
+      return origFetch.apply(this, args);
     };
 
     // 3. Load uniclick.js via first-party proxy
@@ -158,7 +160,25 @@ const {
       encodeURIComponent(host) +
       "&cookieduration=90&defaultcampaignid=" + encodeURIComponent(rtkCampaignId) +
       "&regviewonce=false";
-    script.defer = true;
     document.head.appendChild(script);
+
+    // 4. Poll for rtkClickID and persist to localStorage (self-contained, no dependency on form)
+    var attempts = 0;
+    var poll = setInterval(function () {
+      attempts++;
+      var id = window.rtkClickID;
+      if (!id) {
+        try {
+          var c = document.cookie.match(/(?:^|;\s*)rtkclickid-store=([^;]*)/);
+          if (c) id = c[1];
+        } catch (e) {}
+      }
+      if (id) {
+        try { localStorage.setItem("rtk_click_id", id); } catch (e) {}
+        clearInterval(poll);
+      } else if (attempts >= 40) {
+        clearInterval(poll);
+      }
+    }, 500);
   })();
 </script>
