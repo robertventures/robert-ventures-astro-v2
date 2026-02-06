@@ -1032,16 +1032,13 @@ const analyticsEvents = {
           session_type: isInstant ? "instant" : "scheduled"
         });
 
-        // Fire Meta Pixel for all registrations with deduplication eventID
+        // Fire Meta Pixel CompleteRegistration with deduplication eventID
+        // (pixel is already initialized in BaseHead.astro — no need to load/init here)
         try {
-          (function(f,b,e,v,n,t,s){
-            if ((f as any).fbq) return; n=(f as any).fbq=function(){ n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
-            if (!(f as any)._fbq) (f as any)._fbq=n; n.push=n; (n as any).loaded=!0; (n as any).version='2.0'; (n as any).queue=[]; t=b.createElement(e); (t as any).async=!0; (t as any).src=v; s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
-          })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-          (window as any).fbq('init', '652212003052612');
-          // Reuse the exact same event_id as the server-side CAPI call
           const eventId = (payload as any).event_id;
-          (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
+          if (typeof (window as any).fbq === 'function') {
+            (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
+          }
         } catch {}
 
         // Redirect to questions page after registration
