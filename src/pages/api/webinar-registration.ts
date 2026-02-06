@@ -428,7 +428,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_session_date: selectedSessionDate,
                         // Webinar event date in MM/DD/YYYY format for GHL calendar fields (e.g., 11/4/2025)
                         webinar_event_date: selectedSessionCalendar,
-                        // Session type: "instant" for on-demand, "scheduled" for live sessions
+                        // Session type: "instant" for on-demand, "scheduled" for live sessinitializeRtkClickIdCapture()ions
                         webinar_session_type: isInstantSession ? "instant" : "scheduled",
                         // Google Calendar URL for easy calendar integration (empty for instant)
                         webinar_calendar_url: body.webinar_calendar_url || "",
@@ -445,7 +445,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         // RTK Click ID for attribution tracking
                         rtk_click_id: (body?.rtk_click_id ?? "none"),
                         // Zip code income level classification (High/Mid/Low) from Census data
-                        zip_income_level: incomeLevel || "unknown"
+                        zip_income_level: incomeLevel || "unknown",
+                        // Campaign ID for tracking which campaign generated this contact
+                        cmpid: (body?.cmpid ?? "none")
                     };
 
                     // Prepare the complete payload for GoHighLevel API

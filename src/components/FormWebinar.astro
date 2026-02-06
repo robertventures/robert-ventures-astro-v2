@@ -377,6 +377,9 @@ const analyticsEvents = {
   let countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
+    // Capture cmpid from URL and persist to localStorage
+    captureCmpid();
+
     // Capture RTK Click ID early (cookie may be async)
     initializeRtkClickIdCapture();
 
@@ -460,18 +463,37 @@ const analyticsEvents = {
     });
   }
 
+  // Capture cmpid from URL query param and persist to localStorage
+  function captureCmpid() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const cmpid = urlParams.get("cmpid");
+      if (cmpid) {
+        localStorage.setItem("cmpid", cmpid);
+      }
+    } catch {}
+  }
+
   // Capture RTK Click ID from cookie/session/query and hydrate hidden field
   function initializeRtkClickIdCapture() {
-    const maxAttempts = 10;
+    // Immediate check
+    const immediate = getRtkClickId();
+    if (immediate) {
+      setRtkClickIdField(immediate);
+      return;
+    }
+
+    // Poll every 500ms for up to 15 seconds
+    const maxAttempts = 30;
     let attempts = 0;
     const interval = setInterval(() => {
-      attempts += 1;
+      attempts++;
       const clickId = getRtkClickId();
       if (clickId || attempts >= maxAttempts) {
         setRtkClickIdField(clickId);
         clearInterval(interval);
       }
-    }, 1000);
+    }, 500);
   }
 
   function setRtkClickIdField(value) {
@@ -948,7 +970,9 @@ const analyticsEvents = {
         // Webinar ID for registration (different for on-demand vs scheduled)
         webinar_id: webinarId,
         // RTK Click ID for attribution tracking
-        rtk_click_id: rtkClickId || undefined
+        rtk_click_id: rtkClickId || undefined,
+        // Campaign ID for GHL contact tracking
+        cmpid: (() => { try { return localStorage.getItem("cmpid") || undefined; } catch { return undefined; } })()
       };
 
       console.log("Payload being sent:", payload);
@@ -1115,18 +1139,22 @@ const analyticsEvents = {
   }
 
   function getRtkClickId() {
-    const cookieValue = getCookie('rtkclickid-store');
-    if (cookieValue) return cookieValue;
-    try {
-      const sessionValue = sessionStorage.getItem('rtkclickid');
-      if (sessionValue && sessionValue !== 'undefined') return sessionValue;
-    } catch {}
-    try {
-      const url = new URL(window.location.href);
-      const paramValue = url.searchParams.get('rtkcid');
-      if (paramValue) return paramValue;
-    } catch {}
-    return undefined;
+    // Primary: Check the global variable set by uniclick.js
+    if (typeof (window as any).rtkClickID !== 'undefined' && (window as any).rtkClickID) {
+      return (window as any).rtkClickID;
+    }
+
+    // Fallback: Read the cookie manually
+    const cookieName = 'rtkclickid-store';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(cookieName + '=')) {
+        return cookie.substring(cookieName.length + 1);
+      }
+    }
+
+    return null;
   }
 
   function getFbp() {
