@@ -501,6 +501,10 @@ const analyticsEvents = {
       const field = input as HTMLInputElement;
       field.value = value || "";
     });
+    // Persist to localStorage so it survives across pages/sessions
+    if (value) {
+      try { localStorage.setItem("rtk_click_id", value); } catch {}
+    }
   }
 
   async function loadAndInitializeWebinarData() {
@@ -1153,6 +1157,12 @@ const analyticsEvents = {
         return cookie.substring(cookieName.length + 1);
       }
     }
+
+    // Final fallback: Check localStorage
+    try {
+      const stored = localStorage.getItem("rtk_click_id");
+      if (stored) return stored;
+    } catch {}
 
     return null;
   }

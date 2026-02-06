@@ -428,7 +428,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         webinar_session_date: selectedSessionDate,
                         // Webinar event date in MM/DD/YYYY format for GHL calendar fields (e.g., 11/4/2025)
                         webinar_event_date: selectedSessionCalendar,
-                        // Session type: "instant" for on-demand, "scheduled" for live sessinitializeRtkClickIdCapture()ions
+                        // Session type: "instant" for on-demand, "scheduled" for live sessions
                         webinar_session_type: isInstantSession ? "instant" : "scheduled",
                         // Google Calendar URL for easy calendar integration (empty for instant)
                         webinar_calendar_url: body.webinar_calendar_url || "",
