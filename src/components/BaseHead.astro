@@ -100,22 +100,6 @@ const {
 )}
 <!-- META PIXEL -->
 
-<!-- CHATBOT -->
-<!-- {
-  !["questions", "access", "webinar", "webinar-thank-you"].some((path) =>
-    new RegExp(`/${path}(/|$)`).test(Astro.url.pathname),
-  ) && (
-    <script>
-      window.addEventListener('load', () => {
-        const script = document.createElement('script');
-        script.src = '/scripts/chatbot.js';
-        script.defer = true;
-        document.body.appendChild(script);
-      });
-    </script>
-  )
-} -->
-<!-- CHATBOT -->
 
 <!-- EVENTS HANDLER -->
 <script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
@@ -131,22 +115,42 @@ const {
 <!-- EVENTS HANDLER -->
 
 <!-- REDTRACK — captures RTK click ID on every page for ad attribution -->
-<!-- 1. Immediately grabs clickid from URL and saves to localStorage (instant, never lost) -->
-<!-- 2. Loads uniclick.js via first-party proxy (/rtk/*) for full RedTrack attribution -->
+<!-- Intercepts uniclick.js API calls so they go through our first-party proxy (/rtk/*) -->
+<!-- This prevents Firefox ETP and Safari ITP from blocking the tracking requests -->
 <script is:inline define:vars={{ rtkCampaignId }}>
   (function () {
-    // Immediate fallback: grab clickid from URL before anything else
+    // 1. Immediately grab clickid from URL and save to localStorage (can't be blocked)
     try {
-      var params = new URLSearchParams(window.location.search);
-      var clickid = params.get("clickid");
-      if (clickid) {
-        localStorage.setItem("rtk_click_id", clickid);
-      }
+      var clickid = new URLSearchParams(window.location.search).get("clickid");
+      if (clickid) localStorage.setItem("rtk_click_id", clickid);
     } catch (e) {}
 
-    // Load uniclick.js via first-party proxy
     if (window.__rtkUniclickInit) return;
     window.__rtkUniclickInit = true;
+
+    // 2. Rewrite uniclick.js API calls from rt.robertventures.com → /rtk/ (first-party proxy)
+    //    uniclick.js hardcodes "https://rt.robertventures.com/" for its XHR/fetch calls,
+    //    which Firefox and Safari block as third-party tracking. This rewrites them.
+    var rtkOrigin = "https://rt.robertventures.com/";
+    var rtkProxy = "/rtk/";
+
+    var origOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function () {
+      if (typeof arguments[1] === "string" && arguments[1].indexOf(rtkOrigin) === 0) {
+        arguments[1] = arguments[1].replace(rtkOrigin, rtkProxy);
+      }
+      return origOpen.apply(this, arguments);
+    };
+
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      if (typeof input === "string" && input.indexOf(rtkOrigin) === 0) {
+        arguments[0] = input.replace(rtkOrigin, rtkProxy);
+      }
+      return origFetch.apply(this, arguments);
+    };
+
+    // 3. Load uniclick.js via first-party proxy
     var host = window.location.hostname.replace(/^www\./, "");
     var script = document.createElement("script");
     script.src =
