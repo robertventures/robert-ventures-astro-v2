@@ -9,3 +9,14 @@
 [[edge_functions]]
   path = "/api/webinar-registration"
   function = "geo-block"
+
+# ========================================
+# REDIRECTS / PROXIES
+# ========================================
+# Reverse proxy for RedTrack uniclick.js — serves the script from our own domain
+# so Safari (ITP) and Firefox (ETP) don't block it as third-party tracking
+[[redirects]]
+  from = "/rtk/*"
+  to = "https://rt.robertventures.com/:splat"
+  status = 200
+  force = true

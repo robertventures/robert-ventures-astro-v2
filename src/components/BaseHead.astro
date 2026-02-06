@@ -8,6 +8,7 @@ const {
   title,
   description,
   image = "/images/svg/rv-logo.svg",
+  rtkCampaignId = "",
 } = Astro.props;
 ---
 
@@ -128,3 +129,32 @@ const {
 <!-- deviceDetection.js: Detects device type (desktop, ios, android, mobile) and stores it in localStorage for analytics and attribution. -->
 <script src="/scripts/deviceDetection.js" defer></script>
 <!-- EVENTS HANDLER -->
+
+<!-- REDTRACK — captures RTK click ID on every page for ad attribution -->
+<!-- 1. Immediately grabs clickid from URL and saves to localStorage (instant, never lost) -->
+<!-- 2. Loads uniclick.js via first-party proxy (/rtk/*) for full RedTrack attribution -->
+<script is:inline define:vars={{ rtkCampaignId }}>
+  (function () {
+    // Immediate fallback: grab clickid from URL before anything else
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var clickid = params.get("clickid");
+      if (clickid) {
+        localStorage.setItem("rtk_click_id", clickid);
+      }
+    } catch (e) {}
+
+    // Load uniclick.js via first-party proxy
+    if (window.__rtkUniclickInit) return;
+    window.__rtkUniclickInit = true;
+    var host = window.location.hostname.replace(/^www\./, "");
+    var script = document.createElement("script");
+    script.src =
+      "/rtk/uniclick.js?attribution=lastpaid&clickid=clickid&cookiedomain=" +
+      encodeURIComponent(host) +
+      "&cookieduration=90&defaultcampaignid=" + encodeURIComponent(rtkCampaignId) +
+      "&regviewonce=false";
+    script.defer = true;
+    document.head.appendChild(script);
+  })();
+</script>
