@@ -557,6 +557,11 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // STEP 3: META CONVERSIONS API
             // ========================================
             // Send conversion event to Meta (Facebook) for analytics and advertising
+            // Skip for low investment intent ($1k/$5k) to improve Meta ad optimization quality
+            const investIntentValue = String(body.invest_intent || "");
+            const shouldSendToMeta = investIntentValue !== "1000" && investIntentValue !== "5000";
+
+            if (shouldSendToMeta) {
             try {
                 // Meta Pixel configuration
                 const pixelId = "652212003052612"; // Public Pixel ID; safe to hardcode
@@ -683,6 +688,9 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 }
             } catch (err) {
                 console.error("❌ Failed to send Meta Conversions API event:", err);
+            }
+            } else {
+                console.log("⏭️ Skipping Meta CAPI — low investment intent:", investIntentValue);
             }
 
             // ========================================

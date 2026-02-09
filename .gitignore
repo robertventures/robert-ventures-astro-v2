@@ -38,4 +38,7 @@ src/pages/booking.astro
 # storage folder
 src/storage
 
+# Claude Code
+CLAUDE.md
+
 

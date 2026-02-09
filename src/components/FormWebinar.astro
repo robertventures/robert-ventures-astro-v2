@@ -1033,13 +1033,17 @@ const analyticsEvents = {
         });
 
         // Fire Meta Pixel CompleteRegistration with deduplication eventID
+        // Skip for low investment intent ($1k/$5k) to improve Meta ad optimization quality
         // (pixel is already initialized in BaseHead.astro — no need to load/init here)
-        try {
-          const eventId = (payload as any).event_id;
-          if (typeof (window as any).fbq === 'function') {
-            (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
-          }
-        } catch {}
+        const investForMeta = formData.get("invest_intent");
+        if (investForMeta !== "1000" && investForMeta !== "5000") {
+          try {
+            const eventId = (payload as any).event_id;
+            if (typeof (window as any).fbq === 'function') {
+              (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
+            }
+          } catch {}
+        }
 
         // Redirect to questions page after registration
         window.location.href = "/questions";
