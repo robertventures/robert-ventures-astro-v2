@@ -6,7 +6,8 @@
     "utm_content",
     "utm_term",
     "utm_id",
-    "gclid"
+    "gclid",
+    "rtk_click_id"
   ];
 
   function getStoredParams() {
