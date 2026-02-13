@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --print-to-pdf=\"/Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/Meta-Pixel-Audit-Robert-Ventures.pdf\" --no-margins \"file:///Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/meta-pixel-report.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --print-to-pdf=\"/Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/Meta-Pixel-Audit-Robert-Ventures.pdf\" --no-pdf-header-footer \"file:///Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/meta-pixel-report.html\")",
+      "Bash(git log:*)"
+    ]
+  }
+}
