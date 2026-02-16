@@ -695,7 +695,7 @@ const analyticsEvents = {
       option.setAttribute("data-original-timezone", details.timeZone);
       option.setAttribute("data-is-instant", "false");
       option.setAttribute("data-webinar-id", data.webinarIds?.scheduled || "");
-      option.textContent = `${weekday}, ${month}/${day}, ${time} ${tzShort} - ${timeLeftString}`;
+      option.textContent = `Live: ${weekday}, ${month}/${day}, ${time} ${tzShort} - ${timeLeftString}`;
       selectEl.appendChild(option);
     });
   }
@@ -999,6 +999,12 @@ const analyticsEvents = {
         if (result.ghl_contact_id) {
           localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
           console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
+        }
+        
+        // Save watch room URL for on-demand sessions so the questions page can redirect there
+        if (result.watch_room_url) {
+          localStorage.setItem("watch_room_url", result.watch_room_url);
+          console.log("✅ Watch room URL saved:", result.watch_room_url);
         }
         
         const userEmail = formData.get("email");

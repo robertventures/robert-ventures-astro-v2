@@ -432,7 +432,19 @@ const contactTimeOptions = [
                     triggerEvent("questions_completed", "questionsCompleted");
                     triggerEvent("portfolio_value_added", "portfolioValueAdded");
                     
-                    window.location.href = "/webinar-thank-you";
+                    // On-demand users: redirect to the pre-recorded webinar watch room
+                    // Scheduled users: redirect to the thank-you page with countdown
+                    const webinarSession = (() => {
+                        try { return JSON.parse(localStorage.getItem("webinarSession") || "{}"); } catch { return {}; }
+                    })();
+                    const watchRoomUrl = localStorage.getItem("watch_room_url");
+                    
+                    if (webinarSession.isInstant && watchRoomUrl) {
+                        console.log("🎬 On-demand user — redirecting to watch room:", watchRoomUrl);
+                        window.location.href = watchRoomUrl;
+                    } else {
+                        window.location.href = "/webinar-thank-you";
+                    }
                 } else {
                     const error = await response.json();
                     console.error("Signup failed:", error.error);
