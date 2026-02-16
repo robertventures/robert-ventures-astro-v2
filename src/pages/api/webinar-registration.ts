@@ -262,19 +262,21 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             const ipForGeo = clientIpFromHeaders;
 
             let geoRegionName: string | undefined;
+            let geoStateCode: string | undefined;
             let geoCity: string | undefined;
             let geoZip: string | undefined;
 
             try {
                 if (ipForGeo) {
-                    const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,regionName,city,zip`);
+                    const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,region,regionName,city,zip`);
                     if (geoRes.ok) {
                         const geo = await geoRes.json();
                         if (geo && geo.status === "success") {
+                            geoStateCode = typeof geo.region === "string" && geo.region ? geo.region : undefined;
                             geoRegionName = typeof geo.regionName === "string" && geo.regionName ? geo.regionName : undefined;
                             geoCity = typeof geo.city === "string" && geo.city ? geo.city : undefined;
                             geoZip = typeof geo.zip === "string" && geo.zip ? geo.zip : undefined;
-                            console.log("📍 IP geolocation:", { ipForGeo, geoRegionName, geoCity, geoZip });
+                            console.log("📍 IP geolocation:", { ipForGeo, geoStateCode, geoRegionName, geoCity, geoZip });
                         } else {
                             console.warn("⚠️ IP geolocation lookup failed:", geo?.message || "unknown error");
                         }
@@ -345,7 +347,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             }
 
             // Split full name into first and last name components
-            // USED BY: GoHighLevel (not used), WebinarKit (firstName, lastName), Meta (not used)
+            // USED BY: GoHighLevel (not used), WebinarKit (firstName, lastName), Meta (fn, ln)
             const { firstName, lastName } = splitFullName(body.name);
             console.log("👤 Name split:", { fullName: body.name, firstName, lastName });
 
@@ -573,8 +575,20 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                     // USED BY: Meta only - hashed user identifiers for ad attribution and retargeting
                     const normalizedEmail = (body.email || "").toString().trim().toLowerCase();
                     const normalizedPhone = (body.phone_number || "").toString().replace(/\D/g, "").replace(/^1/, "");
+                    const normalizedFirstName = firstName.toString().trim().toLowerCase();
+                    const normalizedLastName = lastName.toString().trim().toLowerCase();
+                    const normalizedCity = (geoCity || "").toString().trim().toLowerCase().replace(/\s+/g, "");
+                    const normalizedStateCode = (geoStateCode || "").toString().trim().toLowerCase();
+                    const normalizedZip = (geoZip || "").toString().replace(/\D/g, "").slice(0, 5);
+                    const normalizedCountry = "us";
                     const emHashed = normalizedEmail ? createHash("sha256").update(normalizedEmail).digest("hex") : "";
                     const phHashed = normalizedPhone ? createHash("sha256").update(normalizedPhone).digest("hex") : "";
+                    const fnHashed = normalizedFirstName ? createHash("sha256").update(normalizedFirstName).digest("hex") : "";
+                    const lnHashed = normalizedLastName ? createHash("sha256").update(normalizedLastName).digest("hex") : "";
+                    const ctHashed = normalizedCity ? createHash("sha256").update(normalizedCity).digest("hex") : "";
+                    const stHashed = normalizedStateCode ? createHash("sha256").update(normalizedStateCode).digest("hex") : "";
+                    const zpHashed = normalizedZip ? createHash("sha256").update(normalizedZip).digest("hex") : "";
+                    const countryHashed = createHash("sha256").update(normalizedCountry).digest("hex");
 
                     // Create external IDs for Meta user matching (cross-device tracking)
                     // USED BY: Meta only - includes GHL contact ID for unified customer view
@@ -636,6 +650,18 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                                     ...(emHashed ? { em: [emHashed] } : {}),
                                     // Hashed phone for user matching
                                     ...(phHashed ? { ph: [phHashed] } : {}),
+                                    // Hashed first name for user matching
+                                    ...(fnHashed ? { fn: [fnHashed] } : {}),
+                                    // Hashed last name for user matching
+                                    ...(lnHashed ? { ln: [lnHashed] } : {}),
+                                    // Hashed city for user matching
+                                    ...(ctHashed ? { ct: [ctHashed] } : {}),
+                                    // Hashed 2-letter state code for user matching
+                                    ...(stHashed ? { st: [stHashed] } : {}),
+                                    // Hashed 5-digit zip code for user matching
+                                    ...(zpHashed ? { zp: [zpHashed] } : {}),
+                                    // Hashed country code (always US in this funnel)
+                                    country: [countryHashed],
                                     // External IDs including GHL contact ID
                                     ...(externalIds.length ? { external_id: externalIds } : {}),
                                     // Facebook browser cookie for attribution
