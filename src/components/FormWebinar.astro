@@ -899,18 +899,59 @@ const analyticsEvents = {
 
       // Collect UTM parameters, prioritizing URL params, fallback to localStorage
       // Note: Google Ads params are mapped to UTM fields in userAttribution.js
-      const utmParams = [
+      const baseUtmParams = [
         "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
       ];
       const urlParams = new URLSearchParams(window.location.search);
-      const utmData: Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_content" | "utm_term" | "utm_id", string>> = {};
-      utmParams.forEach(param => {
+      const utmParamSet = new Set<string>(baseUtmParams);
+
+      // Include any additional regular UTM keys present in the current URL.
+      urlParams.forEach((_value, key) => {
+        if (key.startsWith("utm_")) {
+          utmParamSet.add(key);
+        }
+      });
+
+      // Include previously captured UTM keys from localStorage.
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const storageKey = localStorage.key(i);
+          if (storageKey && storageKey.startsWith("utm_")) {
+            utmParamSet.add(storageKey);
+          }
+        }
+      } catch {}
+
+      const utmData: Record<string, string> = {};
+      utmParamSet.forEach(param => {
         let value = urlParams.get(param);
         if (!value) {
           try { value = localStorage.getItem(param) || undefined; } catch {}
         }
         if (value) utmData[param] = value;
       });
+
+      // Collect Facebook/RedTrack attribution fields from localStorage
+      const fbAttribution = {
+        fb_ad_id: (() => { try { return localStorage.getItem("fb_ad_id") || undefined; } catch { return undefined; } })(),
+        fb_adset_id: (() => { try { return localStorage.getItem("fb_adset_id") || undefined; } catch { return undefined; } })(),
+        fb_placement: (() => { try { return localStorage.getItem("fb_placement") || undefined; } catch { return undefined; } })(),
+        fb_site_source: (() => { try { return localStorage.getItem("fb_site_source") || undefined; } catch { return undefined; } })()
+      };
+
+      // Collect Google/RedTrack attribution fields from localStorage
+      const googleAttribution = {
+        google_matchtype: (() => { try { return localStorage.getItem("google_matchtype") || undefined; } catch { return undefined; } })(),
+        google_adgroup_id: (() => { try { return localStorage.getItem("google_adgroup_id") || undefined; } catch { return undefined; } })(),
+        google_creative_id: (() => { try { return localStorage.getItem("google_creative_id") || undefined; } catch { return undefined; } })(),
+        google_campaign_id: (() => { try { return localStorage.getItem("google_campaign_id") || undefined; } catch { return undefined; } })(),
+        google_device: (() => { try { return localStorage.getItem("google_device") || undefined; } catch { return undefined; } })(),
+        google_ad_position: (() => { try { return localStorage.getItem("google_ad_position") || undefined; } catch { return undefined; } })(),
+        google_network: (() => { try { return localStorage.getItem("google_network") || undefined; } catch { return undefined; } })(),
+        google_placement: (() => { try { return localStorage.getItem("google_placement") || undefined; } catch { return undefined; } })(),
+        wbraid: (() => { try { return localStorage.getItem("wbraid") || undefined; } catch { return undefined; } })(),
+        gbraid: (() => { try { return localStorage.getItem("gbraid") || undefined; } catch { return undefined; } })()
+      };
 
       // Get gclid (Google Click ID) - this is a standard GHL field
       let gclid = urlParams.get("gclid");
@@ -976,7 +1017,23 @@ const analyticsEvents = {
         // RTK Click ID for attribution tracking
         rtk_click_id: rtkClickId || undefined,
         // Campaign ID for GHL contact tracking
-        cmpid: (() => { try { return localStorage.getItem("cmpid") || undefined; } catch { return undefined; } })()
+        cmpid: (() => { try { return localStorage.getItem("cmpid") || undefined; } catch { return undefined; } })(),
+        // Facebook/RedTrack attribution fields for dedicated GHL custom fields
+        fb_ad_id: fbAttribution.fb_ad_id,
+        fb_adset_id: fbAttribution.fb_adset_id,
+        fb_placement: fbAttribution.fb_placement,
+        fb_site_source: fbAttribution.fb_site_source,
+        // Google/RedTrack attribution fields for dedicated GHL custom fields
+        google_matchtype: googleAttribution.google_matchtype,
+        google_adgroup_id: googleAttribution.google_adgroup_id,
+        google_creative_id: googleAttribution.google_creative_id,
+        google_campaign_id: googleAttribution.google_campaign_id,
+        google_device: googleAttribution.google_device,
+        google_ad_position: googleAttribution.google_ad_position,
+        google_network: googleAttribution.google_network,
+        google_placement: googleAttribution.google_placement,
+        wbraid: googleAttribution.wbraid,
+        gbraid: googleAttribution.gbraid
       };
 
       console.log("Payload being sent:", payload);

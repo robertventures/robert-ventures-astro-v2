@@ -446,10 +446,28 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                         google_click_id: (body?.gclid ?? "none"),
                         // RTK Click ID for attribution tracking
                         rtk_click_id: (body?.rtk_click_id ?? "none"),
+                        // Facebook ad-level attribution fields from RedTrack sub params
+                        fb_ad_id: (body?.fb_ad_id ?? "none"),
+                        fb_adset_id: (body?.fb_adset_id ?? "none"),
+                        fb_placement: (body?.fb_placement ?? "none"),
+                        fb_site_source: (body?.fb_site_source ?? "none"),
+                        // Google ad-level attribution fields from RedTrack sub params
+                        google_matchtype: (body?.google_matchtype ?? "none"),
+                        google_adgroup_id: (body?.google_adgroup_id ?? "none"),
+                        google_creative_id: (body?.google_creative_id ?? "none"),
+                        google_campaign_id: (body?.google_campaign_id ?? "none"),
+                        google_device: (body?.google_device ?? "none"),
+                        google_ad_position: (body?.google_ad_position ?? "none"),
+                        google_network: (body?.google_network ?? "none"),
+                        google_placement: (body?.google_placement ?? "none"),
+                        wbraid: (body?.wbraid ?? "none"),
+                        gbraid: (body?.gbraid ?? "none"),
                         // Zip code income level classification (High/Mid/Low) from Census data
                         zip_income_level: incomeLevel || "unknown",
                         // Campaign ID for tracking which campaign generated this contact
-                        cmpid: (body?.cmpid ?? "none")
+                        cmpid: (body?.cmpid ?? "none"),
+                        // Ad group name from RedTrack (utm_adgroup macro: {_agname})
+                        ad_group: (body?.utm?.utm_adgroup ?? "none")
                     };
 
                     // Prepare the complete payload for GoHighLevel API
