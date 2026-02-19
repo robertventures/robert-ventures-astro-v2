@@ -389,6 +389,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                     })();
 
                     // Compute the SELECTED SESSION date in MM/DD/YYYY format for GHL calendar fields
+                    // For on-demand sessions, use the registration date (today) since there's no scheduled date
                     const selectedSessionCalendar = (() => {
                         try {
                             if (body?.date && body.date !== "instant") {
@@ -400,6 +401,12 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                                     const syyyy = selectedLocal.getFullYear();
                                     return `${smm}/${sdd}/${syyyy}`;
                                 }
+                            } else if (body?.date === "instant") {
+                                // On-demand: use the current date as the webinar event date
+                                const smm = userLocalTime.getMonth() + 1;
+                                const sdd = userLocalTime.getDate();
+                                const syyyy = userLocalTime.getFullYear();
+                                return `${smm}/${sdd}/${syyyy}`;
                             }
                         } catch {}
                         return undefined;
