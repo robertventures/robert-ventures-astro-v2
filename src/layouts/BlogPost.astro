@@ -57,6 +57,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.title h1 {
 				margin: 0 0 0.5em 0;
+				color: #152429;
+				font-family: var(--font-heading);
 			}
 			.date {
 				margin-bottom: 0.5em;
@@ -66,13 +68,36 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				font-style: italic;
 			}
 
-			h2 {
-				color: #1d1d1f;
-				font-family: var(--font-body);
-				font-size: 1.625rem;
-				font-style: normal;
-				font-weight: 500;
-				line-height: 125%; /* 2.03125rem */
+			.prose :global(h1),
+			.prose :global(h2),
+			.prose :global(h3),
+			.prose :global(h4),
+			.prose :global(h5),
+			.prose :global(h6) {
+				color: #152429;
+				font-family: var(--font-heading);
+			}
+
+			.prose :global(h2),
+			.prose :global(h3),
+			.prose :global(h4),
+			.prose :global(h5),
+			.prose :global(h6) {
+				margin-top: 2rem;
+				margin-bottom: 0.75rem;
+				line-height: 1.25;
+			}
+
+			.prose :global(h2 + p),
+			.prose :global(h3 + p),
+			.prose :global(h4 + p),
+			.prose :global(h5 + p),
+			.prose :global(h6 + p) {
+				margin-top: 0.5rem;
+			}
+
+			.prose a {
+				color: #2337ff;
 			}
 
 			@media only screen and (min-width: 768px) {

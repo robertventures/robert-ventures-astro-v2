@@ -58,8 +58,8 @@ const articles = (await getCollection("articles")).sort(
 			}
 
 			h2 {
-				color: #1d1d1f;
-				font-family: var(--font-body);
+				color: #152429;
+				font-family: var(--font-heading);
 				font-size: 1.625rem;
 				font-style: normal;
 				font-weight: 500;
@@ -77,6 +77,16 @@ const articles = (await getCollection("articles")).sort(
 
 			li a {
 				text-decoration: none;
+				display: block;
+				padding: 0.5rem;
+				border-radius: 0.75rem;
+				transition: box-shadow 0.2s ease, transform 0.2s ease;
+			}
+
+			li a:hover,
+			li a:focus-visible {
+				box-shadow: 0 8px 20px rgba(35, 55, 255, 0.08);
+				transform: translateY(-2px);
 			}
 
 			li img {
@@ -85,11 +95,12 @@ const articles = (await getCollection("articles")).sort(
 				aspect-ratio: 21 / 9;
 				object-fit: cover;
 				margin-bottom: 0.75rem;
+				border-radius: 0.75rem;
 			}
 
 			li h4 {
-				color: #1d1d1f;
-				font-family: var(--font-body);
+				color: #152429;
+				font-family: var(--font-heading);
 				font-size: 1.125rem;
 				font-weight: 500;
 				line-height: 1.25; /* 1.40625rem */
