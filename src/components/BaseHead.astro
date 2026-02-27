@@ -100,6 +100,21 @@ const {
 )}
 <!-- META PIXEL -->
 
+<!-- REDTRACK PAGE VIEW PIXEL -->
+{Astro.site.hostname === "robertventures.com" && (
+  <script is:inline>
+    (function() {
+      var img = document.createElement('img');
+      img.src = '//rt.robertventures.com/postback?format=img&type=page_view';
+      img.width = 1;
+      img.height = 1;
+      img.style.display = 'none';
+      document.body.appendChild(img);
+    })();
+  </script>
+)}
+<!-- REDTRACK PAGE VIEW PIXEL -->
+
 
 <!-- EVENTS HANDLER -->
 <script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
