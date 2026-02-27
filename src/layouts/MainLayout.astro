@@ -16,6 +16,9 @@ const { title, description, customHeader, customFooter, robots = "index, follow"
     <style>{styles}</style>
   </head>
   <body>
+    {Astro.site?.hostname === "robertventures.com" && (
+      <img src="//rt.robertventures.com/postback?format=img&type=page_view" width="1" height="1" style="display:none" />
+    )}
     {customHeader ? customHeader : <Header />}
     <slot />
     {customFooter ? customFooter : <FooterNew />}

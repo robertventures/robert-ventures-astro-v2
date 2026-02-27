@@ -109,6 +109,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	</head>
 
 	<body>
+		{Astro.site?.hostname === "robertventures.com" && (
+			<img src="//rt.robertventures.com/postback?format=img&type=page_view" width="1" height="1" style="display:none" />
+		)}
 		<Header />
 		<main>
 			<article>
