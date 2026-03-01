@@ -104,8 +104,11 @@ const {
 {Astro.site.hostname === "robertventures.com" && (
   <script is:inline>
     (function() {
+      var clickid = localStorage.getItem('rtk_click_id');
+      var url = '//rt.robertventures.com/postback?format=img&type=page_view';
+      if (clickid) url += '&clickid=' + encodeURIComponent(clickid);
       var img = document.createElement('img');
-      img.src = '//rt.robertventures.com/postback?format=img&type=page_view';
+      img.src = url;
       img.width = 1;
       img.height = 1;
       img.style.display = 'none';
