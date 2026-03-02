@@ -1,5 +1,10 @@
 // userAttribution.js
 (function () {
+  function setCookie(name, value) {
+    document.cookie = name + '=' + encodeURIComponent(value) +
+      '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
+  }
+
   // --- Capture UTM Parameters ---
   var utmParams = [
     "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
@@ -21,7 +26,7 @@
   allUtmParams.forEach(function (param) {
     var value = urlParams.get(param);
     if (value) {
-      localStorage.setItem(param, value);
+      setCookie(param, value);
     }
   });
 
@@ -37,15 +42,14 @@
   }
 
   if (gclid) {
-    // Store gclid (standard GHL field)
-    localStorage.setItem("gclid", gclid);
+    setCookie("gclid", gclid);
 
     // Backfill UTM source/medium for Google if URL did not provide them
     if (!urlParams.get("utm_source")) {
-      localStorage.setItem("utm_source", "google");
+      setCookie("utm_source", "google");
     }
     if (!urlParams.get("utm_medium")) {
-      localStorage.setItem("utm_medium", "cpc");
+      setCookie("utm_medium", "cpc");
     }
   }
 
@@ -64,18 +68,18 @@
     Object.keys(googleSubParamMap).forEach(function (subKey) {
       var value = urlParams.get(subKey);
       if (value) {
-        localStorage.setItem(googleSubParamMap[subKey], value);
+        setCookie(googleSubParamMap[subKey], value);
       }
     });
 
     var wbraid = urlParams.get("wbraid");
     if (wbraid) {
-      localStorage.setItem("wbraid", wbraid);
+      setCookie("wbraid", wbraid);
     }
 
     var gbraid = urlParams.get("gbraid");
     if (gbraid) {
-      localStorage.setItem("gbraid", gbraid);
+      setCookie("gbraid", gbraid);
     }
   }
 
@@ -84,31 +88,31 @@
   if (utmSource === "facebook") {
     var fbAdId = urlParams.get("sub1");
     if (fbAdId) {
-      localStorage.setItem("fb_ad_id", fbAdId);
+      setCookie("fb_ad_id", fbAdId);
     }
 
     var fbAdsetId = urlParams.get("sub2");
     if (fbAdsetId) {
-      localStorage.setItem("fb_adset_id", fbAdsetId);
+      setCookie("fb_adset_id", fbAdsetId);
     }
 
     var fbCampaignId = urlParams.get("sub3");
     if (fbCampaignId) {
-      localStorage.setItem("utm_id", fbCampaignId);
+      setCookie("utm_id", fbCampaignId);
     }
 
     var fbPlacement = urlParams.get("sub7");
     if (fbPlacement) {
-      localStorage.setItem("fb_placement", fbPlacement);
+      setCookie("fb_placement", fbPlacement);
     }
 
     var fbSiteSource = urlParams.get("sub8");
     if (fbSiteSource) {
-      localStorage.setItem("fb_site_source", fbSiteSource);
+      setCookie("fb_site_source", fbSiteSource);
     }
 
     if (refId) {
-      localStorage.setItem("fb_ref_id", refId);
+      setCookie("fb_ref_id", refId);
     }
   }
 })();

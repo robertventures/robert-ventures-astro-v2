@@ -377,7 +377,7 @@ const analyticsEvents = {
   let countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
-    // Capture cmpid from URL and persist to localStorage
+    // Capture cmpid from URL and persist to cookie
     captureCmpid();
 
     // Capture RTK Click ID early (cookie may be async)
@@ -463,13 +463,14 @@ const analyticsEvents = {
     });
   }
 
-  // Capture cmpid from URL query param and persist to localStorage
+  // Capture cmpid from URL query param and persist to cookie
   function captureCmpid() {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const cmpid = urlParams.get("cmpid");
       if (cmpid) {
-        localStorage.setItem("cmpid", cmpid);
+        document.cookie = 'cmpid=' + encodeURIComponent(cmpid) +
+          '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
       }
     } catch {}
   }
@@ -501,9 +502,12 @@ const analyticsEvents = {
       const field = input as HTMLInputElement;
       field.value = value || "";
     });
-    // Persist to localStorage so it survives across pages/sessions
+    // Persist to cookie so it survives across pages and is available on subdomains
     if (value) {
-      try { localStorage.setItem("rtk_click_id", value); } catch {}
+      try {
+        document.cookie = 'rtk_click_id=' + encodeURIComponent(value) +
+          '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
+      } catch {}
     }
   }
 
@@ -897,7 +901,7 @@ const analyticsEvents = {
         }
       }
 
-      // Collect UTM parameters, prioritizing URL params, fallback to localStorage
+      // Collect UTM parameters: URL params take priority, cookies are the fallback.
       // Note: Google Ads params are mapped to UTM fields in userAttribution.js
       const baseUtmParams = [
         "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
@@ -912,52 +916,36 @@ const analyticsEvents = {
         }
       });
 
-      // Include previously captured UTM keys from localStorage.
-      try {
-        for (let i = 0; i < localStorage.length; i++) {
-          const storageKey = localStorage.key(i);
-          if (storageKey && storageKey.startsWith("utm_")) {
-            utmParamSet.add(storageKey);
-          }
-        }
-      } catch {}
-
       const utmData: Record<string, string> = {};
       utmParamSet.forEach(param => {
-        let value = urlParams.get(param);
-        if (!value) {
-          try { value = localStorage.getItem(param) || undefined; } catch {}
-        }
+        const value = urlParams.get(param) || getCookie(param);
         if (value) utmData[param] = value;
       });
 
-      // Collect Facebook/RedTrack attribution fields from localStorage
+      // Collect Facebook/RedTrack attribution fields from cookies
       const fbAttribution = {
-        fb_ad_id: (() => { try { return localStorage.getItem("fb_ad_id") || undefined; } catch { return undefined; } })(),
-        fb_adset_id: (() => { try { return localStorage.getItem("fb_adset_id") || undefined; } catch { return undefined; } })(),
-        fb_placement: (() => { try { return localStorage.getItem("fb_placement") || undefined; } catch { return undefined; } })(),
-        fb_site_source: (() => { try { return localStorage.getItem("fb_site_source") || undefined; } catch { return undefined; } })()
+        fb_ad_id: getCookie("fb_ad_id"),
+        fb_adset_id: getCookie("fb_adset_id"),
+        fb_placement: getCookie("fb_placement"),
+        fb_site_source: getCookie("fb_site_source")
       };
 
-      // Collect Google/RedTrack attribution fields from localStorage
+      // Collect Google/RedTrack attribution fields from cookies
       const googleAttribution = {
-        google_matchtype: (() => { try { return localStorage.getItem("google_matchtype") || undefined; } catch { return undefined; } })(),
-        google_adgroup_id: (() => { try { return localStorage.getItem("google_adgroup_id") || undefined; } catch { return undefined; } })(),
-        google_creative_id: (() => { try { return localStorage.getItem("google_creative_id") || undefined; } catch { return undefined; } })(),
-        google_campaign_id: (() => { try { return localStorage.getItem("google_campaign_id") || undefined; } catch { return undefined; } })(),
-        google_device: (() => { try { return localStorage.getItem("google_device") || undefined; } catch { return undefined; } })(),
-        google_ad_position: (() => { try { return localStorage.getItem("google_ad_position") || undefined; } catch { return undefined; } })(),
-        google_network: (() => { try { return localStorage.getItem("google_network") || undefined; } catch { return undefined; } })(),
-        google_placement: (() => { try { return localStorage.getItem("google_placement") || undefined; } catch { return undefined; } })(),
-        wbraid: (() => { try { return localStorage.getItem("wbraid") || undefined; } catch { return undefined; } })(),
-        gbraid: (() => { try { return localStorage.getItem("gbraid") || undefined; } catch { return undefined; } })()
+        google_matchtype: getCookie("google_matchtype"),
+        google_adgroup_id: getCookie("google_adgroup_id"),
+        google_creative_id: getCookie("google_creative_id"),
+        google_campaign_id: getCookie("google_campaign_id"),
+        google_device: getCookie("google_device"),
+        google_ad_position: getCookie("google_ad_position"),
+        google_network: getCookie("google_network"),
+        google_placement: getCookie("google_placement"),
+        wbraid: getCookie("wbraid"),
+        gbraid: getCookie("gbraid")
       };
 
       // Get gclid (Google Click ID) - this is a standard GHL field
-      let gclid = urlParams.get("gclid");
-      if (!gclid) {
-        try { gclid = localStorage.getItem("gclid") || undefined; } catch {}
-      }
+      const gclid = urlParams.get("gclid") || getCookie("gclid");
 
       // Device detection fallback
       function detectDeviceFromUA(ua) {
@@ -972,7 +960,7 @@ const analyticsEvents = {
       if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
 
       // Provide top-level utm_campaign for systems expecting it
-      const utmCampaignTop = utmData.utm_campaign || (() => { try { return localStorage.getItem("utm_campaign"); } catch { return null; } })();
+      const utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
 
       // Build Google Calendar URL from selected webinar date (skip for instant sessions)
       const webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
@@ -1017,7 +1005,7 @@ const analyticsEvents = {
         // RTK Click ID for attribution tracking
         rtk_click_id: rtkClickId || undefined,
         // Campaign ID for GHL contact tracking
-        cmpid: (() => { try { return localStorage.getItem("cmpid") || undefined; } catch { return undefined; } })(),
+        cmpid: getCookie("cmpid"),
         // Facebook/RedTrack attribution fields for dedicated GHL custom fields
         fb_ad_id: fbAttribution.fb_ad_id,
         fb_adset_id: fbAttribution.fb_adset_id,
@@ -1222,11 +1210,9 @@ const analyticsEvents = {
       }
     }
 
-    // Final fallback: Check localStorage
-    try {
-      const stored = localStorage.getItem("rtk_click_id");
-      if (stored) return stored;
-    } catch {}
+    // Final fallback: Check rtk_click_id cookie
+    const stored = getCookie("rtk_click_id");
+    if (stored) return stored;
 
     return null;
   }
