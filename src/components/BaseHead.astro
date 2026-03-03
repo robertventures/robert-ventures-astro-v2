@@ -8,7 +8,7 @@ const {
   title,
   description,
   image = "/images/svg/rv-logo.svg",
-  rtkCampaignId = "",
+  rtkCampaignId = "697c996793ba48f6ba89582f",
 } = Astro.props;
 ---
 
@@ -177,7 +177,7 @@ const {
     var host = window.location.hostname.replace(/^www\./, "");
     var script = document.createElement("script");
     script.src =
-      "/rtk/uniclick.js?attribution=lastpaid&clickid=clickid&cookiedomain=" +
+      "/rtk/uniclick.js?attribution=lastclick&clickid=clickid&cookiedomain=" +
       encodeURIComponent(host) +
       "&cookieduration=90&defaultcampaignid=" + encodeURIComponent(rtkCampaignId) +
       "&regviewonce=false";
