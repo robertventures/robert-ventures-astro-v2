@@ -12,7 +12,8 @@ import type { APIRoute } from "astro";
  *   1. Honeypot field — bots fill the hidden `website` field; humans don't see it
  *   2. Country check — reads the CF-IPCountry header Cloudflare injects on every
  *      request. No external API call needed — Cloudflare already knows the country.
- *      Absent header (local dev) or unrecognised values → fail-open (allow).
+ *      Only "US" is allowed. VPNs ("T1"), unknown IPs ("XX"), and all other
+ *      countries are blocked. Absent header (local dev) → fail-open.
  */
 export const POST: APIRoute = async ({ request }) => {
     try {
@@ -33,17 +34,14 @@ export const POST: APIRoute = async ({ request }) => {
         // ── 2. COUNTRY CHECK (via Cloudflare header) ───────────────────────────
         // Cloudflare automatically sets CF-IPCountry on every request with the
         // visitor's ISO 3166-1 alpha-2 country code (e.g. "US", "GB", "DE").
-        // This header is injected server-side by Cloudflare — it cannot be
-        // spoofed by the client.
+        // VPNs and anonymising proxies are tagged "T1". Unknown IPs are tagged "XX".
+        // This header is injected server-side — it cannot be spoofed by the client.
         //
-        // Fail-open cases (allow registration):
-        //   - Header absent → Cloudflare not in front (e.g. local dev)
-        //   - "XX" → Cloudflare could not determine the country
-        //   - "T1" → Tor network (treated as unknown)
+        // Only allow "US". Everything else is blocked, including VPNs ("T1") and
+        // unresolvable IPs ("XX"). Fail-open only when the header is absent entirely
+        // (local dev without Cloudflare in front).
         const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
-        const countryKnown = cfCountry && cfCountry !== "XX" && cfCountry !== "T1";
-
-        if (countryKnown && cfCountry !== "US") {
+        if (cfCountry && cfCountry !== "US") {
             console.log("🌍 Non-US registration blocked:", { country: cfCountry });
             return new Response(
                 JSON.stringify({ detail: "Registration is currently only available in the United States" }),
