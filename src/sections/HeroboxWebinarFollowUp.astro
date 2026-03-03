@@ -592,17 +592,6 @@ import Calendar from "../images/svg/calendar.svg";
                                 <span class="requirement" data-req="number">1 Number</span> &middot;
                                 <span class="requirement" data-req="special">1 Special character</span>
                             </div>
-                            <div class="password-wrapper">
-                                <input
-                                    type="password"
-                                    name="confirm_password"
-                                    placeholder="Confirm Password"
-                                    required
-                                    class="password-input"
-                                    id="confirm-password-input"
-                                />
-                                <button type="button" class="password-toggle" data-target="confirm-password-input">Show</button>
-                            </div>
                         </div>
                         <button type="submit">
                             <span class="button-text">Create Account</span>
@@ -779,32 +768,16 @@ import Calendar from "../images/svg/calendar.svg";
             });
         }
 
-        // Password Show/Hide Toggle (both fields toggle together)
-        const passwordToggles = form.querySelectorAll('.password-toggle');
-        const allPasswordInputs = [
-            document.getElementById('password-input'),
-            document.getElementById('confirm-password-input')
-        ];
-        
-        passwordToggles.forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                // Check current state from the first password input
-                const isCurrentlyHidden = allPasswordInputs[0]?.type === 'password';
-                
-                // Toggle all password inputs together
-                allPasswordInputs.forEach(input => {
-                    if (input) {
-                        input.type = isCurrentlyHidden ? 'text' : 'password';
-                    }
-                });
-                
-                // Update all toggle button texts
-                const newText = isCurrentlyHidden ? 'Hide' : 'Show';
-                passwordToggles.forEach(btn => {
-                    btn.textContent = newText;
-                });
+        // Password Show/Hide Toggle
+        const passwordToggle = form.querySelector('.password-toggle');
+        const passwordInputEl = passwordInput as HTMLInputElement | null;
+        if (passwordToggle && passwordInputEl) {
+            passwordToggle.addEventListener('click', () => {
+                const isCurrentlyHidden = passwordInputEl.type === 'password';
+                passwordInputEl.type = isCurrentlyHidden ? 'text' : 'password';
+                passwordToggle.textContent = isCurrentlyHidden ? 'Hide' : 'Show';
             });
-        });
+        }
 
         function resetFormState() {
             if (buttonText) buttonText.style.display = '';
@@ -819,7 +792,6 @@ import Calendar from "../images/svg/calendar.svg";
             const email = formData.get('email');
             const phone = formData.get('phone');
             const password = formData.get('password');
-            const confirmPassword = formData.get('confirm_password');
             
             // Anti-bot check 1: Honeypot field
             const honeypotField = document.getElementById('honeypot-field');
@@ -877,15 +849,6 @@ import Calendar from "../images/svg/calendar.svg";
                 return;
             }
 
-            // Client-side validation
-            if (password !== confirmPassword) {
-                if (signupError) {
-                    signupError.textContent = 'Passwords do not match';
-                    signupError.style.display = 'block';
-                }
-                return;
-            }
-            
             // Show loading state
             if (buttonText) buttonText.style.display = 'none';
             if (loader) loader.style.display = 'inline-block';
