@@ -73,9 +73,12 @@ const analyticsEvents = {
 
       <input
         type="text"
-        name="bot-field"
-        class="bot-field"
-        style="display: none;"
+        name="company"
+        class="company-field"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        style="position:absolute;left:-9999px;width:1px;height:1px;"
       />
       <input
         type="hidden"
@@ -992,7 +995,7 @@ const analyticsEvents = {
           return typeof val === "string" ? val.replace(/\D/g, "") : "";
         })(),
         invest_intent: formData.get("invest_intent"),
-        bot_field: formData.get("bot-field"),
+        company: formData.get("company"),
         date: isoDateUTC,
         fullDate: isInstant ? "Watch Now - On Demand" : getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // UTM fields (also contains mapped Google Ads data)

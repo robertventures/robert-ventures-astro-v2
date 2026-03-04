@@ -208,11 +208,27 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // ========================================
             // SPAM PROTECTION: HONEYPOT VALIDATION
             // ========================================
-            // The bot-field is a hidden field that humans won't fill out.
+            // The company field is a hidden field that humans won't fill out.
             // If it contains any value, this is likely a bot submission.
-            if (body.bot_field && body.bot_field.trim() !== "") {
+            if (body.company && body.company.trim() !== "") {
                 console.log("🤖 Honeypot triggered - rejecting spam submission");
                 // Return success to avoid giving bots feedback that they were detected
+                return new Response(
+                    JSON.stringify({ message: "Registration successful" }),
+                    { status: 200, headers: { "Content-Type": "application/json" } }
+                );
+            }
+
+            // ========================================
+            // SPAM PROTECTION: COUNTRY CHECK
+            // ========================================
+            // Cloudflare injects CF-IPCountry on every request with the visitor's
+            // ISO 3166-1 alpha-2 country code. VPNs are tagged "T1", unknown IPs "XX".
+            // This header is server-side only — it cannot be spoofed by the client.
+            // Only allow "US". Fail-open when header is absent (local dev).
+            const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
+            if (cfCountry && cfCountry !== "US") {
+                console.log("🌍 Non-US webinar registration blocked:", { country: cfCountry });
                 return new Response(
                     JSON.stringify({ message: "Registration successful" }),
                     { status: 200, headers: { "Content-Type": "application/json" } }
