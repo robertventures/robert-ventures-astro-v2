@@ -219,6 +219,14 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
                 );
             }
 
+            // Reject if name field looks like an email address
+            if (body.name && typeof body.name === 'string' && body.name.includes('@')) {
+                return new Response(
+                    JSON.stringify({ error: "Please enter your name, not your email address." }),
+                    { status: 400, headers: { "Content-Type": "application/json" } }
+                );
+            }
+
             // ========================================
             // DATA PROCESSING & ENRICHMENT
             // ========================================

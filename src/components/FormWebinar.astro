@@ -26,6 +26,8 @@ const analyticsEvents = {
           name="full_name"
           placeholder="Full Name"
           required
+          pattern="[^@]+"
+          title="Please enter your name, not your email address."
           class="email-input"
         />
       </div>
@@ -848,7 +850,17 @@ const analyticsEvents = {
       signupError.style.display = "none";
       // --- END PHONE VALIDATION ---
 
+      // --- NAME VALIDATION ---
       const formData = new FormData(form);
+      const nameValue = (formData.get("full_name") || "").toString().trim();
+      if (nameValue.includes("@")) {
+        signupError.textContent = "Please enter your name, not your email address.";
+        signupError.style.display = "block";
+        resetFormState(buttonText, loader, submitButton);
+        form.querySelector("input[name='full_name']")?.focus();
+        return;
+      }
+      // --- END NAME VALIDATION ---
       const selectedOption = selectEl.querySelector("option:checked");
       const selectedInvest = investSelectEl && investSelectEl.value ? investSelectEl.value : "";
       
