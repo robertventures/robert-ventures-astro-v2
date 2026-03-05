@@ -707,6 +707,14 @@ const analyticsEvents = {
       option.textContent = `Live: ${weekday}, ${month}/${day}, ${time} ${tzShort} - ${timeLeftString}`;
       selectEl.appendChild(option);
     });
+
+    // Fire GA4 event whenever the user changes their session selection
+    selectEl.addEventListener("change", function () {
+      const selectedOption = this.options[this.selectedIndex];
+      const isInstant = selectedOption.getAttribute("data-is-instant") === "true";
+      const sessionType = isInstant ? "on_demand" : "live";
+      utils.triggerEvent("session_type_selected", "sessionTypeSelected", { session_type: sessionType });
+    });
   }
 
   function calculateNextSessionDate(details) {
