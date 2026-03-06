@@ -61,6 +61,11 @@ const {
 
 <!-- GSAP -->
 <script>
+    declare global {
+        interface Window {
+            gsapLoaded: boolean;
+        }
+    }
     window.gsapLoaded = false;
     function loadGSAP() {
         const script = document.createElement('script');

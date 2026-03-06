@@ -648,13 +648,15 @@ import Calendar from "../images/svg/calendar.svg";
 </section>
 
 <script>
+    declare function gtag(...args: any[]): void;
+
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('registration-form');
+        const form = document.getElementById('registration-form') as HTMLFormElement | null;
         if (!form) return;
 
         // Anti-bot: Set form load timestamp
         const formLoadTime = Date.now();
-        const formLoadTimeInput = document.getElementById('form-load-time');
+        const formLoadTimeInput = document.getElementById('form-load-time') as HTMLInputElement | null;
         if (formLoadTimeInput) {
             formLoadTimeInput.value = formLoadTime.toString();
         }
@@ -663,11 +665,11 @@ import Calendar from "../images/svg/calendar.svg";
         // Humans typically take at least 5 seconds to fill out a form
         const MIN_FORM_TIME_MS = 3000;
 
-        const emailInput = form.querySelector('input[type="email"]');
+        const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement | null;
         const phoneInput = document.getElementById('phone-input');
-        const phoneError = document.getElementById('phone-error');
-        const passwordInput = document.getElementById('password-input');
-        const requirementsDiv = document.getElementById('password-requirements');
+        const phoneError = document.getElementById('phone-error') as HTMLElement | null;
+        const passwordInput = document.getElementById('password-input') as HTMLInputElement | null;
+        const requirementsDiv = document.getElementById('password-requirements') as HTMLElement | null;
         const requirements = {
             length: requirementsDiv.querySelector('[data-req="length"]'),
             uppercase: requirementsDiv.querySelector('[data-req="uppercase"]'),
@@ -675,10 +677,10 @@ import Calendar from "../images/svg/calendar.svg";
             special: requirementsDiv.querySelector('[data-req="special"]')
         };
 
-        const submitButton = form.querySelector('button[type="submit"]');
-        const buttonText = form.querySelector('.button-text');
-        const loader = form.querySelector('.loader');
-        const signupError = form.querySelector('.signup-error');
+        const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+        const buttonText = form.querySelector('.button-text') as HTMLElement | null;
+        const loader = form.querySelector('.loader') as HTMLElement | null;
+        const signupError = form.querySelector('.signup-error') as HTMLElement | null;
 
         // Format phone number as (XXX) XXX-XXXX for display
         const formatPhone = (value = '') => {
@@ -764,7 +766,7 @@ import Calendar from "../images/svg/calendar.svg";
             });
 
             passwordInput.addEventListener('input', (e) => {
-                validatePassword(e.target.value);
+                validatePassword((e.target as HTMLInputElement).value);
             });
         }
 
@@ -789,9 +791,9 @@ import Calendar from "../images/svg/calendar.svg";
             e.preventDefault();
             
             const formData = new FormData(form);
-            const email = formData.get('email');
-            const phone = formData.get('phone');
-            const password = formData.get('password');
+            const email = formData.get('email') as string;
+            const phone = formData.get('phone') as string;
+            const password = formData.get('password') as string;
             
             // Anti-bot check 1: Honeypot field
             const honeypotField = document.getElementById('honeypot-field');
