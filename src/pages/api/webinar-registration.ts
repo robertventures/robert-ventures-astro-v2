@@ -227,7 +227,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // This header is server-side only — it cannot be spoofed by the client.
             // Only allow "US". Fail-open when header is absent (local dev).
             const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
-            if (false && cfCountry && cfCountry !== "US") { // TEMP: disabled for testing — re-enable before deploy
+            if (cfCountry && cfCountry !== "US") {
                 console.log("🌍 Non-US webinar registration blocked:", { country: cfCountry });
                 return new Response(
                     JSON.stringify({ message: "Registration successful" }),
