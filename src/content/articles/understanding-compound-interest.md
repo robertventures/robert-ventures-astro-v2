@@ -1,8 +1,8 @@
 ---
-title: 'Understanding Compound Interest: The Key to Financial Growth'
-description: 'Navigate real estate debt funds for strategic investing. Our guide details their role, benefits, and risks in commercial property finance.'
-pubDate: 'Nov 02 2023'
-heroImage: '/articles-images/2.webp'
+title: "Understanding Compound Interest: The Key to Financial Growth"
+description: "Navigate real estate debt funds for strategic investing. Our guide details their role, benefits, and risks in commercial property finance."
+pubDate: "Nov 02 2023"
+heroImage: "/articles-images/2.webp"
 ---
 
 <div class="blog-content">

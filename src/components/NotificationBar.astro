@@ -3,271 +3,273 @@
 ---
 
 <div id="notification-container">
-    <div class="notification">
-        <div class="notification-content">
-            <div class="notification-icon"></div>
-            <div class="notification-text">
-                <div class="notification-name">Sarah M.</div>
-                <div class="notification-location">just registered from New York, NY</div>
-            </div>
-        </div>
+  <div class="notification">
+    <div class="notification-content">
+      <div class="notification-icon"></div>
+      <div class="notification-text">
+        <div class="notification-name">Sarah M.</div>
+        <div class="notification-location">just registered from New York, NY</div>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
+  #notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .notification {
+    background-color: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.15),
+      0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 10px;
+    max-width: 300px;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    pointer-events: none;
+  }
+
+  .notification.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .notification.hide {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .notification-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .notification-icon::before {
+    content: "✓";
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .notification-text {
+    font-size: 0.875rem;
+    color: #2f2f2f;
+    line-height: 1.4;
+  }
+
+  .notification-name {
+    font-weight: 600;
+    color: #5028ff;
+  }
+
+  .notification-location {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
     #notification-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        pointer-events: none;
+      bottom: 10px;
+      right: 10px;
+      left: 10px;
     }
 
     .notification {
-        background-color: #ffffff;
-        border: 1px solid #f3f4f6;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
-        padding: 1rem;
-        margin-bottom: 10px;
-        max-width: 300px;
-        transform: translateX(100%);
-        opacity: 0;
-        transition: all 0.5s ease-in-out;
-        pointer-events: none;
+      max-width: none;
     }
-
-    .notification.show {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    .notification.hide {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    .notification-content {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .notification-icon {
-        width: 32px;
-        height: 32px;
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .notification-icon::before {
-        content: "✓";
-        color: white;
-        font-weight: bold;
-        font-size: 14px;
-    }
-
-    .notification-text {
-        font-size: 0.875rem;
-        color: #2f2f2f;
-        line-height: 1.4;
-    }
-
-    .notification-name {
-        font-weight: 600;
-        color: #5028ff;
-    }
-
-    .notification-location {
-        color: #6b7280;
-        font-size: 0.75rem;
-    }
-
-    @media (max-width: 768px) {
-        #notification-container {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-        }
-
-        .notification {
-            max-width: none;
-        }
-    }
+  }
 </style>
 
 <script>
-    // Sample users for FOMO notifications
-    const sampleUsers = [
-        { name: "Ethan P.", location: "Boston, MA" },
-        { name: "Olivia K.", location: "Dallas, TX" },
-        { name: "Noah L.", location: "San Jose, CA" },
-        { name: "Ava R.", location: "Orlando, FL" },
-        { name: "William C.", location: "Nashville, TN" },
-        { name: "Sophia D.", location: "Charlotte, NC" },
-        { name: "Liam T.", location: "Salt Lake City, UT" },
-        { name: "Mia H.", location: "Atlanta, GA" },
-        { name: "Benjamin S.", location: "Philadelphia, PA" },
-        { name: "Isabella V.", location: "Tampa, FL" },
-        { name: "Lucas M.", location: "Minneapolis, MN" },
-        { name: "Amelia W.", location: "Columbus, OH" },
-        { name: "Henry B.", location: "Kansas City, MO" },
-        { name: "Evelyn N.", location: "Raleigh, NC" },
-        { name: "Jack G.", location: "San Antonio, TX" },
-        { name: "Harper E.", location: "Portland, ME" },
-        { name: "Daniel J.", location: "Las Vegas, NV" },
-        { name: "Chloe P.", location: "New Orleans, LA" },
-        { name: "Alexander F.", location: "Indianapolis, IN" },
-        { name: "Grace Y.", location: "Baltimore, MD" }
-    ];
+  // Sample users for FOMO notifications
+  const sampleUsers = [
+    { name: "Ethan P.", location: "Boston, MA" },
+    { name: "Olivia K.", location: "Dallas, TX" },
+    { name: "Noah L.", location: "San Jose, CA" },
+    { name: "Ava R.", location: "Orlando, FL" },
+    { name: "William C.", location: "Nashville, TN" },
+    { name: "Sophia D.", location: "Charlotte, NC" },
+    { name: "Liam T.", location: "Salt Lake City, UT" },
+    { name: "Mia H.", location: "Atlanta, GA" },
+    { name: "Benjamin S.", location: "Philadelphia, PA" },
+    { name: "Isabella V.", location: "Tampa, FL" },
+    { name: "Lucas M.", location: "Minneapolis, MN" },
+    { name: "Amelia W.", location: "Columbus, OH" },
+    { name: "Henry B.", location: "Kansas City, MO" },
+    { name: "Evelyn N.", location: "Raleigh, NC" },
+    { name: "Jack G.", location: "San Antonio, TX" },
+    { name: "Harper E.", location: "Portland, ME" },
+    { name: "Daniel J.", location: "Las Vegas, NV" },
+    { name: "Chloe P.", location: "New Orleans, LA" },
+    { name: "Alexander F.", location: "Indianapolis, IN" },
+    { name: "Grace Y.", location: "Baltimore, MD" },
+  ];
 
-    // Timing constants
-    const INITIAL_DELAY_MS = 3000; // first show
-    const SHOW_DURATION_MS = 3000; // visible
-    const GAP_DURATION_MS = 5000;  // gap between items
-    const RESUME_DELAY_MS = 3000;  // resume after tab visible or restart
-    const RESTART_AFTER_FORM_BLUR_MS = 2000; // after leaving a form
+  // Timing constants
+  const INITIAL_DELAY_MS = 3000; // first show
+  const SHOW_DURATION_MS = 3000; // visible
+  const GAP_DURATION_MS = 5000; // gap between items
+  const RESUME_DELAY_MS = 3000; // resume after tab visible or restart
+  const RESTART_AFTER_FORM_BLUR_MS = 2000; // after leaving a form
 
-    let currentUserIndex = 0;
-    let notificationsActive = true; // overall enable/disable flag
-    let scheduledTaskId = null; // single scheduler for all phases
-    let formInteractionTimeout = null;
-    let isVisible = false; // current DOM visibility state of the bar
+  let currentUserIndex = 0;
+  let notificationsActive = true; // overall enable/disable flag
+  let scheduledTaskId = null; // single scheduler for all phases
+  let formInteractionTimeout = null;
+  let isVisible = false; // current DOM visibility state of the bar
 
-    function getNotificationElement() {
-        return document.querySelector('.notification');
+  function getNotificationElement() {
+    return document.querySelector(".notification");
+  }
+
+  function updateNotification(user) {
+    const notification = getNotificationElement();
+    if (!notification) return;
+
+    const nameElement = notification.querySelector(".notification-name");
+    const locationElement = notification.querySelector(".notification-location");
+
+    if (nameElement && locationElement) {
+      nameElement.textContent = user.name;
+      locationElement.textContent = `just registered from ${user.location}`;
     }
+  }
 
-    function updateNotification(user) {
-        const notification = getNotificationElement();
-        if (!notification) return;
-
-        const nameElement = notification.querySelector('.notification-name');
-        const locationElement = notification.querySelector('.notification-location');
-
-        if (nameElement && locationElement) {
-            nameElement.textContent = user.name;
-            locationElement.textContent = `just registered from ${user.location}`;
-        }
+  function scheduleNext(delayMs, task) {
+    if (scheduledTaskId) {
+      clearTimeout(scheduledTaskId);
     }
+    scheduledTaskId = setTimeout(() => {
+      scheduledTaskId = null;
+      task();
+    }, delayMs);
+  }
 
-    function scheduleNext(delayMs, task) {
-        if (scheduledTaskId) {
-            clearTimeout(scheduledTaskId);
-        }
-        scheduledTaskId = setTimeout(() => {
-            scheduledTaskId = null;
-            task();
-        }, delayMs);
+  function showNextNotification() {
+    if (!notificationsActive || document.hidden) return;
+    const notification = getNotificationElement();
+    if (!notification) return;
+
+    const user = sampleUsers[currentUserIndex];
+    updateNotification(user);
+
+    notification.classList.add("show");
+    notification.classList.remove("hide");
+    isVisible = true;
+
+    scheduleNext(SHOW_DURATION_MS, hideNotification);
+  }
+
+  function hideNotification() {
+    const notification = getNotificationElement();
+    if (notification) {
+      notification.classList.add("hide");
+      notification.classList.remove("show");
     }
+    isVisible = false;
 
-    function showNextNotification() {
-        if (!notificationsActive || document.hidden) return;
-        const notification = getNotificationElement();
-        if (!notification) return;
+    if (!notificationsActive || document.hidden) return;
+    currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
+    scheduleNext(GAP_DURATION_MS, maybeShowIfActive);
+  }
 
-        const user = sampleUsers[currentUserIndex];
-        updateNotification(user);
+  function maybeShowIfActive() {
+    if (!notificationsActive || document.hidden) return;
+    showNextNotification();
+  }
 
-        notification.classList.add('show');
-        notification.classList.remove('hide');
-        isVisible = true;
+  function startNotifications() {
+    notificationsActive = true;
+    scheduleNext(INITIAL_DELAY_MS, maybeShowIfActive);
+  }
 
-        scheduleNext(SHOW_DURATION_MS, hideNotification);
+  function stopNotifications() {
+    notificationsActive = false;
+    if (scheduledTaskId) {
+      clearTimeout(scheduledTaskId);
+      scheduledTaskId = null;
     }
-
-    function hideNotification() {
-        const notification = getNotificationElement();
-        if (notification) {
-            notification.classList.add('hide');
-            notification.classList.remove('show');
-        }
-        isVisible = false;
-
-        if (!notificationsActive || document.hidden) return;
-        currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
-        scheduleNext(GAP_DURATION_MS, maybeShowIfActive);
+    const notification = getNotificationElement();
+    if (notification) {
+      notification.classList.add("hide");
+      notification.classList.remove("show");
     }
+    isVisible = false;
+  }
 
-    function maybeShowIfActive() {
-        if (!notificationsActive || document.hidden) return;
-        showNextNotification();
+  function restartNotifications() {
+    if (notificationsActive) return; // already running
+    notificationsActive = true;
+    if (!document.hidden) {
+      scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
     }
+  }
 
-    function startNotifications() {
-        notificationsActive = true;
-        scheduleNext(INITIAL_DELAY_MS, maybeShowIfActive);
-    }
+  document.addEventListener("DOMContentLoaded", () => {
+    startNotifications();
 
-    function stopNotifications() {
-        notificationsActive = false;
-        if (scheduledTaskId) {
-            clearTimeout(scheduledTaskId);
-            scheduledTaskId = null;
-        }
-        const notification = getNotificationElement();
-        if (notification) {
-            notification.classList.add('hide');
-            notification.classList.remove('show');
-        }
-        isVisible = false;
-    }
-
-    function restartNotifications() {
-        if (notificationsActive) return; // already running
-        notificationsActive = true;
-        if (!document.hidden) {
-            scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        startNotifications();
-
-        // Monitor form interactions
-        const fields = document.querySelectorAll('form, input, textarea, select, button');
-        fields.forEach(el => {
-            el.addEventListener('focus', () => {
-                stopNotifications();
-                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
-            });
-            el.addEventListener('input', () => {
-                stopNotifications();
-                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
-            });
-            el.addEventListener('change', () => {
-                stopNotifications();
-                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
-            });
-            el.addEventListener('blur', () => {
-                if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
-                formInteractionTimeout = setTimeout(() => {
-                    restartNotifications();
-                }, RESTART_AFTER_FORM_BLUR_MS);
-            });
-        });
+    // Monitor form interactions
+    const fields = document.querySelectorAll("form, input, textarea, select, button");
+    fields.forEach((el) => {
+      el.addEventListener("focus", () => {
+        stopNotifications();
+        if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
+      });
+      el.addEventListener("input", () => {
+        stopNotifications();
+        if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
+      });
+      el.addEventListener("change", () => {
+        stopNotifications();
+        if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
+      });
+      el.addEventListener("blur", () => {
+        if (formInteractionTimeout) clearTimeout(formInteractionTimeout);
+        formInteractionTimeout = setTimeout(() => {
+          restartNotifications();
+        }, RESTART_AFTER_FORM_BLUR_MS);
+      });
     });
+  });
 
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            if (scheduledTaskId) {
-                clearTimeout(scheduledTaskId);
-                scheduledTaskId = null;
-            }
-            const notification = getNotificationElement();
-            if (notification) {
-                notification.classList.add('hide');
-                notification.classList.remove('show');
-            }
-            isVisible = false;
-        } else {
-            if (notificationsActive) {
-                scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
-            }
-        }
-    });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (scheduledTaskId) {
+        clearTimeout(scheduledTaskId);
+        scheduledTaskId = null;
+      }
+      const notification = getNotificationElement();
+      if (notification) {
+        notification.classList.add("hide");
+        notification.classList.remove("show");
+      }
+      isVisible = false;
+    } else {
+      if (notificationsActive) {
+        scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);
+      }
+    }
+  });
 </script>

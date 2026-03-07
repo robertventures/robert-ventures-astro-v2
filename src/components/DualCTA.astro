@@ -1,73 +1,82 @@
 ---
-import Arrow from "../images/svg/right-arrow.svg";
+
 ---
 
 <style>
-    .cta-block {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-        max-width: 384px;
-    }
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 384px;
+  }
 
-    a {
-        text-decoration: none;
-        text-align: center;
-        border-radius: 8px;
+  a {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
 
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 100%;
-        font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    font-family: "Roboto", sans-serif;
 
-        padding: 12px;
+    padding: 12px;
 
-        width: 100%;
-        box-sizing: border-box;
+    width: 100%;
+    box-sizing: border-box;
 
-        margin: 0;
-    }
+    margin: 0;
+  }
 
-    .invest {
-        background-color: #D3FBD8;
-        border: 1px solid #D3FBD8;
+  .invest {
+    background-color: #d3fbd8;
+    border: 1px solid #d3fbd8;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 
-        color: #152429;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
+    color: #152429;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
 
-    .invest:active {
-        background-color: #9ebca2;
-        border-color: #9ebca2;
-    }
+  .invest:active {
+    background-color: #9ebca2;
+    border-color: #9ebca2;
+  }
 
-    .webinar {
-        color: #E1EEEA;
-        font-weight: 500;
+  .webinar {
+    color: #e1eeea;
+    font-weight: 500;
 
-        border: none;
+    border: none;
 
-        background-color: #152429;
-        transition: background-color 0.2s ease;
-    }
+    background-color: #152429;
+    transition: background-color 0.2s ease;
+  }
 
-    .webinar:active {
-        background-color: #101B1F;
-    }
-    svg{
-        width: 20px;
-        height: 20px;
-        transform: translateY(1px);
-    }
+  .webinar:active {
+    background-color: #101b1f;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    transform: translateY(1px);
+  }
 </style>
 
 <div class="cta-block">
-    <a class="invest" href="https://invest.robertventures.com/" data-track-cta="get_started" data-track-location="hero">Get Started</a>
-    <a class="webinar" href="/webinar" data-track-cta="join_our_webinar" data-track-location="hero">Join Our Webinar</a>
-</div> 
+  <a
+    class="invest"
+    href="https://invest.robertventures.com/"
+    data-track-cta="get_started"
+    data-track-location="hero">Get Started</a
+  >
+  <a class="webinar" href="/webinar" data-track-cta="join_our_webinar" data-track-location="hero"
+    >Join Our Webinar</a
+  >
+</div>

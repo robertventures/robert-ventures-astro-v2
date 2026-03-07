@@ -1,898 +1,923 @@
 ---
-import Investing from "../images/svg/investing.svg";
-import Calendar from "../images/svg/calendar.svg";
+
 ---
 
 <style>
-    section {
-        background: linear-gradient(to bottom, #101B1F, #111111);
-        position: relative;
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-    }
+  section {
+    background: linear-gradient(to bottom, #101b1f, #111111);
+    position: relative;
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
 
+  .section-container {
+    position: relative;
+    z-index: 1;
+    padding: 48px 16px;
+    background: transparent;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 32px;
+  }
+
+  .intro-left {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .intro-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 32px;
+  }
+
+  h1 {
+    font-family: "Roboto Serif", serif;
+    font-size: 48px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 110%;
+    text-align: left;
+    color: #e1eeea;
+    width: 100%;
+    font-variant-numeric: lining-nums;
+  }
+
+  h1 .highlight-returns {
+    font-family: "Roboto Serif", serif;
+    font-weight: 500;
+    color: #d3fbd8;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: 5%;
+    text-underline-offset: 0px;
+    text-underline-position: from-font;
+    font-variant-numeric: lining-nums;
+    background: none;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #d3fbd8;
+  }
+
+  .deck-iframe {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .option-box {
+    background: #152429;
+    border: 1px solid #30414d;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  svg {
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-family: "Roboto Serif", serif;
+    font-size: 28px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    margin-bottom: 8px;
+    color: #e1eeea;
+  }
+
+  h3 {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: 12px;
+    color: #bfd1d7;
+  }
+
+  p {
+    color: #bfd1d7;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .intro-left p {
+    margin-top: 32px;
+  }
+
+  .intro-right p {
+    font-size: 24px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    line-height: 100%;
+    text-align: left;
+  }
+
+  .offering-circular {
+    text-decoration: underline;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: auto;
+    max-width: none;
+    display: inline;
+    color: #bfd1d7;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .offering-circular:hover {
+    background: transparent;
+    border: none;
+    color: #e1eeea;
+  }
+
+  .intro-right .sms-consent {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    line-height: 150%;
+    font-size: 16px;
+  }
+
+  .investment-details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .investment-details-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .investment-detail-stat {
+    width: 100%;
+    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 4px solid #30414d;
+    padding: 16px 0 16px 16px;
+  }
+
+  .investment-detail-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #d3fbd8;
+    line-height: 100%;
+    font-variant-numeric: lining-nums;
+    margin: 0;
+  }
+
+  .investment-detail-label {
+    font-size: 16px;
+    color: #bfd1d7;
+    line-height: 100%;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+  }
+
+  /* Form Styles */
+  .form {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    margin-top: 32px;
+    background: transparent;
+    border-radius: 1rem;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .form-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 32px;
+  }
+
+  .form input {
+    border: 1px solid #30414d;
+    flex-grow: 1;
+    background-color: #152429;
+    padding: 1rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: #e1eeea;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .form input:focus {
+    outline: none;
+    border: 1px solid #d3fbd8;
+  }
+
+  .form input::placeholder {
+    color: #8a9ca3;
+    opacity: 1;
+  }
+
+  .form button {
+    background-color: #d3fbd8;
+    border: 1px solid #d3fbd8;
+    color: #152429;
+    border-radius: 0.75rem;
+    padding: 1rem 0.75rem;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    font-family: "Roboto", sans-serif;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .form button:active {
+    background-color: #9ebca2;
+    border-color: #9ebca2;
+  }
+
+  .form button:hover {
+    background-color: #b8f5c4;
+    border-color: #b8f5c4;
+  }
+
+  .form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form .signup-error {
+    display: none;
+    color: #ff6b6b;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+  }
+
+  .form-disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 160%;
+    color: #bfd1d7;
+    text-align: center;
+  }
+
+  p.form-disclaimer {
+    margin-top: 12px !important;
+  }
+
+  .form-disclaimer .disclaimer-link {
+    display: inline;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    width: auto;
+    max-width: none;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .form-disclaimer .terms-link {
+    color: #d3fbd8;
+    font-size: 13px;
+  }
+
+  .form-disclaimer .terms-link:hover {
+    color: #e1eeea;
+    background: transparent;
+  }
+
+  .form-disclaimer .privacy-link {
+    color: #9dd6a3;
+    font-size: 13px;
+  }
+
+  .form-disclaimer .privacy-link:hover {
+    color: #e1eeea;
+    background: transparent;
+  }
+
+  .phone-error {
+    display: none;
+    color: #ff6b6b;
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+
+  .phone-error.visible {
+    display: block;
+  }
+
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-wrapper .password-input {
+    padding-right: 90px;
+  }
+
+  .form .password-toggle {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(48, 65, 77, 0.5) !important;
+    border: 1px solid #30414d !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #bfd1d7 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    line-height: 1 !important;
+    width: auto !important;
+    display: inline-block !important;
+    margin: 0 !important;
+  }
+
+  .form .password-toggle:hover {
+    background: rgba(48, 65, 77, 0.8) !important;
+    border: 1px solid #4a6070 !important;
+    color: #e1eeea !important;
+  }
+
+  .form .password-toggle:active {
+    background: rgba(48, 65, 77, 1) !important;
+    border: 1px solid #4a6070 !important;
+    color: #e1eeea !important;
+  }
+
+  .password-requirements {
+    display: none;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    color: #ff6b6b;
+    padding: 0 4px;
+  }
+
+  .password-requirements.visible {
+    display: flex;
+  }
+
+  .requirement.met {
+    color: #d3fbd8;
+  }
+
+  .form .loader {
+    border: 2px solid #ffffff80;
+    border-top: 2px solid #152429;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    display: none;
+    margin-left: 0.5rem;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  a {
+    border-radius: 8px;
+    background: #d3fbd8;
+    border: 1px solid #d3fbd8;
+    display: flex;
+    padding: 12px;
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+    color: #152429;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "Roboto", sans-serif;
+    line-height: 1;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  a:hover {
+    background-color: #9ebca2;
+    border-color: #9ebca2;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        position: relative;
-        z-index: 1;
-        padding: 48px 16px;
-        background: transparent;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    .intro {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-        gap: 32px;
-    }
-
-    .intro-left {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .intro-right {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 32px;
+      padding: 64px 32px;
     }
 
     h1 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 48px;
-        font-weight: 500;
-        margin: 0;
-        line-height: 110%;
-        text-align: left;
-        color: #E1EEEA;
-        width: 100%;
-        font-variant-numeric: lining-nums;
-    }
-
-    h1 .highlight-returns {
-        font-family: 'Roboto Serif', serif;
-        font-weight: 500;
-        color: #D3FBD8;
-        text-decoration-line: underline;
-        text-decoration-style: solid;
-        text-decoration-skip-ink: auto;
-        text-decoration-thickness: 5%;
-        text-underline-offset: 0px;
-        text-underline-position: from-font;
-        font-variant-numeric: lining-nums;
-        background: none;
-        background-clip: unset;
-        -webkit-background-clip: unset;
-        -webkit-text-fill-color: #D3FBD8;
-    }
-
-    .deck-iframe {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .options {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        width: 100%;
-    }
-
-    .option-box {
-        background: #152429;
-        border: 1px solid #30414D;
-        border-radius: 8px;
-        padding: 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    svg {
-        display: inline-block;
-        flex-shrink: 0;
-    }
-
-    h2 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 28px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 0;
-        margin-bottom: 8px;
-        color: #E1EEEA;
-    }
-
-    h3 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 1;
-        margin: 0;
-        margin-bottom: 12px;
-        color: #BFD1D7;
-    }
-
-    p {
-        color: #BFD1D7;
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 150%;
-        margin: 0;
-    }
-
-    .intro-left p {
-        margin-top: 32px;
-    }
-
-    .intro-right p {
-        font-size: 24px;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 500;
-        line-height: 100%;
-        text-align: left;
-    }
-
-    .offering-circular {
-        text-decoration: underline;
-        background: transparent;
-        border: none;
-        padding: 0;
-        width: auto;
-        max-width: none;
-        display: inline;
-        color: #BFD1D7;
-        font-size: 24px;
-        font-weight: 400;
-    }
-
-    .offering-circular:hover {
-        background: transparent;
-        border: none;
-        color: #E1EEEA;
-    }
-
-    .intro-right .sms-consent {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 400;
-        line-height: 150%;
-        font-size: 16px;
-    }
-
-    .investment-details-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        width: 100%;
+      font-size: 48px;
+      line-height: 110%;
     }
 
     .investment-details-stats {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
 
     .investment-detail-stat {
-        width: 100%;
-        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        border-left: 4px solid #30414D;
-        padding: 16px 0 16px 16px;
+      flex: 0 0 calc(50% - 8px);
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 96px 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    .investment-detail-value {
-        font-family: 'Roboto Serif', serif;
-        font-size: 24px;
-        font-weight: 500;
-        color: #D3FBD8;
-        line-height: 100%;
-        font-variant-numeric: lining-nums;
-        margin: 0;
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
     }
 
-    .investment-detail-label {
-        font-size: 16px;
-        color: #BFD1D7;
-        line-height: 100%;
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 400;
+    .intro-left {
+      width: 100%;
+      max-width: 480px;
     }
 
-    /* Form Styles */
-    .form {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        margin-top: 32px;
-        background: transparent;
-        border-radius: 1rem;
-        box-shadow: none;
-        padding: 0;
+    .intro-right {
+      width: 100%;
     }
 
-    .form-block {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-shrink: 0;
-        margin: 0 auto;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-        box-sizing: border-box;
-        margin-bottom: 32px;
+    h1 {
+      font-size: 48px;
+      line-height: 110%;
+      margin-bottom: 0;
     }
 
-    .form input {
-        border: 1px solid #30414D;
-        flex-grow: 1;
-        background-color: #152429;
-        padding: 1rem 0.75rem;
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 0.75rem;
-        color: #E1EEEA;
-        transition: border-color 0.2s ease;
-        font-size: 1rem;
-        font-family: 'Roboto', sans-serif;
+    .investment-details-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
     }
 
-    .form input:focus {
-        outline: none;
-        border: 1px solid #D3FBD8;
+    .investment-detail-stat {
+      width: 100%;
     }
+  }
 
-    .form input::placeholder {
-        color: #8a9ca3;
-        opacity: 1;
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 96px 312px;
     }
-
-    .form button {
-        background-color: #D3FBD8;
-        border: 1px solid #D3FBD8;
-        color: #152429;
-        border-radius: 0.75rem;
-        padding: 1rem 0.75rem;
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 100%;
-        font-family: 'Roboto', sans-serif;
-        width: 100%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-        text-align: center;
-        box-sizing: border-box;
-        margin: 0;
-    }
-
-    .form button:active {
-        background-color: #9ebca2;
-        border-color: #9ebca2;
-    }
-
-    .form button:hover {
-        background-color: #b8f5c4;
-        border-color: #b8f5c4;
-    }
-
-    .form button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .form .signup-error {
-        display: none;
-        color: #ff6b6b;
-        text-align: center;
-        margin-top: 0.5rem;
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-    }
-
-    .form-disclaimer {
-        font-family: 'Roboto', sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 160%;
-        color: #BFD1D7;
-        text-align: center;
-    }
-
-    p.form-disclaimer{
-        margin-top: 12px !important;
-    }
-
-    .form-disclaimer .disclaimer-link {
-        display: inline;
-        padding: 0;
-        border: none;
-        background: transparent;
-        border-radius: 0;
-        width: auto;
-        max-width: none;
-        font-size: 13px;
-        font-weight: 400;
-        text-decoration: underline;
-        transition: color 0.2s ease;
-    }
-
-    .form-disclaimer .terms-link {
-        color: #D3FBD8;
-        font-size: 13px;
-    }
-
-    .form-disclaimer .terms-link:hover {
-        color: #E1EEEA;
-        background: transparent;
-    }
-
-    .form-disclaimer .privacy-link {
-        color: #9DD6A3;
-        font-size: 13px;
-    }
-
-    .form-disclaimer .privacy-link:hover {
-        color: #E1EEEA;
-        background: transparent;
-    }
-
-    .phone-error {
-        display: none;
-        color: #ff6b6b;
-        font-family: 'Roboto', sans-serif;
-        font-size: 13px;
-        margin-top: -8px;
-        margin-bottom: 8px;
-        padding: 0 4px;
-    }
-
-    .phone-error.visible {
-        display: block;
-    }
-
-    .password-wrapper {
-        position: relative;
-        width: 100%;
-    }
-
-    .password-wrapper .password-input {
-        padding-right: 90px;
-    }
-
-    .form .password-toggle {
-        position: absolute !important;
-        right: 12px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        background: rgba(48, 65, 77, 0.5) !important;
-        border: 1px solid #30414D !important;
-        border-radius: 6px !important;
-        padding: 6px 12px !important;
-        font-family: 'Roboto', sans-serif !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        color: #BFD1D7 !important;
-        cursor: pointer !important;
-        transition: all 0.2s ease !important;
-        line-height: 1 !important;
-        width: auto !important;
-        display: inline-block !important;
-        margin: 0 !important;
-    }
-
-    .form .password-toggle:hover {
-        background: rgba(48, 65, 77, 0.8) !important;
-        border: 1px solid #4a6070 !important;
-        color: #E1EEEA !important;
-    }
-
-    .form .password-toggle:active {
-        background: rgba(48, 65, 77, 1) !important;
-        border: 1px solid #4a6070 !important;
-        color: #E1EEEA !important;
-    }
-
-    .password-requirements {
-        display: none;
-        flex-wrap: wrap;
-        gap: 4px;
-        font-family: 'Roboto', sans-serif;
-        font-size: 13px;
-        margin-top: -8px;
-        margin-bottom: 8px;
-        color: #ff6b6b;
-        padding: 0 4px;
-    }
-
-    .password-requirements.visible {
-        display: flex;
-    }
-
-    .requirement.met {
-        color: #D3FBD8;
-    }
-
-    .form .loader {
-        border: 2px solid #ffffff80;
-        border-top: 2px solid #152429;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        animation: spin 1s linear infinite;
-        display: none;
-        margin-left: 0.5rem;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    a {
-        border-radius: 8px;
-        background: #D3FBD8;
-        border: 1px solid #D3FBD8;
-        display: flex;
-        padding: 12px;
-        justify-content: center;
-        width: 100%;
-        max-width: 300px;
-        color: #152429;
-        text-decoration: none;
-        font-size: 18px;
-        font-weight: 600;
-        font-family: 'Roboto', sans-serif;
-        line-height: 1;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-
-    a:hover {
-        background-color: #9ebca2;
-        border-color: #9ebca2;
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h1 {
-            font-size: 48px;
-            line-height: 110%;
-        }
-
-        .investment-details-stats {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        .investment-detail-stat {
-            flex: 0 0 calc(50% - 8px);
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding: 96px 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        .intro {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: start;
-        }
-
-        .intro-left {
-            width: 100%;
-            max-width: 480px;
-        }
-
-        .intro-right {
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 48px;
-            line-height: 110%;
-            margin-bottom: 0;
-        }
-
-        .investment-details-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .investment-detail-stat {
-            width: 100%;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding: 96px 312px;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="intro">
-            <div class="intro-left">
-                <h1>Diversify your portfolio with <span class="highlight-returns">10%</span> fixed returns</h1>
-                <p>Create your account and start investing in less than 5 minutes.</p>
-                <div class="form">
-                    <form class="form-cta" id="registration-form">
-                        <!-- Honeypot field - hidden from humans, bots will fill it -->
-                        <input 
-                            type="text" 
-                            name="website" 
-                            id="honeypot-field"
-                            autocomplete="off"
-                            tabindex="-1"
-                            style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;"
-                        />
-                        <input type="hidden" name="form_load_time" id="form-load-time" value="" />
-                        <div class="form-block">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Enter Your Email"
-                                required
-                                class="email-input"
-                            />
-                            <input
-                                type="tel"
-                                name="phone"
-                                placeholder="Phone Number"
-                                required
-                                maxlength="14"
-                                class="phone-input"
-                                id="phone-input"
-                            />
-                            <p class="phone-error" id="phone-error"></p>
-                            <div class="password-wrapper">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    required
-                                    class="password-input"
-                                    id="password-input"
-                                />
-                                <button type="button" class="password-toggle" data-target="password-input">Show</button>
-                            </div>
-                            <div class="password-requirements" id="password-requirements">
-                                <span class="requirement" data-req="length">8 Characters</span> &middot;
-                                <span class="requirement" data-req="uppercase">1 Uppercase letter</span> &middot;
-                                <span class="requirement" data-req="number">1 Number</span> &middot;
-                                <span class="requirement" data-req="special">1 Special character</span>
-                            </div>
-                        </div>
-                        <button type="submit">
-                            <span class="button-text">Create Account</span>
-                            <span class="loader"></span>
-                        </button>
-                        <p class="form-disclaimer">By submitting 'Create Account', I have read and agree to the <a href="/terms-of-use" target="_blank" rel="noopener noreferrer" class="disclaimer-link terms-link">Terms of Use</a> and acknowledge the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" class="disclaimer-link privacy-link">Privacy Policy</a>.</p>
-                        <p class="signup-error"></p>
-                    </form>
-                    <!-- <a href="https://invest.robertventures.com" style="max-width: 100%;">Get Started Now</a> -->
-                </div>
+  <div class="section-container">
+    <div class="intro">
+      <div class="intro-left">
+        <h1>
+          Diversify your portfolio with <span class="highlight-returns">10%</span> fixed returns
+        </h1>
+        <p>Create your account and start investing in less than 5 minutes.</p>
+        <div class="form">
+          <form class="form-cta" id="registration-form">
+            <!-- Honeypot field - hidden from humans, bots will fill it -->
+            <input
+              type="text"
+              name="website"
+              id="honeypot-field"
+              autocomplete="off"
+              tabindex="-1"
+              style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;"
+            />
+            <input type="hidden" name="form_load_time" id="form-load-time" value="" />
+            <div class="form-block">
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter Your Email"
+                required
+                class="email-input"
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                required
+                maxlength="14"
+                class="phone-input"
+                id="phone-input"
+              />
+              <p class="phone-error" id="phone-error"></p>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  class="password-input"
+                  id="password-input"
+                />
+                <button type="button" class="password-toggle" data-target="password-input"
+                  >Show</button
+                >
+              </div>
+              <div class="password-requirements" id="password-requirements">
+                <span class="requirement" data-req="length">8 Characters</span> &middot;
+                <span class="requirement" data-req="uppercase">1 Uppercase letter</span> &middot;
+                <span class="requirement" data-req="number">1 Number</span> &middot;
+                <span class="requirement" data-req="special">1 Special character</span>
+              </div>
             </div>
-            <div class="intro-right">
-                <div
-                    class="deck-iframe"
-                    style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+            <button type="submit">
+              <span class="button-text">Create Account</span>
+              <span class="loader"></span>
+            </button>
+            <p class="form-disclaimer">
+              By submitting 'Create Account', I have read and agree to the <a
+                href="/terms-of-use"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="disclaimer-link terms-link">Terms of Use</a
+              > and acknowledge the <a
+                href="/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="disclaimer-link privacy-link">Privacy Policy</a
+              >.
+            </p>
+            <p class="signup-error"></p>
+          </form>
+          <!-- <a href="https://invest.robertventures.com" style="max-width: 100%;">Get Started Now</a> -->
+        </div>
+      </div>
+      <div class="intro-right">
+        <div
+          class="deck-iframe"
+          style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
          padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.3); margin-top: 0; overflow: hidden;
          border-radius: 8px; will-change: transform;"
-                >
-                    <iframe
-                        loading="lazy"
-                        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-                        src="https://www.canva.com/design/DAG3AOaNOws/mwRkhNFyb30ApZTG8Di_8g/view?embed"
-                        allowfullscreen="allowfullscreen"
-                        allow="fullscreen"
-                    >
-                    </iframe>
-                </div>
-                <div class="investment-details-wrapper">
-                    <a href="https://l.robertventures.com/OfferingCircular" class="offering-circular">Investment Details - Offering Circular</a>
-                    <div class="investment-details-stats">
-                        <div class="investment-detail-stat">
-                            <span class="investment-detail-label">Minimum Amount</span>
-                            <span class="investment-detail-value">$1,000</span>
-                        </div>
-                        <div class="investment-detail-stat">
-                            <span class="investment-detail-label">Annual Returns</span>
-                            <span class="investment-detail-value">8% or 10%</span>
-                        </div>
-                        <div class="investment-detail-stat">
-                            <span class="investment-detail-label">Bond Maturity</span>
-                            <span class="investment-detail-value">10 Years</span>
-                        </div>
-                        <div class="investment-detail-stat">
-                            <span class="investment-detail-label">Lock-up</span>
-                            <span class="investment-detail-value">1 or 3 years</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- <p class="sms-consent">I consent to receive SMS notifications, alerts and occasional marketing communication from Robert Ventures, LLC. Message frequency varies. Message and Data Rates may apply. You can reply STOP to unsbscribe at any time.</p> -->
-            </div>
+        >
+          <iframe
+            loading="lazy"
+            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+            src="https://www.canva.com/design/DAG3AOaNOws/mwRkhNFyb30ApZTG8Di_8g/view?embed"
+            allowfullscreen="allowfullscreen"
+            allow="fullscreen"
+          >
+          </iframe>
         </div>
+        <div class="investment-details-wrapper">
+          <a href="https://l.robertventures.com/OfferingCircular" class="offering-circular"
+            >Investment Details - Offering Circular</a
+          >
+          <div class="investment-details-stats">
+            <div class="investment-detail-stat">
+              <span class="investment-detail-label">Minimum Amount</span>
+              <span class="investment-detail-value">$1,000</span>
+            </div>
+            <div class="investment-detail-stat">
+              <span class="investment-detail-label">Annual Returns</span>
+              <span class="investment-detail-value">8% or 10%</span>
+            </div>
+            <div class="investment-detail-stat">
+              <span class="investment-detail-label">Bond Maturity</span>
+              <span class="investment-detail-value">10 Years</span>
+            </div>
+            <div class="investment-detail-stat">
+              <span class="investment-detail-label">Lock-up</span>
+              <span class="investment-detail-value">1 or 3 years</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- <p class="sms-consent">I consent to receive SMS notifications, alerts and occasional marketing communication from Robert Ventures, LLC. Message frequency varies. Message and Data Rates may apply. You can reply STOP to unsbscribe at any time.</p> -->
+      </div>
     </div>
+  </div>
 </section>
 
 <script>
-    declare function gtag(...args: any[]): void;
+  declare function gtag(...args: any[]): void;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('registration-form') as HTMLFormElement | null;
-        if (!form) return;
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("registration-form") as HTMLFormElement | null;
+    if (!form) return;
 
-        // Anti-bot: Set form load timestamp
-        const formLoadTime = Date.now();
-        const formLoadTimeInput = document.getElementById('form-load-time') as HTMLInputElement | null;
-        if (formLoadTimeInput) {
-            formLoadTimeInput.value = formLoadTime.toString();
+    // Anti-bot: Set form load timestamp
+    const formLoadTime = Date.now();
+    const formLoadTimeInput = document.getElementById("form-load-time") as HTMLInputElement | null;
+    if (formLoadTimeInput) {
+      formLoadTimeInput.value = formLoadTime.toString();
+    }
+
+    // Minimum time (in milliseconds) that must pass before form can be submitted
+    // Humans typically take at least 5 seconds to fill out a form
+    const MIN_FORM_TIME_MS = 3000;
+
+    const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement | null;
+    const phoneInput = document.getElementById("phone-input") as HTMLInputElement | null;
+    const phoneError = document.getElementById("phone-error") as HTMLElement | null;
+    const passwordInput = document.getElementById("password-input") as HTMLInputElement | null;
+    const requirementsDiv = document.getElementById("password-requirements") as HTMLElement | null;
+    const requirements = {
+      length: requirementsDiv.querySelector('[data-req="length"]'),
+      uppercase: requirementsDiv.querySelector('[data-req="uppercase"]'),
+      number: requirementsDiv.querySelector('[data-req="number"]'),
+      special: requirementsDiv.querySelector('[data-req="special"]'),
+    };
+
+    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    const buttonText = form.querySelector(".button-text") as HTMLElement | null;
+    const loader = form.querySelector(".loader") as HTMLElement | null;
+    const signupError = form.querySelector(".signup-error") as HTMLElement | null;
+
+    // Format phone number as (XXX) XXX-XXXX for display
+    const formatPhone = (value = "") => {
+      const digits = value.replace(/\D/g, "").slice(0, 10);
+      if (digits.length <= 3) return digits;
+      if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    };
+
+    // Validate US phone number (10 digits, area code starts with 2-9)
+    const isValidUSPhone = (value = "") => {
+      const digits = value.replace(/\D/g, "");
+      if (digits.length !== 10) return false;
+      return /^[2-9][0-9]{9}$/.test(digits);
+    };
+
+    // Normalize phone number to E.164 format for database storage (+1XXXXXXXXXX)
+    const normalizePhoneForDB = (value = "") => {
+      const digits = value.replace(/\D/g, "");
+      if (digits.length === 10) {
+        return `+1${digits}`;
+      }
+      if (digits.length === 11 && digits.startsWith("1")) {
+        return `+${digits}`;
+      }
+      return value;
+    };
+
+    // Email: Force lowercase and prevent uppercase
+    if (emailInput) {
+      emailInput.addEventListener("input", (e) => {
+        const start = emailInput.selectionStart;
+        const end = emailInput.selectionEnd;
+        emailInput.value = emailInput.value.toLowerCase();
+        emailInput.setSelectionRange(start, end);
+      });
+    }
+
+    // Phone: Format as user types
+    if (phoneInput) {
+      phoneInput.addEventListener("input", (e) => {
+        const cursorPosition = phoneInput.selectionStart;
+        const previousLength = phoneInput.value.length;
+        const formatted = formatPhone(phoneInput.value);
+        phoneInput.value = formatted;
+
+        // Adjust cursor position after formatting
+        const lengthDiff = formatted.length - previousLength;
+        const newPosition = cursorPosition + lengthDiff;
+        phoneInput.setSelectionRange(newPosition, newPosition);
+
+        // Clear phone error when user starts typing
+        if (phoneError) {
+          phoneError.classList.remove("visible");
+          phoneError.textContent = "";
+        }
+      });
+    }
+
+    // Password Validation Logic
+    const validatePassword = (value) => {
+      const results = {
+        length: value.length >= 8,
+        uppercase: /[A-Z]/.test(value),
+        number: /[0-9]/.test(value),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+      };
+
+      Object.keys(results).forEach((key) => {
+        if (results[key]) {
+          requirements[key].classList.add("met");
+        } else {
+          requirements[key].classList.remove("met");
+        }
+      });
+
+      return Object.values(results).every(Boolean);
+    };
+
+    if (passwordInput) {
+      passwordInput.addEventListener("focus", () => {
+        requirementsDiv.classList.add("visible");
+      });
+
+      passwordInput.addEventListener("input", (e) => {
+        validatePassword((e.target as HTMLInputElement).value);
+      });
+    }
+
+    // Password Show/Hide Toggle
+    const passwordToggle = form.querySelector(".password-toggle");
+    const passwordInputEl = passwordInput as HTMLInputElement | null;
+    if (passwordToggle && passwordInputEl) {
+      passwordToggle.addEventListener("click", () => {
+        const isCurrentlyHidden = passwordInputEl.type === "password";
+        passwordInputEl.type = isCurrentlyHidden ? "text" : "password";
+        passwordToggle.textContent = isCurrentlyHidden ? "Hide" : "Show";
+      });
+    }
+
+    function resetFormState() {
+      if (buttonText) buttonText.style.display = "";
+      if (loader) loader.style.display = "none";
+      if (submitButton) submitButton.disabled = false;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const email = formData.get("email") as string;
+      const phone = formData.get("phone") as string;
+      const password = formData.get("password") as string;
+
+      // Anti-bot check 1: Honeypot field
+      const honeypotField = document.getElementById("honeypot-field") as HTMLInputElement | null;
+      if (honeypotField && honeypotField.value !== "") {
+        // Bot detected - silently fail (don't give feedback to bots)
+        console.log("Form validation failed");
+        return;
+      }
+
+      // Anti-bot check 2: Time-based validation
+      const timeElapsed = Date.now() - formLoadTime;
+      if (timeElapsed < MIN_FORM_TIME_MS) {
+        // Form submitted too quickly - likely a bot
+        if (signupError) {
+          signupError.textContent = "Please take your time filling out the form.";
+          signupError.style.display = "block";
+        }
+        return;
+      }
+
+      // Reset error states
+      if (signupError) {
+        signupError.style.display = "none";
+        signupError.textContent = "";
+      }
+      if (phoneError) {
+        phoneError.classList.remove("visible");
+        phoneError.textContent = "";
+      }
+
+      // Validate Phone Number
+      if (!phone || phone.trim() === "") {
+        if (phoneError) {
+          phoneError.textContent = "Phone number is required";
+          phoneError.classList.add("visible");
+        }
+        return;
+      }
+
+      if (!isValidUSPhone(phone)) {
+        if (phoneError) {
+          phoneError.textContent = "Please enter a valid 10-digit US phone number";
+          phoneError.classList.add("visible");
+        }
+        return;
+      }
+
+      // Validate Password Requirements
+      if (!validatePassword(password)) {
+        if (signupError) {
+          signupError.textContent = "Please fulfill all password requirements";
+          signupError.style.display = "block";
+        }
+        requirementsDiv.classList.add("visible");
+        return;
+      }
+
+      // Show loading state
+      if (buttonText) buttonText.style.display = "none";
+      if (loader) loader.style.display = "inline-block";
+      if (submitButton) submitButton.disabled = true;
+
+      // Normalize phone to E.164 format for database
+      const normalizedPhone = normalizePhoneForDB(phone);
+
+      try {
+        const response = await fetch("/api/create-account", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            phone: normalizedPhone,
+            password: password,
+            website: (document.getElementById("honeypot-field") as HTMLInputElement)?.value || "",
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // Handle API error responses
+          if (response.status === 429) {
+            throw new Error("Too many registration attempts. Please try again later.");
+          }
+          throw new Error(data.detail || "Registration failed. Please try again.");
         }
 
-        // Minimum time (in milliseconds) that must pass before form can be submitted
-        // Humans typically take at least 5 seconds to fill out a form
-        const MIN_FORM_TIME_MS = 3000;
-
-        const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement | null;
-        const phoneInput = document.getElementById('phone-input');
-        const phoneError = document.getElementById('phone-error') as HTMLElement | null;
-        const passwordInput = document.getElementById('password-input') as HTMLInputElement | null;
-        const requirementsDiv = document.getElementById('password-requirements') as HTMLElement | null;
-        const requirements = {
-            length: requirementsDiv.querySelector('[data-req="length"]'),
-            uppercase: requirementsDiv.querySelector('[data-req="uppercase"]'),
-            number: requirementsDiv.querySelector('[data-req="number"]'),
-            special: requirementsDiv.querySelector('[data-req="special"]')
-        };
-
-        const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
-        const buttonText = form.querySelector('.button-text') as HTMLElement | null;
-        const loader = form.querySelector('.loader') as HTMLElement | null;
-        const signupError = form.querySelector('.signup-error') as HTMLElement | null;
-
-        // Format phone number as (XXX) XXX-XXXX for display
-        const formatPhone = (value = '') => {
-            const digits = value.replace(/\D/g, '').slice(0, 10);
-            if (digits.length <= 3) return digits;
-            if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-        };
-
-        // Validate US phone number (10 digits, area code starts with 2-9)
-        const isValidUSPhone = (value = '') => {
-            const digits = value.replace(/\D/g, '');
-            if (digits.length !== 10) return false;
-            return /^[2-9][0-9]{9}$/.test(digits);
-        };
-
-        // Normalize phone number to E.164 format for database storage (+1XXXXXXXXXX)
-        const normalizePhoneForDB = (value = '') => {
-            const digits = value.replace(/\D/g, '');
-            if (digits.length === 10) {
-                return `+1${digits}`;
-            }
-            if (digits.length === 11 && digits.startsWith('1')) {
-                return `+${digits}`;
-            }
-            return value;
-        };
-
-        // Email: Force lowercase and prevent uppercase
-        if (emailInput) {
-            emailInput.addEventListener('input', (e) => {
-                const start = emailInput.selectionStart;
-                const end = emailInput.selectionEnd;
-                emailInput.value = emailInput.value.toLowerCase();
-                emailInput.setSelectionRange(start, end);
-            });
+        // Success! Redirect to confirmation page with email and user_id
+        const userId = data.user?.id || data.pendingUserId || data.id;
+        const confirmationUrl = new URL("https://invest.robertventures.com/confirmation");
+        confirmationUrl.searchParams.append("email", email);
+        if (userId) {
+          confirmationUrl.searchParams.append("user_id", userId);
         }
+        window.location.href = confirmationUrl.toString();
 
-        // Phone: Format as user types
-        if (phoneInput) {
-            phoneInput.addEventListener('input', (e) => {
-                const cursorPosition = phoneInput.selectionStart;
-                const previousLength = phoneInput.value.length;
-                const formatted = formatPhone(phoneInput.value);
-                phoneInput.value = formatted;
-                
-                // Adjust cursor position after formatting
-                const lengthDiff = formatted.length - previousLength;
-                const newPosition = cursorPosition + lengthDiff;
-                phoneInput.setSelectionRange(newPosition, newPosition);
-
-                // Clear phone error when user starts typing
-                if (phoneError) {
-                    phoneError.classList.remove('visible');
-                    phoneError.textContent = '';
-                }
-            });
-        }
-
-        // Password Validation Logic
-        const validatePassword = (value) => {
-            const results = {
-                length: value.length >= 8,
-                uppercase: /[A-Z]/.test(value),
-                number: /[0-9]/.test(value),
-                special: /[!@#$%^&*(),.?":{}|<>]/.test(value)
-            };
-
-            Object.keys(results).forEach(key => {
-                if (results[key]) {
-                    requirements[key].classList.add('met');
-                } else {
-                    requirements[key].classList.remove('met');
-                }
-            });
-
-            return Object.values(results).every(Boolean);
-        };
-
-        if (passwordInput) {
-            passwordInput.addEventListener('focus', () => {
-                requirementsDiv.classList.add('visible');
-            });
-
-            passwordInput.addEventListener('input', (e) => {
-                validatePassword((e.target as HTMLInputElement).value);
-            });
-        }
-
-        // Password Show/Hide Toggle
-        const passwordToggle = form.querySelector('.password-toggle');
-        const passwordInputEl = passwordInput as HTMLInputElement | null;
-        if (passwordToggle && passwordInputEl) {
-            passwordToggle.addEventListener('click', () => {
-                const isCurrentlyHidden = passwordInputEl.type === 'password';
-                passwordInputEl.type = isCurrentlyHidden ? 'text' : 'password';
-                passwordToggle.textContent = isCurrentlyHidden ? 'Hide' : 'Show';
-            });
-        }
-
-        function resetFormState() {
-            if (buttonText) buttonText.style.display = '';
-            if (loader) loader.style.display = 'none';
-            if (submitButton) submitButton.disabled = false;
-        }
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            const email = formData.get('email') as string;
-            const phone = formData.get('phone') as string;
-            const password = formData.get('password') as string;
-            
-            // Anti-bot check 1: Honeypot field
-            const honeypotField = document.getElementById('honeypot-field');
-            if (honeypotField && honeypotField.value !== '') {
-                // Bot detected - silently fail (don't give feedback to bots)
-                console.log('Form validation failed');
-                return;
-            }
-            
-            // Anti-bot check 2: Time-based validation
-            const timeElapsed = Date.now() - formLoadTime;
-            if (timeElapsed < MIN_FORM_TIME_MS) {
-                // Form submitted too quickly - likely a bot
-                if (signupError) {
-                    signupError.textContent = 'Please take your time filling out the form.';
-                    signupError.style.display = 'block';
-                }
-                return;
-            }
-            
-            // Reset error states
-            if (signupError) {
-                signupError.style.display = 'none';
-                signupError.textContent = '';
-            }
-            if (phoneError) {
-                phoneError.classList.remove('visible');
-                phoneError.textContent = '';
-            }
-
-            // Validate Phone Number
-            if (!phone || phone.trim() === '') {
-                if (phoneError) {
-                    phoneError.textContent = 'Phone number is required';
-                    phoneError.classList.add('visible');
-                }
-                return;
-            }
-
-            if (!isValidUSPhone(phone)) {
-                if (phoneError) {
-                    phoneError.textContent = 'Please enter a valid 10-digit US phone number';
-                    phoneError.classList.add('visible');
-                }
-                return;
-            }
-            
-            // Validate Password Requirements
-            if (!validatePassword(password)) {
-                 if (signupError) {
-                    signupError.textContent = 'Please fulfill all password requirements';
-                    signupError.style.display = 'block';
-                }
-                requirementsDiv.classList.add('visible');
-                return;
-            }
-
-            // Show loading state
-            if (buttonText) buttonText.style.display = 'none';
-            if (loader) loader.style.display = 'inline-block';
-            if (submitButton) submitButton.disabled = true;
-
-            // Normalize phone to E.164 format for database
-            const normalizedPhone = normalizePhoneForDB(phone);
-            
-            try {
-                const response = await fetch('/api/create-account', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        phone: normalizedPhone,
-                        password: password,
-                        website: (document.getElementById('honeypot-field') as HTMLInputElement)?.value || ''
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    // Handle API error responses
-                    if (response.status === 429) {
-                        throw new Error('Too many registration attempts. Please try again later.');
-                    }
-                    throw new Error(data.detail || 'Registration failed. Please try again.');
-                }
-                
-                // Success! Redirect to confirmation page with email and user_id
-                const userId = data.user?.id || data.pendingUserId || data.id;
-                const confirmationUrl = new URL('https://invest.robertventures.com/confirmation');
-                confirmationUrl.searchParams.append('email', email);
-                if (userId) {
-                    confirmationUrl.searchParams.append('user_id', userId);
-                }
-                window.location.href = confirmationUrl.toString();
-                
-                /* 
+        /* 
                 // Previous success handling - commented out for redirect
                 form.style.display = 'none';
                 if (signupError) {
@@ -901,25 +926,24 @@ import Calendar from "../images/svg/calendar.svg";
                     signupError.textContent = '✓ Registration successful! Check your email to verify your account.';
                 }
                 */
-                
-                // Optional: Track conversion
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'sign_up', {
-                        method: 'email'
-                    });
-                }
-                
-            } catch (error) {
-                if (signupError) {
-                    signupError.textContent = error.message || 'An error occurred. Please try again.';
-                    signupError.style.display = 'block';
-                }
-                
-                // Reset form state
-                if (buttonText) buttonText.style.display = 'inline-block';
-                if (loader) loader.style.display = 'none';
-                if (submitButton) submitButton.disabled = false;
-            }
-        });
+
+        // Optional: Track conversion
+        if (typeof gtag !== "undefined") {
+          gtag("event", "sign_up", {
+            method: "email",
+          });
+        }
+      } catch (error) {
+        if (signupError) {
+          signupError.textContent = error.message || "An error occurred. Please try again.";
+          signupError.style.display = "block";
+        }
+
+        // Reset form state
+        if (buttonText) buttonText.style.display = "inline-block";
+        if (loader) loader.style.display = "none";
+        if (submitButton) submitButton.disabled = false;
+      }
     });
+  });
 </script>

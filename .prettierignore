@@ -1,0 +1,15 @@
+# Build output
+dist/
+.astro/
+node_modules/
+
+# Third-party and minified public scripts — do not reformat
+public/scripts/
+
+# Files with Astro syntax the prettier-plugin-astro parser cannot handle:
+# - BaseHead.astro: minified inline third-party scripts (Facebook Pixel)
+# - MainLayout.astro: CSS variable expression {styles} in style block
+# - Articles.astro: commented JSX expression inside template
+src/components/BaseHead.astro
+src/layouts/MainLayout.astro
+src/sections/Articles.astro

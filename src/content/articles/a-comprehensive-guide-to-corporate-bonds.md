@@ -1,8 +1,8 @@
 ---
-title: 'A Comprehensive Guide to Corporate Bonds'
+title: "A Comprehensive Guide to Corporate Bonds"
 description: "Navigate corporate bond investing with our guide. Understand types, ratings, risks, and how to buy for informed capital growth strategies."
-pubDate: 'Nov 18 2023'
-heroImage: '/articles-images/18.webp'
+pubDate: "Nov 18 2023"
+heroImage: "/articles-images/18.webp"
 ---
 
 <div class="blog-content">

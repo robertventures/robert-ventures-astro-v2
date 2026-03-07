@@ -1,261 +1,260 @@
 ---
-import { Image } from 'astro:assets';
-import createAccountImg from '../images/create-account.png';
-import chooseTermsImg from '../images/choose-terms.png';
-import trackProgressImg from '../images/track-progress.png';
-import withdrawEarningsImg from '../images/withdraw-earnings.png';
+import { Image } from "astro:assets";
+import createAccountImg from "../images/create-account.png";
+import chooseTermsImg from "../images/choose-terms.png";
+import trackProgressImg from "../images/track-progress.png";
+import withdrawEarningsImg from "../images/withdraw-earnings.png";
 ---
 
 <style>
-    section {
-        background: linear-gradient(to bottom, #111111, #101B1F);
-        color: #152429;
-        padding: 0;
-        margin: 0;
-        border-top: 1px solid #30414D;
-    }
+  section {
+    background: linear-gradient(to bottom, #111111, #101b1f);
+    color: #152429;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #30414d;
+  }
 
+  .section-container {
+    padding: 48px 16px;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  h2 {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 32px;
+    line-height: 110%;
+    text-align: left;
+    color: #e1eeea;
+  }
+
+  .section-description {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+    margin: 0 0 32px 0;
+    text-align: left;
+  }
+
+  .blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    width: 100%;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .content-block {
+    background: #152429;
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .step-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #d3fbd8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 100%;
+    margin: 0;
+  }
+
+  .step-title {
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #e1eeea;
+    margin: 0;
+    line-height: 100%;
+  }
+
+  .step-description {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .step-image {
+    width: 100%;
+    max-width: 326px;
+    height: auto;
+    max-height: 140px;
+  }
+
+  .cta-button {
+    display: block;
+    padding: 12px;
+    background-color: #d3fbd8;
+    border: 1px solid #d3fbd8;
+    color: #152429;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 32px auto 0;
+    text-align: center;
+    max-width: 384px;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 100%;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .cta-button:active {
+    background-color: #9ebca2;
+    border-color: #9ebca2;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        padding: 48px 16px;
-        text-align: left;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        background: transparent;
-        border-radius: 0;
+      padding: 64px 32px;
     }
 
     h2 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 40px;
-        font-weight: 500;
-        margin: 0;
-        margin-bottom: 32px;
-        line-height: 110%;
-        text-align: left;
-        color: #E1EEEA;
+      font-size: 48px;
+      text-align: center;
     }
 
     .section-description {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 150%;
-        margin: 0 0 32px 0;
-        text-align: left;
+      text-align: center;
     }
 
     .blocks {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-        width: 100%;
-        background: transparent;
-        border-radius: 0;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 12px;
     }
 
     .content-block {
-        background: #152429;
-        border-radius: 8px;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
+      flex: 1 1 calc(50% - 6px);
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 112px;
+      padding-right: 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    .step-label {
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        color: #D3FBD8;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        line-height: 100%;
-        margin: 0;
+    h2 {
+      font-size: 56px;
+      text-align: center;
     }
 
-    .step-title {
-        font-family: 'Roboto', sans-serif;
-        font-size: 24px;
-        font-weight: 400;
-        color: #E1EEEA;
-        margin: 0;
-        line-height: 100%;
+    .section-description {
+      text-align: center;
     }
 
-    .step-description {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 150%;
-        margin: 0;
+    .blocks {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 12px;
     }
 
-    .step-image {
-        width: 100%;
-        max-width: 326px;
-        height: auto;
-        max-height: 140px;
+    .content-block {
+      flex: 1 1 calc(25% - 9px);
+    }
+  }
+
+  @media only screen and (min-width: 1440px) {
+    .blocks {
+      flex-wrap: nowrap;
+      gap: 12px;
     }
 
-    .cta-button {
-        display: block;
-        padding: 12px;
-        background-color: #D3FBD8;
-        border: 1px solid #D3FBD8;
-        color: #152429;
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: 8px;
-        margin: 32px auto 0;
-        text-align: center;
-        max-width: 384px;
-        width: 100%;
-        box-sizing: border-box;
-        line-height: 100%;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
+    .content-block {
+      flex: 1 1 calc(25% - 9px);
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 312px;
+      padding-right: 312px;
     }
 
-    .cta-button:active {
-        background-color: #9ebca2;
-        border-color: #9ebca2;
+    .blocks {
+      flex-wrap: nowrap;
+      gap: 12px;
     }
 
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h2 {
-            font-size: 48px;
-            text-align: center;
-        }
-
-        .section-description {
-            text-align: center;
-        }
-
-        .blocks {
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: stretch;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .content-block {
-            flex: 1 1 calc(50% - 6px);
-        }
+    .content-block {
+      flex: 1 1 calc(25% - 9px);
     }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 112px;
-            padding-right: 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        h2 {
-            font-size: 56px;
-            text-align: center;
-        }
-
-        .section-description {
-            text-align: center;
-        }
-
-        .blocks {
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: stretch;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .content-block {
-            flex: 1 1 calc(25% - 9px);
-        }
-    }
-
-    @media only screen and (min-width: 1440px) {
-        .blocks {
-            flex-wrap: nowrap;
-            gap: 12px;
-        }
-
-        .content-block {
-            flex: 1 1 calc(25% - 9px);
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 312px;
-            padding-right: 312px;
-        }
-
-        .blocks {
-            flex-wrap: nowrap;
-            gap: 12px;
-    }
-
-        .content-block {
-            flex: 1 1 calc(25% - 9px);
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <h2>Your Path To Investing</h2>
-            <div class="blocks">
-                <div class="content-block">
-                <p class="step-label">Step One</p>
-                <h4 class="step-title">Create Account</h4>
-                <Image src={createAccountImg} alt="Create Account" class="step-image" />
-                <p class="step-description">
-                    Takes less than 5 minutes to complete.
-                </p>
-                    </div>
+  <div class="section-container">
+    <h2>Your Path To Investing</h2>
+    <div class="blocks">
+      <div class="content-block">
+        <p class="step-label">Step One</p>
+        <h4 class="step-title">Create Account</h4>
+        <Image src={createAccountImg} alt="Create Account" class="step-image" />
+        <p class="step-description">Takes less than 5 minutes to complete.</p>
+      </div>
 
-            <div class="content-block">
-                <p class="step-label">Step Two</p>
-                <h4 class="step-title">Choose Terms</h4>
-                <Image src={chooseTermsImg} alt="Choose Terms" class="step-image" />
-                <p class="step-description">
-                    Select your preferred investment option.
-                            </p>
-                        </div>
+      <div class="content-block">
+        <p class="step-label">Step Two</p>
+        <h4 class="step-title">Choose Terms</h4>
+        <Image src={chooseTermsImg} alt="Choose Terms" class="step-image" />
+        <p class="step-description">Select your preferred investment option.</p>
+      </div>
 
-            <div class="content-block">
-                <p class="step-label">Step Three</p>
-                <h4 class="step-title">Track Progress</h4>
-                <Image src={trackProgressImg} alt="Track Progress" class="step-image" />
-                <p class="step-description">
-                    Track and manage your investment progress.
-                </p>
-            </div>
-            
-            <div class="content-block">
-                <p class="step-label">Step Four</p>
-                <h4 class="step-title">Withdraw Earnings</h4>
-                <Image src={withdrawEarningsImg} alt="Withdraw Earnings" class="step-image" />
-                <p class="step-description">
-                    Earnings are directly connected to your bank.
-                </p>
-            </div>
-        </div>
-        <a href="https://invest.robertventures.com/" class="cta-button" data-track-cta="get_started" data-track-location="path_to_investing">Get Started</a>
+      <div class="content-block">
+        <p class="step-label">Step Three</p>
+        <h4 class="step-title">Track Progress</h4>
+        <Image src={trackProgressImg} alt="Track Progress" class="step-image" />
+        <p class="step-description">Track and manage your investment progress.</p>
+      </div>
+
+      <div class="content-block">
+        <p class="step-label">Step Four</p>
+        <h4 class="step-title">Withdraw Earnings</h4>
+        <Image src={withdrawEarningsImg} alt="Withdraw Earnings" class="step-image" />
+        <p class="step-description">Earnings are directly connected to your bank.</p>
+      </div>
     </div>
+    <a
+      href="https://invest.robertventures.com/"
+      class="cta-button"
+      data-track-cta="get_started"
+      data-track-location="path_to_investing">Get Started</a
+    >
+  </div>
 </section>

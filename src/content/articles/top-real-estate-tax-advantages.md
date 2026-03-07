@@ -1,8 +1,8 @@
 ---
-title: 'Top Real Estate Tax Advantages for Investors'
+title: "Top Real Estate Tax Advantages for Investors"
 description: "Unlock Real Estate Tax Advantages by using these strategies: deductions, depreciation, 1031 exchanges, and more to boost your investment returns."
-pubDate: 'Nov 24 2023'
-heroImage: '/articles-images/24.webp'
+pubDate: "Nov 24 2023"
+heroImage: "/articles-images/24.webp"
 ---
 
 <div class="blog-content">

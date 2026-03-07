@@ -1,8 +1,8 @@
 ---
-title: 'Perpetual Bonds Unveiled: Definition, Characteristics, and Risks'
+title: "Perpetual Bonds Unveiled: Definition, Characteristics, and Risks"
 description: "Explore the world of perpetual bonds, the financial instruments that never mature. Learn how they work, their benefits, and their role in markets."
-pubDate: 'Nov 25 2023'
-heroImage: '/articles-images/25.webp'
+pubDate: "Nov 25 2023"
+heroImage: "/articles-images/25.webp"
 ---
 
 <div class="blog-content">

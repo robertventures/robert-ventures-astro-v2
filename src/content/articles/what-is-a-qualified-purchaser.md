@@ -1,8 +1,8 @@
 ---
-title: 'What is a Qualified Purchaser?'
-description: 'Unlock the secrets of elite investing. Dive into the distinctions between Qualified Purchasers and Accredited Investors.'
-pubDate: 'Nov 16 2023'
-heroImage: '/articles-images/16.webp'
+title: "What is a Qualified Purchaser?"
+description: "Unlock the secrets of elite investing. Dive into the distinctions between Qualified Purchasers and Accredited Investors."
+pubDate: "Nov 16 2023"
+heroImage: "/articles-images/16.webp"
 ---
 
 <div class="blog-content">

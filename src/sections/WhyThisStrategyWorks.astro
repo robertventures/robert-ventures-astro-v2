@@ -1,749 +1,759 @@
 ---
-import { Image } from 'astro:assets';
-import theUnitedStatesImg from '../images/the-united-states.png';
-import fidelityImg from '../images/fidelity.png';
-import teslaImg from '../images/tesla.png';
-import bitgoBannerImg from '../images/bitgo-banner.jpg';
-import houseImg from '../images/house-169-1.jpg';
+import { Image } from "astro:assets";
+import theUnitedStatesImg from "../images/the-united-states.png";
+import fidelityImg from "../images/fidelity.png";
+import teslaImg from "../images/tesla.png";
+import bitgoBannerImg from "../images/bitgo-banner.jpg";
+import houseImg from "../images/house-169-1.jpg";
 ---
 
 <style>
-    section {
-        background: linear-gradient(to bottom, #111111, #101B1F);
-        position: relative;
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-        border-top: 1px solid #30414D;
-    }
+  section {
+    background: linear-gradient(to bottom, #111111, #101b1f);
+    position: relative;
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border-top: 1px solid #30414d;
+  }
 
-    .section-container {
-        position: relative;
-        z-index: 1;
-        padding: 48px 16px;
-        background: transparent;
-        text-align: center;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
+  .section-container {
+    position: relative;
+    z-index: 1;
+    padding: 48px 16px;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
 
-    h3 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 32px;
-        font-weight: 500;
-        margin: 0;
-        margin-bottom: 32px;
-        line-height: 125%;
-        text-align: left;
-        color: #E1EEEA;
-    }
+  h3 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 32px;
+    line-height: 125%;
+    text-align: left;
+    color: #e1eeea;
+  }
 
-    .cards-container {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        margin-left: -16px;
-        margin-right: -16px;
-        width: calc(100% + 32px);
-        margin-top: 32px;
-    }
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-left: -16px;
+    margin-right: -16px;
+    width: calc(100% + 32px);
+    margin-top: 32px;
+  }
 
-    .strategy-card {
-        background: #152429;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
+  .strategy-card {
+    background: #152429;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
+  .card-content-wrapper {
+    padding: 48px 16px 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    text-align: left;
+    box-sizing: border-box;
+    border-radius: 16px;
+  }
+
+  .card-content-wrapper > .card-content {
+    max-width: 100%;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .card-content-wrapper {
-        padding: 48px 16px 48px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        text-align: left;
-        box-sizing: border-box;
-        border-radius: 16px;
-    }
-
-    .card-content-wrapper > .card-content {
-        max-width: 100%;
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .card-content-wrapper {
-            padding: 48px 32px 48px 32px;
-        }
-
-        .card-header {
-            padding: 24px 32px;
-        }
-    }
-
-    @media only screen and (min-width: 800px) {
-        .card-content-wrapper {
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 32px;
-        }
-
-        .card-content-wrapper > .card-content {
-            flex: 1;
-            max-width: 512px;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        section {
-            padding: 0 56px 0 56px;
-        }
-
-        .section-container {
-            padding: 96px 56px;
-            margin: 0;
-            width: 100%;
-        }
-
-        .cards-container {
-            margin-left: -56px;
-            margin-right: -56px;
-            width: calc(100% + 112px);
-        }
-
-        .card-content-wrapper {
-            padding: 48px 56px 48px 56px;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 32px;
-        }
-
-        .card-content-wrapper > .card-content {
-            flex: 1;
-            max-width: 512px;
-        }
-
-        .card-content {
-            flex-direction: row;
-            gap: 24px;
-            max-width: none;
-        }
-
-        .card-content-column {
-            flex: 1;
-        }
-
-        .card-header {
-            padding: 24px 56px;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        section {
-            padding: 0 156px 0 156px;
-        }
-
-        .section-container {
-            padding: 96px 156px;
-        }
-
-        .cards-container {
-            margin-left: -156px;
-            margin-right: -156px;
-            width: calc(100% + 312px);
-        }
-
-        .card-content-wrapper {
-            padding: 48px 156px 48px 156px;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 32px;
-        }
-
-        .card-content-wrapper > .card-content {
-            flex: 1;
-            max-width: 512px;
-        }
-
-        .card-content {
-            flex-direction: row;
-            gap: 24px;
-            max-width: none;
-        }
-
-        .card-content-column {
-            flex: 1;
-        }
-
-        .card-header {
-            padding: 24px 156px;
-        }
+      padding: 48px 32px 48px 32px;
     }
 
     .card-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 24px 16px;
-        width: 100%;
-        background: transparent;
-        border-radius: 16px;
+      padding: 24px 32px;
+    }
+  }
+
+  @media only screen and (min-width: 800px) {
+    .card-content-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 32px;
     }
 
-    .card-header:first-of-type {
-        border-bottom: 1px solid #30414D;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+    .card-content-wrapper > .card-content {
+      flex: 1;
+      max-width: 512px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    section {
+      padding: 0 56px 0 56px;
     }
 
-    div.card-header:nth-child(2) {
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
+    .section-container {
+      padding: 96px 56px;
+      margin: 0;
+      width: 100%;
     }
 
-    .card-header-line {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
+    .cards-container {
+      margin-left: -56px;
+      margin-right: -56px;
+      width: calc(100% + 112px);
     }
 
-    .card-header-line.real-estate {
-        background-color: #1F6469;
+    .card-content-wrapper {
+      padding: 48px 56px 48px 56px;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 32px;
     }
 
-    .card-header-line.digital-assets {
-        background-color: #79EAAD;
-    }
-
-    .card-title {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 500;
-        color: #E1EEEA;
-        margin: 0;
+    .card-content-wrapper > .card-content {
+      flex: 1;
+      max-width: 512px;
     }
 
     .card-content {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        max-width: 512px;
+      flex-direction: row;
+      gap: 24px;
+      max-width: none;
     }
 
     .card-content-column {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+      flex: 1;
     }
 
-    .card-content h4 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 24px;
-        font-weight: 500;
-        color: #E1EEEA;
-        line-height: 150%;
-        margin: 0;
+    .card-header {
+      padding: 24px 56px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    section {
+      padding: 0 156px 0 156px;
     }
 
-    .card-content p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 150%;
-        margin: 0;
+    .section-container {
+      padding: 96px 156px;
     }
 
-    .card-image-container {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        background-color: #ffffff;
-        overflow: hidden;
+    .cards-container {
+      margin-left: -156px;
+      margin-right: -156px;
+      width: calc(100% + 312px);
     }
 
-    .card-image-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .card-content-wrapper {
+      padding: 48px 156px 48px 156px;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 32px;
     }
 
-    .card-stats-container,
-    .card-list-container {
-        width: 100%;
+    .card-content-wrapper > .card-content {
+      flex: 1;
+      max-width: 512px;
     }
 
-    .card-stats {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
+    .card-content {
+      flex-direction: row;
+      gap: 24px;
+      max-width: none;
     }
 
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
-        border-left: 4px solid #30414D;
-        padding: 24px 0 24px 24px;
+    .card-content-column {
+      flex: 1;
     }
 
-    .stat-value {
-        font-family: 'Roboto Serif', serif;
-        font-size: 40px;
-        font-weight: 500;
-        color: #D3FBD8;
-        line-height: 1;
-        font-variant-numeric: lining-nums;
+    .card-header {
+      padding: 24px 156px;
+    }
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 16px;
+    width: 100%;
+    background: transparent;
+    border-radius: 16px;
+  }
+
+  .card-header:first-of-type {
+    border-bottom: 1px solid #30414d;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  div.card-header:nth-child(2) {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+
+  .card-header-line {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .card-header-line.real-estate {
+    background-color: #1f6469;
+  }
+
+  .card-header-line.digital-assets {
+    background-color: #79eaad;
+  }
+
+  .card-title {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #e1eeea;
+    margin: 0;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 512px;
+  }
+
+  .card-content-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card-content h4 {
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #e1eeea;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .card-content p {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .card-image-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+
+  .card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-stats-container,
+  .card-list-container {
+    width: 100%;
+  }
+
+  .card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    border-left: 4px solid #30414d;
+    padding: 24px 0 24px 24px;
+  }
+
+  .stat-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: #d3fbd8;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .stat-description {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #e1eeea;
+    line-height: 100%;
+  }
+
+  .stat-item .stat-description:nth-child(3) {
+    font-size: 16px;
+    color: #bfd1d7;
+    line-height: 100%;
+  }
+
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .list-heading {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #e1eeea;
+    line-height: 100%;
+    margin: 0;
+  }
+
+  .entity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .entity-item {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    border-left: 4px solid #30414d;
+    padding: 24px 0 24px 24px;
+  }
+
+  .entity-logo {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .entity-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .entity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .entity-name {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #e1eeea;
+    line-height: 100%;
+  }
+
+  .entity-amount {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 100%;
+  }
+
+  .card-description-row {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .card-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .card-main-row {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .card-description {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    text-align: left;
+    max-width: 512px;
+  }
+
+  .card-description-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card-description-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+
+  .card-description-bold {
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #e1eeea;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .card-description-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .card-images {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .card-image {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: #d3fbd8;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+  }
+
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .list-title {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #e1eeea;
+    margin: 0;
+  }
+
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .list-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .list-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #e1eeea;
+  }
+
+  .list-amount {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #bfd1d7;
+    margin-left: auto;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    .section-container {
+      padding: 64px 32px;
     }
 
-    .stat-description {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        color: #E1EEEA;
-        line-height: 100%;
+    h3 {
+      font-size: 40px;
     }
 
-    .stat-item .stat-description:nth-child(3) {
-        font-size: 16px;
-        color: #BFD1D7;
-        line-height: 100%;
-    }
-
-    .card-list {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    .list-heading {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 500;
-        color: #E1EEEA;
-        line-height: 100%;
-        margin: 0;
-    }
-
-    .entity-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .entity-item {
-        display: flex;
-        flex-direction: row;
-        gap: 12px;
-        align-items: center;
-        background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
-        border-left: 4px solid #30414D;
-        padding: 24px 0 24px 24px;
-    }
-
-    .entity-logo {
-        width: 56px;
-        height: 56px;
-        min-width: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        flex-shrink: 0;
-    }
-
-    .entity-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    .entity-info {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        flex: 1;
-    }
-
-    .entity-name {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        color: #E1EEEA;
-        line-height: 100%;
-    }
-
-    .entity-amount {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 100%;
+    .cards-container {
+      margin-left: -32px;
+      margin-right: -32px;
+      width: calc(100% + 64px);
     }
 
     .card-description-row {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .card-main-content {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    .card-main-row {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
     }
 
     .card-description {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        text-align: left;
-        max-width: 512px;
+      flex: 1;
     }
 
-    .card-description-text-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .card-description-image {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        background-color: #ffffff;
-        border-radius: 8px;
-    }
-
-    .card-description-bold {
-        font-family: 'Roboto', sans-serif;
-        font-size: 24px;
-        font-weight: 500;
-        color: #E1EEEA;
-        line-height: 150%;
-        margin: 0;
-    }
-
-    .card-description-text {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 150%;
-        margin: 0;
+    .card-main-row {
+      flex: 0 0 auto;
     }
 
     .card-images {
-        display: flex;
-        gap: 12px;
-        width: 100%;
+      flex: 1;
     }
 
-    .card-image {
-        flex: 1;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-image img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-
-    .card-stats {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .stat-value {
-        font-family: 'Roboto Serif', serif;
-        font-size: 40px;
-        font-weight: 500;
-        color: #D3FBD8;
-        line-height: 1;
-    }
-
-    .stat-label {
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        color: #BFD1D7;
-        line-height: 150%;
-    }
-
+    .card-stats,
     .card-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+      flex: 0 0 auto;
+      min-width: 200px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    section {
+      padding: 0 56px 0 56px;
     }
 
-    .list-title {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: #E1EEEA;
-        margin: 0;
+    .section-container {
+      padding: 96px 56px;
+      margin: 0;
+      width: 100%;
     }
 
-    .list-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
+    h3 {
+      font-size: 40px;
     }
 
-    .list-icon {
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
+    .cards-container {
+      margin-left: -56px;
+      margin-right: -56px;
+      width: calc(100% + 112px);
     }
 
-    .list-text {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: #E1EEEA;
+    .card-description-row {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
     }
 
-    .list-amount {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: #BFD1D7;
-        margin-left: auto;
+    .card-description {
+      flex: 1;
     }
 
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h3 {
-            font-size: 40px;
-        }
-
-        .cards-container {
-            margin-left: -32px;
-            margin-right: -32px;
-            width: calc(100% + 64px);
-        }
-
-        .card-description-row {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 32px;
-        }
-
-        .card-description {
-            flex: 1;
-        }
-
-        .card-main-row {
-            flex: 0 0 auto;
-        }
-
-        .card-images {
-            flex: 1;
-        }
-
-        .card-stats,
-        .card-list {
-            flex: 0 0 auto;
-            min-width: 200px;
-        }
+    .card-main-row {
+      flex: 0 0 auto;
     }
 
-    @media only screen and (min-width: 1136px) {
-        section {
-            padding: 0 56px 0 56px;
-        }
-
-        .section-container {
-            padding: 96px 56px;
-            margin: 0;
-            width: 100%;
-        }
-
-        h3 {
-            font-size: 40px;
-        }
-
-        .cards-container {
-            margin-left: -56px;
-            margin-right: -56px;
-            width: calc(100% + 112px);
-        }
-
-        .card-description-row {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 32px;
-        }
-
-        .card-description {
-            flex: 1;
-        }
-
-        .card-main-row {
-            flex: 0 0 auto;
-        }
-
-        .card-images {
-            flex: 1;
-        }
-
-        .card-stats,
-        .card-list {
-            flex: 0 0 auto;
-            min-width: 240px;
-        }
+    .card-images {
+      flex: 1;
     }
 
-    @media only screen and (min-width: 1920px) {
-        section {
-            padding: 0 156px 0 156px;
-        }
-
-        .section-container {
-            padding: 96px 156px;
-        }
-
-        .cards-container {
-            margin-left: -156px;
-            margin-right: -156px;
-            width: calc(100% + 312px);
-        }
+    .card-stats,
+    .card-list {
+      flex: 0 0 auto;
+      min-width: 240px;
     }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    section {
+      padding: 0 156px 0 156px;
+    }
+
+    .section-container {
+      padding: 96px 156px;
+    }
+
+    .cards-container {
+      margin-left: -156px;
+      margin-right: -156px;
+      width: calc(100% + 312px);
+    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <h3>Why This Strategy Works</h3>
-        
-        <div class="cards-container">
-            <!-- Real Estate Card -->
-            <div class="strategy-card">
-                <div class="card-header">
-                    <div class="card-header-line real-estate"></div>
-                    <h4 class="card-title">Real Estate</h4>
-                </div>
-                
-                <div class="card-content-wrapper">
-                    <div class="card-content">
-                        <div class="card-content-column">
-                            <h4>We build new homes in one of the most exclusive beachfront markets in the U.S.</h4>
-                            <p>Home values in the Outer Banks, NC. have increased by 117% over the last 10 years, proving long-term resilience.</p>
-                        </div>
-                        <div class="card-content-column">
-                            <div class="card-image-container">
-                                <Image src={houseImg} alt="House" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-content-column">
-                            <div class="card-stats-container">
-                                <div class="card-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-value">117%</div>
-                                        <div class="stat-description">10-Year Price Growth</div>
-                                        <div class="stat-description">(2015-2025)</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-value">$2.1B+</div>
-                                        <div class="stat-description">Annual Tourism Revenue</div>
-                                        <div class="stat-description">(2023)</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-value">5M+</div>
-                                        <div class="stat-description">Annual Visitors</div>
-                                        <div class="stat-description">(Chamber of Commerce)</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Digital Assets Card -->
-            <div class="strategy-card">
-                <div class="card-header">
-                    <div class="card-header-line digital-assets"></div>
-                    <h4 class="card-title">Digital Assets</h4>
-                </div>
-                
-                <div class="card-content-wrapper">
-                    <div class="card-content">
-                        <div class="card-content-column">
-                            <h4>Bitcoin's store of value and Ethereum's technological utility reinforce our long-term viability.</h4>
-                            <p>We hold Bitcoin and Ethereum as a long-term store of value, securing these assets with institutional-grade custody.</p>
-                        </div>
-                        <div class="card-content-column">
-                            <div class="card-image-container">
-                                <Image src={bitgoBannerImg} alt="BitGo" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-content-column">
-                            <div class="card-list-container">
-                                <div class="card-list">
-                                    <h5 class="list-heading">Most widely accepted digital asset</h5>
-                                    <ul class="entity-list">
-                                        <li class="entity-item">
-                                            <div class="entity-logo">
-                                                <Image src={theUnitedStatesImg} alt="The United States" />
-                                            </div>
-                                            <div class="entity-info">
-                                                <div class="entity-name">The United States</div>
-                                                <div class="entity-amount">$21 billion in BTC</div>
-                                            </div>
-                                        </li>
-                                        <li class="entity-item">
-                                            <div class="entity-logo">
-                                                <Image src={fidelityImg} alt="Fidelity" />
-                                            </div>
-                                            <div class="entity-info">
-                                                <div class="entity-name">Fidelity</div>
-                                                <div class="entity-amount">$30 billion in BTC</div>
-                                            </div>
-                                        </li>
-                                        <li class="entity-item">
-                                            <div class="entity-logo">
-                                                <Image src={teslaImg} alt="Tesla" />
-                                            </div>
-                                            <div class="entity-info">
-                                                <div class="entity-name">Tesla</div>
-                                                <div class="entity-amount">$1 billion in BTC</div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+  <div class="section-container">
+    <h3>Why This Strategy Works</h3>
 
+    <div class="cards-container">
+      <!-- Real Estate Card -->
+      <div class="strategy-card">
+        <div class="card-header">
+          <div class="card-header-line real-estate"></div>
+          <h4 class="card-title">Real Estate</h4>
+        </div>
+
+        <div class="card-content-wrapper">
+          <div class="card-content">
+            <div class="card-content-column">
+              <h4>
+                We build new homes in one of the most exclusive beachfront markets in the U.S.
+              </h4>
+              <p>
+                Home values in the Outer Banks, NC. have increased by 117% over the last 10 years,
+                proving long-term resilience.
+              </p>
+            </div>
+            <div class="card-content-column">
+              <div class="card-image-container">
+                <Image src={houseImg} alt="House" />
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-content-column">
+              <div class="card-stats-container">
+                <div class="card-stats">
+                  <div class="stat-item">
+                    <div class="stat-value">117%</div>
+                    <div class="stat-description">10-Year Price Growth</div>
+                    <div class="stat-description">(2015-2025)</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">$2.1B+</div>
+                    <div class="stat-description">Annual Tourism Revenue</div>
+                    <div class="stat-description">(2023)</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">5M+</div>
+                    <div class="stat-description">Annual Visitors</div>
+                    <div class="stat-description">(Chamber of Commerce)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Assets Card -->
+      <div class="strategy-card">
+        <div class="card-header">
+          <div class="card-header-line digital-assets"></div>
+          <h4 class="card-title">Digital Assets</h4>
+        </div>
+
+        <div class="card-content-wrapper">
+          <div class="card-content">
+            <div class="card-content-column">
+              <h4>
+                Bitcoin's store of value and Ethereum's technological utility reinforce our
+                long-term viability.
+              </h4>
+              <p>
+                We hold Bitcoin and Ethereum as a long-term store of value, securing these assets
+                with institutional-grade custody.
+              </p>
+            </div>
+            <div class="card-content-column">
+              <div class="card-image-container">
+                <Image src={bitgoBannerImg} alt="BitGo" />
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-content-column">
+              <div class="card-list-container">
+                <div class="card-list">
+                  <h5 class="list-heading">Most widely accepted digital asset</h5>
+                  <ul class="entity-list">
+                    <li class="entity-item">
+                      <div class="entity-logo">
+                        <Image src={theUnitedStatesImg} alt="The United States" />
+                      </div>
+                      <div class="entity-info">
+                        <div class="entity-name">The United States</div>
+                        <div class="entity-amount">$21 billion in BTC</div>
+                      </div>
+                    </li>
+                    <li class="entity-item">
+                      <div class="entity-logo">
+                        <Image src={fidelityImg} alt="Fidelity" />
+                      </div>
+                      <div class="entity-info">
+                        <div class="entity-name">Fidelity</div>
+                        <div class="entity-amount">$30 billion in BTC</div>
+                      </div>
+                    </li>
+                    <li class="entity-item">
+                      <div class="entity-logo">
+                        <Image src={teslaImg} alt="Tesla" />
+                      </div>
+                      <div class="entity-info">
+                        <div class="entity-name">Tesla</div>
+                        <div class="entity-amount">$1 billion in BTC</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

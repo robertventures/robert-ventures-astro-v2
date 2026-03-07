@@ -1,160 +1,150 @@
 ---
-
 import One from "../images/svg/how-it-works/one.svg";
 import Two from "../images/svg/how-it-works/two.svg";
 import Three from "../images/svg/how-it-works/three.svg";
 import DualCTA from "../components/DualCTA.astro";
-
-
 ---
 
 <style>
-    section > * {
-        text-align: center;
-    }
+  section > * {
+    text-align: center;
+  }
 
-    h2 {
-        color: #281480;
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 110%; /* 2.475rem */
-        margin-bottom: 0.75rem;
-    }
+  h2 {
+    color: #281480;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 110%; /* 2.475rem */
+    margin-bottom: 0.75rem;
+  }
 
-    p.intro {
-        color: #505050;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 160%; /* 1.8rem */
+  p.intro {
+    color: #505050;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 160%; /* 1.8rem */
 
-        margin-bottom: 3rem;
-    }
+    margin-bottom: 3rem;
+  }
 
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    margin-bottom: 3rem;
+  }
+
+  .step {
+    display: flex;
+    text-align: left;
+    gap: 0.75rem;
+  }
+  .number {
+    flex-shrink: 0;
+  }
+
+  .info-title {
+    color: #1d1d1f;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 100%; /* 1.125rem */
+
+    margin-bottom: 0.75rem;
+
+    /* text-decoration: underline; */
+  }
+
+  .info-text {
+    color: #505050;
+
+    font-size: 1rem;
+
+    font-weight: 400;
+    line-height: 160%; /* 1.6rem */
+  }
+
+  .info-text.second {
+    margin-bottom: 0.5rem;
+  }
+
+  .info a {
+    color: #396afb;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 100%; /* 1rem */
+  }
+
+  @media only screen and (min-width: 990px) {
     .steps {
-        display: flex;
-        flex-direction: column;
-        gap: 3rem;
-
-        margin-bottom: 3rem;
+      flex-direction: row;
     }
 
     .step {
-        display: flex;
-        text-align: left;
-        gap: 0.75rem;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      flex: 1;
     }
-    .number {
-        flex-shrink: 0;
-    }
-
-    .info-title {
-        color: #1d1d1f;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 100%; /* 1.125rem */
-
-        margin-bottom: 0.75rem;
-
-        /* text-decoration: underline; */
-    }
-
-    .info-text {
-        color: #505050;
-
-        font-size: 1rem;
-
-        font-weight: 400;
-        line-height: 160%; /* 1.6rem */
-    }
-
-    .info-text.second {
-        margin-bottom: 0.5rem;
-    }
-
-    .info a {
-        color: #396afb;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 100%; /* 1rem */
-    }
-
-    @media only screen and (min-width: 990px) {
-        .steps{
-            flex-direction: row;
-        }
-
-        .step{
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-
-            flex: 1;
-        }
-
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <h2>How It Works</h2>
+  <div class="section-container">
+    <div class="section-content">
+      <h2>How It Works</h2>
 
-            <p class="intro">
-                This is an exclusive and first of its kind bond offering,
-                available to all US investors
-            </p>
+      <p class="intro">
+        This is an exclusive and first of its kind bond offering, available to all US investors
+      </p>
 
-            <div class="steps">
-                <div class="step">
-                    <div class="number">
-                        <One />
-                    </div>
-                    <div class="info">
-                        <p class="info-title">Get Started</p>
-                        <p class="info-text">
-                            <!-- Create an account, choose options, sign docs and
+      <div class="steps">
+        <div class="step">
+          <div class="number">
+            <One />
+          </div>
+          <div class="info">
+            <p class="info-title">Get Started</p>
+            <p class="info-text">
+              <!-- Create an account, choose options, sign docs and
                             fund your investment within 2 minutes. -->
-                            Create an account, choose options, sign docs and
-                            fund your investment.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="number">
-                        <Two />
-                    </div>
-                    <div class="info">
-                        <p class="info-title">We Diversify the Funds</p>
-                        <p class="info-text second">
-                            We build new homes in one of the #1 beaches in the
-                            USA, while allocating to Bitcoin and Ethereum as a
-                            way to preserve and grow capital for the company and
-                            its investors.
-                        </p>
-                        				<a href="/strategy">Learn more </a>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="number">
-                        <Three />
-                    </div>
-                    <div class="info">
-                        <p class="info-title">Get Paid Monthly</p>
-                        <p class="info-text">
-                            Receive your high-yield interest payments monthly or
-                            let them compound over your bond term.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-cta">
-                <DualCTA />
-            </div>
+              Create an account, choose options, sign docs and fund your investment.
+            </p>
+          </div>
         </div>
+
+        <div class="step">
+          <div class="number">
+            <Two />
+          </div>
+          <div class="info">
+            <p class="info-title">We Diversify the Funds</p>
+            <p class="info-text second">
+              We build new homes in one of the #1 beaches in the USA, while allocating to Bitcoin
+              and Ethereum as a way to preserve and grow capital for the company and its investors.
+            </p>
+            <a href="/strategy">Learn more </a>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="number">
+            <Three />
+          </div>
+          <div class="info">
+            <p class="info-title">Get Paid Monthly</p>
+            <p class="info-text">
+              Receive your high-yield interest payments monthly or let them compound over your bond
+              term.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-cta">
+        <DualCTA />
+      </div>
     </div>
+  </div>
 </section>
-
-

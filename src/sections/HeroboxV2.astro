@@ -3,286 +3,290 @@ import DualCTA from "../components/DualCTA.astro";
 ---
 
 <style>
+  section {
+    background: linear-gradient(to bottom, #101b1f, #111111);
+    position: relative;
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .staircase-svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 800px;
+    height: 800px;
+    min-width: 800px;
+    min-height: 800px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .staircase-svg rect {
+    fill: none;
+    stroke: #152429;
+    stroke-width: 1;
+  }
+
+  .section-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-container {
+    padding: 48px 16px;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .section-container svg {
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 56px;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 32px;
+    line-height: 110%;
+    text-decoration-style: solid;
+    text-align: left;
+    color: #e1eeea;
+
+    max-width: 640px;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+    line-height: 150%;
+    color: #bfd1d7;
+    text-align: left;
+    margin-bottom: 32px;
+    max-width: 512px;
+  }
+
+  h1 .underlined-value {
+    font-family: "Roboto Serif", serif;
+    font-weight: 500;
+    color: #d3fbd8;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: 5%;
+    text-underline-offset: 0px;
+    text-underline-position: from-font;
+    font-variant-numeric: lining-nums;
+  }
+
+  .form-cta {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 384px;
+  }
+
+  .form-cta :global(a) {
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 768px) {
     section {
-        background: linear-gradient(to bottom, #101B1F, #111111);
-        position: relative;
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
+      padding: 0;
+      margin: 0;
     }
+  }
 
-    .staircase-svg {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 800px;
-        height: 800px;
-        min-width: 800px;
-        min-height: 800px;
-        pointer-events: none;
-        z-index: 0;
-        overflow: hidden;
-    }
-
-
-    .staircase-svg rect {
-        fill: none;
-        stroke: #152429;
-        stroke-width: 1;
-    }
-
-
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        position: relative;
-        z-index: 1;
-    }
-
-    .section-container {
-        padding: 48px 16px;
-        background: transparent;
-        text-align: center;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    .section-container svg {
-        margin: 0 auto;
+      padding: 64px 32px;
     }
 
     h1 {
-        font-size: 56px;
-        font-weight: 500;
-        margin: 0;
-        margin-bottom: 32px;
-        line-height: 110%;
-        text-decoration-style: solid;
-        text-align: left;
-        color: #E1EEEA;
+      font-size: 64px;
+      line-height: 110%;
+    }
+  }
 
-        max-width: 640px;
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 96px 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    .hero-subtitle {
-        font-size: 20px;
-        line-height: 150%;
-        color: #BFD1D7;
-        text-align: left;
-        margin-bottom: 32px;
-        max-width: 512px;
+    h1 {
+      margin-bottom: 32px;
+      font-size: 80px;
+      line-height: 110%;
     }
+  }
 
-    h1 .underlined-value {
-        font-family: 'Roboto Serif', serif;
-        font-weight: 500;
-        color: #D3FBD8;
-        text-decoration-line: underline;
-        text-decoration-style: solid;
-        text-decoration-skip-ink: auto;
-        text-decoration-thickness: 5%;
-        text-underline-offset: 0px;
-        text-underline-position: from-font;
-        font-variant-numeric: lining-nums;
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 96px 312px;
     }
-
-
-    .form-cta {
-        margin-bottom: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        max-width: 384px;
-    }
-
-    .form-cta :global(a) {
-        margin: 0;
-    }
-
-
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0;
-            margin: 0;
-        }
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h1 {
-            font-size: 64px;
-            line-height: 110%;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container{
-            padding: 96px 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        h1 {
-            margin-bottom: 32px;
-            font-size: 80px;
-            line-height: 110%;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container{
-            padding: 96px 312px;
-        }
-    }
+  }
 </style>
 
 <section>
-    <svg class="staircase-svg" width="800" height="800" xmlns="http://www.w3.org/2000/svg" id="staircase-svg">
-        <rect x="0.5" y="735.5" width="64" height="64"/>
-        <rect x="80.5" y="655.5" width="64" height="64"/>
-        <rect x="80.5" y="735.5" width="64" height="64"/>
-        <rect x="160.5" y="575.5" width="64" height="64"/>
-        <rect x="160.5" y="655.5" width="64" height="64"/>
-        <rect x="160.5" y="735.5" width="64" height="64"/>
-        <rect x="240.5" y="495.5" width="64" height="64"/>
-        <rect x="240.5" y="575.5" width="64" height="64"/>
-        <rect x="240.5" y="655.5" width="64" height="64"/>
-        <rect x="240.5" y="735.5" width="64" height="64"/>
-        <rect x="320.5" y="415.5" width="64" height="64"/>
-        <rect x="320.5" y="495.5" width="64" height="64"/>
-        <rect x="320.5" y="575.5" width="64" height="64"/>
-        <rect x="320.5" y="655.5" width="64" height="64"/>
-        <rect x="320.5" y="735.5" width="64" height="64"/>
-        <rect x="400.5" y="335.5" width="64" height="64"/>
-        <rect x="400.5" y="415.5" width="64" height="64"/>
-        <rect x="400.5" y="495.5" width="64" height="64"/>
-        <rect x="400.5" y="575.5" width="64" height="64"/>
-        <rect x="400.5" y="655.5" width="64" height="64"/>
-        <rect x="400.5" y="735.5" width="64" height="64"/>
-        <rect x="480.5" y="255.5" width="64" height="64"/>
-        <rect x="480.5" y="335.5" width="64" height="64"/>
-        <rect x="480.5" y="415.5" width="64" height="64"/>
-        <rect x="480.5" y="495.5" width="64" height="64"/>
-        <rect x="480.5" y="575.5" width="64" height="64"/>
-        <rect x="480.5" y="655.5" width="64" height="64"/>
-        <rect x="480.5" y="735.5" width="64" height="64"/>
-        <rect x="560.5" y="175.5" width="64" height="64"/>
-        <rect x="560.5" y="255.5" width="64" height="64"/>
-        <rect x="560.5" y="335.5" width="64" height="64"/>
-        <rect x="560.5" y="415.5" width="64" height="64"/>
-        <rect x="560.5" y="495.5" width="64" height="64"/>
-        <rect x="560.5" y="575.5" width="64" height="64"/>
-        <rect x="560.5" y="655.5" width="64" height="64"/>
-        <rect x="560.5" y="735.5" width="64" height="64"/>
-        <rect x="640.5" y="95.5" width="64" height="64"/>
-        <rect x="640.5" y="175.5" width="64" height="64"/>
-        <rect x="640.5" y="255.5" width="64" height="64"/>
-        <rect x="640.5" y="335.5" width="64" height="64"/>
-        <rect x="640.5" y="415.5" width="64" height="64"/>
-        <rect x="640.5" y="495.5" width="64" height="64"/>
-        <rect x="640.5" y="575.5" width="64" height="64"/>
-        <rect x="640.5" y="655.5" width="64" height="64"/>
-        <rect x="640.5" y="735.5" width="64" height="64"/>
-        <rect x="720.5" y="15.5" width="64" height="64"/>
-        <rect x="720.5" y="95.5" width="64" height="64"/>
-        <rect x="720.5" y="175.5" width="64" height="64"/>
-        <rect x="720.5" y="255.5" width="64" height="64"/>
-        <rect x="720.5" y="335.5" width="64" height="64"/>
-        <rect x="720.5" y="415.5" width="64" height="64"/>
-        <rect x="720.5" y="495.5" width="64" height="64"/>
-        <rect x="720.5" y="575.5" width="64" height="64"/>
-        <rect x="720.5" y="655.5" width="64" height="64"/>
-        <rect x="720.5" y="735.5" width="64" height="64"/>
-    </svg>
-    <div class="section-container">
-        <h1>Earn <span class="underlined-value">10%</span> Fixed Annual Returns</h1>
+  <svg
+    class="staircase-svg"
+    width="800"
+    height="800"
+    xmlns="http://www.w3.org/2000/svg"
+    id="staircase-svg"
+  >
+    <rect x="0.5" y="735.5" width="64" height="64"></rect>
+    <rect x="80.5" y="655.5" width="64" height="64"></rect>
+    <rect x="80.5" y="735.5" width="64" height="64"></rect>
+    <rect x="160.5" y="575.5" width="64" height="64"></rect>
+    <rect x="160.5" y="655.5" width="64" height="64"></rect>
+    <rect x="160.5" y="735.5" width="64" height="64"></rect>
+    <rect x="240.5" y="495.5" width="64" height="64"></rect>
+    <rect x="240.5" y="575.5" width="64" height="64"></rect>
+    <rect x="240.5" y="655.5" width="64" height="64"></rect>
+    <rect x="240.5" y="735.5" width="64" height="64"></rect>
+    <rect x="320.5" y="415.5" width="64" height="64"></rect>
+    <rect x="320.5" y="495.5" width="64" height="64"></rect>
+    <rect x="320.5" y="575.5" width="64" height="64"></rect>
+    <rect x="320.5" y="655.5" width="64" height="64"></rect>
+    <rect x="320.5" y="735.5" width="64" height="64"></rect>
+    <rect x="400.5" y="335.5" width="64" height="64"></rect>
+    <rect x="400.5" y="415.5" width="64" height="64"></rect>
+    <rect x="400.5" y="495.5" width="64" height="64"></rect>
+    <rect x="400.5" y="575.5" width="64" height="64"></rect>
+    <rect x="400.5" y="655.5" width="64" height="64"></rect>
+    <rect x="400.5" y="735.5" width="64" height="64"></rect>
+    <rect x="480.5" y="255.5" width="64" height="64"></rect>
+    <rect x="480.5" y="335.5" width="64" height="64"></rect>
+    <rect x="480.5" y="415.5" width="64" height="64"></rect>
+    <rect x="480.5" y="495.5" width="64" height="64"></rect>
+    <rect x="480.5" y="575.5" width="64" height="64"></rect>
+    <rect x="480.5" y="655.5" width="64" height="64"></rect>
+    <rect x="480.5" y="735.5" width="64" height="64"></rect>
+    <rect x="560.5" y="175.5" width="64" height="64"></rect>
+    <rect x="560.5" y="255.5" width="64" height="64"></rect>
+    <rect x="560.5" y="335.5" width="64" height="64"></rect>
+    <rect x="560.5" y="415.5" width="64" height="64"></rect>
+    <rect x="560.5" y="495.5" width="64" height="64"></rect>
+    <rect x="560.5" y="575.5" width="64" height="64"></rect>
+    <rect x="560.5" y="655.5" width="64" height="64"></rect>
+    <rect x="560.5" y="735.5" width="64" height="64"></rect>
+    <rect x="640.5" y="95.5" width="64" height="64"></rect>
+    <rect x="640.5" y="175.5" width="64" height="64"></rect>
+    <rect x="640.5" y="255.5" width="64" height="64"></rect>
+    <rect x="640.5" y="335.5" width="64" height="64"></rect>
+    <rect x="640.5" y="415.5" width="64" height="64"></rect>
+    <rect x="640.5" y="495.5" width="64" height="64"></rect>
+    <rect x="640.5" y="575.5" width="64" height="64"></rect>
+    <rect x="640.5" y="655.5" width="64" height="64"></rect>
+    <rect x="640.5" y="735.5" width="64" height="64"></rect>
+    <rect x="720.5" y="15.5" width="64" height="64"></rect>
+    <rect x="720.5" y="95.5" width="64" height="64"></rect>
+    <rect x="720.5" y="175.5" width="64" height="64"></rect>
+    <rect x="720.5" y="255.5" width="64" height="64"></rect>
+    <rect x="720.5" y="335.5" width="64" height="64"></rect>
+    <rect x="720.5" y="415.5" width="64" height="64"></rect>
+    <rect x="720.5" y="495.5" width="64" height="64"></rect>
+    <rect x="720.5" y="575.5" width="64" height="64"></rect>
+    <rect x="720.5" y="655.5" width="64" height="64"></rect>
+    <rect x="720.5" y="735.5" width="64" height="64"></rect>
+  </svg>
+  <div class="section-container">
+    <h1>Earn <span class="underlined-value">10%</span> Fixed Annual Returns</h1>
 
-        <p class="hero-subtitle">Access high-yield passive income, powered by Real Estate & Digital Assets.</p>
+    <p class="hero-subtitle">
+      Access high-yield passive income, powered by Real Estate & Digital Assets.
+    </p>
 
-            <div class="form-cta">
-                <DualCTA />
-        </div>
+    <div class="form-cta">
+      <DualCTA />
     </div>
+  </div>
 </section>
 
 <script is:inline>
-    (function() {
-        function initAnimation() {
-            // Check if GSAP is loaded
-            if (!window.gsapLoaded || typeof window.gsap === 'undefined') {
-                return;
-            }
+  (function () {
+    function initAnimation() {
+      // Check if GSAP is loaded
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+        return;
+      }
 
-            const gsapLib = window.gsap;
-            
-            // Wait for SVG to be in DOM
-            const svg = document.getElementById('staircase-svg');
-            if (!svg) {
-                return;
-            }
+      const gsapLib = window.gsap;
 
-            const rects = svg.querySelectorAll('rect');
-            
-            if (rects.length === 0) {
-                return;
-            }
-            
-            // Set initial stroke color
-            gsapLib.set(rects, { stroke: "#152429" });
-            
-            // Create a timeline for continuous left-to-right shimmer effect
-            const tl = gsapLib.timeline({ repeat: -1 });
-            
-            // Delay at the start of each animation loop
-            tl.to({}, { duration: 3 });
-            
-            // Animate from left to right (fade to highlight color)
-            tl.to(rects, {
-                stroke: "#30414D",
-                duration: 0.2,
-                stagger: {
-                    amount: 0.5,
-                    from: "start"
-                }
-            });
-            
-            // Fade back to base color in the same staggered manner
-            tl.to(rects, {
-                stroke: "#152429",
-                duration: 0.5,
-                stagger: {
-                    amount: 1,
-                    from: "start"
-                }
-            });
+      // Wait for SVG to be in DOM
+      const svg = document.getElementById("staircase-svg");
+      if (!svg) {
+        return;
+      }
+
+      const rects = svg.querySelectorAll("rect");
+
+      if (rects.length === 0) {
+        return;
+      }
+
+      // Set initial stroke color
+      gsapLib.set(rects, { stroke: "#152429" });
+
+      // Create a timeline for continuous left-to-right shimmer effect
+      const tl = gsapLib.timeline({ repeat: -1 });
+
+      // Delay at the start of each animation loop
+      tl.to({}, { duration: 3 });
+
+      // Animate from left to right (fade to highlight color)
+      tl.to(rects, {
+        stroke: "#30414D",
+        duration: 0.2,
+        stagger: {
+          amount: 0.5,
+          from: "start",
+        },
+      });
+
+      // Fade back to base color in the same staggered manner
+      tl.to(rects, {
+        stroke: "#152429",
+        duration: 0.5,
+        stagger: {
+          amount: 1,
+          from: "start",
+        },
+      });
+    }
+
+    // Wait for GSAP to load, then initialize animation
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        // GSAP already loaded, check if DOM is ready
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initAnimation);
+        } else {
+          initAnimation();
         }
+      } else {
+        // Wait for GSAP to load
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAnimation);
+          } else {
+            initAnimation();
+          }
+        });
+      }
+    }
 
-        // Wait for GSAP to load, then initialize animation
-        function startAnimation() {
-            if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
-                // GSAP already loaded, check if DOM is ready
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', initAnimation);
-                } else {
-                    initAnimation();
-                }
-            } else {
-                // Wait for GSAP to load
-                window.addEventListener('gsapLoaded', function() {
-                    if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', initAnimation);
-                    } else {
-                        initAnimation();
-                    }
-                });
-            }
-        }
-
-        // Start the process
-        startAnimation();
-    })();
+    // Start the process
+    startAnimation();
+  })();
 </script>

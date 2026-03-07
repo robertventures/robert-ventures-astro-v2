@@ -3,78 +3,79 @@
 ---
 
 <style>
-    .section-content{
-        max-width: 655px;
-        margin: 0 auto;
+  .section-content {
+    max-width: 655px;
+    margin: 0 auto;
+  }
+  h2 {
+    color: #281480;
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.25;
+
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.4;
+
+    margin-bottom: 1.5rem;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  a {
+    border-radius: 12px;
+    background: #5028ff;
+
+    display: flex;
+    padding: 15px 12px;
+    justify-content: center;
+
+    width: 100%;
+    color: #fff;
+    text-decoration: none;
+
+    font-size: 18px;
+
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  @media only screen and (min-width: 768px) {
+    .links {
+      flex-direction: row;
     }
+  }
+
+  @media only screen and (min-width: 1024px) {
     h2 {
-        color: #281480;
-        font-family: var(--font-heading);
-        font-size: 32px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 1.25;
-
-        margin-bottom: 0.75rem;
+      text-align: center;
     }
-
-    p {
-        font-size: 1rem;
-        line-height: 1.4;
-
-        margin-bottom: 1.5rem;
-    }
-
-    .links{
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    a {
-        border-radius: 12px;
-        background: #5028FF;
-
-        display: flex;
-        padding: 15px 12px;
-        justify-content: center;
-
-        width: 100%;
-        color: #fff;
-        text-decoration: none;
-
-        font-size: 18px;
-
-        font-weight: 500;
-        line-height: 1;
-    }
-
-    @media only screen and (min-width: 768px){
-        .links{
-            flex-direction: row;
-        }
-    }
-
-    @media only screen and (min-width: 1024px){
-        h2{
-            text-align: center;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
+  <div class="section-container">
+    <div class="section-content">
+      <h2>Literature</h2>
+      <p>Explore our offering circular and SEC filings to learn more about our offering.</p>
 
-            <h2>Literature</h2>
-            <p>
-                Explore our offering circular and SEC filings to learn more about our offering.
-            </p>
-    
-            <div class="links">
-                <a href="https://l.robertventures.com/OfferingCircular" target="_blank" rel="noopener">Offering Circular</a>
-                <a href="https://www.sec.gov/edgar/browse/?CIK=1991519" target="_blank" rel="noopener">SEC Filings</a>
-            </div>
-        </div>
+      <div class="links">
+        <a href="https://l.robertventures.com/OfferingCircular" target="_blank" rel="noopener"
+          >Offering Circular</a
+        >
+        <a href="https://www.sec.gov/edgar/browse/?CIK=1991519" target="_blank" rel="noopener"
+          >SEC Filings</a
+        >
+      </div>
     </div>
+  </div>
 </section>

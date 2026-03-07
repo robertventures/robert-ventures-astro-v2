@@ -1,45 +1,43 @@
 :root {
-	--font-body: 'Roboto', sans-serif;
-	--font-heading: 'Roboto Serif', serif;
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+  --font-body: "Roboto", sans-serif;
+  --font-heading: "Roboto Serif", serif;
+  --accent: #2337ff;
+  --accent-dark: #000d8a;
+  --black: 15, 18, 25;
+  --gray: 96, 115, 159;
+  --gray-light: 229, 233, 240;
+  --gray-dark: 34, 41, 57;
+  --gray-gradient: rgba(var(--gray-light), 50%), #fff;
+  --box-shadow:
+    0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
+    0 16px 32px rgba(var(--gray), 33%);
 
-	--background: #ffffff;
-
-
+  --background: #ffffff;
 }
 
-
 html {
-	scroll-behavior: smooth;
-	display: block;
-	overflow-x: hidden;
+  scroll-behavior: smooth;
+  display: block;
+  overflow-x: hidden;
 }
 
 html::before,
 html::after {
-	display: none !important;
-	content: none !important;
+  display: none !important;
+  content: none !important;
 }
 
 body {
-	font-family: var(--font-body);
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: var(--background);
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	line-height: 1.7;
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background: var(--background);
+  background-size: 100% 600px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: rgb(var(--gray-dark));
+  line-height: 1.7;
 }
 
 /* main {
@@ -54,93 +52,90 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: var(--font-heading);
-	font-weight: bold;
-	color: rgb(var(--black));
-	line-height: 1.2;
-	margin: 0;
+  font-family: var(--font-heading);
+  font-weight: bold;
+  color: rgb(var(--black));
+  line-height: 1.2;
+  margin: 0;
 }
 
 h1 {
-	/* font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem); */
-	/* font-size: clamp(3rem, 2.7143rem + 1.4286vw, 4rem); */
-	/* font-size: 3rem; */
-	line-height: 1.25;
+  /* font-size: clamp(2.625rem, 1.9464rem + 3.3929vw, 5rem); */
+  /* font-size: clamp(3rem, 2.7143rem + 1.4286vw, 4rem); */
+  /* font-size: 3rem; */
+  line-height: 1.25;
 
-	font-size: 2.5625rem;
+  font-size: 2.5625rem;
 }
 
 h2 {
-	/* font-size: clamp(1.5rem, 0.8571rem + 3.2143vw, 3.75rem); */
-	/* font-size: clamp(2rem, 1.1489rem + 4.2553vw, 2.25rem); */
+  /* font-size: clamp(1.5rem, 0.8571rem + 3.2143vw, 3.75rem); */
+  /* font-size: clamp(2rem, 1.1489rem + 4.2553vw, 2.25rem); */
 
-	font-size: 36px;
+  font-size: 36px;
 }
 
 h3 {
-	/* font-size: clamp(1.125rem, 0.6429rem + 2.4107vw, 2.8125rem); */
-	font-size: 24px;
+  /* font-size: clamp(1.125rem, 0.6429rem + 2.4107vw, 2.8125rem); */
+  font-size: 24px;
 }
 
 h4 {
-	font-size: clamp(1rem, 2.5vw + 0.375rem, 2.109375rem);
-	font-weight: bold;
+  font-size: clamp(1rem, 2.5vw + 0.375rem, 2.109375rem);
+  font-weight: bold;
 }
 
 h5 {
-	font-size: clamp(0.75rem, 2vw + 0.25rem, 1.58203125rem);
+  font-size: clamp(0.75rem, 2vw + 0.25rem, 1.58203125rem);
 }
 
 h6 {
-	font-size: clamp(0.474609375rem, 1.5vw + 0.125rem, 1.1865234375rem);
+  font-size: clamp(0.474609375rem, 1.5vw + 0.125rem, 1.1865234375rem);
 }
 
 .alt-color {
-	background: linear-gradient(90deg, #281480 0%, #3C1FBF 66.45%);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+  background: linear-gradient(90deg, #281480 0%, #3c1fbf 66.45%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 strong,
 b {
-	font-weight: 700;
+  font-weight: 700;
 }
 
 a {
-	color: var(--accent);
+  color: var(--accent);
 }
 
 a:hover {
-	color: var(--accent);
+  color: var(--accent);
 }
 
 p {
-	font-size: 1.125rem;
-	line-height: 2;
-	margin: 0;
+  font-size: 1.125rem;
+  line-height: 2;
+  margin: 0;
 
-	color: #505050;
+  color: #505050;
 }
 
 .prose p {
-	margin-bottom: 2em;
-
+  margin-bottom: 2em;
 }
 
 textarea {
-	width: 100%;
-	font-size: 16px;
-
-
+  width: 100%;
+  font-size: 16px;
 }
 
 input {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 table {
-	width: 100%;
+  width: 100%;
 }
 
 /* img {
@@ -149,55 +144,53 @@ table {
 } */
 
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+  padding: 2px 5px;
+  background-color: rgb(var(--gray-light));
+  border-radius: 2px;
 }
 
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+  padding: 1.5em;
+  border-radius: 8px;
 }
 
-pre>code {
-	all: unset;
+pre > code {
+  all: unset;
 }
 
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
+  border-left: 4px solid var(--accent);
+  padding: 0 0 0 20px;
+  margin: 0px;
+  font-size: 1.333em;
 }
 
 hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+  border: none;
+  border-top: 1px solid rgb(var(--gray-light));
 }
 
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+  clip: rect(1px 1px 1px 1px);
+  /* maybe deprecated but we need to support legacy browsers */
+  clip: rect(1px, 1px, 1px, 1px);
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
+  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+  white-space: nowrap;
 }
 
 .formkit-alert-error {
-	display: none;
+  display: none;
 }
-
-
 
 /* RESET RESET RESET RESET RESET RESET RESET  */
 
@@ -205,19 +198,19 @@ hr {
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* 2. Remove default margin */
 * {
-	margin: 0;
+  margin: 0;
 }
 
 body {
-	/* 3. Add accessible line-height */
-	line-height: 1.5;
-	/* 4. Improve text rendering */
-	-webkit-font-smoothing: antialiased;
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
 }
 
 /* 5. Improve media defaults */
@@ -226,8 +219,8 @@ picture,
 video,
 canvas,
 svg {
-	display: block;
-	max-width: 100%;
+  display: block;
+  max-width: 100%;
 }
 
 /* 6. Inherit fonts for form controls */
@@ -235,7 +228,7 @@ input,
 button,
 textarea,
 select {
-	font: inherit;
+  font: inherit;
 }
 
 /* 7. Avoid text overflows */
@@ -246,20 +239,20 @@ h3,
 h4,
 h5,
 h6 {
-	overflow-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* 8. Improve line wrapping */
 p {
-	text-wrap: pretty;
-	font-family: var(--font-body);
+  text-wrap: pretty;
+  font-family: var(--font-body);
 }
 
 /* FAQ Panel paragraph line-height override */
 .panel p,
 .panel.expanded p,
 .panel > div p {
-	line-height: 150%;
+  line-height: 150%;
 }
 
 h1,
@@ -268,8 +261,8 @@ h3,
 h4,
 h5,
 h6 {
-	/* text-wrap: balance; */
-	color: #281480;
+  /* text-wrap: balance; */
+  color: #281480;
 }
 
 /*
@@ -277,69 +270,68 @@ h6 {
   */
 #root,
 #__next {
-	isolation: isolate;
+  isolation: isolate;
 }
 
 .hidden {
-	display: none;
+  display: none;
 }
-
 
 /* DEFAULT SECTION VALUES */
 
 section {
-	margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-container {
-	margin: 0 auto;
-	border-radius: 1rem;
-	background: #fff;
-	padding: 3rem 1.5rem;
-	
-	/* Small (Base): 320px - 599px */
-	width: 100%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 3rem 1.5rem;
+
+  /* Small (Base): 320px - 599px */
+  width: 100%;
 }
 
 .section-content {
-	margin: 0 auto;
-	margin-left: 0;
-	margin-right: 0;
-	width: 100%;
-	height: 100%;
+  margin: 0 auto;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Medium: 600px - 1135px */
 @media only screen and (min-width: 600px) {
-	section {
-		padding: 0 2rem;
-	}
-	
-	.section-container {
-		max-width: 100%;
-		padding: 4rem 2rem;
-	}
+  section {
+    padding: 0 2rem;
+  }
 
-	.section-content {
-		max-width: 640px;
-	}
+  .section-container {
+    max-width: 100%;
+    padding: 4rem 2rem;
+  }
+
+  .section-content {
+    max-width: 640px;
+  }
 }
 
 /* Large: 1136px - 1919px */
 @media only screen and (min-width: 1136px) {
-	.section-container {
-		max-width: 1136px; /* Or align to grid max-width */
-		padding: 4rem 2rem;
-	}
-    
-    .section-content {
-		max-width: 921px;
-	}
+  .section-container {
+    max-width: 1136px; /* Or align to grid max-width */
+    padding: 4rem 2rem;
+  }
+
+  .section-content {
+    max-width: 921px;
+  }
 }
 
 /* Extra Large: 1920px - Larger */
 @media only screen and (min-width: 1920px) {
-	.section-container {
-		max-width: 1440px; /* Constrain heavily on ultra-wide */
-	}
+  .section-container {
+    max-width: 1440px; /* Constrain heavily on ultra-wide */
+  }
 }

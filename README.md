@@ -73,6 +73,7 @@ META_TEST_EVENT_CODE=<your_test_event_code>
 ```
 
 Notes:
+
 - Email and phone are normalized and SHA-256 hashed server-side.
 - Client IP and User-Agent are forwarded when available.
 - `custom_data.value` uses the selected `invest_intent` amount; currency is `USD`.

@@ -1,364 +1,367 @@
 ---
 import Opener from "../images/caretdown.svg";
 const formatAnswer = (raw) => {
-    if (!raw) return "";
-    const normalized = String(raw).trim().replace(/\r\n/g, "\n");
-    const paragraphs = normalized.split(/\n{2,}/);
-    return paragraphs
-        .map((p) => `<p>${p.trim().replace(/\n/g, '<br />')}</p>`) 
-        .join("");
+  if (!raw) return "";
+  const normalized = String(raw).trim().replace(/\r\n/g, "\n");
+  const paragraphs = normalized.split(/\n{2,}/);
+  return paragraphs.map((p) => `<p>${p.trim().replace(/\n/g, "<br />")}</p>`).join("");
 };
 const faqs = [
-    {
-        question: "Is it FDIC-insured? What's the real risk?",
-        slug: "fdic_insured",
-        answer: `FDIC insurance only applies to bank deposits, such as savings accounts, not to most investments people already own, including stocks, bonds, mutual funds, and REITs.<br/>
+  {
+    question: "Is it FDIC-insured? What's the real risk?",
+    slug: "fdic_insured",
+    answer: `FDIC insurance only applies to bank deposits, such as savings accounts, not to most investments people already own, including stocks, bonds, mutual funds, and REITs.<br/>
         Like any investment, there's risk. We mitigate this risk through diversification in real estate and blue-chip digital assets. Additionally, our CEO, Joe Robert, has over 20 years of experience, has raised over $10 million in past offerings, and has never missed a payment. One in four investors reinvest within ~40 days, typically with four times their initial amount.`,
-    },
-    {
-        question: "How can we realistically pay 10% in this market?",
-        slug: "how_pay_10_percent",
-        answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we also generate long-term growth from investments in Bitcoin and Ethereum. Both sectors have delivered double-digit returns over time, and we don't rely on leverage.<br/>
+  },
+  {
+    question: "How can we realistically pay 10% in this market?",
+    slug: "how_pay_10_percent",
+    answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we also generate long-term growth from investments in Bitcoin and Ethereum. Both sectors have delivered double-digit returns over time, and we don't rely on leverage.<br/>
         The 10% rate is achievable because we operate efficiently, investing only when the timing and demand are right. We build on lots as the market demands it, and if conditions cool, we can shift capital into digital assets instead of being forced to deploy it like significant funds.`,
-    },
-    {
-        question: "Are there any fees?",
-        slug: "fees",
-        answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
-    },
-    {
-        question: "How are my investments taxed?",
-        slug: "taxes",
-        answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
-    },
-    {
-        question: "How experienced is Robert Ventures?",
-        slug: "experience",
-        answer: `Although this offering is relatively new, having been launched to the public in October 2024 after a year of SEC qualification, it's backed by extensive experience. Over the last 15 years, our manager, Joe Robert, has secured over $10 million from 60 private investors through various partnerships, including Silver Bay Capital. During that time, he has managed 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full.<br/> 
+  },
+  {
+    question: "Are there any fees?",
+    slug: "fees",
+    answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
+  },
+  {
+    question: "How are my investments taxed?",
+    slug: "taxes",
+    answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
+  },
+  {
+    question: "How experienced is Robert Ventures?",
+    slug: "experience",
+    answer: `Although this offering is relatively new, having been launched to the public in October 2024 after a year of SEC qualification, it's backed by extensive experience. Over the last 15 years, our manager, Joe Robert, has secured over $10 million from 60 private investors through various partnerships, including Silver Bay Capital. During that time, he has managed 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full.<br/> 
         Now operating under Robert Ventures, he works directly with investors, offering full transparency, eliminating middlemen, and potentially achieving better yields.`,
-    },
-    {
-        question: "Why digital assets are part of our treasuries?",
-        slug: "digital_assets",
-        answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
+  },
+  {
+    question: "Why digital assets are part of our treasuries?",
+    slug: "digital_assets",
+    answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
         They've been the best-performing assets of the past decade and complement the stability of our real estate. We're preparing ourselves for a digital economy.`,
-    },
+  },
 ];
 ---
 
 <style>
-    section {
-        background: #f2f2f2;
-        margin-bottom: 0;
-        padding: 0;
-        border-top: 1px solid #BFD1D7;
-    }
+  section {
+    background: #f2f2f2;
+    margin-bottom: 0;
+    padding: 0;
+    border-top: 1px solid #bfd1d7;
+  }
 
+  .section-container {
+    background: transparent;
+    border-radius: 0;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .section-content {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  h3 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0 0 32px 0;
+    line-height: 125%;
+    text-align: left;
+    color: #152429;
+    font-variant-numeric: lining-nums;
+  }
+
+  .faqs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 0;
+    align-items: start;
+  }
+
+  .faq-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0;
+    border: none;
+    transition: none;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .accordion {
+    background-color: transparent;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button.accordion {
+    color: #152429;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 150%;
+  }
+
+  button.accordion svg {
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  button.accordion.active svg {
+    transform: rotate(180deg);
+  }
+
+  .active,
+  .accordion:hover {
+    /* background-color: #ccc; */
+  }
+
+  .panel {
+    padding: 0;
+    max-height: 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+    background-color: transparent;
+    display: block;
+    flex-shrink: 0;
+    margin: 0;
+    border: 0;
+    line-height: 0;
+  }
+
+  .panel.expanded {
+    padding: 0 16px 16px 16px;
+    height: auto;
+    max-height: 2000px;
+  }
+
+  .panel > div {
+    display: block;
+  }
+
+  .panel p,
+  .panel.expanded p,
+  .panel > div p,
+  .panel.expanded > div p {
+    color: #152429;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 150%;
+    padding-bottom: 0;
+    margin: 0;
+  }
+
+  .panel p:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        background: transparent;
-        border-radius: 0;
-        padding-top: 48px;
-        padding-bottom: 48px;
-        padding-left: 16px;
-        padding-right: 16px;
-        text-align: left;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
+      padding-top: 64px;
+      padding-bottom: 64px;
+      padding-left: 32px;
+      padding-right: 32px;
     }
 
     .section-content {
-        padding: 0;
-        margin: 0;
-        max-width: 100%;
-        width: 100%;
+      max-width: 100%;
     }
 
     h3 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 32px;
-        font-weight: 500;
-        margin: 0 0 32px 0;
-        line-height: 125%;
-        text-align: left;
-        color: #152429;
-        font-variant-numeric: lining-nums;
+      font-size: 40px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 112px;
+      padding-right: 112px;
+      margin: 0;
+      width: 100%;
+    }
+
+    .section-content {
+      max-width: 100%;
     }
 
     .faqs {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 0;
-        align-items: start;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
-    .faq-container {
-        background: #ffffff;
-        border-radius: 8px;
-        padding: 0;
-        border: none;
-        transition: none;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-height: 0;
+    h3 {
+      font-size: 40px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 312px;
+      padding-right: 312px;
     }
 
-
-    .accordion {
-        background-color: transparent;
-        cursor: pointer;
-        width: 100%;
-        border: none;
-        text-align: left;
-        outline: none;
-        font-size: 15px;
-        padding: 16px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+    .section-content {
+      max-width: 100%;
     }
-
-    button.accordion {
-        color: #152429;
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 150%;
-    }
-
-    button.accordion svg {
-        flex-shrink: 0;
-        margin-left: 16px;
-    }
-
-    button.accordion.active svg {
-        transform: rotate(180deg);
-    }
-
-    .active,
-    .accordion:hover {
-        /* background-color: #ccc; */
-    }
-
-    .panel {
-        padding: 0;
-        max-height: 0;
-        height: 0;
-        min-height: 0;
-        overflow: hidden;
-        background-color: transparent;
-        display: block;
-        flex-shrink: 0;
-        margin: 0;
-        border: 0;
-        line-height: 0;
-    }
-
-    .panel.expanded {
-        padding: 0 16px 16px 16px;
-        height: auto;
-        max-height: 2000px;
-    }
-
-    .panel > div {
-        display: block;
-    }
-
-    .panel p,
-    .panel.expanded p,
-    .panel > div p,
-    .panel.expanded > div p {
-        color: #152429;
-        font-family: var(--font-body);
-        font-size: 0.85rem;
-        font-weight: 500;
-        line-height: 150%;
-        padding-bottom: 0;
-        margin: 0;
-    }
-
-    .panel p:not(:last-child) {
-        margin-bottom: 1rem;
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding-top: 64px;
-            padding-bottom: 64px;
-            padding-left: 32px;
-            padding-right: 32px;
-    }
-
-        .section-content {
-            max-width: 100%;
-        }
-
-        h3 {
-            font-size: 40px;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 112px;
-            padding-right: 112px;
-            margin: 0;
-            width: 100%;
-    }
-
-        .section-content {
-            max-width: 100%;
-        }
-
-        .faqs {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        h3 {
-            font-size: 40px;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 312px;
-            padding-right: 312px;
-        }
-
-        .section-content {
-            max-width: 100%;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <h3>Frequently Asked Questions</h3>
-            <div class="faqs">
-                {faqs.map((faq, index) => (
-                    <div class="faq-container">
-                        <button
-                            class="accordion"
-                            type="button"
-                            aria-expanded="false"
-                            aria-controls={`faq-panel-${index}`}
-                            id={`faq-button-${index}`}
-                            data-faq-slug={faq.slug}
-                        >
-                            {faq.question}
-                            <Opener />
-                        </button>
-                        <div
-                            class="panel"
-                            id={`faq-panel-${index}`}
-                            role="region"
-                            aria-labelledby={`faq-button-${index}`}
-                        >
-                            <div set:html={formatAnswer(faq.answer)}></div>
-                        </div>
-                    </div>
-                ))}
+  <div class="section-container">
+    <div class="section-content">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faqs">
+        {
+          faqs.map((faq, index) => (
+            <div class="faq-container">
+              <button
+                class="accordion"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`faq-panel-${index}`}
+                id={`faq-button-${index}`}
+                data-faq-slug={faq.slug}
+              >
+                {faq.question}
+                <Opener />
+              </button>
+              <div
+                class="panel"
+                id={`faq-panel-${index}`}
+                role="region"
+                aria-labelledby={`faq-button-${index}`}
+              >
+                <div set:html={formatAnswer(faq.answer)} />
+              </div>
             </div>
-        </div>
+          ))
+        }
+      </div>
     </div>
+  </div>
 </section>
 
 <script>
-    // Function to trigger events for Microsoft Clarity and GA4
-    function triggerEvent(eventName: string, clarityEventName: string, eventData: Record<string, string> = {}) {
-        // Push event to Google Tag Manager's dataLayer
-        if ((window as any).dataLayer) {
-            (window as any).dataLayer.push({
-                'event': eventName,
-                ...eventData
-            });
-            console.log('GA4 event triggered: ' + eventName, eventData);
-        } else {
-            console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-        }
-
-        // Send event to Microsoft Clarity
-        if (typeof (window as any).clarity === 'function') {
-            // Set custom tags for Clarity session so you can filter recordings by these values
-            Object.keys(eventData).forEach(key => {
-                (window as any).clarity('set', key, eventData[key]);
-            });
-            (window as any).clarity('event', clarityEventName);
-            console.log('Clarity event triggered: ' + clarityEventName, eventData);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
-        }
+  // Function to trigger events for Microsoft Clarity and GA4
+  function triggerEvent(
+    eventName: string,
+    clarityEventName: string,
+    eventData: Record<string, string> = {}
+  ) {
+    // Push event to Google Tag Manager's dataLayer
+    if ((window as any).dataLayer) {
+      (window as any).dataLayer.push({
+        event: eventName,
+        ...eventData,
+      });
+      console.log("GA4 event triggered: " + eventName, eventData);
+    } else {
+      console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const container = document.querySelector(".faqs");
-        if (!container) return;
+    // Send event to Microsoft Clarity
+    if (typeof (window as any).clarity === "function") {
+      // Set custom tags for Clarity session so you can filter recordings by these values
+      Object.keys(eventData).forEach((key) => {
+        (window as any).clarity("set", key, eventData[key]);
+      });
+      (window as any).clarity("event", clarityEventName);
+      console.log("Clarity event triggered: " + clarityEventName, eventData);
+    } else {
+      console.warn("Microsoft Clarity is not initialized.");
+    }
+  }
 
-        // Initialize all panels to be closed
-        const allPanels = container.querySelectorAll(".panel");
-        allPanels.forEach((panel) => {
-            panel.classList.remove("expanded");
-            (panel as HTMLElement).style.maxHeight = "";
-            (panel as HTMLElement).style.height = "";
-        });
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.querySelector(".faqs");
+    if (!container) return;
 
-        container.addEventListener("click", function (event) {
-            const target = event.target;
-            const button = target instanceof Element ? target.closest("button.accordion") : null;
-            if (!button || !container.contains(button)) return;
-
-            const clickedPanel = button.nextElementSibling;
-            if (!clickedPanel) return;
-
-            const isCurrentlyOpen = button.classList.contains("active");
-            const allButtons = container.querySelectorAll("button.accordion");
-            const allPanels = container.querySelectorAll(".panel");
-
-            // Close all other buttons and panels
-            allButtons.forEach((btn) => {
-                if (btn !== button) {
-                    btn.classList.remove("active");
-                    btn.setAttribute("aria-expanded", "false");
-                }
-            });
-
-            allPanels.forEach((panel) => {
-                if (panel !== clickedPanel) {
-                    panel.classList.remove("expanded");
-                    (panel as HTMLElement).style.maxHeight = "";
-                    (panel as HTMLElement).style.height = "";
-                }
-            });
-
-            // Toggle the clicked button and panel
-            if (isCurrentlyOpen) {
-                // Collapsing: remove classes immediately
-                button.classList.remove("active");
-                button.setAttribute("aria-expanded", "false");
-                clickedPanel.classList.remove("expanded");
-                (clickedPanel as HTMLElement).style.maxHeight = "";
-                (clickedPanel as HTMLElement).style.height = "";
-            } else {
-                // Expanding: add classes immediately for instant response
-                button.classList.add("active");
-                button.setAttribute("aria-expanded", "true");
-                (clickedPanel as HTMLElement).style.maxHeight = "";
-                (clickedPanel as HTMLElement).style.height = "";
-                clickedPanel.classList.add("expanded");
-
-                // Track FAQ open event
-                const faqSlug = (button as HTMLElement).dataset.faqSlug || 'unknown';
-                triggerEvent('faq_clicked', 'faqClicked', { 'faq_question': faqSlug });
-            }
-        });
+    // Initialize all panels to be closed
+    const allPanels = container.querySelectorAll(".panel");
+    allPanels.forEach((panel) => {
+      panel.classList.remove("expanded");
+      (panel as HTMLElement).style.maxHeight = "";
+      (panel as HTMLElement).style.height = "";
     });
+
+    container.addEventListener("click", function (event) {
+      const target = event.target;
+      const button = target instanceof Element ? target.closest("button.accordion") : null;
+      if (!button || !container.contains(button)) return;
+
+      const clickedPanel = button.nextElementSibling;
+      if (!clickedPanel) return;
+
+      const isCurrentlyOpen = button.classList.contains("active");
+      const allButtons = container.querySelectorAll("button.accordion");
+      const allPanels = container.querySelectorAll(".panel");
+
+      // Close all other buttons and panels
+      allButtons.forEach((btn) => {
+        if (btn !== button) {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      allPanels.forEach((panel) => {
+        if (panel !== clickedPanel) {
+          panel.classList.remove("expanded");
+          (panel as HTMLElement).style.maxHeight = "";
+          (panel as HTMLElement).style.height = "";
+        }
+      });
+
+      // Toggle the clicked button and panel
+      if (isCurrentlyOpen) {
+        // Collapsing: remove classes immediately
+        button.classList.remove("active");
+        button.setAttribute("aria-expanded", "false");
+        clickedPanel.classList.remove("expanded");
+        (clickedPanel as HTMLElement).style.maxHeight = "";
+        (clickedPanel as HTMLElement).style.height = "";
+      } else {
+        // Expanding: add classes immediately for instant response
+        button.classList.add("active");
+        button.setAttribute("aria-expanded", "true");
+        (clickedPanel as HTMLElement).style.maxHeight = "";
+        (clickedPanel as HTMLElement).style.height = "";
+        clickedPanel.classList.add("expanded");
+
+        // Track FAQ open event
+        const faqSlug = (button as HTMLElement).dataset.faqSlug || "unknown";
+        triggerEvent("faq_clicked", "faqClicked", { faq_question: faqSlug });
+      }
+    });
+  });
 </script>

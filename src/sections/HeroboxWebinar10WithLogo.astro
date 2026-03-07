@@ -1,246 +1,240 @@
 ---
 import FormWebinar from "../components/FormWebinar.astro";
-
-import RvLogo from "../images/svg/rv-logo.svg";
 ---
 
 <style>
+  section {
+    background: linear-gradient(to bottom, #101b1f, #111111);
+    position: relative;
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .section-container {
+    position: relative;
+    z-index: 1;
+    padding: 48px 16px;
+    background: transparent;
+    border-radius: 0;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  #main-form .section-content {
+    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .content-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-container {
+    margin-bottom: 0;
+  }
+
+  .logo-container svg {
+    height: 32px;
+    width: auto;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-align: left;
+    font-weight: 500;
+    color: #e1eeea;
+  }
+
+  .form-cta {
+    margin-bottom: 2rem;
+  }
+
+  hr {
+    height: 0.0625rem;
+    background: #30414d;
+    margin-bottom: 1rem;
+  }
+
+  .pre-form-headline {
+    color: #bfd1d7;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 150%;
+
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    text-align: left;
+  }
+
+  h3 {
+    color: #e1eeea;
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 100%;
+    line-height: 100%;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .time {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .time div {
+    font-weight: 600;
+    color: #e1eeea;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .time div span {
+    font-size: 2rem;
+    line-height: 1;
+    background: none;
+    -webkit-text-fill-color: #e1eeea;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+  }
+
+  .time div p {
+    font-size: 0.875rem;
+    margin: 0;
+    margin-top: 0.25rem;
+    color: #bfd1d7;
+  }
+
+  svg {
+    display: inline-block;
+    max-height: 100%;
+    width: auto;
+  }
+
+  span {
+    background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @media only screen and (min-width: 768px) {
     section {
-        background: linear-gradient(to bottom, #101B1F, #111111);
-        position: relative;
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
+      padding: 0;
+      margin: 0;
     }
+  }
 
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        position: relative;
-        z-index: 1;
-        padding: 48px 16px;
-        background: transparent;
-        border-radius: 0;
-        text-align: center;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
+      padding: 64px 32px;
     }
+  }
 
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 96px 112px;
+      margin: 0;
+      width: 100%;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 96px 312px;
+    }
+  }
+
+  @media only screen and (max-width: 990px) {
     #main-form .section-content {
-        margin: 0;
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        max-width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        align-items: start;
+      grid-template-columns: 1fr;
     }
+  }
 
-    .content-column {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-column {
-        display: flex;
-        flex-direction: column;
-    }
-
-
-    .logo-container {
-        margin-bottom: 0;
-    }
-
-    .logo-container svg {
-        height: 32px;
-        width: auto;
-    }
-
+  @media only screen and (min-width: 990px) {
     h1 {
-        font-size: 48px;
-        margin: 0;
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        text-align: left;
-        font-weight: 500;
-        color: #E1EEEA;
+      margin-bottom: 0;
+      font-size: 48px;
+      text-align: left;
+      font-weight: 500;
     }
-
-
-    .form-cta {
-        margin-bottom: 2rem;
-    }
-
-    hr {
-        height: 0.0625rem;
-        background: #30414D;
-        margin-bottom: 1rem;
-    }
-
-
-    .pre-form-headline {
-        color: #BFD1D7;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 150%;
-
-        margin-bottom: 1.5rem;
-        margin-top: 0;
-        margin-left: 0;
-        margin-right: 0;
-
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 0.5rem;
-        width: fit-content;
-        text-align: left;
-    }
-
-    h3 {
-        color: #E1EEEA;
-        font-size: 1.5rem;
-        font-weight: 500;
-        width: 100%;
-        line-height: 100%;
-        text-align: left;
-        margin-top: 0;
-        margin-bottom: 1rem;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .time {
-        display: flex;
-        justify-content: flex-start;
-        gap: 1.5rem;
-        margin-top: 1rem;
-        margin-bottom: 1.5rem;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .time div {
-        font-weight: 600;
-        color: #E1EEEA;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .time div span {
-        font-size: 2rem;
-        line-height: 1;
-        background: none;
-        -webkit-text-fill-color: #E1EEEA;
-        background-clip: unset;
-        -webkit-background-clip: unset;
-    }
-
-    .time div p {
-        font-size: 0.875rem;
-        margin: 0;
-        margin-top: 0.25rem;
-        color: #BFD1D7;
-    }
-
-    svg {
-        display: inline-block;
-        max-height: 100%;
-        width: auto;
-    }
-
-    span {
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0;
-            margin: 0;
-        }
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding: 96px 112px;
-            margin: 0;
-            width: 100%;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding: 96px 312px;
-        }
-    }
-
-    @media only screen and (max-width: 990px) {
-        #main-form .section-content {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media only screen and (min-width: 990px) {
-        h1 {
-            margin-bottom: 0;
-            font-size: 48px;
-            text-align: left;
-            font-weight: 500;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div id="main-form" class="section-container">
-        <div class="section-content">
-            <div class="content-column">
-                <h1>Learn How To Compound Your Wealth Passively</h1>
+  <div id="main-form" class="section-container">
+    <div class="section-content">
+      <div class="content-column">
+        <h1>Learn How To Compound Your Wealth Passively</h1>
 
-                <p class="pre-form-headline">
-                    Join our live webinar and discover how you can start your investment journey.
-                </p>
+        <p class="pre-form-headline">
+          Join our live webinar and discover how you can start your investment journey.
+        </p>
 
-                <h3>Next Live Webinar:</h3>
-                <div class="time">
-                    <div class="days">
-                        <span>0</span>
-                        <p>days</p>
-                    </div>
-                    <div class="hours">
-                        <span>0</span>
-                        <p>hours</p>
-                    </div>
-                    <div class="minutes">
-                        <span>0</span>
-                        <p>minutes</p>
-                    </div>
-                    <div class="seconds">
-                        <span>0</span>
-                        <p>seconds</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-column">
-                <div class="form-cta">
-                    <FormWebinar />
-                </div>
-            </div>
+        <h3>Next Live Webinar:</h3>
+        <div class="time">
+          <div class="days">
+            <span>0</span>
+            <p>days</p>
+          </div>
+          <div class="hours">
+            <span>0</span>
+            <p>hours</p>
+          </div>
+          <div class="minutes">
+            <span>0</span>
+            <p>minutes</p>
+          </div>
+          <div class="seconds">
+            <span>0</span>
+            <p>seconds</p>
+          </div>
         </div>
+      </div>
+
+      <div class="form-column">
+        <div class="form-cta">
+          <FormWebinar />
+        </div>
+      </div>
     </div>
-</section> 
+  </div>
+</section>

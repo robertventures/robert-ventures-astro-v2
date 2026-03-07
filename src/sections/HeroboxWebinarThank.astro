@@ -1,5 +1,4 @@
 ---
-import Quote from "../images/quote.svg";
 import Image from "astro/components/Image.astro";
 
 import checkRegistered from "../images/check-registered.png";
@@ -8,359 +7,357 @@ import thankYouBanner from "../images/thank-you-image-banner.png";
 import Apple from "../images/svg/apple.svg";
 import Google from "../images/svg/google.svg";
 import Outlook from "../images/svg/outlook.svg";
-
-
-
 ---
 
 <style>
+  section {
+    background: linear-gradient(to bottom, #101b1f, #111111);
+    position: relative;
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .section-container {
+    position: relative;
+    z-index: 1;
+    padding: 48px 16px;
+    background: transparent;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .section-content {
+    max-width: none;
+  }
+
+  h1 {
+    font-family: "Roboto Serif", serif;
+    font-size: 48px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 110%;
+    text-align: center;
+    color: #e1eeea;
+    max-width: 640px;
+  }
+
+  .email-message {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0;
+    text-align: center;
+    color: #bfd1d7;
+    max-width: 512px;
+  }
+
+  .email-highlight {
+    color: #d3fbd8;
+    text-decoration: none;
+    background: none;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #d3fbd8;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+    overflow-x: visible;
+  }
+
+  .checkmark-image {
+    width: auto;
+    height: auto;
+    max-width: 48px;
+    max-height: 48px;
+    display: block;
+  }
+
+  .thank-you-banner {
+    width: auto;
+    height: 192px;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Calendar Dropdown Styles */
+  .calendar-dropdown {
+    position: relative;
+    width: 100%;
+    max-width: 384px;
+    margin: 0;
+  }
+  .calendar-dropdown-btn {
+    width: 100%;
+    max-width: 384px;
+    padding: 12px;
+    background-color: #d3fbd8;
+    border: 1px solid #d3fbd8;
+    border-radius: 8px;
+    color: #152429;
+    font-weight: 600;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .calendar-dropdown-btn:hover {
+    background-color: #9ebca2;
+    border-color: #9ebca2;
+  }
+  .dropdown-arrow {
+    width: 1.125em;
+    height: 1.125em;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .calendar-dropdown-btn.active .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+  .calendar-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #152429;
+    border: 1px solid #30414d;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .calendar-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .calendar-option {
+    width: 100%;
+    padding: 1rem 1rem;
+    margin: 0.5rem 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: #e1eeea;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .calendar-option:hover {
+    background: #30414d;
+  }
+  .calendar-option:not(:last-child) {
+    border-bottom: 1px solid #30414d;
+  }
+
+  .calendar-option svg {
+    flex-shrink: 0;
+    color: #bfd1d7;
+  }
+
+  .countdown-section {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+    max-width: 640px;
+    gap: 16px;
+  }
+
+  .countdown-section h3 {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 100%;
+    margin: 0;
+    color: #e1eeea;
+    text-align: center;
+    width: 100%;
+  }
+
+  span.heading {
+    color: #d3fbd8;
+    text-decoration: underline;
+  }
+
+  .time {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .time div {
+    font-weight: 400;
+    color: #e1eeea;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #152429;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+  }
+
+  .time div span {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 100%;
+    color: #d3fbd8;
+    font-variant-numeric: lining-nums;
+    background: none;
+    -webkit-text-fill-color: #d3fbd8;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+  }
+
+  .time div p {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+    margin: 0;
+    margin-top: 0.25rem;
+    color: #bfd1d7;
+  }
+
+  @media only screen and (min-width: 768px) {
     section {
-        background: linear-gradient(to bottom, #101B1F, #111111);
-        position: relative;
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
+      padding: 0;
+      margin: 0;
     }
+  }
 
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        position: relative;
-        z-index: 1;
-        padding: 48px 16px;
-        background: transparent;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
+      padding: 64px 32px;
     }
-
-    .section-content {
-        max-width: none;
-    }
-
 
     h1 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 48px;
-        font-weight: 500;
-        margin: 0;
-        line-height: 110%;
-        text-align: center;
-        color: #E1EEEA;
-        max-width: 640px;
+      font-size: 48px;
+      line-height: 110%;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 96px 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    .email-message {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 150%;
-        margin: 0;
-        text-align: center;
-        color: #BFD1D7;
-        max-width: 512px;
+    h1 {
+      margin-bottom: 0;
+      font-size: 48px;
+      line-height: 110%;
     }
+  }
 
-    .email-highlight {
-        color: #D3FBD8;
-        text-decoration: none;
-        background: none;
-        background-clip: unset;
-        -webkit-background-clip: unset;
-        -webkit-text-fill-color: #D3FBD8;
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 96px 312px;
     }
+  }
 
-    .intro {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 32px;
-        overflow-x: visible;
-    }
-
-    .checkmark-image {
-        width: auto;
-        height: auto;
-        max-width: 48px;
-        max-height: 48px;
-        display: block;
-    }
-
-    .thank-you-banner {
-        width: auto;
-        height: 192px;
-        display: block;
-        object-fit: cover;
-    }
-
-    /* Calendar Dropdown Styles */
-    .calendar-dropdown {
-        position: relative;
-        width: 100%;
-        max-width: 384px;
-        margin: 0;
-    }
-    .calendar-dropdown-btn {
-        width: 100%;
-        max-width: 384px;
-        padding: 12px;
-        background-color: #D3FBD8;
-        border: 1px solid #D3FBD8;
-        border-radius: 8px;
-        color: #152429;
-        font-weight: 600;
-        font-size: 18px;
-        font-family: 'Roboto', sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-    .calendar-dropdown-btn:hover {
-        background-color: #9ebca2;
-        border-color: #9ebca2;
-    }
-    .dropdown-arrow {
-        width: 1.125em;
-        height: 1.125em;
-        transition: transform 0.2s ease;
-        display: inline-block;
-    }
-    .calendar-dropdown-btn.active .dropdown-arrow {
-        transform: rotate(180deg);
-    }
-    .calendar-dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #152429;
-        border: 1px solid #30414D;
-        border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        margin-top: 0.5rem;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.2s;
-        z-index: 1000;
-        overflow: hidden;
-    }
-    .calendar-dropdown-menu.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-    .calendar-option {
-        width: 100%;
-        padding: 1rem 1rem;
-        margin: 0.5rem 0;
-        background: none;
-        border: none;
-        text-align: left;
-        cursor: pointer;
-        color: #E1EEEA;
-        font-weight: 500;
-        font-size: 1rem;
-        transition: background 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    .calendar-option:hover {
-        background: #30414D;
-    }
-    .calendar-option:not(:last-child) {
-        border-bottom: 1px solid #30414D;
-    }
-
-    .calendar-option svg {
-        flex-shrink: 0;
-        color: #BFD1D7;
-    }
-
-    .countdown-section {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        margin: 0;
-        width: 100%;
-        max-width: 640px;
-        gap: 16px;
-    }
-
-    .countdown-section h3 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 100%;
-        margin: 0;
-        color: #E1EEEA;
-        text-align: center;
-        width: 100%;
-    }
-
-    span.heading {
-        color: #D3FBD8;
-        text-decoration: underline;
-    }
-
-    .time {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 0;
-        margin-bottom: 0;
-        width: 100%;
-        max-width: 640px;
-    }
-
-    .time div {
-        font-weight: 400;
-        color: #E1EEEA;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border: 1px solid #152429;
-        border-radius: 4px;
-        flex: 1;
-        min-width: 0;
-        padding: 16px;
-    }
-
-    .time div span {
-        font-family: 'Roboto Serif', serif;
-        font-size: 40px;
-        font-weight: 500;
-        line-height: 100%;
-        color: #D3FBD8;
-        font-variant-numeric: lining-nums;
-        background: none;
-        -webkit-text-fill-color: #D3FBD8;
-        background-clip: unset;
-        -webkit-background-clip: unset;
-    }
-
-    .time div p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 100%;
-        margin: 0;
-        margin-top: 0.25rem;
-        color: #BFD1D7;
-    }
-
-
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0;
-            margin: 0;
-        }
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h1 {
-            font-size: 48px;
-            line-height: 110%;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding: 96px 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        h1 {
-            margin-bottom: 0;
-            font-size: 48px;
-            line-height: 110%;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding: 96px 312px;
-        }
-    }
-
-    .calendar-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-        margin-right: 0.5em;
-        max-width: 24px;
-        max-height: 24px;
-    }
+  .calendar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5em;
+    max-width: 24px;
+    max-height: 24px;
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="intro">
-                <!-- <p class="thank">THANK YOU!</p> -->
-                <Image src={checkRegistered} alt="Registration confirmed" class="checkmark-image" />
-                <h1>
-                    You've Registered!
-                </h1>
-                <p class="email-message"><span class="email-highlight">We have sent you an email</span> with all the necessary details, including your unique access link.</p>
-                <div class="countdown-section">
-                    <h3>Your Webinar starts in:</h3>
-                    <div class="time">
-                        <div class="days">
-                            <span>0</span>
-                            <p>days</p>
-                        </div>
-                        <div class="hours">
-                            <span>0</span>
-                            <p>hours</p>
-                        </div>
-                        <div class="minutes">
-                            <span>0</span>
-                            <p>minutes</p>
-                        </div>
-                        <div class="seconds">
-                            <span>0</span>
-                            <p>seconds</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="calendar-dropdown">
-                    <button type="button" class="calendar-dropdown-btn" id="calendarDropdownBtn">
-                        Add to Calendar
-                    </button>
-                    <div class="calendar-dropdown-menu" id="calendarDropdownMenu">
-                        <button type="button" class="calendar-option" data-calendar="ics">
-                            <!-- Apple Calendar SVG Placeholder -->
-                            <span class="calendar-icon"><Apple/></span>
-                            Calendar
-                        </button>
-                        <button type="button" class="calendar-option" data-calendar="google">
-                            <!-- Google Calendar SVG Placeholder -->
-                            <span class="calendar-icon"><Google/></span>
-                            Google Calendar
-                        </button>
-                        <button type="button" class="calendar-option" data-calendar="outlook">
-                            <!-- Outlook SVG Placeholder -->
-                            <span class="calendar-icon"><Outlook/></span>
-                            Outlook
-                        </button>
-                    </div>
-                </div>
-                <Image src={thankYouBanner} alt="Thank you banner" class="thank-you-banner" />
+  <div class="section-container">
+    <div class="section-content">
+      <div class="intro">
+        <!-- <p class="thank">THANK YOU!</p> -->
+        <Image src={checkRegistered} alt="Registration confirmed" class="checkmark-image" />
+        <h1>You've Registered!</h1>
+        <p class="email-message">
+          <span class="email-highlight">We have sent you an email</span> with all the necessary details,
+          including your unique access link.
+        </p>
+        <div class="countdown-section">
+          <h3>Your Webinar starts in:</h3>
+          <div class="time">
+            <div class="days">
+              <span>0</span>
+              <p>days</p>
             </div>
+            <div class="hours">
+              <span>0</span>
+              <p>hours</p>
+            </div>
+            <div class="minutes">
+              <span>0</span>
+              <p>minutes</p>
+            </div>
+            <div class="seconds">
+              <span>0</span>
+              <p>seconds</p>
+            </div>
+          </div>
+        </div>
+        <div class="calendar-dropdown">
+          <button type="button" class="calendar-dropdown-btn" id="calendarDropdownBtn">
+            Add to Calendar
+          </button>
+          <div class="calendar-dropdown-menu" id="calendarDropdownMenu">
+            <button type="button" class="calendar-option" data-calendar="ics">
+              <!-- Apple Calendar SVG Placeholder -->
+              <span class="calendar-icon"><Apple /></span>
+              Calendar
+            </button>
+            <button type="button" class="calendar-option" data-calendar="google">
+              <!-- Google Calendar SVG Placeholder -->
+              <span class="calendar-icon"><Google /></span>
+              Google Calendar
+            </button>
+            <button type="button" class="calendar-option" data-calendar="outlook">
+              <!-- Outlook SVG Placeholder -->
+              <span class="calendar-icon"><Outlook /></span>
+              Outlook
+            </button>
+          </div>
+        </div>
+        <Image src={thankYouBanner} alt="Thank you banner" class="thank-you-banner" />
+      </div>
 
-            <!-- <div class="testimonial">
+      <!-- <div class="testimonial">
                 <Quote />
                 <p class="text">
                     Joe provided an easy way to access monthly interest payments
@@ -368,331 +365,349 @@ import Outlook from "../images/svg/outlook.svg";
                 </p>
                 <p class="name">Steve Lloyd, <span>Stone Bay Holdings</span></p>
             </div> -->
-        </div>
     </div>
+  </div>
 </section>
 
 <script>
-    function downloadICS() {
-        console.log('downloadICS() called');
-        const session = JSON.parse(localStorage.getItem('webinarSession'));
-        console.log('Session data:', session);
-        if (!session) {
-            console.error('No webinar session found in localStorage');
-            alert('Webinar session info not found. Please register for a webinar first.');
-            return;
-        }
-        const start = new Date(session.date);
-        const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour duration
+  function downloadICS() {
+    console.log("downloadICS() called");
+    const session = JSON.parse(localStorage.getItem("webinarSession"));
+    console.log("Session data:", session);
+    if (!session) {
+      console.error("No webinar session found in localStorage");
+      alert("Webinar session info not found. Please register for a webinar first.");
+      return;
+    }
+    const start = new Date(session.date);
+    const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour duration
 
-        const pad = n => String(n).padStart(2, '0');
-        const formatDate = d =>
-            d.getUTCFullYear() +
-            pad(d.getUTCMonth() + 1) +
-            pad(d.getUTCDate()) + 'T' +
-            pad(d.getUTCHours()) +
-            pad(d.getUTCMinutes()) +
-            pad(d.getUTCSeconds()) + 'Z';
+    const pad = (n) => String(n).padStart(2, "0");
+    const formatDate = (d) =>
+      d.getUTCFullYear() +
+      pad(d.getUTCMonth() + 1) +
+      pad(d.getUTCDate()) +
+      "T" +
+      pad(d.getUTCHours()) +
+      pad(d.getUTCMinutes()) +
+      pad(d.getUTCSeconds()) +
+      "Z";
 
-        const ics = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'BEGIN:VEVENT',
-            `SUMMARY:${session.title || 'Robert Ventures Webinar'}`,
-            `DTSTART:${formatDate(start)}`,
-            `DTEND:${formatDate(end)}`,
-            `DESCRIPTION:Join the Robert Ventures Webinar!` + (session.fullDate ? '\n' + session.fullDate : ''),
-            'END:VEVENT',
-            'END:VCALENDAR'
-        ].join('\r\n');
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      `SUMMARY:${session.title || "Robert Ventures Webinar"}`,
+      `DTSTART:${formatDate(start)}`,
+      `DTEND:${formatDate(end)}`,
+      `DESCRIPTION:Join the Robert Ventures Webinar!` +
+        (session.fullDate ? "\n" + session.fullDate : ""),
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
 
-        const blob = new Blob([ics], { type: 'text/calendar' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'webinar.ics';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const blob = new Blob([ics], { type: "text/calendar" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "webinar.ics";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function initializeCountdown() {
+    const session = JSON.parse(localStorage.getItem("webinarSession"));
+    if (!session) {
+      console.log("No webinar session found in localStorage, fetching next upcoming webinar...");
+      fetchNextUpcomingWebinar();
+      return;
     }
 
-    function initializeCountdown() {
-        const session = JSON.parse(localStorage.getItem('webinarSession'));
-        if (!session) {
-            console.log('No webinar session found in localStorage, fetching next upcoming webinar...');
-            fetchNextUpcomingWebinar();
-            return;
-        }
+    const webinarDate = new Date(session.date);
+    const daysSpan = document.querySelector(".days span");
+    const hoursSpan = document.querySelector(".hours span");
+    const minutesSpan = document.querySelector(".minutes span");
+    const secondsSpan = document.querySelector(".seconds span");
 
-        const webinarDate = new Date(session.date);
-        const daysSpan = document.querySelector('.days span');
-        const hoursSpan = document.querySelector('.hours span');
-        const minutesSpan = document.querySelector('.minutes span');
-        const secondsSpan = document.querySelector('.seconds span');
-
-        if (!daysSpan || !hoursSpan || !minutesSpan || !secondsSpan) {
-            console.log('Countdown elements not found');
-            return;
-        }
-
-        function updateCountdown() {
-            const now = new Date();
-            const timeLeft = webinarDate.getTime() - now.getTime();
-
-            if (timeLeft <= 0) {
-                // Webinar has started or passed
-                daysSpan.textContent = "0";
-                hoursSpan.textContent = "0";
-                minutesSpan.textContent = "0";
-                secondsSpan.textContent = "0";
-                return;
-            }
-
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            daysSpan.textContent = days.toString();
-            hoursSpan.textContent = hours.toString();
-            minutesSpan.textContent = minutes.toString();
-            secondsSpan.textContent = seconds.toString();
-        }
-
-        // Update immediately and then every second
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+    if (!daysSpan || !hoursSpan || !minutesSpan || !secondsSpan) {
+      console.log("Countdown elements not found");
+      return;
     }
 
-    async function fetchNextUpcomingWebinar() {
+    function updateCountdown() {
+      const now = new Date();
+      const timeLeft = webinarDate.getTime() - now.getTime();
+
+      if (timeLeft <= 0) {
+        // Webinar has started or passed
+        daysSpan.textContent = "0";
+        hoursSpan.textContent = "0";
+        minutesSpan.textContent = "0";
+        secondsSpan.textContent = "0";
+        return;
+      }
+
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      daysSpan.textContent = days.toString();
+      hoursSpan.textContent = hours.toString();
+      minutesSpan.textContent = minutes.toString();
+      secondsSpan.textContent = seconds.toString();
+    }
+
+    // Update immediately and then every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  async function fetchNextUpcomingWebinar() {
+    try {
+      const response = await fetch("/api/webinar-data", { cache: "no-store" });
+      if (!response.ok) {
+        console.error("Failed to fetch webinar data:", response.statusText);
+        return;
+      }
+      const data = await response.json();
+
+      // Find the next upcoming session
+      const sessions = data.results.filter((item) => {
         try {
-            const response = await fetch("/api/webinar-data", { cache: "no-store" });
-            if (!response.ok) {
-                console.error("Failed to fetch webinar data:", response.statusText);
-                return;
+          const parsed = JSON.parse(item.id);
+          return parsed && parsed.type === "ongoing";
+        } catch {
+          return false;
+        }
+      });
+
+      if (sessions.length > 0) {
+        // Use the same logic as the webinar form to find the next session
+        const sessionsWithDates = sessions
+          .map((session) => {
+            try {
+              const details = JSON.parse(session.id);
+              const nextDate = session.date
+                ? new Date(session.date)
+                : calculateNextSessionDate(details);
+              return { session, nextDate };
+            } catch (error) {
+              console.error("Error processing session:", error);
+              return null;
             }
-            const data = await response.json();
-            
-            // Find the next upcoming session
-            const sessions = data.results.filter((item) => {
-                try {
-                    const parsed = JSON.parse(item.id);
-                    return parsed && parsed.type === "ongoing";
-                } catch {
-                    return false;
-                }
-            });
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
-            if (sessions.length > 0) {
-                // Use the same logic as the webinar form to find the next session
-                const sessionsWithDates = sessions.map(session => {
-                    try {
-                        const details = JSON.parse(session.id);
-                        const nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
-                        return { session, nextDate };
-                    } catch (error) {
-                        console.error("Error processing session:", error);
-                        return null;
-                    }
-                }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+        if (sessionsWithDates.length > 0) {
+          const nextSession = sessionsWithDates[0];
+          const sessionData = {
+            title: JSON.parse(nextSession.session.id).title || "Robert Ventures Webinar",
+            date: nextSession.nextDate.toISOString(),
+            timeZone: JSON.parse(nextSession.session.id).timeZone || "America/New_York",
+            fullDate: getFullDateString(
+              nextSession.nextDate.toISOString(),
+              JSON.parse(nextSession.session.id).timeZone || "America/New_York"
+            ),
+          };
 
-                if (sessionsWithDates.length > 0) {
-                    const nextSession = sessionsWithDates[0];
-                    const sessionData = {
-                        title: JSON.parse(nextSession.session.id).title || 'Robert Ventures Webinar',
-                        date: nextSession.nextDate.toISOString(),
-                        timeZone: JSON.parse(nextSession.session.id).timeZone || 'America/New_York',
-                        fullDate: getFullDateString(nextSession.nextDate.toISOString(), JSON.parse(nextSession.session.id).timeZone || 'America/New_York')
-                    };
-                    
-                    // Store this as fallback session data
-                    localStorage.setItem('webinarSession', JSON.stringify(sessionData));
-                    
-                    // Re-initialize countdown with the fetched data
-                    initializeCountdown();
-                }
-            }
-        } catch (err) {
-            console.error("An error occurred while fetching webinar data:", err);
+          // Store this as fallback session data
+          localStorage.setItem("webinarSession", JSON.stringify(sessionData));
+
+          // Re-initialize countdown with the fetched data
+          initializeCountdown();
         }
+      }
+    } catch (err) {
+      console.error("An error occurred while fetching webinar data:", err);
+    }
+  }
+
+  function calculateNextSessionDate(details) {
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const targetDay = weekdays.indexOf(details.day);
+    const [hours, minutes] = details.time.split(":").map(Number);
+    let hour24 = hours;
+    if (details.period.toUpperCase() === "PM" && hours < 12) hour24 += 12;
+    if (details.period.toUpperCase() === "AM" && hours === 12) hour24 = 0;
+
+    const now = new Date();
+    const currentTzTime = new Date(
+      now.toLocaleString("en-US", {
+        timeZone: details.timeZone || "America/New_York",
+      })
+    );
+
+    const currentDay = currentTzTime.getDay();
+    let daysToAdd = (targetDay - currentDay + 7) % 7;
+
+    if (daysToAdd === 0) {
+      const currentHour = currentTzTime.getHours();
+      const currentMinute = currentTzTime.getMinutes();
+      if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
+        daysToAdd = 7;
+      }
     }
 
-    function calculateNextSessionDate(details) {
-        const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const targetDay = weekdays.indexOf(details.day);
-        const [hours, minutes] = details.time.split(":").map(Number);
-        let hour24 = hours;
-        if (details.period.toUpperCase() === "PM" && hours < 12) hour24 += 12;
-        if (details.period.toUpperCase() === "AM" && hours === 12) hour24 = 0;
+    const sessionDate = new Date(currentTzTime);
+    sessionDate.setDate(sessionDate.getDate() + daysToAdd);
+    sessionDate.setHours(hour24, minutes, 0, 0);
 
-        const now = new Date();
-        const currentTzTime = new Date(now.toLocaleString("en-US", {
-            timeZone: details.timeZone || "America/New_York",
-        }));
+    const sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
+    const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+    const tzOffset =
+      new Date(
+        tempDate.toLocaleString("en-US", {
+          timeZone: details.timeZone || "America/New_York",
+        })
+      ).getTime() - tempDate.getTime();
 
-        const currentDay = currentTzTime.getDay();
-        let daysToAdd = (targetDay - currentDay + 7) % 7;
+    return new Date(sessionDate.getTime() - tzOffset);
+  }
 
-        if (daysToAdd === 0) {
-            const currentHour = currentTzTime.getHours();
-            const currentMinute = currentTzTime.getMinutes();
-            if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
-                daysToAdd = 7;
-            }
-        }
+  function getFullDateString(isoDateUTC, sessionTimeZone) {
+    const date = new Date(isoDateUTC);
+    const options = {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: sessionTimeZone,
+      timeZoneName: "short",
+    } as Intl.DateTimeFormatOptions;
+    return date.toLocaleString("en-US", options);
+  }
 
-        const sessionDate = new Date(currentTzTime);
-        sessionDate.setDate(sessionDate.getDate() + daysToAdd);
-        sessionDate.setHours(hour24, minutes, 0, 0);
-
-        const sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
-        const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
-        const tzOffset = new Date(tempDate.toLocaleString("en-US", {
-            timeZone: details.timeZone || "America/New_York",
-        })).getTime() - tempDate.getTime();
-        
-        return new Date(sessionDate.getTime() - tzOffset);
+  // Function to trigger events for Microsoft Clarity and GA4
+  function triggerEvent(eventName, clarityEventName) {
+    // Push event to Google Tag Manager's dataLayer
+    if ((window as any).dataLayer) {
+      (window as any).dataLayer.push({
+        event: eventName,
+      });
+      console.log("GA4 event triggered:", eventName);
+    } else {
+      console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
     }
 
-    function getFullDateString(isoDateUTC, sessionTimeZone) {
-        const date = new Date(isoDateUTC);
-        const options = {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-            timeZone: sessionTimeZone,
-            timeZoneName: "short",
-        } as Intl.DateTimeFormatOptions;
-        return date.toLocaleString("en-US", options);
+    // Send event to Microsoft Clarity
+    if (typeof (window as any).clarity === "function") {
+      (window as any).clarity("event", clarityEventName);
+      console.log("Clarity event triggered:", clarityEventName);
+    } else {
+      console.warn("Microsoft Clarity is not initialized.");
     }
+  }
 
-    // Function to trigger events for Microsoft Clarity and GA4
-    function triggerEvent(eventName, clarityEventName) {
-        // Push event to Google Tag Manager's dataLayer
-        if ((window as any).dataLayer) {
-            (window as any).dataLayer.push({
-                'event': eventName
-            });
-            console.log('GA4 event triggered:', eventName);
-        } else {
-            console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-        }
+  // Add event listeners when DOM is loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initialize countdown timer
+    initializeCountdown();
 
-        // Send event to Microsoft Clarity
-        if (typeof (window as any).clarity === 'function') {
-            (window as any).clarity('event', clarityEventName);
-            console.log('Clarity event triggered:', clarityEventName);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
-        }
-    }
+    // Calendar dropdown logic
+    const btn = document.getElementById("calendarDropdownBtn");
+    const menu = document.getElementById("calendarDropdownMenu");
+    if (btn && menu) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        menu.classList.toggle("show");
+        btn.classList.toggle("active");
 
-    // Add event listeners when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize countdown timer
-        initializeCountdown();
+        // Trigger analytics event for clicking "Add to Calendar" button
+        triggerEvent("add_to_calendar_clicked", "addToCalendarClicked");
+      });
+      document.addEventListener("click", function () {
+        menu.classList.remove("show");
+        btn.classList.remove("active");
+      });
+      menu.addEventListener("click", function (e) {
+        e.stopPropagation();
+      });
+      menu.querySelectorAll(".calendar-option").forEach((option) => {
+        option.addEventListener("click", function () {
+          const type = this.getAttribute("data-calendar");
+          console.log("Calendar option clicked:", type);
 
-        // Calendar dropdown logic
-        const btn = document.getElementById('calendarDropdownBtn');
-        const menu = document.getElementById('calendarDropdownMenu');
-        if (btn && menu) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                menu.classList.toggle('show');
-                btn.classList.toggle('active');
-                
-                // Trigger analytics event for clicking "Add to Calendar" button
-                triggerEvent('add_to_calendar_clicked', 'addToCalendarClicked');
-            });
-            document.addEventListener('click', function() {
-                menu.classList.remove('show');
-                btn.classList.remove('active');
-            });
-            menu.addEventListener('click', function(e) { e.stopPropagation(); });
-            menu.querySelectorAll('.calendar-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const type = this.getAttribute('data-calendar');
-                    console.log('Calendar option clicked:', type);
-                    
-                    // Trigger analytics events for calendar option selection
-                    if (type === 'ics') {
-                        console.log('Triggering ICS calendar event...');
-                        triggerEvent('calendar_ics_selected', 'calendarIcsSelected');
-                        console.log('ICS event triggered, now calling downloadICS...');
-                        downloadICS();
-                    }
-                    if (type === 'google') {
-                        console.log('Triggering Google calendar event...');
-                        triggerEvent('calendar_google_selected', 'calendarGoogleSelected');
-                        openGoogleCalendar();
-                    }
-                    if (type === 'outlook') {
-                        console.log('Triggering Outlook calendar event...');
-                        triggerEvent('calendar_outlook_selected', 'calendarOutlookSelected');
-                        openOutlookCalendar();
-                    }
-                    
-                    menu.classList.remove('show');
-                    btn.classList.remove('active');
-                });
-            });
-        }
+          // Trigger analytics events for calendar option selection
+          if (type === "ics") {
+            console.log("Triggering ICS calendar event...");
+            triggerEvent("calendar_ics_selected", "calendarIcsSelected");
+            console.log("ICS event triggered, now calling downloadICS...");
+            downloadICS();
+          }
+          if (type === "google") {
+            console.log("Triggering Google calendar event...");
+            triggerEvent("calendar_google_selected", "calendarGoogleSelected");
+            openGoogleCalendar();
+          }
+          if (type === "outlook") {
+            console.log("Triggering Outlook calendar event...");
+            triggerEvent("calendar_outlook_selected", "calendarOutlookSelected");
+            openOutlookCalendar();
+          }
 
-        // Top CTA event listener
-        const topCTAElements = document.querySelectorAll('.get-investor-guide-top');
-        topCTAElements.forEach(element => {
-            element.addEventListener('click', function() {
-                triggerEvent('get_investor_guide_webinar_thankyou', 'getInvestorGuideWebinarThankyou');
-            });
+          menu.classList.remove("show");
+          btn.classList.remove("active");
         });
+      });
+    }
 
-        // Action blocks event listeners
-        const actionBlocksData = [
-            {
-                id: 'download-investor-guide',
-                eventName: 'download_investor_guide_webinar_thankyou',
-                clarityEventName: 'downloadInvestorGuideWebinarThankyou'
-            },
-            {
-                id: 'schedule-meeting',
-                eventName: 'schedule_meeting_webinar_thankyou',
-                clarityEventName: 'scheduleMeetingWebinarThankyou'
-            },
-            {
-                id: 'get-started-invest',
-                eventName: 'get_started_invest_webinar_thankyou',
-                clarityEventName: 'getStartedInvestWebinarThankyou'
-            }
-        ];
-
-        actionBlocksData.forEach(block => {
-            const elements = document.querySelectorAll('.' + block.id);
-            elements.forEach(element => {
-                element.addEventListener('click', function() {
-                    triggerEvent(block.eventName, block.clarityEventName);
-                });
-            });
-        });
+    // Top CTA event listener
+    const topCTAElements = document.querySelectorAll(".get-investor-guide-top");
+    topCTAElements.forEach((element) => {
+      element.addEventListener("click", function () {
+        triggerEvent("get_investor_guide_webinar_thankyou", "getInvestorGuideWebinarThankyou");
+      });
     });
 
-    function openGoogleCalendar() {
-        const session = JSON.parse(localStorage.getItem('webinarSession'));
-        if (!session) return alert('Webinar session info not found.');
-        const start = new Date(session.date);
-        const end = new Date(start.getTime() + 60 * 60 * 1000);
-        const format = d => d.toISOString().replace(/-|:|\.\d+/g, '');
-        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(session.title || 'Robert Ventures Webinar')}&dates=${format(start)}/${format(end)}&details=${encodeURIComponent('Join the Robert Ventures Webinar! ' + (session.fullDate || ''))}`;
-        window.open(url, '_blank');
-    }
-    function openOutlookCalendar() {
-        const session = JSON.parse(localStorage.getItem('webinarSession'));
-        if (!session) return alert('Webinar session info not found.');
-        const start = new Date(session.date);
-        const end = new Date(start.getTime() + 60 * 60 * 1000);
-        const format = d => d.toISOString();
-        const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(session.title || 'Robert Ventures Webinar')}&body=${encodeURIComponent('Join the Robert Ventures Webinar! ' + (session.fullDate || ''))}&startdt=${format(start)}&enddt=${format(end)}`;
-        window.open(url, '_blank');
-    }
+    // Action blocks event listeners
+    const actionBlocksData = [
+      {
+        id: "download-investor-guide",
+        eventName: "download_investor_guide_webinar_thankyou",
+        clarityEventName: "downloadInvestorGuideWebinarThankyou",
+      },
+      {
+        id: "schedule-meeting",
+        eventName: "schedule_meeting_webinar_thankyou",
+        clarityEventName: "scheduleMeetingWebinarThankyou",
+      },
+      {
+        id: "get-started-invest",
+        eventName: "get_started_invest_webinar_thankyou",
+        clarityEventName: "getStartedInvestWebinarThankyou",
+      },
+    ];
+
+    actionBlocksData.forEach((block) => {
+      const elements = document.querySelectorAll("." + block.id);
+      elements.forEach((element) => {
+        element.addEventListener("click", function () {
+          triggerEvent(block.eventName, block.clarityEventName);
+        });
+      });
+    });
+  });
+
+  function openGoogleCalendar() {
+    const session = JSON.parse(localStorage.getItem("webinarSession"));
+    if (!session) return alert("Webinar session info not found.");
+    const start = new Date(session.date);
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+    const format = (d) => d.toISOString().replace(/-|:|\.\d+/g, "");
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(session.title || "Robert Ventures Webinar")}&dates=${format(start)}/${format(end)}&details=${encodeURIComponent("Join the Robert Ventures Webinar! " + (session.fullDate || ""))}`;
+    window.open(url, "_blank");
+  }
+  function openOutlookCalendar() {
+    const session = JSON.parse(localStorage.getItem("webinarSession"));
+    if (!session) return alert("Webinar session info not found.");
+    const start = new Date(session.date);
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+    const format = (d) => d.toISOString();
+    const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(session.title || "Robert Ventures Webinar")}&body=${encodeURIComponent("Join the Robert Ventures Webinar! " + (session.fullDate || ""))}&startdt=${format(start)}&enddt=${format(end)}`;
+    window.open(url, "_blank");
+  }
 </script>

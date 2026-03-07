@@ -1,0 +1,39 @@
+name: CI
+
+# Runs on every pull request to main.
+# Blocks merging if any step fails so broken code never reaches production.
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Check, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # format:check — fails if any file has formatting issues
+      # lint         — fails if any ESLint error is found
+      # typecheck    — fails if astro check finds type errors
+      - name: Run quality checks
+        run: npm run check
+
+      # Runs the 28 Vitest unit tests for formHelpers
+      - name: Run tests
+        run: npm run test
+
+      # Ensures the Astro SSR build still compiles successfully
+      - name: Build
+        run: npm run build

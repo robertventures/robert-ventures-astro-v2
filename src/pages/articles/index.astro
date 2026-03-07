@@ -5,243 +5,243 @@ import { getCollection } from "astro:content";
 import FooterNew from "../../components/FooterNew.astro";
 
 const articles = (await getCollection("articles")).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title="Investment Insights & News | Robert Ventures" description="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions." />
-		<meta
-			name="description"
-			content="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions."
-		/>
+  <head>
+    <BaseHead
+      title="Investment Insights & News | Robert Ventures"
+      description="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions."
+    />
+    <meta
+      name="description"
+      content="Discover Robert Ventures' latest news, financial strategies, and education articles to empower your financial decisions."
+    />
 
-		<meta property="og:url" content="https://robertventures.com/articles" />
-		<style>
-			section {
-				margin-bottom: 1.5rem;
-				padding: 0;
-			}
+    <meta property="og:url" content="https://robertventures.com/articles" />
+    <style>
+      section {
+        margin-bottom: 1.5rem;
+        padding: 0;
+      }
 
-			.section-container {
-				margin: 0 auto;
-				border-radius: 1rem;
-				background: #fff;
-				padding: 48px 16px;
-				max-width: none;
-			}
+      .section-container {
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 48px 16px;
+        max-width: none;
+      }
 
-			.section-content {
-				margin: 0 auto;
-				max-width: none;
-			}
+      .section-content {
+        margin: 0 auto;
+        max-width: none;
+      }
 
-			h1 {
-				color: #152429;
-				text-align: left;
-				font-family: var(--font-heading);
-				font-size: 32px;
-				font-weight: 500;
-				line-height: 110%;
+      h1 {
+        color: #152429;
+        text-align: left;
+        font-family: var(--font-heading);
+        font-size: 32px;
+        font-weight: 500;
+        line-height: 110%;
 
-				margin-left: 0;
-				margin-right: 0;
-				margin-bottom: 32px;
-			}
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 32px;
+      }
 
-			@media only screen and (min-width: 600px) {
-				h1 {
-					font-size: 40px;
-				}
-			}
+      @media only screen and (min-width: 600px) {
+        h1 {
+          font-size: 40px;
+        }
+      }
 
-			h2 {
-				color: #152429;
-				font-family: var(--font-heading);
-				font-size: 1.625rem;
-				font-style: normal;
-				font-weight: 500;
-				line-height: 125%; /* 2.03125rem */
-			}
-			ul {
-				list-style: none;
-				padding: 0;
-				margin: 0;
+      h2 {
+        color: #152429;
+        font-family: var(--font-heading);
+        font-size: 1.625rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 125%; /* 2.03125rem */
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
 
-				display: grid;
-				grid-template-columns: 1fr;
-				gap: 3rem;
-			}
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
 
-			li a {
-				text-decoration: none;
-				display: block;
-				padding: 0.5rem;
-				border-radius: 0.75rem;
-				transition: box-shadow 0.2s ease, transform 0.2s ease;
-			}
+      li a {
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+        transition:
+          box-shadow 0.2s ease,
+          transform 0.2s ease;
+      }
 
-			li a:hover,
-			li a:focus-visible {
-				box-shadow: 0 8px 20px rgba(35, 55, 255, 0.08);
-				transform: translateY(-2px);
-			}
+      li a:hover,
+      li a:focus-visible {
+        box-shadow: 0 8px 20px rgba(35, 55, 255, 0.08);
+        transform: translateY(-2px);
+      }
 
-			li img {
-				width: 100%;
-				height: auto;
-				aspect-ratio: 21 / 9;
-				object-fit: cover;
-				margin-bottom: 0.75rem;
-				border-radius: 0.75rem;
-			}
+      li img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 21 / 9;
+        object-fit: cover;
+        margin-bottom: 0.75rem;
+        border-radius: 0.75rem;
+      }
 
-			li h4 {
-				color: #152429;
-				font-family: var(--font-heading);
-				font-size: 1.125rem;
-				font-weight: 500;
-				line-height: 1.25; /* 1.40625rem */
+      li h4 {
+        color: #152429;
+        font-family: var(--font-heading);
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.25; /* 1.40625rem */
 
-				margin-bottom: 0.75rem;
-			}
+        margin-bottom: 0.75rem;
+      }
 
-			li p {
-				color: #505050;
-				font-family: var(--font-body);
-				font-size: 1rem;
-				font-weight: 400;
-				line-height: 1.6; /* 1.6rem */
-			}
+      li p {
+        color: #505050;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.6; /* 1.6rem */
+      }
 
-			@media only screen and (min-width: 600px) and (max-width: 1135px) {
-				section {
-					padding: 0;
-				}
-				.section-container {
-					padding: 64px 32px;
-					max-width: none;
-				}
-				.section-content {
-					max-width: none;
-				}
-				ul {
-					grid-template-columns: repeat(2, 1fr);
-				}
-			}
+      @media only screen and (min-width: 600px) and (max-width: 1135px) {
+        section {
+          padding: 0;
+        }
+        .section-container {
+          padding: 64px 32px;
+          max-width: none;
+        }
+        .section-content {
+          max-width: none;
+        }
+        ul {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
 
-			@media only screen and (min-width: 1136px) {
-				ul {
-					grid-template-columns: repeat(3, 1fr);
-				}
-			}
+      @media only screen and (min-width: 1136px) {
+        ul {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
 
-			@media only screen and (min-width: 1136px) {
-				section {
-					padding: 0;
-				}
-				.section-container {
-					padding: 96px 112px;
-					max-width: none;
-				}
-				.section-content {
-					max-width: none;
-				}
-			}
+      @media only screen and (min-width: 1136px) {
+        section {
+          padding: 0;
+        }
+        .section-container {
+          padding: 96px 112px;
+          max-width: none;
+        }
+        .section-content {
+          max-width: none;
+        }
+      }
 
-			@media only screen and (min-width: 1920px) {
-				section {
-					padding: 0;
-				}
-				.section-container {
-					padding: 96px 312px;
-					max-width: none;
-				}
-				.section-content {
-					max-width: none;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<div class="section-container">
-					<div class="section-content">
-						<h1>Latest News and Events</h1>
-						<ul>
-							{
-								articles.map((post) => (
-									<li>
-										<a 
-											href={`/articles/${post.slug}`}
-											data-track-article
-											data-article-title={post.data.title}
-											data-article-slug={post.slug}
-										>
-											<img
-												width={366}
-												height={156}
-												src={post.data.heroImage}
-												alt=""
-											/>
-											<h4 class="title">
-												{post.data.title}
-											</h4>
-											<p>{post.data.description}</p>
-										</a>
-									</li>
-								))
-							}
-						</ul>
-					</div>
-				</div>
-			</section>
-		</main>
-		<FooterNew />
+      @media only screen and (min-width: 1920px) {
+        section {
+          padding: 0;
+        }
+        .section-container {
+          padding: 96px 312px;
+          max-width: none;
+        }
+        .section-content {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section>
+        <div class="section-container">
+          <div class="section-content">
+            <h1>Latest News and Events</h1>
+            <ul>
+              {
+                articles.map((post) => (
+                  <li>
+                    <a
+                      href={`/articles/${post.slug}`}
+                      data-track-article
+                      data-article-title={post.data.title}
+                      data-article-slug={post.slug}
+                    >
+                      <img width={366} height={156} src={post.data.heroImage} alt="" />
+                      <h4 class="title">{post.data.title}</h4>
+                      <p>{post.data.description}</p>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+    <FooterNew />
 
-		<script>
-			// Article click tracking
-			function triggerArticleClickEvent(articleTitle: string, articleSlug: string) {
-				const eventData = {
-					'event': 'article_click',
-					'article_title': articleTitle,
-					'article_slug': articleSlug
-				};
+    <script>
+      // Article click tracking
+      function triggerArticleClickEvent(articleTitle: string, articleSlug: string) {
+        const eventData = {
+          event: "article_click",
+          article_title: articleTitle,
+          article_slug: articleSlug,
+        };
 
-				// Push event to Google Tag Manager's dataLayer
-				if ((window as any).dataLayer) {
-					(window as any).dataLayer.push(eventData);
-					console.log('GA4 article_click event triggered:', eventData);
-				} else {
-					console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-				}
+        // Push event to Google Tag Manager's dataLayer
+        if ((window as any).dataLayer) {
+          (window as any).dataLayer.push(eventData);
+          console.log("GA4 article_click event triggered:", eventData);
+        } else {
+          console.warn(
+            "dataLayer is not defined. Ensure Google Tag Manager is properly initialized."
+          );
+        }
 
-				// Send event to Microsoft Clarity
-				if (typeof (window as any).clarity === 'function') {
-					(window as any).clarity('set', 'article_title', articleTitle);
-					(window as any).clarity('set', 'article_slug', articleSlug);
-					(window as any).clarity('event', 'articleClick');
-					console.log('Clarity article_click event triggered:', eventData);
-				} else {
-					console.warn('Microsoft Clarity is not initialized.');
-				}
-			}
+        // Send event to Microsoft Clarity
+        if (typeof (window as any).clarity === "function") {
+          (window as any).clarity("set", "article_title", articleTitle);
+          (window as any).clarity("set", "article_slug", articleSlug);
+          (window as any).clarity("event", "articleClick");
+          console.log("Clarity article_click event triggered:", eventData);
+        } else {
+          console.warn("Microsoft Clarity is not initialized.");
+        }
+      }
 
-			// Add event listeners when DOM is loaded
-			document.addEventListener('DOMContentLoaded', function() {
-				const articleLinks = document.querySelectorAll('[data-track-article]');
-				articleLinks.forEach(function(link) {
-					link.addEventListener('click', function() {
-						const articleTitle = (link as HTMLElement).dataset.articleTitle || 'unknown';
-						const articleSlug = (link as HTMLElement).dataset.articleSlug || 'unknown';
-						triggerArticleClickEvent(articleTitle, articleSlug);
-					});
-				});
-			});
-		</script>
-	</body>
+      // Add event listeners when DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        const articleLinks = document.querySelectorAll("[data-track-article]");
+        articleLinks.forEach(function (link) {
+          link.addEventListener("click", function () {
+            const articleTitle = (link as HTMLElement).dataset.articleTitle || "unknown";
+            const articleSlug = (link as HTMLElement).dataset.articleSlug || "unknown";
+            triggerArticleClickEvent(articleTitle, articleSlug);
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

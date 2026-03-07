@@ -1,222 +1,219 @@
 ---
+
 ---
 
 <style>
-    section {
-        background: linear-gradient(to bottom, #101B1F, #111111);
-        color: #E1EEEA;
-        padding: 0;
-        margin: 0;
-    }
+  section {
+    background: linear-gradient(to bottom, #101b1f, #111111);
+    color: #e1eeea;
+    padding: 0;
+    margin: 0;
+  }
 
+  .section-container {
+    padding: 48px 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .section-content {
+    width: 100%;
+    margin: 0;
+  }
+
+  .intro {
+    margin-bottom: 48px;
+  }
+
+  h2 {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 32px;
+    line-height: 110%;
+    text-align: left;
+    color: #e1eeea;
+  }
+
+  p.name {
+    font-size: 24px;
+    color: #e1eeea;
+    margin-bottom: 8px;
+    font-weight: 500;
+    line-height: 100%;
+    text-align: left;
+    font-family: var(--font-body);
+  }
+
+  p.position {
+    color: #bfd1d7;
+    text-align: left;
+    font-weight: 400;
+    line-height: 150%;
+    font-size: 16px;
+    margin-bottom: 32px;
+    font-family: var(--font-body);
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 640px;
+    margin: 0;
+    margin-bottom: 48px;
+  }
+
+  .info p {
+    color: #bfd1d7;
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 150%;
+    text-align: left;
+    margin: 0;
+  }
+
+  .info-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .info-block {
+    text-align: left;
+    padding: 24px;
+    border-radius: 8px;
+    background: #152429;
+    border: none;
+  }
+
+  .block-title {
+    color: #bfd1d7;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    margin-bottom: 8px;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .block-value {
+    font-size: 40px;
+    color: #d3fbd8;
+    font-weight: 500;
+    line-height: 100%;
+    font-family: var(--font-heading);
+  }
+
+  .extra-info {
+    color: #bfd1d7;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0;
+    max-width: 640px;
+    font-family: var(--font-body);
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-        padding: 48px 16px;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        background: transparent;
-        border-radius: 0;
-    }
-
-    .section-content {
-        width: 100%;
-        margin: 0;
-    }
-
-    .intro {
-        margin-bottom: 48px;
+      padding: 64px 32px;
     }
 
     h2 {
-        font-family: 'Roboto Serif', serif;
-        font-size: 40px;
-        font-weight: 500;
-        margin: 0;
-        margin-bottom: 32px;
-        line-height: 110%;
-        text-align: left;
-        color: #E1EEEA;
-    }
-
-    p.name {
-        font-size: 24px;
-        color: #E1EEEA;
-        margin-bottom: 8px;
-        font-weight: 500;
-        line-height: 100%;
-        text-align: left;
-        font-family: var(--font-body);
-    }
-
-    p.position {
-        color: #BFD1D7;
-        text-align: left;
-        font-weight: 400;
-        line-height: 150%;
-        font-size: 16px;
-        margin-bottom: 32px;
-        font-family: var(--font-body);
-    }
-
-    .info {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        max-width: 640px;
-        margin: 0;
-        margin-bottom: 48px;
-    }
-
-    .info p {
-        color: #BFD1D7;
-        font-family: var(--font-body);
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 150%;
-        text-align: left;
-        margin: 0;
+      font-size: 48px;
     }
 
     .info-blocks {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 32px;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 112px;
+      padding-right: 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    .info-block {
-        text-align: left;
-        padding: 24px;
-        border-radius: 8px;
-        background: #152429;
-        border: none;
+    h2 {
+      font-size: 56px;
     }
+  }
 
-    .block-title {
-        color: #BFD1D7;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 100%;
-        margin-bottom: 8px;
-        font-family: var(--font-body);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      padding-left: 312px;
+      padding-right: 312px;
     }
-
-    .block-value {
-        font-size: 40px;
-        color: #D3FBD8;
-        font-weight: 500;
-        line-height: 100%;
-        font-family: var(--font-heading);
-    }
-
-    .extra-info {
-        color: #BFD1D7;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 150%;
-        margin: 0;
-        max-width: 640px;
-        font-family: var(--font-body);
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .section-container {
-            padding: 64px 32px;
-        }
-
-        h2 {
-            font-size: 48px;
-        }
-
-        .info-blocks {
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-        }
-    }
-
-    @media only screen and (min-width: 1136px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 112px;
-            padding-right: 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        h2 {
-            font-size: 56px;
-        }
-    }
-
-    @media only screen and (min-width: 1920px) {
-        .section-container {
-            padding-top: 96px;
-            padding-bottom: 96px;
-            padding-left: 312px;
-            padding-right: 312px;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="intro">
-                <h2>Manager Track Record</h2>
-                <p class="name">Joe Robert</p>
-                <p class="position">Manager</p>
+  <div class="section-container">
+    <div class="section-content">
+      <div class="intro">
+        <h2>Manager Track Record</h2>
+        <p class="name">Joe Robert</p>
+        <p class="position">Manager</p>
 
-                <div class="info">
-                    <p>
-                        Joe Robert is the CEO and Founder of Robert Ventures and has
-                        an extensive background in real estate investing, with over
-                        20 years of asset management experience. During this period,
-                        he raised capital from individuals and partners that paid
-                        double-digit preferred returns annually for years. Joe has
-                        never lost private investors capital over his whole period
-                        of investing.
-                    </p>
-                    <p>
-                        A decade ago, he partnered with a large fund to take
-                        advantage of the opportunity to buy distressed debt at low
-                        prices and returned capital, along with double digit returns
-                        for several years as the portfolio was managed.
-                    </p>
-    
-                    <p>
-                        Over the last five years, he has made multiple investments
-                        into the tech sector that included providing venture capital
-                        and acquiring digital assets that provided exposure to the
-                        growing digital economy.
-                    </p>
-                </div>
-            </div>
+        <div class="info">
+          <p>
+            Joe Robert is the CEO and Founder of Robert Ventures and has an extensive background in
+            real estate investing, with over 20 years of asset management experience. During this
+            period, he raised capital from individuals and partners that paid double-digit preferred
+            returns annually for years. Joe has never lost private investors capital over his whole
+            period of investing.
+          </p>
+          <p>
+            A decade ago, he partnered with a large fund to take advantage of the opportunity to buy
+            distressed debt at low prices and returned capital, along with double digit returns for
+            several years as the portfolio was managed.
+          </p>
 
-            <div class="info-blocks">
-                <div class="info-block">
-                    <p class="block-title">Track Record</p>
-                    <p class="block-value">20 yrs</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Properties</p>
-                    <p class="block-value">200 +</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Mortgages</p>
-                    <p class="block-value">1500 +</p>
-                </div>
-                <div class="info-block">
-                    <p class="block-title">Tech Investments</p>
-                    <p class="block-value">40 +</p>
-                </div>
-            </div>
-
-            <p class="extra-info">
-                Trust your investments with a proven manager that hasn't missed
-                an investor payment and returned all capital with interest.
-            </p>
+          <p>
+            Over the last five years, he has made multiple investments into the tech sector that
+            included providing venture capital and acquiring digital assets that provided exposure
+            to the growing digital economy.
+          </p>
         </div>
+      </div>
+
+      <div class="info-blocks">
+        <div class="info-block">
+          <p class="block-title">Track Record</p>
+          <p class="block-value">20 yrs</p>
+        </div>
+        <div class="info-block">
+          <p class="block-title">Properties</p>
+          <p class="block-value">200 +</p>
+        </div>
+        <div class="info-block">
+          <p class="block-title">Mortgages</p>
+          <p class="block-value">1500 +</p>
+        </div>
+        <div class="info-block">
+          <p class="block-title">Tech Investments</p>
+          <p class="block-value">40 +</p>
+        </div>
+      </div>
+
+      <p class="extra-info">
+        Trust your investments with a proven manager that hasn't missed an investor payment and
+        returned all capital with interest.
+      </p>
     </div>
+  </div>
 </section>

@@ -2,25 +2,24 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import FooterNew from "../components/FooterNew.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import AboutHero from "../sections/AboutHero.astro";
 import ReviewsV2 from "../sections/ReviewsV2.astro";
 
 const pageTitle = "Our Team & Mission | Robert Ventures";
 const pageDescription =
-    "Meet Robert Ventures' expert team, led by Joe Robert. Discover our mission and innovative strategies in real estate and digital asset investment.";
+  "Meet Robert Ventures' expert team, led by Joe Robert. Discover our mission and innovative strategies in real estate and digital asset investment.";
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <BaseHead title={pageTitle} description={pageDescription} />
-    </head>
-    <body>
-        <Header />
-        <AboutHero />
-        <ReviewsV2 />
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+  </head>
+  <body>
+    <Header />
+    <AboutHero />
+    <ReviewsV2 />
 
-        <FooterNew />
-    </body>
+    <FooterNew />
+  </body>
 </html>

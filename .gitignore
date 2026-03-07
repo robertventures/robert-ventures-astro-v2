@@ -41,5 +41,8 @@ src/storage
 # Claude Code
 CLAUDE.md
 
+# Cursor local config — rules are personal, not shared with the repo
+.cursor/
+
 
 OLD_CLAUDE.md

@@ -1,8 +1,8 @@
 ---
-title: 'Passive Income Insights: How Passive Income is Taxed'
+title: "Passive Income Insights: How Passive Income is Taxed"
 description: "Navigate the tax implications of passive income. Our guide breaks down how different passive income streams are taxed to help you plan smarter."
-pubDate: 'Nov 30 2023'
-heroImage: '/articles-images/30.webp'
+pubDate: "Nov 30 2023"
+heroImage: "/articles-images/30.webp"
 ---
 
 <div class="blog-content">

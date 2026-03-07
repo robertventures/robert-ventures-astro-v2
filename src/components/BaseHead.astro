@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import favicon from "../images/logo-favicon.svg";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -109,11 +108,11 @@ const {
 {Astro.site.hostname === "robertventures.com" && (
   <script is:inline>
     (function() {
-      var m = document.cookie.match(/(^|;\s*)rtk_click_id=([^;]+)/);
-      var clickid = m ? decodeURIComponent(m[2]) : null;
-      var url = '//rt.robertventures.com/postback?format=img&type=page_view';
+      const m = document.cookie.match(/(^|;\s*)rtk_click_id=([^;]+)/);
+      const clickid = m ? decodeURIComponent(m[2]) : null;
+      let url = '//rt.robertventures.com/postback?format=img&type=page_view';
       if (clickid) url += '&clickid=' + encodeURIComponent(clickid);
-      var img = document.createElement('img');
+      const img = document.createElement('img');
       img.src = url;
       img.width = 1;
       img.height = 1;
@@ -144,7 +143,7 @@ const {
   (function () {
     // 1. Immediately grab clickid from URL and save to cookie
     try {
-      var clickid = new URLSearchParams(window.location.search).get("clickid");
+      const clickid = new URLSearchParams(window.location.search).get("clickid");
       if (clickid) {
         document.cookie = 'rtk_click_id=' + encodeURIComponent(clickid) +
           '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
@@ -157,21 +156,21 @@ const {
     // 2. Rewrite uniclick.js API calls from rt.robertventures.com → /rtk/ (first-party proxy)
     //    uniclick.js hardcodes "https://rt.robertventures.com/" for its XHR/fetch calls,
     //    which Firefox and Safari block as third-party tracking. This rewrites them.
-    var rtkOrigin = "https://rt.robertventures.com/";
-    var rtkProxy = "/rtk/";
+    const rtkOrigin = "https://rt.robertventures.com/";
+    const rtkProxy = "/rtk/";
 
-    var origOpen = XMLHttpRequest.prototype.open;
+    const origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
-      var args = Array.prototype.slice.call(arguments);
+      const args = Array.prototype.slice.call(arguments);
       if (typeof args[1] === "string" && args[1].indexOf(rtkOrigin) === 0) {
         args[1] = args[1].replace(rtkOrigin, rtkProxy);
       }
       return origOpen.apply(this, args);
     };
 
-    var origFetch = window.fetch;
+    const origFetch = window.fetch;
     window.fetch = function () {
-      var args = Array.prototype.slice.call(arguments);
+      const args = Array.prototype.slice.call(arguments);
       if (typeof args[0] === "string" && args[0].indexOf(rtkOrigin) === 0) {
         args[0] = args[0].replace(rtkOrigin, rtkProxy);
       }
@@ -179,8 +178,8 @@ const {
     };
 
     // 3. Load uniclick.js via first-party proxy
-    var host = window.location.hostname.replace(/^www\./, "");
-    var script = document.createElement("script");
+    const host = window.location.hostname.replace(/^www\./, "");
+    const script = document.createElement("script");
     script.src =
       "/rtk/uniclick.js?attribution=lastclick&clickid=clickid&cookiedomain=" +
       encodeURIComponent(host) +
@@ -189,13 +188,13 @@ const {
     document.head.appendChild(script);
 
     // 4. Poll for rtkClickID and persist to cookie (self-contained, no dependency on form)
-    var attempts = 0;
+    let attempts = 0;
     var poll = setInterval(function () {
       attempts++;
-      var id = window.rtkClickID;
+      let id = window.rtkClickID;
       if (!id) {
         try {
-          var c = document.cookie.match(/(?:^|;\s*)rtkclickid-store=([^;]*)/);
+          const c = document.cookie.match(/(?:^|;\s*)rtkclickid-store=([^;]*)/);
           if (c) id = c[1];
         } catch (e) {}
       }

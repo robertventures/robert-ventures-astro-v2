@@ -5,90 +5,89 @@ import Advantage from "../images/svg/rv-advantage.svg";
 ---
 
 <style>
-    section > * {
-        text-align: center;
-    }
+  section > * {
+    text-align: center;
+  }
 
+  h2 {
+    color: #281480;
+    margin-bottom: 2rem;
+  }
+
+  p {
+    color: #505050;
+    text-align: center;
+    font-weight: 500;
+    line-height: 160%; /* 1.8rem */
+
+    margin-bottom: 3rem;
+  }
+
+  .image-section svg {
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+
+  @media only screen and (min-width: 990px) {
     h2 {
-        color: #281480;
-        margin-bottom: 2rem;
+      margin-bottom: 0;
     }
 
-    p {
-        color: #505050;
-        text-align: center;
-        font-weight: 500;
-        line-height: 160%; /* 1.8rem */
+    .section-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "info image"
+        "form image";
+      justify-content: space-between;
+    }
 
-        margin-bottom: 3rem;
+    .info-section {
+      grid-area: info;
+      margin-top: auto;
+      margin-bottom: 1.5rem;
+      max-width: 366px;
+      margin-right: auto;
+    }
+
+    .form-section {
+      grid-area: form;
+      max-width: 366px;
+      width: 100%;
+      margin-right: auto;
+    }
+
+    .image-section {
+      grid-area: image;
+      text-align: center;
     }
 
     .image-section svg {
-        margin: 0 auto;
-        margin-bottom: 2rem;
+      margin-left: auto;
     }
-
-
-    @media only screen and (min-width: 990px) {
-        h2 {
-            margin-bottom: 0;
-        }
-
-        .section-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-areas:
-                "info image"
-                "form image";
-            justify-content: space-between;
-        }
-
-        .info-section {
-            grid-area: info;
-            margin-top: auto;
-            margin-bottom: 1.5rem;
-            max-width: 366px;
-            margin-right: auto;
-        }
-
-        .form-section {
-            grid-area: form;
-            max-width: 366px;
-            width: 100%;
-            margin-right: auto;
-        }
-
-        .image-section {
-            grid-area: image;
-            text-align: center;
-        }
-
-        .image-section svg {
-            margin-left: auto;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="info-section">
-                <h2>Why Robert Ventures Leads?</h2>
-            </div>
+  <div class="section-container">
+    <div class="section-content">
+      <div class="info-section">
+        <h2>Why Robert Ventures Leads?</h2>
+      </div>
 
-            <div class="image-section">
-                <Advantage />
-            </div>
+      <div class="image-section">
+        <Advantage />
+      </div>
 
-            <div class="form-section">
-                <p>
-                    The first SEC qualified offering to allow real estate and
-                    digital assets to all US investors.
-                </p>
-                <div class="form-cta">
-                    <DualCTA />
-                </div>
-            </div>
+      <div class="form-section">
+        <p>
+          The first SEC qualified offering to allow real estate and digital assets to all US
+          investors.
+        </p>
+        <div class="form-cta">
+          <DualCTA />
         </div>
+      </div>
     </div>
+  </div>
 </section>

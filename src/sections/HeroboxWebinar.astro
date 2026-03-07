@@ -1,7 +1,6 @@
 ---
 import FormWebinar from "../components/FormWebinar.astro";
 
-
 import Business from "../images/svg/business-logos/business-insider.svg";
 import Market from "../images/svg/business-logos/market-watch.svg";
 import Ap from "../images/svg/business-logos/ap.svg";
@@ -13,191 +12,189 @@ import Check from "../../public/images/svg/green-check.svg";
 ---
 
 <style>
+  .section-container {
+    padding: 3rem 1.5rem 3rem 1.5rem;
+
+    background-image: url(/images/svg/waves.svg);
+    background-repeat: no-repeat;
+    /* background-size: cover; */
+    background-position: top;
+
+    text-align: center;
+  }
+
+  .section-content {
+    text-align: left;
+  }
+
+  .section-content svg {
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: clamp(1.3rem, 8.7vw, 2.25rem);
+    margin: 0;
+    margin-bottom: 1rem;
+    text-align: left;
+    max-width: 640px;
+  }
+
+  p.hero-text {
+    font-family: var(--font-heading);
+    font-display: swap;
+    font-size: 1.125rem;
+
+    font-weight: 500;
+    line-height: 160%;
+
+    margin-bottom: 1.5rem;
+  }
+
+  .form-cta {
+    margin-bottom: 2rem;
+  }
+
+  hr {
+    height: 0.0625rem;
+    background: #afb5bc;
+    margin-bottom: 1rem;
+  }
+
+  .business {
+    display: grid;
+    grid-auto-columns: auto;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    justify-items: center;
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+  }
+
+  .pre-form-headline {
+    color: #505050;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 100%;
+
+    /* margin: 0 auto; */
+
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  svg {
+    display: inline-block;
+    max-height: 100%;
+    width: auto;
+  }
+
+  span {
+    background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p.featured {
+    color: #abbbd3;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1; /* 0.6875rem */
+
+    margin-bottom: 0.75rem;
+  }
+
+  @media only screen and (min-width: 768px) {
+    section {
+      padding: 0 2rem;
+    }
+  }
+
+  @media only screen and (min-width: 990px) {
     .section-container {
-        padding: 3rem 1.5rem 3rem 1.5rem;
-
-        background-image: url(/images/svg/waves.svg);
-        background-repeat: no-repeat;
-        /* background-size: cover; */
-        background-position: top;
-
-        text-align: center;
-    }
-
-    .section-content {
-        text-align: left;
-    }
-
-    .section-content svg {
-        margin: 0 auto;
+      padding: 4rem 1.5rem 4rem 1.5rem;
     }
 
     h1 {
-        font-size: clamp(1.3rem, 8.7vw, 2.25rem);
-        margin: 0;
-        margin-bottom: 1rem;
-        text-align: left;
-        max-width: 640px;
+      margin-bottom: 3rem;
+      font-size: 52px;
     }
-
-    p.hero-text {
-        font-family: var(--font-heading);
-        font-display: swap;
-        font-size: 1.125rem;
-
-        font-weight: 500;
-        line-height: 160%;
-
-        margin-bottom: 1.5rem;
-    }
-
-    .form-cta {
-        margin-bottom: 2rem;
-    }
-
-    hr {
-        height: 0.0625rem;
-        background: #afb5bc;
-        margin-bottom: 1rem;
+    .section-content {
+      max-width: 921px;
     }
 
     .business {
-        display: grid;
-        grid-auto-columns: auto;
-        grid-template-columns: 1fr 1fr;
-        align-items: stretch;
-        justify-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      align-items: stretch;
     }
 
     .logo-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 48px;
-    }
-
-    .pre-form-headline {
-        color: #505050;
-        font-size: 1.125rem;
-        font-weight: 700;
-        line-height: 100%;
-
-        /* margin: 0 auto; */
-
-        margin-bottom: 1.5rem;
-        margin-top: 1.5rem;
-        
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
-
-        
-    }
-
-    svg{
-        display: inline-block;
-        max-height: 100%;
-        width: auto;
-    }
-
-    span{
-        background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      height: 80px;
     }
 
     p.featured {
-        color: #abbbd3;
-        font-size: 14px;
-        font-weight: 300;
-        line-height: 1; /* 0.6875rem */
-
-        margin-bottom: 0.75rem;
+      margin-bottom: 0;
     }
-
-    @media only screen and (min-width: 768px) {
-        section {
-            padding: 0 2rem;
-        }
-    }
-
-    @media only screen and (min-width: 990px) {
-        .section-container {
-            padding: 4rem 1.5rem 4rem 1.5rem;
-        }
-
-        h1 {
-            margin-bottom: 3rem;
-            font-size: 52px;
-        }
-        .section-content {
-            max-width: 921px;
-        }
-
-        .business {
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            align-items: stretch;
-        }
-
-        .logo-container {
-            height: 80px;
-        }
-
-        p.featured {
-            margin-bottom: 0;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div id="main-form" class="section-container">
-        <div class="section-content">
-            <h1>Learn How to Earn <span>10%</span> Fixed Annual Returns with Our SEC-Qualified Bonds</h1>
+  <div id="main-form" class="section-container">
+    <div class="section-content">
+      <h1>Learn How to Earn <span>10%</span> Fixed Annual Returns with Our SEC-Qualified Bonds</h1>
 
-            <!-- <Ten /> -->
-            <p class="hero-text">Backed by Real Estate and Digital Assets</p>
+      <!-- <Ten /> -->
+      <p class="hero-text">Backed by Real Estate and Digital Assets</p>
 
-            <div class="form-cta">
-                <div class="pre-form-headline">
-                    <Check/> 100% Payout Success
-                </div>
-                <FormWebinar />
-            </div>
-
-            <hr />
-
-            <p class="featured">Featured in</p>
-
-            <div class="business">
-                <div class="logo-container">
-                    <Business />
-                </div>
-
-                <div class="logo-container">
-                    <Morning />
-                </div>
-
-                <div class="logo-container">
-                    <Market />
-                </div>
-
-                <div class="logo-container">
-                    <Street />
-                </div>
-
-                <div class="logo-container">
-                    <Benzinga />
-                </div>
-
-                <div class="logo-container">
-                    <Ap />
-                </div>
-            </div>
+      <div class="form-cta">
+        <div class="pre-form-headline">
+          <Check /> 100% Payout Success
         </div>
+        <FormWebinar />
+      </div>
+
+      <hr />
+
+      <p class="featured">Featured in</p>
+
+      <div class="business">
+        <div class="logo-container">
+          <Business />
+        </div>
+
+        <div class="logo-container">
+          <Morning />
+        </div>
+
+        <div class="logo-container">
+          <Market />
+        </div>
+
+        <div class="logo-container">
+          <Street />
+        </div>
+
+        <div class="logo-container">
+          <Benzinga />
+        </div>
+
+        <div class="logo-container">
+          <Ap />
+        </div>
+      </div>
     </div>
+  </div>
 </section>

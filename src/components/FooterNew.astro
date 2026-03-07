@@ -9,234 +9,252 @@ import Facebook from "../images/FacebookLogo.svg";
 ---
 
 <style>
-    footer {
-        margin-bottom: 0;
-        background: #ffffff;
-        width: 100%;
-    }
+  footer {
+    margin-bottom: 0;
+    background: #ffffff;
+    width: 100%;
+  }
 
+  .footer-container {
+    background: #ffffff;
+    border-radius: 0;
+    border-top: 1px solid #bfd1d7;
+    padding-top: 16px;
+    padding-bottom: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .footer-content {
+    margin: 0 auto;
+  }
+
+  .intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 1rem;
+  }
+
+  .socials {
+    display: flex;
+    gap: 1rem;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: #bfd1d7;
+    margin: 0;
+    margin-bottom: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .footer-link-lists {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    margin-bottom: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    flex: 1;
+  }
+
+  .list a {
+    text-decoration: none;
+    color: #152429;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 100%;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .list a.phone {
+    text-decoration: underline;
+  }
+
+  .risk p,
+  .risk a {
+    color: #718288;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%; /* 1.3125rem */
+
+    margin-bottom: 32px;
+  }
+
+  .end {
+    color: #718288;
+    text-align: left;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-top: 1px solid #bfd1d7;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .footer-container {
-        background: #ffffff;
-        border-radius: 0;
-        border-top: 1px solid #bfd1d7;
-        padding-top: 16px;
-        padding-bottom: 0;
-        padding-left: 16px;
-        padding-right: 16px;
-        text-align: left;
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    .footer-content {
-        margin: 0 auto;
-    }
-
-    .intro {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        margin-bottom: 1rem;
-    }
-
-    .socials {
-        display: flex;
-        gap: 1rem;
-    }
-
-    hr {
-        border: 0;
-        height: 1px;
-        background: #bfd1d7;
-        margin: 0;
-        margin-bottom: 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-    }
-
-    .footer-link-lists {
-        display: flex;
-        justify-content: space-between;
-        padding-top: 48px;
-        padding-bottom: 48px;
-        margin-bottom: 0;
-    }
-
-    .list {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-
-        flex: 1;
-    }
-
-    .list a {
-        text-decoration: none;
-        color: #152429;
-        font-family: "Roboto", sans-serif;
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 100%;
-        display: inline-block;
-        width: fit-content;
-    }
-
-    .list a.phone {
-        text-decoration: underline;
-    }
-
-    .risk p,
-    .risk a {
-        color: #718288;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 150%; /* 1.3125rem */
-
-        margin-bottom: 32px;
+      padding-top: 16px;
+      padding-bottom: 0;
+      padding-left: 32px;
+      padding-right: 32px;
     }
 
     .end {
-        color: #718288;
-        text-align: left;
-        font-family: "Roboto", sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 100%;
-        padding-top: 16px;
-        padding-bottom: 16px;
-        border-top: 1px solid #bfd1d7;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        padding-left: 16px;
-        padding-right: 16px;
-        box-sizing: border-box;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .footer-container {
+      padding-top: 16px;
+      padding-bottom: 0;
+      padding-left: 112px;
+      padding-right: 112px;
+      margin: 0;
+      width: 100%;
     }
 
-    @media only screen and (min-width: 600px) and (max-width: 1135px) {
-        .footer-container {
-            padding-top: 16px;
-            padding-bottom: 0;
-            padding-left: 32px;
-            padding-right: 32px;
-        }
+    .end {
+      padding-left: 112px;
+      padding-right: 112px;
+    }
+  }
 
-        .end {
-            padding-left: 32px;
-            padding-right: 32px;
-        }
+  @media only screen and (min-width: 1920px) {
+    .footer-container {
+      padding-top: 16px;
+      padding-bottom: 0;
+      padding-left: 312px;
+      padding-right: 312px;
     }
 
-    @media only screen and (min-width: 1136px) {
-        .footer-container {
-            padding-top: 16px;
-            padding-bottom: 0;
-            padding-left: 112px;
-            padding-right: 112px;
-            margin: 0;
-            width: 100%;
-        }
-
-        .end {
-            padding-left: 112px;
-            padding-right: 112px;
-        }
+    .end {
+      padding-left: 312px;
+      padding-right: 312px;
     }
-
-    @media only screen and (min-width: 1920px) {
-        .footer-container {
-            padding-top: 16px;
-            padding-bottom: 0;
-            padding-left: 312px;
-            padding-right: 312px;
-        }
-
-        .end {
-            padding-left: 312px;
-            padding-right: 312px;
-        }
-    }
+  }
 </style>
 
 <footer>
-    <div class="footer-container">
-        <div class="footer-content">
-            <div class="intro">
-                <a href="/"><Rvlogo /></a>
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="intro">
+        <a href="/"><Rvlogo /></a>
 
-                <div class="socials">
-                    <a
-                        href="https://twitter.com/RobertVentures_"
-                        target="_blank"
-                        data-track-social="twitter"
-                        data-track-location="footer"><X /></a
-                    >
-                    <a
-                        href="https://www.instagram.com/robert_ventures/"
-                        target="_blank"
-                        data-track-social="instagram"
-                        data-track-location="footer"><Instagram /></a
-                    >
-                    <a
-                        href="https://www.linkedin.com/company/robertventures"
-                        target="_blank"
-                        data-track-social="linkedin"
-                        data-track-location="footer"><Linkedin /></a
-                    >
-                    <a
-                        href="https://www.facebook.com/Robertventures"
-                        target="_blank"
-                        data-track-social="facebook"
-                        data-track-location="footer"><Facebook /></a
-                    >
-                    <a
-                        href="https://www.youtube.com/@RobertVentures"
-                        target="_blank"
-                        data-track-social="youtube"
-                        data-track-location="footer"><Youtube /></a
-                    >
-                </div>
-            </div>
+        <div class="socials">
+          <a
+            href="https://twitter.com/RobertVentures_"
+            target="_blank"
+            data-track-social="twitter"
+            data-track-location="footer"><X /></a
+          >
+          <a
+            href="https://www.instagram.com/robert_ventures/"
+            target="_blank"
+            data-track-social="instagram"
+            data-track-location="footer"><Instagram /></a
+          >
+          <a
+            href="https://www.linkedin.com/company/robertventures"
+            target="_blank"
+            data-track-social="linkedin"
+            data-track-location="footer"><Linkedin /></a
+          >
+          <a
+            href="https://www.facebook.com/Robertventures"
+            target="_blank"
+            data-track-social="facebook"
+            data-track-location="footer"><Facebook /></a
+          >
+          <a
+            href="https://www.youtube.com/@RobertVentures"
+            target="_blank"
+            data-track-social="youtube"
+            data-track-location="footer"><Youtube /></a
+          >
+        </div>
+      </div>
 
-            <hr />
+      <hr />
 
-            <div class="footer-link-lists">
-                <div class="list">
-                    <a href="/strategy" class="link" data-track-nav="strategy" data-track-location="footer"> Strategy </a>
-                    <a href="/about-us" class="link" data-track-nav="about_us" data-track-location="footer"> About Us </a>
-                    <a href="/articles/" class="link" data-track-nav="articles" data-track-location="footer"> Articles </a>
-                    <a href="/calendar" class="link" data-track-nav="contact" data-track-location="footer"> Contact </a>
-                    <a
-                        href="https://invest.robertventures.com/login"
-                        class="link"
-                        data-track-cta="login"
-                        data-track-location="footer"
-                    >
-                        Login
-                    </a>
-                </div>
+      <div class="footer-link-lists">
+        <div class="list">
+          <a href="/strategy" class="link" data-track-nav="strategy" data-track-location="footer">
+            Strategy
+          </a>
+          <a href="/about-us" class="link" data-track-nav="about_us" data-track-location="footer">
+            About Us
+          </a>
+          <a href="/articles/" class="link" data-track-nav="articles" data-track-location="footer">
+            Articles
+          </a>
+          <a href="/calendar" class="link" data-track-nav="contact" data-track-location="footer">
+            Contact
+          </a>
+          <a
+            href="https://invest.robertventures.com/login"
+            class="link"
+            data-track-cta="login"
+            data-track-location="footer"
+          >
+            Login
+          </a>
+        </div>
 
-                <div class="list">
-                    <a href="/privacy-policy" class="link">Privacy Policy</a>
-                    <a href="/terms-of-use" class="link">Terms of use</a>
-                    <a href="/cookie-policy" class="link">Cookie Policy</a>
-                    <a href="/disclaimer" class="link">Disclaimer</a>
-                    <a class="phone" href="tel:+13024046341" data-track-phone="+13024046341" data-track-location="footer">+1 302 404 6341</a>
-                    <a class="phone" href="tel:+19195827575" data-track-phone="+19195827575" data-track-location="footer">+1 919 582 7575</a>
-                </div>
-            </div>
+        <div class="list">
+          <a href="/privacy-policy" class="link">Privacy Policy</a>
+          <a href="/terms-of-use" class="link">Terms of use</a>
+          <a href="/cookie-policy" class="link">Cookie Policy</a>
+          <a href="/disclaimer" class="link">Disclaimer</a>
+          <a
+            class="phone"
+            href="tel:+13024046341"
+            data-track-phone="+13024046341"
+            data-track-location="footer">+1 302 404 6341</a
+          >
+          <a
+            class="phone"
+            href="tel:+19195827575"
+            data-track-phone="+19195827575"
+            data-track-location="footer">+1 919 582 7575</a
+          >
+        </div>
+      </div>
 
-            <div class="risk">
-                <!-- <p>
+      <div class="risk">
+        <!-- <p>
                     Important Risk Information: Investing involves risk. There
                     is a potential that Robert Ventures Holdings LLC (the
                     “Company”) may not be able to make the scheduled payments of
@@ -256,31 +274,26 @@ import Facebook from "../images/FacebookLogo.svg";
                     >
                 </p> -->
 
-                <p>
-                    Important Risk Information: Investing involves risk. There
-                    is a potential that Robert Ventures Holdings LLC (the
-                    "Company") may not be able to make the scheduled payments of
-                    interest or principal on the bonds related to its existing
-                    securities offering. While the Company believes the
-                    assumptions and forward-looking statements contained
-                    throughout this website are reasonable, the Company cannot
-                    guarantee future results, performance, or achievements.
-                    Anticipated returns, expense estimates, and investor
-                    payments discussed throughout this website are based on the
-                    Company's assumptions and beliefs and are not reflective of
-                    past operations of the Company. <a
-                        href="https://l.robertventures.com/OfferingCircular"
-                        data-track-cta="offering_circular"
-                        data-track-location="footer"
-                        >Robert Ventures Holdings LLC Preliminary Offering
-                        Circular</a
-                    >
-                </p>
+        <p>
+          Important Risk Information: Investing involves risk. There is a potential that Robert
+          Ventures Holdings LLC (the "Company") may not be able to make the scheduled payments of
+          interest or principal on the bonds related to its existing securities offering. While the
+          Company believes the assumptions and forward-looking statements contained throughout this
+          website are reasonable, the Company cannot guarantee future results, performance, or
+          achievements. Anticipated returns, expense estimates, and investor payments discussed
+          throughout this website are based on the Company's assumptions and beliefs and are not
+          reflective of past operations of the Company. <a
+            href="https://l.robertventures.com/OfferingCircular"
+            data-track-cta="offering_circular"
+            data-track-location="footer"
+            >Robert Ventures Holdings LLC Preliminary Offering Circular</a
+          >
+        </p>
 
-                <div class="end">
-                    © {new Date().getFullYear()} Robert Ventures LLC. All rights reserved.
-                </div>
-            </div>
+        <div class="end">
+          © {new Date().getFullYear()} Robert Ventures LLC. All rights reserved.
         </div>
+      </div>
     </div>
+  </div>
 </footer>

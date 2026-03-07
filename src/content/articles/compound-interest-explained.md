@@ -1,8 +1,8 @@
 ---
-title: 'Unlocking Wealth: The Power of Compound Interest Explained'
-description: 'Unlock the exponential growth of your savings with compound interest. Learn how it accelerates wealth over time for financial freedom.'
-pubDate: 'Nov 15 2023'
-heroImage: '/articles-images/15.webp'
+title: "Unlocking Wealth: The Power of Compound Interest Explained"
+description: "Unlock the exponential growth of your savings with compound interest. Learn how it accelerates wealth over time for financial freedom."
+pubDate: "Nov 15 2023"
+heroImage: "/articles-images/15.webp"
 ---
 
 <div class="blog-content">

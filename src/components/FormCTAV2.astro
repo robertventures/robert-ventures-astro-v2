@@ -3,57 +3,59 @@ import Arrow from "../images/svg/right-arrow.svg";
 ---
 
 <style>
-    .cta-block {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-    a {
-        text-decoration: none;
-        text-align: center;
-        border-radius: 8px;
+  a {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
 
-        font-size: 20px;
-        font-weight: 700;
-        font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    font-family: var(--font-heading);
 
-        padding: 12px;
+    padding: 12px;
 
-        max-width: 366px;
-        width: 100%;
+    max-width: 366px;
+    width: 100%;
 
-        margin: 0 auto;
-    }
+    margin: 0 auto;
+  }
 
-    .invest {
-        background-color: #5028ff;
-        border: 1px solid #5028ff;
+  .invest {
+    background-color: #5028ff;
+    border: 1px solid #5028ff;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 
-        color: #fff;
-    }
+    color: #fff;
+  }
 
-    .webinar {
-        color: #281480;
-        font-weight: 500;
+  .webinar {
+    color: #281480;
+    font-weight: 500;
 
-        border: 1px solid #281480;
-    }
-    svg{
-        width: 20px;
-        height: 20px;
-        transform: translateY(1px);
-    }
+    border: 1px solid #281480;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    transform: translateY(1px);
+  }
 </style>
 
 <div class="cta-block">
-    <a class="invest invest-cta-homepage-v2" href="https://invest.robertventures.com/">Invest<Arrow /></a>
-    <a class="webinar webinar-cta-homepage-v2" href="/webinar">Join Our Webinar</a>
+  <a class="invest invest-cta-homepage-v2" href="https://invest.robertventures.com/"
+    >Invest<Arrow /></a
+  >
+  <a class="webinar webinar-cta-homepage-v2" href="/webinar">Join Our Webinar</a>
 </div>
 
 <script>
@@ -62,37 +64,37 @@ import Arrow from "../images/svg/right-arrow.svg";
     // Push event to Google Tag Manager's dataLayer
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
-        'event': eventName
+        event: eventName,
       });
-      console.log('GA4 event triggered: ' + eventName);
+      console.log("GA4 event triggered: " + eventName);
     } else {
-      console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+      console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
     }
 
     // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === 'function') {
-      (window as any).clarity('event', clarityEventName);
-      console.log('Clarity event triggered: ' + clarityEventName);
+    if (typeof (window as any).clarity === "function") {
+      (window as any).clarity("event", clarityEventName);
+      console.log("Clarity event triggered: " + clarityEventName);
     } else {
-      console.warn('Microsoft Clarity is not initialized.');
+      console.warn("Microsoft Clarity is not initialized.");
     }
   }
 
   // Add event listeners when DOM is loaded
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // Invest CTA event listeners - target all instances
-    const investCTAs = document.querySelectorAll('.invest-cta-homepage-v2');
-    investCTAs.forEach(function(investCTA) {
-      investCTA.addEventListener('click', function() {
-        triggerEvent('invest_cta_homepage_click', 'investCtaHomepageClick');
+    const investCTAs = document.querySelectorAll(".invest-cta-homepage-v2");
+    investCTAs.forEach(function (investCTA) {
+      investCTA.addEventListener("click", function () {
+        triggerEvent("invest_cta_homepage_click", "investCtaHomepageClick");
       });
     });
 
     // Webinar CTA event listeners - target all instances
-    const webinarCTAs = document.querySelectorAll('.webinar-cta-homepage-v2');
-    webinarCTAs.forEach(function(webinarCTA) {
-      webinarCTA.addEventListener('click', function() {
-        triggerEvent('webinar_cta_homepage_click', 'webinarCtaHomepageClick');
+    const webinarCTAs = document.querySelectorAll(".webinar-cta-homepage-v2");
+    webinarCTAs.forEach(function (webinarCTA) {
+      webinarCTA.addEventListener("click", function () {
+        triggerEvent("webinar_cta_homepage_click", "webinarCtaHomepageClick");
       });
     });
   });

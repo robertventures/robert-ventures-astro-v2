@@ -2,8 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import FormattedDate from "../components/FormattedDate.astro";
 import FooterNew from "../components/FooterNew.astro";
 
 type Props = CollectionEntry<"articles">["data"];
@@ -12,115 +10,115 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				max-width: 100%;
-				margin: 0;
-			}
+  <head>
+    <BaseHead title={title} description={description} />
+    <style>
+      main {
+        max-width: 100%;
+        margin: 0;
+      }
 
-			.section-container {
-				max-width: 1280px;
-				margin: 0 auto;
-				border-radius: 1rem;
-				background: #fff;
-				padding: 3rem 1.5rem;
-			}
+      .section-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        background: #fff;
+        padding: 3rem 1.5rem;
+      }
 
-			.section-content {
-				max-width: 640px;
-				margin: 0 auto;
-			}
+      .section-content {
+        max-width: 640px;
+        margin: 0 auto;
+      }
 
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
 
-				background-color: #fff;
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-				color: #152429;
-				font-family: var(--font-heading);
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
+        background-color: #fff;
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+        color: #152429;
+        font-family: var(--font-heading);
+      }
+      .date {
+        margin-bottom: 0.5em;
+        color: rgb(var(--gray));
+      }
+      .last-updated-on {
+        font-style: italic;
+      }
 
-			.prose :global(h1),
-			.prose :global(h2),
-			.prose :global(h3),
-			.prose :global(h4),
-			.prose :global(h5),
-			.prose :global(h6) {
-				color: #152429;
-				font-family: var(--font-heading);
-			}
+      .prose :global(h1),
+      .prose :global(h2),
+      .prose :global(h3),
+      .prose :global(h4),
+      .prose :global(h5),
+      .prose :global(h6) {
+        color: #152429;
+        font-family: var(--font-heading);
+      }
 
-			.prose :global(h2),
-			.prose :global(h3),
-			.prose :global(h4),
-			.prose :global(h5),
-			.prose :global(h6) {
-				margin-top: 2rem;
-				margin-bottom: 0.75rem;
-				line-height: 1.25;
-			}
+      .prose :global(h2),
+      .prose :global(h3),
+      .prose :global(h4),
+      .prose :global(h5),
+      .prose :global(h6) {
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.25;
+      }
 
-			.prose :global(h2 + p),
-			.prose :global(h3 + p),
-			.prose :global(h4 + p),
-			.prose :global(h5 + p),
-			.prose :global(h6 + p) {
-				margin-top: 0.5rem;
-			}
+      .prose :global(h2 + p),
+      .prose :global(h3 + p),
+      .prose :global(h4 + p),
+      .prose :global(h5 + p),
+      .prose :global(h6 + p) {
+        margin-top: 0.5rem;
+      }
 
-			.prose a {
-				color: #2337ff;
-			}
+      .prose a {
+        color: #2337ff;
+      }
 
-			@media only screen and (min-width: 768px) {
-				main {
-					padding: 0 2rem;
-				}
-			}
-		</style>
-	</head>
+      @media only screen and (min-width: 768px) {
+        main {
+          padding: 0 2rem;
+        }
+      }
+    </style>
+  </head>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<!-- <div class="hero-image">
+  <body>
+    <Header />
+    <main>
+      <article>
+        <!-- <div class="hero-image">
 					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
 				</div> -->
 
-				<div class="section-container">
-					<div class="section-content">
-						<div class="prose">
-							<div class="title">
-								<!-- <div class="date">
+        <div class="section-container">
+          <div class="section-content">
+            <div class="prose">
+              <div class="title">
+                <!-- <div class="date">
 									<FormattedDate date={pubDate} />
 									{
 										updatedDate && (
@@ -133,122 +131,125 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 										)
 									}
 								</div> -->
-								<h1>{title}</h1>
-								<hr />
-							</div>
-							<slot />
-						</div>
-					</div>
-				</div>
-			</article>
-		</main>
-		<br>
-		<br>
-		<FooterNew />
+                <h1>{title}</h1>
+                <hr />
+              </div>
+              <slot />
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+    <br />
+    <br />
+    <FooterNew />
 
-		<script>
-			// Article Scroll Depth Tracking
-			// Tracks when users scroll to 25%, 50%, 75%, and 100% thresholds on article pages
-			// Each threshold fires only once per page load
+    <script>
+      // Article Scroll Depth Tracking
+      // Tracks when users scroll to 25%, 50%, 75%, and 100% thresholds on article pages
+      // Each threshold fires only once per page load
 
-			(function() {
-				'use strict';
+      (function () {
+        "use strict";
 
-				// Get article slug from URL
-				function getArticleSlug() {
-					const path = window.location.pathname;
-					const match = path.match(/\/articles\/(.+?)\/?$/);
-					return match ? match[1] : 'unknown';
-				}
+        // Get article slug from URL
+        function getArticleSlug() {
+          const path = window.location.pathname;
+          const match = path.match(/\/articles\/(.+?)\/?$/);
+          return match ? match[1] : "unknown";
+        }
 
-				// Thresholds to track
-				const thresholds = [25, 50, 75, 100];
-				
-				// Track which thresholds have been reached
-				const reachedThresholds = new Set<number>();
-				
-				// Flag to prevent multiple rAF calls
-				let ticking = false;
+        // Thresholds to track
+        const thresholds = [25, 50, 75, 100];
 
-				// Function to trigger article scroll events
-				function triggerArticleScrollEvent(percentage: number, articleSlug: string) {
-					const eventData = {
-						'event': 'article_scroll',
-						'article_slug': articleSlug,
-						'scroll_percentage': percentage
-					};
+        // Track which thresholds have been reached
+        const reachedThresholds = new Set<number>();
 
-					// Push event to Google Tag Manager's dataLayer
-					if ((window as any).dataLayer) {
-						(window as any).dataLayer.push(eventData);
-						console.log('GA4 article_scroll event triggered:', eventData);
-					} else {
-						console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-					}
+        // Flag to prevent multiple rAF calls
+        let ticking = false;
 
-					// Send event to Microsoft Clarity
-					if (typeof (window as any).clarity === 'function') {
-						(window as any).clarity('set', 'article_slug', articleSlug);
-						(window as any).clarity('set', 'article_scroll_percentage', String(percentage));
-						(window as any).clarity('event', 'articleScroll' + percentage);
-						console.log('Clarity article_scroll event triggered:', eventData);
-					} else {
-						console.warn('Microsoft Clarity is not initialized.');
-					}
-				}
+        // Function to trigger article scroll events
+        function triggerArticleScrollEvent(percentage: number, articleSlug: string) {
+          const eventData = {
+            event: "article_scroll",
+            article_slug: articleSlug,
+            scroll_percentage: percentage,
+          };
 
-				// Calculate current scroll percentage
-				function getScrollPercentage() {
-					const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-					const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-					
-					// Handle edge case where page doesn't scroll
-					if (scrollHeight <= 0) {
-						return 100;
-					}
-					
-					return Math.round((scrollTop / scrollHeight) * 100);
-				}
+          // Push event to Google Tag Manager's dataLayer
+          if ((window as any).dataLayer) {
+            (window as any).dataLayer.push(eventData);
+            console.log("GA4 article_scroll event triggered:", eventData);
+          } else {
+            console.warn(
+              "dataLayer is not defined. Ensure Google Tag Manager is properly initialized."
+            );
+          }
 
-				// Check and fire threshold events
-				function checkThresholds() {
-					const currentPercentage = getScrollPercentage();
-					const articleSlug = getArticleSlug();
-					
-					thresholds.forEach(function(threshold) {
-						if (currentPercentage >= threshold && !reachedThresholds.has(threshold)) {
-							reachedThresholds.add(threshold);
-							triggerArticleScrollEvent(threshold, articleSlug);
-						}
-					});
-					
-					ticking = false;
-				}
+          // Send event to Microsoft Clarity
+          if (typeof (window as any).clarity === "function") {
+            (window as any).clarity("set", "article_slug", articleSlug);
+            (window as any).clarity("set", "article_scroll_percentage", String(percentage));
+            (window as any).clarity("event", "articleScroll" + percentage);
+            console.log("Clarity article_scroll event triggered:", eventData);
+          } else {
+            console.warn("Microsoft Clarity is not initialized.");
+          }
+        }
 
-				// Throttled scroll handler using requestAnimationFrame
-				function onScroll() {
-					if (!ticking) {
-						requestAnimationFrame(checkThresholds);
-						ticking = true;
-					}
-				}
+        // Calculate current scroll percentage
+        function getScrollPercentage() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollHeight =
+            document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-				// Initialize scroll tracking
-				function init() {
-					// Add scroll event listener
-					window.addEventListener('scroll', onScroll, { passive: true });
-					
-					// Check initial scroll position
-					setTimeout(checkThresholds, 100);
-				}
+          // Handle edge case where page doesn't scroll
+          if (scrollHeight <= 0) {
+            return 100;
+          }
 
-				// Start tracking when DOM is ready
-				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', init);
-				} else {
-					init();
-				}
-			})();
-		</script>
-	</body>
+          return Math.round((scrollTop / scrollHeight) * 100);
+        }
+
+        // Check and fire threshold events
+        function checkThresholds() {
+          const currentPercentage = getScrollPercentage();
+          const articleSlug = getArticleSlug();
+
+          thresholds.forEach(function (threshold) {
+            if (currentPercentage >= threshold && !reachedThresholds.has(threshold)) {
+              reachedThresholds.add(threshold);
+              triggerArticleScrollEvent(threshold, articleSlug);
+            }
+          });
+
+          ticking = false;
+        }
+
+        // Throttled scroll handler using requestAnimationFrame
+        function onScroll() {
+          if (!ticking) {
+            requestAnimationFrame(checkThresholds);
+            ticking = true;
+          }
+        }
+
+        // Initialize scroll tracking
+        function init() {
+          // Add scroll event listener
+          window.addEventListener("scroll", onScroll, { passive: true });
+
+          // Check initial scroll position
+          setTimeout(checkThresholds, 100);
+        }
+
+        // Start tracking when DOM is ready
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+  </body>
 </html>

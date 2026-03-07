@@ -5,89 +5,85 @@ import Chart from "../images/svg/chart.svg";
 ---
 
 <style>
-    section > * {
-        text-align: center;
-    }
+  section > * {
+    text-align: center;
+  }
 
-    .info-section{
-        margin-bottom: 1rem;
-    }
+  .info-section {
+    margin-bottom: 1rem;
+  }
 
+  h2 {
+    color: #281480;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #505050;
+    text-align: center;
+    font-weight: 500;
+    line-height: 160%; /* 1.8rem */
+  }
+
+  .image-section svg {
+    margin: 0 auto;
+  }
+
+  @media only screen and (min-width: 990px) {
     h2 {
-        color: #281480;
-        margin-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
     }
 
-    p {
-        color: #505050;
-        text-align: center;
-        font-weight: 500;
-        line-height: 160%; /* 1.8rem */
+    .section-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "info image"
+        "form image";
+      justify-content: space-between;
     }
 
-    .image-section svg{
-        margin: 0 auto;
+    .info-section {
+      grid-area: info;
+      margin-top: auto;
+      margin-bottom: 2rem;
+      max-width: 366px;
+      margin-right: auto;
     }
 
-    @media only screen and (min-width: 990px) {
-        h2{
-            margin-bottom: 1.5rem;
-        }
-
-        .section-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-areas:
-                "info image"
-                "form image";
-            justify-content: space-between;
-        }
-
-        .info-section {
-            grid-area: info;
-            margin-top: auto;
-            margin-bottom: 2rem;
-            max-width: 366px;
-            margin-right: auto;
-        }
-
-        .form-cta {
-            grid-area: form;
-            max-width: 366px;
-            width: 100%;
-            margin-right: auto;
-        }
-
-        .image-section {
-            grid-area: image;
-            text-align: center;
-        }
-
-        .image-section svg{
-            margin-left: auto;
-        }
+    .form-cta {
+      grid-area: form;
+      max-width: 366px;
+      width: 100%;
+      margin-right: auto;
     }
+
+    .image-section {
+      grid-area: image;
+      text-align: center;
+    }
+
+    .image-section svg {
+      margin-left: auto;
+    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="info-section">
-                <h2>Comparison Chart</h2>
-                <p>
-                    When it comes to high yield returns we are the best in the
-                    market.
-                </p>
-            </div>
+  <div class="section-container">
+    <div class="section-content">
+      <div class="info-section">
+        <h2>Comparison Chart</h2>
+        <p>When it comes to high yield returns we are the best in the market.</p>
+      </div>
 
-            <div class="image-section">
-                <Chart />
-            </div>
+      <div class="image-section">
+        <Chart />
+      </div>
 
-            <div class="form-cta">
-                <DualCTA />
-            </div>
-        </div>
+      <div class="form-cta">
+        <DualCTA />
+      </div>
     </div>
+  </div>
 </section>
-

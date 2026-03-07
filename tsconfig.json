@@ -3,10 +3,5 @@
   "compilerOptions": {
     "strictNullChecks": false
   },
-  "include": [
-    "src/env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.astro"
-  ]
+  "include": ["src/env.d.ts", "**/*.ts", "**/*.tsx", "**/*.astro"]
 }

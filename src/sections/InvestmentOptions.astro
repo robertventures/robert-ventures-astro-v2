@@ -8,200 +8,190 @@ import Dollar from "../images/dollar.svg";
 ---
 
 <style>
-    section {
-        font-family: var(--font-heading);
+  section {
+    font-family: var(--font-heading);
+  }
+
+  .section-content {
+    max-width: 366px;
+  }
+  .intro {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    margin-bottom: 0.5rem;
+    font-size: clamp(1.75rem, 8.2vw, 2.125rem);
+  }
+
+  .intro p {
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: #898989;
+  }
+
+  .boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    margin-bottom: 1.5rem;
+  }
+
+  .invest-box {
+    background-color: #f2f5f8;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+    padding: 1.5rem;
+
+    max-width: 366px;
+  }
+
+  .percent {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+
+    color: #281480;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    align-self: center;
+
+    margin-bottom: 1rem;
+  }
+
+  .percent img {
+    max-height: 60px;
+    width: auto;
+  }
+
+  p {
+    line-height: 1;
+  }
+
+  p.amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    color: #281480;
+    font-size: 1.25rem;
+  }
+
+  p.year {
+    font-size: 1.25rem;
+    color: #281480;
+
+    font-weight: 700;
+
+    margin-bottom: 0.125rem;
+  }
+
+  span {
+    margin-bottom: 1rem;
+    font-size: 14px;
+  }
+
+  .cta {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+  }
+
+  a {
+    background-color: #5028ff;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  p.lockup {
+    font-size: 15px;
+    line-height: 1.25;
+    text-align: center;
+    color: #505050;
+  }
+
+  @media only screen and (min-width: 990px) {
+    .section-content {
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .section-content > div {
+      max-width: 366px;
     }
 
-    .section-content{
-        max-width: 366px;
-    }
     .intro {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    h2 {
-        margin-bottom: 0.5rem;
-        font-size: clamp(1.75rem, 8.2vw, 2.125rem);
-    }
-
-    .intro p {
-        font-weight: 500;
-        font-size: 1.25rem;
-        color: #898989;
+      margin-bottom: 2rem;
     }
 
     .boxes {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
+      max-width: none !important;
+      flex-direction: row;
+      margin-bottom: 3rem;
 
-        margin-bottom: 1.5rem;
+      margin-bottom: 3rem;
     }
 
     .invest-box {
-        background-color: #f2f5f8;
-        border-radius: 1rem;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-
-        padding: 1.5rem;
-
-        max-width: 366px;
+      width: 366px;
     }
-
-    .percent {
-        display: flex;
-        align-items: baseline;
-        gap: 0.75rem;
-
-        color: #281480;
-        font-size: 2rem;
-        font-weight: 700;
-        line-height: 1;
-        align-self: center;
-
-        margin-bottom: 1rem;
-    }
-
-    .percent img {
-        max-height: 60px;
-        width: auto;
-    }
-
-    p {
-        line-height: 1;
-    }
-
-    p.amount {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-
-        color: #281480;
-        font-size: 1.25rem;
-    }
-
-    p.year {
-        font-size: 1.25rem;
-        color: #281480;
-
-        font-weight: 700;
-
-        margin-bottom: 0.125rem;
-    }
-
-    span{
-        margin-bottom: 1rem;
-        font-size: 14px;
-    }
-
-    .cta{
-        display: flex;
-        flex-direction: column;
-
-        gap: 1rem;
-    }
-
-    a {
-        background-color: #5028ff;
-        width: 100%;
-        padding: 1rem;
-        border-radius: 12px;
-
-        text-align: center;
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.125rem;
-        font-weight: 600;
-    }
-
-    p.lockup {
-        font-size: 15px;
-        line-height: 1.25;
-        text-align: center;
-        color: #505050;
-    }
-
-    @media only screen and (min-width: 990px){
-        .section-content{
-            max-width: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-        }
-        .section-content > div{
-            max-width: 366px;
-        }
-
-        .intro{
-            margin-bottom: 2rem;
-        }
-
-        .boxes{
-            max-width: none !important;
-            flex-direction: row;
-            margin-bottom: 3rem;
-
-            margin-bottom: 3rem;
-        }
-
-        .invest-box{
-            width: 366px;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="intro">
-                <h2>Monthly Payments or Compounding Interest</h2>
-                <!-- <p>Monthly Payments or Compounding Interest</p> -->
-            </div>
+  <div class="section-container">
+    <div class="section-content">
+      <div class="intro">
+        <h2>Monthly Payments or Compounding Interest</h2>
+        <!-- <p>Monthly Payments or Compounding Interest</p> -->
+      </div>
 
-            <div class="boxes">
-                <div class="invest-box">
-                    <div class="percent">
-                        <Image
-                            src={eight}
-                            alt="eigth percent APY"
-                            width={eight.width}
-                            height={eight.height}
-                        />
-                        APY
-                    </div>
-                    <p class="year">1 Year</p>
-                    <span>minimum commitment</span>
-                    <p class="amount"><Dollar />1k Minimum</p>
-                </div>
-                <div class="invest-box">
-                    <div class="percent">
-                        <Image
-                            src={ten}
-                            alt="eigth percent APY"
-                            width={ten.width}
-                            height={ten.height}
-                        />
-                        APY
-                    </div>
-                    <p class="year">3 Year</p>
-                    <span>minimum commitment</span>
-                    <p class="amount"><Dollar />1k Minimum</p>
-                </div>
-            </div>
-
-            <div class="cta">
-                <!-- <a href="#main-form">START INVESTING TODAY</a> -->
-
-                <p class="lockup">
-                   Payments continue monthly past the commitment period until bonds are redeemed. APY is up to 10%.
-                </p>
-            </div>
+      <div class="boxes">
+        <div class="invest-box">
+          <div class="percent">
+            <Image src={eight} alt="eigth percent APY" width={eight.width} height={eight.height} />
+            APY
+          </div>
+          <p class="year">1 Year</p>
+          <span>minimum commitment</span>
+          <p class="amount"><Dollar />1k Minimum</p>
         </div>
+        <div class="invest-box">
+          <div class="percent">
+            <Image src={ten} alt="eigth percent APY" width={ten.width} height={ten.height} />
+            APY
+          </div>
+          <p class="year">3 Year</p>
+          <span>minimum commitment</span>
+          <p class="amount"><Dollar />1k Minimum</p>
+        </div>
+      </div>
+
+      <div class="cta">
+        <!-- <a href="#main-form">START INVESTING TODAY</a> -->
+
+        <p class="lockup">
+          Payments continue monthly past the commitment period until bonds are redeemed. APY is up
+          to 10%.
+        </p>
+      </div>
     </div>
+  </div>
 </section>

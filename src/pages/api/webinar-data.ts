@@ -50,16 +50,11 @@ export const GET: APIRoute = async () => {
   // Validate API key availability
   if (!apiKey) {
     console.error("❌ WEBINARKIT_API_KEY environment variable not set");
-    return new Response(
-      JSON.stringify({ error: "Server configuration error: Missing API key" }),
-      {
-        status: 500,
-        headers: { "Cache-Control": "no-cache, no-store, must-revalidate" }
-      }
-    );
+    return new Response(JSON.stringify({ error: "Server configuration error: Missing API key" }), {
+      status: 500,
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    });
   }
-
-  
 
   try {
     // ========================================
@@ -72,13 +67,11 @@ export const GET: APIRoute = async () => {
       method: "GET",
       headers: {
         // Bearer token authentication for WebinarKit API
-        Authorization: `Bearer ${apiKey}`
+        Authorization: `Bearer ${apiKey}`,
       },
       // Follow any HTTP redirects automatically
       redirect: "follow" as RequestRedirect,
     });
-
-    
 
     // ========================================
     // ERROR HANDLING
@@ -97,16 +90,13 @@ export const GET: APIRoute = async () => {
         errorMessage = "WebinarKit server error - please try again later";
       }
 
-      return new Response(
-        JSON.stringify({ error: errorMessage }),
-        {
-          status: response.status,
-          headers: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            "Content-Type": "application/json"
-          }
-        }
-      );
+      return new Response(JSON.stringify({ error: errorMessage }), {
+        status: response.status,
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Content-Type": "application/json",
+        },
+      });
     }
 
     // ========================================
@@ -121,8 +111,7 @@ export const GET: APIRoute = async () => {
     // (we use a separate on-demand webinar for instant sessions)
     const filteredResults = data.results.filter((item: any) => {
       // Keep only ongoing (scheduled) sessions, filter out instant/jit
-      return item.id !== "instant" && 
-             !item.id.startsWith("jit_");
+      return item.id !== "instant" && !item.id.startsWith("jit_");
     });
 
     // Build enhanced response with both webinar IDs
@@ -131,10 +120,10 @@ export const GET: APIRoute = async () => {
       // Include webinar IDs for frontend to use during registration
       webinarIds: {
         scheduled: scheduledWebinarId,
-        onDemand: onDemandWebinarId
+        onDemand: onDemandWebinarId,
       },
       // Include on-demand option explicitly (set to false to temporarily hide)
-      onDemandAvailable: true
+      onDemandAvailable: true,
     };
 
     // Return the webinar data to the frontend
@@ -145,10 +134,9 @@ export const GET: APIRoute = async () => {
         "Content-Type": "application/json",
         // Prevent caching to ensure fresh data on each request
         // USED BY: Ensuring users see current webinar availability
-        "Cache-Control": "no-cache, no-store, must-revalidate"
+        "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     });
-
   } catch (error) {
     // ========================================
     // NETWORK/PARSING ERROR HANDLING
@@ -160,15 +148,15 @@ export const GET: APIRoute = async () => {
     return new Response(
       JSON.stringify({
         error: "An error occurred while fetching webinar data",
-        details: error instanceof Error ? error.message : "Unknown error"
+        details: error instanceof Error ? error.message : "Unknown error",
       }),
       {
         status: 500,
         headers: {
           "Content-Type": "application/json",
           // Prevent caching of error responses
-          "Cache-Control": "no-cache, no-store, must-revalidate"
-        }
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+        },
       }
     );
   }

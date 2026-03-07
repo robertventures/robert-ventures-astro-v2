@@ -1,8 +1,8 @@
 ---
-title: 'Passive Income Explained: Debunking the Myth'
+title: "Passive Income Explained: Debunking the Myth"
 description: "Unveiling the truth behind passive income: Explore myths, realistic paths, and how Robert Ventures' high-yield bonds offer stable, effortless returns."
-pubDate: 'Nov 31 2023'
-heroImage: '/articles-images/31.webp'
+pubDate: "Nov 31 2023"
+heroImage: "/articles-images/31.webp"
 ---
 
 <div class="blog-content">

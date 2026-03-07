@@ -5,306 +5,354 @@
 // - Maps to the exact fields we will use in the UI next
 
 interface Testimonial {
-    name: string;
-    avatar: string;
-    text: string;
-    date: string;
+  name: string;
+  avatar: string;
+  text: string;
+  date: string;
 }
 
 function mapSenjaToTestimonial(raw: any): Testimonial {
-    return {
-        name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
-        avatar: raw?.customer_avatar ?? raw?.avatar ?? raw?.profile_picture ?? raw?.profile_pic ?? raw?.customer?.avatar ?? raw?.user?.avatar ?? "",
-        text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
-        date: raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "",
-    };
+  return {
+    name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+    avatar:
+      raw?.customer_avatar ??
+      raw?.avatar ??
+      raw?.profile_picture ??
+      raw?.profile_pic ??
+      raw?.customer?.avatar ??
+      raw?.user?.avatar ??
+      "",
+    text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+    date: raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "",
+  };
 }
 
 function getInitials(name: string): string {
-    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) return 'A';
-    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  const parts = (name || "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "A";
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
 let testimonials: Testimonial[] = [];
 
 try {
-    const apiUrl = new URL("/api/testimonials", Astro.url);
-    const response = await fetch(apiUrl);
-    if (response.ok) {
-        const payload = await response.json();
-        
-        const rawList = Array.isArray(payload)
-            ? payload
-            : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
-        
-        const mapped = (rawList as any[]).map(mapSenjaToTestimonial);
-        const nonVideoOnly = (rawList as any[])
-            .filter((t) => !t?.video_url && !t?.video && t?.type !== 'video' && !t?.has_video)
-            .map(mapSenjaToTestimonial);
-        const approvedOnly = (rawList as any[])
-            .filter((t) => t?.approved === true)
-            .filter((t) => !t?.video_url && !t?.video && t?.type !== 'video' && !t?.has_video)
-            .map(mapSenjaToTestimonial);
+  const apiUrl = new URL("/api/testimonials", Astro.url);
+  const response = await fetch(apiUrl);
+  if (response.ok) {
+    const payload = await response.json();
 
-        testimonials = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
-    }
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    const mapped = (rawList as any[]).map(mapSenjaToTestimonial);
+    const nonVideoOnly = (rawList as any[])
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToTestimonial);
+    const approvedOnly = (rawList as any[])
+      .filter((t) => t?.approved === true)
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToTestimonial);
+
+    testimonials = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+  }
 } catch (error) {
-    // Silently fail; frontend can handle empty list if needed
+  // Silently fail; frontend can handle empty list if needed
 }
 
 // Fetch unique investors count from local stats API
 let uniqueInvestors = 68; // Default fallback value
 
 try {
-    const statsUrl = new URL("/api/stats", Astro.url);
-    const statsResponse = await fetch(statsUrl);
-    if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        if (typeof statsData.usersWithInvestments === 'number') {
-            uniqueInvestors = statsData.usersWithInvestments;
-        }
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const statsResponse = await fetch(statsUrl);
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+    if (typeof statsData.usersWithInvestments === "number") {
+      uniqueInvestors = statsData.usersWithInvestments;
     }
+  }
 } catch (error) {
-    // Fallback value is already set
+  // Fallback value is already set
 }
 ---
 
 <!-- Splide.js CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css"
+/>
 
 <style>
-    /* Base styles */
-    h2 {
-        text-align: center;
-        font-size: clamp(1.75rem, 8.2vw, 2.125rem);
-        margin-bottom: 2rem;
-    }
+  /* Base styles */
+  h2 {
+    text-align: center;
+    font-size: clamp(1.75rem, 8.2vw, 2.125rem);
+    margin-bottom: 2rem;
+  }
 
-    /* Container styles - allow shadows to show */
-    .section-container { 
-        padding-inline: 0; /* No padding here to avoid shadow clipping */
-        overflow-x: hidden; /* Only hide horizontal page scroll */
-        overflow-y: visible;
-    }
-    .section-content { 
-        overflow: visible; /* Allow shadows to extend */
-        max-width: 100%; 
-        padding-inline: 1.5rem; /* Match standard horizontal padding */
-        box-sizing: border-box;
-    }
-    
-    /* Splide container */
-    .testimonials-slider {
-        position: relative;
-        overflow: visible; /* Allow shadows */
-    }
-    
-    .splide {
-        position: relative;
-        overflow: visible; /* Allow shadows */
-    }
-    
+  /* Container styles - allow shadows to show */
+  .section-container {
+    padding-inline: 0; /* No padding here to avoid shadow clipping */
+    overflow-x: hidden; /* Only hide horizontal page scroll */
+    overflow-y: visible;
+  }
+  .section-content {
+    overflow: visible; /* Allow shadows to extend */
+    max-width: 100%;
+    padding-inline: 1.5rem; /* Match standard horizontal padding */
+    box-sizing: border-box;
+  }
+
+  /* Splide container */
+  .testimonials-slider {
+    position: relative;
+    overflow: visible; /* Allow shadows */
+  }
+
+  .splide {
+    position: relative;
+    overflow: visible; /* Allow shadows */
+  }
+
+  .splide__track {
+    overflow: visible;
+    padding: 1rem 0; /* Vertical padding only; horizontal via Splide padding option */
+  }
+
+  .splide__list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .splide__slide {
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  /* Hide Splide default UI elements */
+  .splide__arrows,
+  .splide__pagination {
+    display: none !important;
+  }
+
+  /* Card styles */
+  .slide-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    box-shadow:
+      0 8px 20px rgba(15, 18, 25, 0.08),
+      0 2px 6px rgba(15, 18, 25, 0.05);
+    padding: clamp(1rem, 3.2vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .quote-icon {
+    color: #281480;
+    width: clamp(24px, 4vw, 36px);
+    height: auto;
+  }
+  .slide-text {
+    font-size: clamp(1rem, 2.2vw, 1.125rem);
+    line-height: 1.7;
+    color: rgb(var(--gray-dark));
+    margin: 0.75rem 0 1.25rem;
+  }
+  .slide-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Avatar styles */
+  .avatar,
+  .avatar-fallback {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 2px solid #281480;
+    background: rgb(var(--gray-light));
+  }
+  .avatar {
+    object-fit: cover;
+  }
+  .avatar-fallback {
+    display: grid;
+    place-items: center;
+    color: #281480;
+    font-weight: 700;
+    font-family: var(--font-heading);
+  }
+
+  .name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: rgb(var(--black));
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
     .splide__track {
-        overflow: visible;
-        padding: 1rem 0; /* Vertical padding only; horizontal via Splide padding option */
-    }
-    
-    .splide__list {
-        display: flex;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    
-    .splide__slide {
-        flex-shrink: 0;
-        box-sizing: border-box;
-    }
-    
-    /* Hide Splide default UI elements */
-    .splide__arrows,
-    .splide__pagination {
-        display: none !important;
-    }
+      padding: 1rem 1.5rem 1rem 2rem;
+    } /* Proper spacing + shadow protection */
+  }
 
-    /* Card styles */
-    .slide-card {
-        background: #fff;
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        border-radius: 16px;
-        box-shadow: 0 8px 20px rgba(15, 18, 25, 0.08), 0 2px 6px rgba(15, 18, 25, 0.05);
-        padding: clamp(1rem, 3.2vw, 1.5rem);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 320px;
-        height: 100%;
-        width: 100%;
-    }
-
-    .quote-icon { color: #281480; width: clamp(24px, 4vw, 36px); height: auto; }
+  @media (min-width: 1024px) {
+    .splide__track {
+      padding: 1rem 1.5rem 1rem 2rem;
+    } /* Proper spacing + shadow protection */
     .slide-text {
-        font-size: clamp(1rem, 2.2vw, 1.125rem);
-        line-height: 1.7;
-        color: rgb(var(--gray-dark));
-        margin: 0.75rem 0 1.25rem;
+      font-size: 0.9rem;
     }
-    .slide-footer { display: flex; align-items: center; gap: 0.75rem; }
+    .section-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
 
-    /* Avatar styles */
-    .avatar, .avatar-fallback {
-        width: 36px;
-        height: 36px;
-        border-radius: 999px;
-        border: 2px solid #281480;
-        background: rgb(var(--gray-light));
-    }
-    .avatar { object-fit: cover; }
-    .avatar-fallback {
-        display: grid;
-        place-items: center;
-        color: #281480;
-        font-weight: 700;
-        font-family: var(--font-heading);
-    }
+  /* Reviews link styles */
+  .reviews-link-container {
+    text-align: center;
+    margin-top: 2rem;
+  }
 
-    .name {
-        font-family: var(--font-heading);
-        font-weight: 700;
-        font-size: 1rem;
-        color: rgb(var(--black));
-    }
+  .reviews-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #281480;
+    text-decoration: none;
+    padding: 0.6875rem 2rem;
+    border: 1px solid #281480;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
 
-    /* Responsive adjustments */
-    @media (min-width: 640px) and (max-width: 1023.98px) {
-        .splide__track { padding: 1rem 1.5rem 1rem 2rem; } /* Proper spacing + shadow protection */
-    }
-
-    @media (min-width: 1024px) {
-        .splide__track { padding: 1rem 1.5rem 1rem 2rem; } /* Proper spacing + shadow protection */
-        .slide-text { font-size: 0.9rem; }
-        .section-content { max-width: 1200px; margin: 0 auto; }
-    }
-
-    /* Reviews link styles */
-    .reviews-link-container {
-        text-align: center;
-        margin-top: 2rem;
-    }
-
-    .reviews-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-family: var(--font-heading);
-        font-weight: 600;
-        font-size: 1.125rem;
-        color: #281480;
-        text-decoration: none;
-        padding: 0.6875rem 2rem;
-        border: 1px solid #281480;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .reviews-link:hover {
-        background-color: #281480;
-        color: white;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(40, 20, 128, 0.3);
-    }
+  .reviews-link:hover {
+    background-color: #281480;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 20, 128, 0.3);
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <h2>Trusted By {uniqueInvestors}+ Investors</h2>
-            <!-- Testimonials Slider -->
-            <div class="testimonials-slider">
-                <div class="splide" id="testimonials-slider" aria-label="Testimonials">
-                    <div class="splide__track">
-                        <ul class="splide__list">
-                            {testimonials.map((t) => (
-                                <li class="splide__slide">
-                                    <div class="slide-card">
-                                    <div>
-                                        <svg class="quote-icon" viewBox="0 0 607 439" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                            <path d="M261.776 0.949219V110.449H202.859C135.526 110.449 101.859 144.142 101.859 211.526V236.795H202.859V438.949H0.859375V203.103C0.859375 68.3339 76.6094 0.949219 202.859 0.949219H261.776ZM345.943 438.949V203.103C345.943 68.3339 421.693 0.949219 547.943 0.949219H606.859V110.449H547.943C480.609 110.449 446.943 144.142 446.943 211.526V236.795H547.943V438.949H345.943Z" fill="currentColor"></path>
-                                        </svg>
-                                        <p class="slide-text">{t.text}</p>
-                                    </div>
-                                    <div class="slide-footer">
-                                        {t.avatar ? (
-                                            <img 
-                                                class="avatar" 
-                                                src={t.avatar} 
-                                                alt={t.name} 
-                                                loading="lazy" 
-                                                decoding="async" 
-                                                fetchpriority="low" 
-                                                draggable="false"
-                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-                                            />
-                                        ) : null}
-                                        <div class="avatar-fallback" aria-hidden="true" style={t.avatar ? 'display: none;' : 'display: grid;'}>{getInitials(t.name || 'A')}</div>
-                                        <div>
-                                            <div class="name">{t.name || 'Anonymous'}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Link to Reviews Page -->
-            <div class="reviews-link-container">
-                <a href="/reviews" class="reviews-link">
-                    See All Reviews →
-                </a>
-            </div>
+  <div class="section-container">
+    <div class="section-content">
+      <h2>Trusted By {uniqueInvestors}+ Investors</h2>
+      <!-- Testimonials Slider -->
+      <div class="testimonials-slider">
+        <div class="splide" id="testimonials-slider" aria-label="Testimonials">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {
+                testimonials.map((t) => (
+                  <li class="splide__slide">
+                    <div class="slide-card">
+                      <div>
+                        <svg
+                          class="quote-icon"
+                          viewBox="0 0 607 439"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
+                          <path
+                            d="M261.776 0.949219V110.449H202.859C135.526 110.449 101.859 144.142 101.859 211.526V236.795H202.859V438.949H0.859375V203.103C0.859375 68.3339 76.6094 0.949219 202.859 0.949219H261.776ZM345.943 438.949V203.103C345.943 68.3339 421.693 0.949219 547.943 0.949219H606.859V110.449H547.943C480.609 110.449 446.943 144.142 446.943 211.526V236.795H547.943V438.949H345.943Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <p class="slide-text">{t.text}</p>
+                      </div>
+                      <div class="slide-footer">
+                        {t.avatar ? (
+                          <img
+                            class="avatar"
+                            src={t.avatar}
+                            alt={t.name}
+                            loading="lazy"
+                            decoding="async"
+                            fetchpriority="low"
+                            draggable="false"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+                          />
+                        ) : null}
+                        <div
+                          class="avatar-fallback"
+                          aria-hidden="true"
+                          style={t.avatar ? "display: none;" : "display: grid;"}
+                        >
+                          {getInitials(t.name || "A")}
+                        </div>
+                        <div>
+                          <div class="name">{t.name || "Anonymous"}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
         </div>
+
+        <!-- Link to Reviews Page -->
+        <div class="reviews-link-container">
+          <a href="/reviews" class="reviews-link"> See All Reviews → </a>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
 
-<!-- Splide.js JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  <!-- Splide.js JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', function () {
-    const splide = new Splide('#testimonials-slider', {
-      type: 'slide',
-      rewind: false,
-      pagination: false,
-      arrows: false,
-      drag: true,
-      snap: true,
-      focus: 0,
-      omitEnd: true,
-      gap: '1rem',
-      padding: { left: '0.5rem', right: '1.5rem' },
-      perPage: 3.1,
-      perMove: 1,
-      breakpoints: {
-        1023: {
-          perPage: 2.1,
-          perMove: 1,
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+      const splide = new Splide("#testimonials-slider", {
+        type: "slide",
+        rewind: false,
+        pagination: false,
+        arrows: false,
+        drag: true,
+        snap: true,
+        focus: 0,
+        omitEnd: true,
+        gap: "1rem",
+        padding: { left: "0.5rem", right: "1.5rem" },
+        perPage: 3.1,
+        perMove: 1,
+        breakpoints: {
+          1023: {
+            perPage: 2.1,
+            perMove: 1,
+          },
+          639: {
+            perPage: 1.15,
+            perMove: 1,
+          },
         },
-        639: {
-          perPage: 1.15,
-          perMove: 1,
-        },
-      },
-      speed: 600,
-      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-      flickPower: 600,
-      flickMaxPages: 1,
-      waitForTransition: false,
+        speed: 600,
+        easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+        flickPower: 600,
+        flickMaxPages: 1,
+        waitForTransition: false,
+      });
+
+      splide.mount();
     });
-
-    splide.mount();
-  });
-</script>
+  </script>
+</section>

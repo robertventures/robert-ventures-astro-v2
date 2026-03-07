@@ -2,165 +2,157 @@
 import Image from "astro/components/Image.astro";
 import houses from "../images/real-estate.png";
 
-import Grow from "../images/svg/grow.svg";
-import Building from "../images/svg/building.svg";
-import Check from "../images/svg/check.svg";
-
 import Travel from "../images/svg/awards/travel.svg";
 import Beach from "../images/svg/awards/beach.svg";
 import Southern from "../images/svg/awards/southern.svg";
 ---
 
 <style>
+  .section-content {
+    max-width: 366px;
+  }
+  .intro {
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 120%; /* 2.175rem */
+    margin-bottom: 1rem;
+  }
+
+  .intro p {
+    text-align: center;
+    line-height: 160%;
+
+    margin-bottom: 1.5rem;
+  }
+
+  .intro img {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    width: 100%;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .info-head {
+    display: flex;
+    gap: 0.75rem;
+
+    align-items: center;
+
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    color: #1d1d1f;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 120%; /* 1.5rem */
+  }
+
+  .info {
+    margin-bottom: 3rem;
+  }
+
+  .info-block p {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .awards p {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.6; /* 1.6rem */
+
+    margin-bottom: 0.75rem;
+  }
+
+  .awards .images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  @media screen and (min-width: 768px) {
     .section-content {
-        max-width: 366px;
+      max-width: 600px;
     }
-    .intro {
-        margin-bottom: 3rem;
-    }
-
-    h2 {
-        text-align: center;
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 120%; /* 2.175rem */
-        margin-bottom: 1rem;
-    }
-
-    .intro p {
-        text-align: center;
-        line-height: 160%;
-
-        margin-bottom: 1.5rem;
-    }
-
-    .intro img {
-        aspect-ratio: 16 / 9;
-        height: auto;
-        width: 100%;
-    }
-
-    .info {
-        display: flex;
-        flex-direction: column;
-        gap: 3rem;
-    }
-
-    .info-head {
-        display: flex;
-        gap: 0.75rem;
-
-        align-items: center;
-
-        margin-bottom: 0.75rem;
-    }
-
-    h3 {
-        color: #1d1d1f;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 120%; /* 1.5rem */
-    }
-
-    .info {
-        margin-bottom: 3rem;
-    }
-
-    .info-block p {
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.6;
-    }
-
-    .awards p {
-        text-align: center;
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 1.6; /* 1.6rem */
-
-        margin-bottom: 0.75rem;
-    }
-
-    .awards .images {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    @media screen and (min-width: 768px) {
-        .section-content {
-            max-width: 600px;
-        }
-    }
+  }
 </style>
 
 <section>
-    <div class="section-container">
-        <div class="section-content">
-            <div class="intro">
-                <h2>Our Real Estate Strategy</h2>
-                <p>
-                    The Outer Banks, North Carolina, is one of the most
-                    exclusive beachfront markets in the U.S. - and here's why:
-                </p>
-                <Image src={houses} alt="herobox" width={732} height={414} />
-            </div>
+  <div class="section-container">
+    <div class="section-content">
+      <div class="intro">
+        <h2>Our Real Estate Strategy</h2>
+        <p>
+          The Outer Banks, North Carolina, is one of the most exclusive beachfront markets in the
+          U.S. - and here's why:
+        </p>
+        <Image src={houses} alt="herobox" width={732} height={414} />
+      </div>
 
-            <div class="info">
-                <div class="info-block">
-                    <div class="info-head">
-                        <h3>Strategic Entry into the Market</h3>
-                    </div>
-                    <p>
-                        We build entry-level homes in high-demand areas. Lot
-                        costs: $75K-$250K, construction: $300K-$500K. Sale
-                        prices: $500K-$800K, completion in 10 months.
-                    </p>
-                </div>
-                <div class="info-block">
-                    <div class="info-head">
-                        <h3>Housing Supply is Permanently Limited</h3>
-                    </div>
-                    <p>
-                        Due to strict land-use regulations and geographic
-                        constraints, new developments are rare. Unlike other
-                        markets that can expand, the Outer Banks physically
-                        cannot grow.
-                    </p>
-                </div>
-                <div class="info-block">
-                    <div class="info-head">
-                        <h3>Tourism & Population Growth is Booming</h3>
-                    </div>
-                    <p>
-                        Millions visit every year, fueling strong demand for new
-                        homes. Even in downturns, the Outer Banks remains a
-                        sought-after location for second homes and retirees.
-                    </p>
-                </div>
-                <div class="info-block">
-                    <div class="info-head">
-                        <h3>Historical Appreciation Supports Stability</h3>
-                    </div>
-                    <p>
-                        Home values in the Outer Banks have increased by 117%
-                        over the last 10 years, proving long-term resilience.
-                    </p>
-                </div>
-            </div>
-
-            <div class="awards">
-                <p>Top-Ranked Beach Destination by:</p>
-                <div class="images">
-                    <Travel />
-                    <Beach />
-                    <Southern />
-                </div>
-            </div>
+      <div class="info">
+        <div class="info-block">
+          <div class="info-head">
+            <h3>Strategic Entry into the Market</h3>
+          </div>
+          <p>
+            We build entry-level homes in high-demand areas. Lot costs: $75K-$250K, construction:
+            $300K-$500K. Sale prices: $500K-$800K, completion in 10 months.
+          </p>
         </div>
+        <div class="info-block">
+          <div class="info-head">
+            <h3>Housing Supply is Permanently Limited</h3>
+          </div>
+          <p>
+            Due to strict land-use regulations and geographic constraints, new developments are
+            rare. Unlike other markets that can expand, the Outer Banks physically cannot grow.
+          </p>
+        </div>
+        <div class="info-block">
+          <div class="info-head">
+            <h3>Tourism & Population Growth is Booming</h3>
+          </div>
+          <p>
+            Millions visit every year, fueling strong demand for new homes. Even in downturns, the
+            Outer Banks remains a sought-after location for second homes and retirees.
+          </p>
+        </div>
+        <div class="info-block">
+          <div class="info-head">
+            <h3>Historical Appreciation Supports Stability</h3>
+          </div>
+          <p>
+            Home values in the Outer Banks have increased by 117% over the last 10 years, proving
+            long-term resilience.
+          </p>
+        </div>
+      </div>
+
+      <div class="awards">
+        <p>Top-Ranked Beach Destination by:</p>
+        <div class="images">
+          <Travel />
+          <Beach />
+          <Southern />
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <script is:inline></script>

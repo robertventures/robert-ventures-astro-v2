@@ -7,13 +7,13 @@ import usFlag from "../images/usflag.png";
 const formConfig = {
   maxSessions: 2,
   defaultTimezone: "America/New_York",
-  estOffset: -5
+  estOffset: -5,
 };
 
 // Analytics events
 const analyticsEvents = {
-  registerNow: { ga4: 'register_now', clarity: 'registerNow' },
-  webinarRegistered: { ga4: 'webinar_registered', clarity: 'webinarRegistered' }
+  registerNow: { ga4: "register_now", clarity: "registerNow" },
+  webinarRegistered: { ga4: "webinar_registered", clarity: "webinarRegistered" },
 };
 ---
 
@@ -80,11 +80,7 @@ const analyticsEvents = {
         aria-hidden="true"
         style="position:absolute;left:-9999px;width:1px;height:1px;"
       />
-      <input
-        type="hidden"
-        name="rtk_click_id"
-        class="rtk-click-id"
-      />
+      <input type="hidden" name="rtk_click_id" class="rtk-click-id" />
     </div>
     <button type="submit">
       <span class="button-text">Register Now</span>
@@ -139,27 +135,27 @@ const analyticsEvents = {
   }
 
   input {
-    border: 1px solid #30414D;
+    border: 1px solid #30414d;
     flex-grow: 1;
     background-color: #152429;
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.75rem;
-    color: #E1EEEA;
+    color: #e1eeea;
     transition: border-color 0.2s ease;
     font-size: 1rem;
   }
 
   select {
-    border: 1px solid #30414D;
+    border: 1px solid #30414d;
     flex-grow: 1;
     background-color: #152429;
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.75rem;
-    color: #E1EEEA;
+    color: #e1eeea;
     transition: border-color 0.2s ease;
     font-size: 1rem;
   }
@@ -167,7 +163,7 @@ const analyticsEvents = {
   input:focus,
   select:focus {
     outline: none;
-    border: 1px solid #D3FBD8;
+    border: 1px solid #d3fbd8;
   }
 
   input::placeholder {
@@ -185,18 +181,18 @@ const analyticsEvents = {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: #152429;
-    border: 1px solid #30414D;
+    border: 1px solid #30414d;
     width: 100%;
-    color: #E1EEEA;
+    color: #e1eeea;
   }
-  
+
   select:required:not(:invalid) {
-    color: #E1EEEA;
+    color: #e1eeea;
   }
 
   select option {
     background-color: #152429;
-    color: #E1EEEA;
+    color: #e1eeea;
   }
 
   select option[disabled] {
@@ -204,15 +200,15 @@ const analyticsEvents = {
   }
 
   button {
-    background-color: #D3FBD8;
-    border: 1px solid #D3FBD8;
+    background-color: #d3fbd8;
+    border: 1px solid #d3fbd8;
     color: #152429;
     border-radius: 8px;
     padding: 12px;
     font-size: 18px;
     font-weight: 600;
     line-height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     width: 100%;
     position: relative;
     display: flex;
@@ -220,7 +216,9 @@ const analyticsEvents = {
     justify-content: center;
     gap: 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
     text-align: center;
     box-sizing: border-box;
     margin: 0;
@@ -260,15 +258,19 @@ const analyticsEvents = {
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .phone-input-wrapper {
     position: relative;
     width: 100%;
   }
-  
+
   .phone-input-wrapper .phone-flag {
     position: absolute;
     left: 0.75rem;
@@ -282,15 +284,15 @@ const analyticsEvents = {
     z-index: 2;
     margin-right: 12px;
   }
-  
+
   .phone-input-wrapper input[type="tel"] {
     padding-left: calc(22px + 12px + 1rem) !important;
     background-color: #152429;
-    color: #E1EEEA;
+    color: #e1eeea;
   }
 
   .phone-input-wrapper input[type="tel"]:focus {
-    border: 1px solid #D3FBD8;
+    border: 1px solid #d3fbd8;
   }
 
   @media only screen and (min-width: 990px) {
@@ -315,23 +317,23 @@ const analyticsEvents = {
     // Get timestamp in user's timezone with correct timezone offset
     getESTTimestamp: (userTimezone = "America/New_York") => {
       const now = new Date();
-      
+
       // Create a date in user's timezone to get the correct offset
       const userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
       const utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
-      
+
       // Calculate the offset in minutes
       const offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
       const offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
-      const offsetSign = offsetMinutes >= 0 ? '+' : '-';
-      
+      const offsetSign = offsetMinutes >= 0 ? "+" : "-";
+
       const year = userLocalTime.getFullYear();
-      const month = String(userLocalTime.getMonth() + 1).padStart(2, '0');
-      const day = String(userLocalTime.getDate()).padStart(2, '0');
-      const hours = String(userLocalTime.getHours()).padStart(2, '0');
-      const minutes = String(userLocalTime.getMinutes()).padStart(2, '0');
-      const seconds = String(userLocalTime.getSeconds()).padStart(2, '0');
-      
+      const month = String(userLocalTime.getMonth() + 1).padStart(2, "0");
+      const day = String(userLocalTime.getDate()).padStart(2, "0");
+      const hours = String(userLocalTime.getHours()).padStart(2, "0");
+      const minutes = String(userLocalTime.getMinutes()).padStart(2, "0");
+      const seconds = String(userLocalTime.getSeconds()).padStart(2, "0");
+
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}0${offsetHours}:00`;
     },
 
@@ -340,46 +342,47 @@ const analyticsEvents = {
       const now = new Date();
       let diff = targetDate.getTime() - now.getTime();
       if (diff <= 0) return "(Started)";
-      
+
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       diff -= days * (1000 * 60 * 60 * 24);
       const hours = Math.floor(diff / (1000 * 60 * 60));
       diff -= hours * (1000 * 60 * 60);
       const minutes = Math.floor(diff / (1000 * 60));
-      
-      let result = [];
+
+      const result = [];
       if (days > 0) result.push(days + (days === 1 ? " day" : " days"));
       if (hours > 0) result.push(hours + (hours === 1 ? " hour" : " hours"));
-      if (minutes > 0 && days === 0) result.push(minutes + (minutes === 1 ? " minute" : " minutes"));
-      
+      if (minutes > 0 && days === 0)
+        result.push(minutes + (minutes === 1 ? " minute" : " minutes"));
+
       return result.length ? "In " + result.join(" ") : "Soon";
     },
 
     // Trigger analytics events
     triggerEvent: (eventName, clarityEventName, eventData = {}) => {
       if ((window as any).dataLayer) {
-        (window as any).dataLayer.push({ 
-          'event': eventName, 
-          ...eventData 
+        (window as any).dataLayer.push({
+          event: eventName,
+          ...eventData,
         });
-        console.log('GA4 event triggered: ' + eventName, eventData);
+        console.log("GA4 event triggered: " + eventName, eventData);
       }
-      
-      if (typeof (window as any).clarity === 'function') {
+
+      if (typeof (window as any).clarity === "function") {
         // Set custom tags for Clarity session so you can filter recordings by these values
-        Object.keys(eventData).forEach(key => {
-          (window as any).clarity('set', key, eventData[key]);
+        Object.keys(eventData).forEach((key) => {
+          (window as any).clarity("set", key, eventData[key]);
         });
-        
-        (window as any).clarity('event', clarityEventName);
-        console.log('Clarity event triggered: ' + clarityEventName);
+
+        (window as any).clarity("event", clarityEventName);
+        console.log("Clarity event triggered: " + clarityEventName);
       }
-    }
+    },
   };
 
   // Main webinar form functionality
   let webinarData = null;
-  let countdownIntervals = new Map(); // Store intervals for cleanup
+  const countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
     // Capture cmpid from URL and persist to cookie
@@ -390,35 +393,38 @@ const analyticsEvents = {
 
     // Setup phone formatting IMMEDIATELY (independent of API)
     setupAllPhoneInputs();
-    
+
     await loadAndInitializeWebinarData();
-    
+
     // Refresh webinar data every 5 minutes to ensure we have the latest sessions
-    setInterval(async () => {
-      await loadAndInitializeWebinarData();
-    }, 5 * 60 * 1000); // 5 minutes
+    setInterval(
+      async () => {
+        await loadAndInitializeWebinarData();
+      },
+      5 * 60 * 1000
+    ); // 5 minutes
   });
 
   // Setup phone formatting for all phone inputs on page
   function setupAllPhoneInputs() {
     const phoneInputs = document.querySelectorAll("input[name='phone_number']");
-    
+
     phoneInputs.forEach((input) => {
       const phoneInput = input as HTMLInputElement;
       if (phoneInput.dataset.phoneInitialized === "true") return;
-      
+
       phoneInput.addEventListener("input", (e) => {
         const target = e.target as HTMLInputElement;
         if (!target) return;
-        
+
         // Get raw digits only
         let digits = target.value.replace(/\D/g, "");
-        
+
         // Limit to 10 digits (US phone number)
         if (digits.length > 10) {
           digits = digits.slice(0, 10);
         }
-        
+
         // Format the phone number: (XXX) XXX-XXXX
         let formatted = "";
         if (digits.length > 0) {
@@ -427,28 +433,29 @@ const analyticsEvents = {
           } else if (digits.length <= 6) {
             formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
           } else {
-            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+            formatted =
+              "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
           }
         }
-        
+
         target.value = formatted;
       });
-      
+
       // Block non-numeric input
       phoneInput.addEventListener("keypress", (e) => {
         if (!/[0-9]/.test(e.key)) {
           e.preventDefault();
         }
       });
-      
+
       // Handle paste - format pasted content
       phoneInput.addEventListener("paste", (e) => {
         e.preventDefault();
         const target = e.target as HTMLInputElement;
         const clipboardData = e.clipboardData || (window as any).clipboardData;
         const pastedText = clipboardData.getData("text");
-        let digits = pastedText.replace(/\D/g, "").slice(0, 10);
-        
+        const digits = pastedText.replace(/\D/g, "").slice(0, 10);
+
         let formatted = "";
         if (digits.length > 0) {
           if (digits.length <= 3) {
@@ -456,13 +463,14 @@ const analyticsEvents = {
           } else if (digits.length <= 6) {
             formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
           } else {
-            formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+            formatted =
+              "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
           }
         }
-        
+
         target.value = formatted;
       });
-      
+
       phoneInput.dataset.phoneInitialized = "true";
       phoneInput.setAttribute("maxlength", "14");
     });
@@ -474,8 +482,10 @@ const analyticsEvents = {
       const urlParams = new URLSearchParams(window.location.search);
       const cmpid = urlParams.get("cmpid");
       if (cmpid) {
-        document.cookie = 'cmpid=' + encodeURIComponent(cmpid) +
-          '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
+        document.cookie =
+          "cmpid=" +
+          encodeURIComponent(cmpid) +
+          "; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax";
       }
     } catch {}
   }
@@ -510,8 +520,10 @@ const analyticsEvents = {
     // Persist to cookie so it survives across pages and is available on subdomains
     if (value) {
       try {
-        document.cookie = 'rtk_click_id=' + encodeURIComponent(value) +
-          '; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax';
+        document.cookie =
+          "rtk_click_id=" +
+          encodeURIComponent(value) +
+          "; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax";
       } catch {}
     }
   }
@@ -550,7 +562,8 @@ const analyticsEvents = {
       const elements = getFormElements(form, formContainer);
       if (!elements) return;
 
-      const { selectEl, phoneInput, timeElements, signupError, submitButton, buttonText, loader } = elements;
+      const { selectEl, phoneInput, timeElements, signupError, submitButton, buttonText, loader } =
+        elements;
 
       // Populate sessions dropdown
       populateSessionsDropdown(selectEl, data);
@@ -566,38 +579,42 @@ const analyticsEvents = {
       const formEl = form as HTMLFormElement;
       if (!formEl.dataset.initialized) {
         setupFormSubmission(form, elements);
-        formEl.dataset.initialized = 'true';
+        formEl.dataset.initialized = "true";
       }
 
       // Setup form started tracking (fires once on first interaction with any form field)
       if (!formEl.dataset.formStartedTracked) {
         let formStartedFired = false;
-        
-        form.addEventListener('focusin', (e) => {
+
+        form.addEventListener("focusin", (e) => {
           if (formStartedFired) return;
-          
+
           // Only trigger for actual form input fields
           const target = e.target as HTMLElement;
-          if (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA') {
+          if (
+            target.tagName === "INPUT" ||
+            target.tagName === "SELECT" ||
+            target.tagName === "TEXTAREA"
+          ) {
             formStartedFired = true;
-            
+
             // Push to dataLayer
             if ((window as any).dataLayer) {
               (window as any).dataLayer.push({
-                'event': 'webinar_form_started'
+                event: "webinar_form_started",
               });
-              console.log('GA4 event triggered: webinar_form_started');
+              console.log("GA4 event triggered: webinar_form_started");
             }
-            
+
             // Send to Clarity
-            if (typeof (window as any).clarity === 'function') {
-              (window as any).clarity('event', 'webinarFormStarted');
-              console.log('Clarity event triggered: webinarFormStarted');
+            if (typeof (window as any).clarity === "function") {
+              (window as any).clarity("event", "webinarFormStarted");
+              console.log("Clarity event triggered: webinarFormStarted");
             }
           }
         });
-        
-        formEl.dataset.formStartedTracked = 'true';
+
+        formEl.dataset.formStartedTracked = "true";
       }
     });
   }
@@ -617,16 +634,17 @@ const analyticsEvents = {
     }
 
     // Time elements are optional (may be commented out in some layouts)
-    const sectionContent = formContainer.closest('.section-content');
+    const sectionContent = formContainer.closest(".section-content");
     const daysSpan = sectionContent?.querySelector(".days span");
     const hoursSpan = sectionContent?.querySelector(".hours span");
     const minutesSpan = sectionContent?.querySelector(".minutes span");
     const secondsSpan = sectionContent?.querySelector(".seconds span");
-    
+
     // Only include time elements if all of them exist
-    const timeElements = (daysSpan && hoursSpan && minutesSpan && secondsSpan) 
-      ? { daysSpan, hoursSpan, minutesSpan, secondsSpan }
-      : null;
+    const timeElements =
+      daysSpan && hoursSpan && minutesSpan && secondsSpan
+        ? { daysSpan, hoursSpan, minutesSpan, secondsSpan }
+        : null;
 
     return {
       selectEl,
@@ -636,16 +654,16 @@ const analyticsEvents = {
       signupError,
       submitButton,
       buttonText,
-      loader
+      loader,
     };
   }
 
   function populateSessionsDropdown(selectEl, data) {
     const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    
+
     // Clear and add default option
     selectEl.innerHTML = '<option value="" disabled selected>Select an Upcoming Session</option>';
-    
+
     // STEP 1: Add the ON-DEMAND option first (uses separate webinar)
     if (data.onDemandAvailable) {
       const instantOption = document.createElement("option");
@@ -657,7 +675,7 @@ const analyticsEvents = {
       instantOption.textContent = "Watch Now - On Demand";
       selectEl.appendChild(instantOption);
     }
-    
+
     // STEP 2: Get ongoing (scheduled) sessions
     const sessions = data.results.filter((item) => {
       try {
@@ -668,22 +686,27 @@ const analyticsEvents = {
       }
     });
 
-    const sessionsWithDates = sessions.map(session => {
-      try {
-        const details = JSON.parse(session.id);
-        const nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
-        return { session, nextDate };
-      } catch (error) {
-        console.error("Error processing session:", error);
-        return null;
-      }
-    }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+    const sessionsWithDates = sessions
+      .map((session) => {
+        try {
+          const details = JSON.parse(session.id);
+          const nextDate = session.date
+            ? new Date(session.date)
+            : calculateNextSessionDate(details);
+          return { session, nextDate };
+        } catch (error) {
+          console.error("Error processing session:", error);
+          return null;
+        }
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
     // STEP 3: Add only the next 2 scheduled sessions
     sessionsWithDates.slice(0, 2).forEach((item) => {
       const { session, nextDate } = item;
       const details = JSON.parse(session.id);
-      
+
       const weekday = nextDate.toLocaleString("en-US", { weekday: "short" });
       const month = nextDate.getMonth() + 1;
       const day = nextDate.getDate();
@@ -692,11 +715,15 @@ const analyticsEvents = {
         minute: "2-digit",
         hour12: true,
       });
-      
-      const tzMatch = nextDate.toLocaleTimeString("en-US", { timeZoneName: "short" }).match(/GMT[+-]\d+/);
-      const tzShort = tzMatch ? tzMatch[0] : nextDate.toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop();
+
+      const tzMatch = nextDate
+        .toLocaleTimeString("en-US", { timeZoneName: "short" })
+        .match(/GMT[+-]\d+/);
+      const tzShort = tzMatch
+        ? tzMatch[0]
+        : nextDate.toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop();
       const timeLeftString = utils.formatTimeLeft(nextDate);
-      
+
       const option = document.createElement("option");
       option.value = session.id;
       option.setAttribute("data-date", nextDate.toISOString());
@@ -713,7 +740,9 @@ const analyticsEvents = {
       const selectedOption = this.options[this.selectedIndex];
       const isInstant = selectedOption.getAttribute("data-is-instant") === "true";
       const sessionType = isInstant ? "on_demand" : "live";
-      utils.triggerEvent("session_type_selected", "sessionTypeSelected", { session_type: sessionType });
+      utils.triggerEvent("session_type_selected", "sessionTypeSelected", {
+        session_type: sessionType,
+      });
     });
   }
 
@@ -726,9 +755,11 @@ const analyticsEvents = {
     if (details.period.toUpperCase() === "AM" && hours === 12) hour24 = 0;
 
     const now = new Date();
-    const currentTzTime = new Date(now.toLocaleString("en-US", {
-      timeZone: details.timeZone || "America/New_York",
-    }));
+    const currentTzTime = new Date(
+      now.toLocaleString("en-US", {
+        timeZone: details.timeZone || "America/New_York",
+      })
+    );
 
     const currentDay = currentTzTime.getDay();
     let daysToAdd = (targetDay - currentDay + 7) % 7;
@@ -747,20 +778,23 @@ const analyticsEvents = {
 
     const sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
     const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
-    const tzOffset = new Date(tempDate.toLocaleString("en-US", {
-      timeZone: details.timeZone || "America/New_York",
-    })).getTime() - tempDate.getTime();
-    
+    const tzOffset =
+      new Date(
+        tempDate.toLocaleString("en-US", {
+          timeZone: details.timeZone || "America/New_York",
+        })
+      ).getTime() - tempDate.getTime();
+
     return new Date(sessionDate.getTime() - tzOffset);
   }
 
   function initializeCountdown(timeElements, data) {
     // Clear any existing interval for this form
     // Time elements are now siblings of .form, so find the form container via parent
-    const timeContainer = timeElements.daysSpan.closest('.time') as HTMLElement;
+    const timeContainer = timeElements.daysSpan.closest(".time") as HTMLElement;
     const parentSection = timeContainer?.parentElement;
-    const formElement = parentSection?.querySelector('.form') as HTMLElement;
-    const formId = formElement?.dataset?.formId || 'default';
+    const formElement = parentSection?.querySelector(".form") as HTMLElement;
+    const formId = formElement?.dataset?.formId || "default";
     if (countdownIntervals.has(formId)) {
       clearInterval(countdownIntervals.get(formId));
     }
@@ -776,28 +810,33 @@ const analyticsEvents = {
 
     if (sessions.length > 0) {
       // Use the same logic as the dropdown to find the next upcoming session
-      const sessionsWithDates = sessions.map(session => {
-        try {
-          const details = JSON.parse(session.id);
-          const nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
-          return { session, nextDate };
-        } catch (error) {
-          console.error("Error processing session:", error);
-          return null;
-        }
-      }).filter(Boolean).sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+      const sessionsWithDates = sessions
+        .map((session) => {
+          try {
+            const details = JSON.parse(session.id);
+            const nextDate = session.date
+              ? new Date(session.date)
+              : calculateNextSessionDate(details);
+            return { session, nextDate };
+          } catch (error) {
+            console.error("Error processing session:", error);
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
 
       if (sessionsWithDates.length > 0) {
         let currentSessionIndex = 0;
-        
+
         function updateCountdown() {
           const now = new Date();
-          
+
           // Check if current session has passed and switch to next one
           while (currentSessionIndex < sessionsWithDates.length) {
             const currentSession = sessionsWithDates[currentSessionIndex];
             const timeLeft = currentSession.nextDate.getTime() - now.getTime();
-            
+
             if (timeLeft > 0) {
               // This session is still upcoming, use it
               break;
@@ -806,7 +845,7 @@ const analyticsEvents = {
               currentSessionIndex++;
             }
           }
-          
+
           // If we've gone through all sessions, show zeros
           if (currentSessionIndex >= sessionsWithDates.length) {
             timeElements.daysSpan.textContent = "0";
@@ -815,7 +854,7 @@ const analyticsEvents = {
             timeElements.secondsSpan.textContent = "0";
             return;
           }
-          
+
           const currentSession = sessionsWithDates[currentSessionIndex];
           const timeLeft = currentSession.nextDate.getTime() - now.getTime();
 
@@ -837,9 +876,9 @@ const analyticsEvents = {
     }
   }
 
-
   function setupFormSubmission(form, elements) {
-    const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } = elements;
+    const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } =
+      elements;
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -852,7 +891,8 @@ const analyticsEvents = {
       const phoneRaw = phoneInput.value.replace(/\D/g, "");
       // US phone: 10 digits, area code cannot start with 0 or 1
       if (!/^([2-9][0-9]{2})([2-9][0-9]{2})([0-9]{4})$/.test(phoneRaw)) {
-        signupError.textContent = "Please enter a valid US phone number (10 digits, area code cannot start with 0 or 1).";
+        signupError.textContent =
+          "Please enter a valid US phone number (10 digits, area code cannot start with 0 or 1).";
         signupError.style.display = "block";
         resetFormState(buttonText, loader, submitButton);
         phoneInput.focus();
@@ -874,7 +914,7 @@ const analyticsEvents = {
       // --- END NAME VALIDATION ---
       const selectedOption = selectEl.querySelector("option:checked");
       const selectedInvest = investSelectEl && investSelectEl.value ? investSelectEl.value : "";
-      
+
       if (!selectedOption) {
         signupError.textContent = "Please select a session.";
         resetFormState(buttonText, loader, submitButton);
@@ -894,16 +934,19 @@ const analyticsEvents = {
 
       // Check if this is an instant (on-demand) session
       const isInstant = selectedOption.getAttribute("data-is-instant") === "true";
-      
+
       let isoDateUTC: string;
       let sessionValue: string;
       let sessionDetails: any;
-      
+
       if (isInstant) {
         // Handle instant/on-demand session
         isoDateUTC = "instant";
         sessionValue = "instant";
-        sessionDetails = { type: "instant", timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
+        sessionDetails = {
+          type: "instant",
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
       } else {
         // Handle scheduled sessions
         isoDateUTC = selectedOption.getAttribute("data-date") || "";
@@ -927,7 +970,12 @@ const analyticsEvents = {
       // Collect UTM parameters: URL params take priority, cookies are the fallback.
       // Note: Google Ads params are mapped to UTM fields in userAttribution.js
       const baseUtmParams = [
-        "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+        "utm_id",
       ];
       const urlParams = new URLSearchParams(window.location.search);
       const utmParamSet = new Set<string>(baseUtmParams);
@@ -940,7 +988,7 @@ const analyticsEvents = {
       });
 
       const utmData: Record<string, string> = {};
-      utmParamSet.forEach(param => {
+      utmParamSet.forEach((param) => {
         const value = urlParams.get(param) || getCookie(param);
         if (value) utmData[param] = value;
       });
@@ -950,7 +998,7 @@ const analyticsEvents = {
         fb_ad_id: getCookie("fb_ad_id"),
         fb_adset_id: getCookie("fb_adset_id"),
         fb_placement: getCookie("fb_placement"),
-        fb_site_source: getCookie("fb_site_source")
+        fb_site_source: getCookie("fb_site_source"),
       };
 
       // Collect Google/RedTrack attribution fields from cookies
@@ -964,7 +1012,7 @@ const analyticsEvents = {
         google_network: getCookie("google_network"),
         google_placement: getCookie("google_placement"),
         wbraid: getCookie("wbraid"),
-        gbraid: getCookie("gbraid")
+        gbraid: getCookie("gbraid"),
       };
 
       // Get gclid (Google Click ID) - this is a standard GHL field
@@ -979,7 +1027,9 @@ const analyticsEvents = {
         return "android";
       }
       let deviceType;
-      try { deviceType = localStorage.getItem("device_type"); } catch {}
+      try {
+        deviceType = localStorage.getItem("device_type");
+      } catch {}
       if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
 
       // Provide top-level utm_campaign for systems expecting it
@@ -1005,16 +1055,20 @@ const analyticsEvents = {
         invest_intent: formData.get("invest_intent"),
         company: formData.get("company"),
         date: isoDateUTC,
-        fullDate: isInstant ? "Watch Now - On Demand" : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+        fullDate: isInstant
+          ? "Watch Now - On Demand"
+          : getFullDateString(isoDateUTC, sessionDetails.timeZone),
         utm: utmData, // UTM fields (also contains mapped Google Ads data)
         gclid: gclid || undefined, // Google Click ID (standard GHL field)
         utm_campaign: utmCampaignTop || undefined,
         webinar_sign_up_date: utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")),
         user_timezone: selectedOption.getAttribute("data-timezone"),
         // Webinar date/time formatted in user's timezone (for email reminders)
-        webinar_datetime_user_tz: isInstant ? "Watch Now - On Demand" : getLocalDateTimeString(isoDateUTC, selectedOption.getAttribute("data-timezone")),
+        webinar_datetime_user_tz: isInstant
+          ? "Watch Now - On Demand"
+          : getLocalDateTimeString(isoDateUTC, selectedOption.getAttribute("data-timezone")),
         device_type: deviceType || undefined,
-        webinar_test: 'webinar-ux_2025-07-21_v1',
+        webinar_test: "webinar-ux_2025-07-21_v1",
         // Google Calendar URL for GHL (empty for instant sessions)
         webinar_calendar_url: webinarCalendarUrl,
         // Meta deduplication fields
@@ -1044,11 +1098,14 @@ const analyticsEvents = {
         google_network: googleAttribution.google_network,
         google_placement: googleAttribution.google_placement,
         wbraid: googleAttribution.wbraid,
-        gbraid: googleAttribution.gbraid
+        gbraid: googleAttribution.gbraid,
       };
 
       console.log("Payload being sent:", payload);
-      localStorage.setItem("webinar_sign_up_date", utils.getESTTimestamp(selectedOption.getAttribute("data-timezone")));
+      localStorage.setItem(
+        "webinar_sign_up_date",
+        utils.getESTTimestamp(selectedOption.getAttribute("data-timezone"))
+      );
 
       try {
         const res = await fetch("/api/webinar-registration", {
@@ -1056,54 +1113,59 @@ const analyticsEvents = {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        
+
         if (!res.ok) {
           signupError.textContent = "Registration failed. Please try again.";
           resetFormState(buttonText, loader, submitButton);
           return;
         }
-        
+
         const result = await res.json();
         if (result.ghl_contact_id) {
           localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
           console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
         }
-        
+
         // Save watch room URL for on-demand sessions so the questions page can redirect there
         if (result.watch_room_url) {
           localStorage.setItem("watch_room_url", result.watch_room_url);
           console.log("✅ Watch room URL saved:", result.watch_room_url);
         }
-        
+
         const userEmail = formData.get("email");
         if (userEmail) {
           localStorage.setItem("userEmail", typeof userEmail === "string" ? userEmail : "");
         }
-        
+
         // Identify the user in Microsoft Clarity using their email after successful registration
         try {
           const emailStr = typeof userEmail === "string" ? userEmail : "";
-          if (emailStr && typeof (window as any).clarity === 'function') {
-            (window as any).clarity('identify', emailStr);
+          if (emailStr && typeof (window as any).clarity === "function") {
+            (window as any).clarity("identify", emailStr);
           }
         } catch {}
-        
+
         // Store full session details for calendar
-        localStorage.setItem("webinarSession", JSON.stringify({
-          title: sessionDetails.title || "Robert Ventures Webinar",
-          date: isoDateUTC,
-          timeZone: sessionDetails.timeZone,
-          fullDate: isInstant ? "Watch Now - On Demand" : getFullDateString(isoDateUTC, sessionDetails.timeZone),
-          email: formData.get("email"),
-          name: formData.get("full_name"),
-          isInstant: isInstant
-        }));
-        
+        localStorage.setItem(
+          "webinarSession",
+          JSON.stringify({
+            title: sessionDetails.title || "Robert Ventures Webinar",
+            date: isoDateUTC,
+            timeZone: sessionDetails.timeZone,
+            fullDate: isInstant
+              ? "Watch Now - On Demand"
+              : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+            email: formData.get("email"),
+            name: formData.get("full_name"),
+            isInstant: isInstant,
+          })
+        );
+
         // Trigger analytics events
-        utils.triggerEvent('webinar_registered', 'webinarRegistered', {
+        utils.triggerEvent("webinar_registered", "webinarRegistered", {
           invest_intent: formData.get("invest_intent"),
           session_date: isoDateUTC,
-          session_type: isInstant ? "on_demand" : "live"
+          session_type: isInstant ? "on_demand" : "live",
         });
 
         // Fire Meta Pixel CompleteRegistration with deduplication eventID
@@ -1113,8 +1175,8 @@ const analyticsEvents = {
         if (investForMeta !== "1000" && investForMeta !== "5000") {
           try {
             const eventId = (payload as any).event_id;
-            if (typeof (window as any).fbq === 'function') {
-              (window as any).fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
+            if (typeof (window as any).fbq === "function") {
+              (window as any).fbq("track", "CompleteRegistration", {}, { eventID: eventId });
             }
           } catch {}
         }
@@ -1181,11 +1243,11 @@ const analyticsEvents = {
     // Format date as YYYYMMDDTHHMMSS
     const formatDateForCalendar = (date: Date): string => {
       const year = date.getUTCFullYear();
-      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-      const day = String(date.getUTCDate()).padStart(2, '0');
-      const hours = String(date.getUTCHours()).padStart(2, '0');
-      const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-      const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+      const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(date.getUTCDate()).padStart(2, "0");
+      const hours = String(date.getUTCHours()).padStart(2, "0");
+      const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+      const seconds = String(date.getUTCSeconds()).padStart(2, "0");
       return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
     };
 
@@ -1212,23 +1274,23 @@ const analyticsEvents = {
     try {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
+      if (parts.length === 2) return parts.pop().split(";").shift();
     } catch {}
     return undefined;
   }
 
   function getRtkClickId() {
     // Primary: Check the global variable set by uniclick.js
-    if (typeof (window as any).rtkClickID !== 'undefined' && (window as any).rtkClickID) {
+    if (typeof (window as any).rtkClickID !== "undefined" && (window as any).rtkClickID) {
       return (window as any).rtkClickID;
     }
 
     // Fallback: Read the cookie manually
-    const cookieName = 'rtkclickid-store';
-    const cookies = document.cookie.split(';');
+    const cookieName = "rtkclickid-store";
+    const cookies = document.cookie.split(";");
     for (let cookie of cookies) {
       cookie = cookie.trim();
-      if (cookie.startsWith(cookieName + '=')) {
+      if (cookie.startsWith(cookieName + "=")) {
         return cookie.substring(cookieName.length + 1);
       }
     }
@@ -1241,15 +1303,15 @@ const analyticsEvents = {
   }
 
   function getFbp() {
-    return getCookie('_fbp');
+    return getCookie("_fbp");
   }
 
   function getFbc() {
-    const fbcCookie = getCookie('_fbc');
+    const fbcCookie = getCookie("_fbc");
     if (fbcCookie) return fbcCookie;
     try {
       const url = new URL(window.location.href);
-      const fbclid = url.searchParams.get('fbclid');
+      const fbclid = url.searchParams.get("fbclid");
       if (fbclid) {
         // Build fbc from fbclid if cookie is not yet set
         const ts = Math.floor(Date.now() / 1000);

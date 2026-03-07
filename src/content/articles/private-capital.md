@@ -1,8 +1,8 @@
 ---
-title: 'Private Capital: A Concise Overview for Investors'
+title: "Private Capital: A Concise Overview for Investors"
 description: "Explore private capital, an alternative investment class encompassing private equity, venture capital, and more, offering unique opportunities beyond public markets."
-pubDate: 'Nov 22 2023'
-heroImage: '/articles-images/22.webp'
+pubDate: "Nov 22 2023"
+heroImage: "/articles-images/22.webp"
 ---
 
 <div class="blog-content">
