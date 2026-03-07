@@ -1103,7 +1103,7 @@ const analyticsEvents = {
         utils.triggerEvent('webinar_registered', 'webinarRegistered', {
           invest_intent: formData.get("invest_intent"),
           session_date: isoDateUTC,
-          session_type: isInstant ? "instant" : "scheduled"
+          session_type: isInstant ? "on_demand" : "live"
         });
 
         // Fire Meta Pixel CompleteRegistration with deduplication eventID

@@ -1,5 +1,6 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
+import { notifySlack } from "../../lib/notifySlack";
 
 /**
  * Proxy route for account creation on the /invest page.
@@ -60,6 +61,11 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
         const extText = await extRes.text();
+
+        if (!extRes.ok) {
+            await notifySlack("Account Creation", "External API Error", `Status ${extRes.status}: ${extText.slice(0, 200)}`, body.email);
+        }
+
         return new Response(extText, {
             status: extRes.status,
             headers: { "Content-Type": "application/json" },
@@ -67,6 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     } catch (error) {
         console.error("❌ create-account error:", error);
+        await notifySlack("Account Creation", "Unhandled Error", String(error));
         return new Response(
             JSON.stringify({ detail: "An error occurred. Please try again." }),
             { status: 500, headers: { "Content-Type": "application/json" } }

@@ -29,6 +29,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { createHash } from "crypto";
+import { notifySlack } from "../../lib/notifySlack";
 
 // ========================================
 // HELPER FUNCTIONS
@@ -533,6 +534,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
 
                     if (!ghlRes.ok) {
                         console.warn("⚠️ GHL contact creation failed:", ghlData);
+                        await notifySlack("Webinar Registration", "GoHighLevel API Error", `Status ${ghlRes.status}`, body.email);
                     }
                 } catch (err) {
                     console.error("❌ Error creating GHL contact:", err);
@@ -598,6 +600,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // Handle WebinarKit registration failure
             if (!response.ok) {
                 console.error("❌ Webinar registration failed:", responseText);
+                await notifySlack("Webinar Registration", "WebinarKit API Error", `Status ${response.status}: ${responseText.slice(0, 200)}`, body.email);
                 return new Response(
                     JSON.stringify({ error: "Webinar registration failed", details: responseText }),
                     { status: response.status }
@@ -815,6 +818,7 @@ function splitFullName(fullName: string): { firstName: string; lastName: string 
             // ========================================
             // Handle any errors that occurred during the registration process
             console.error("❌ Error during registration:", error);
+            await notifySlack("Webinar Registration", "Unhandled Error", String(error));
             return new Response(
                 JSON.stringify({ error: "An error occurred during registration" }),
                 { status: 500 }
