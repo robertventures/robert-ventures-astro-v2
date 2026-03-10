@@ -1,0 +1,214 @@
+---
+import DualCTA from "../components/DualCTA.astro";
+---
+
+<style>
+  section {
+    background: linear-gradient(to bottom, #111111, #101b1f);
+    border-top: 1px solid #30414d;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .staircase-svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .staircase-svg rect {
+    fill: none;
+    stroke: #152429;
+    stroke-width: 1;
+  }
+
+  .cta-section-container {
+    position: relative;
+    z-index: 1;
+    padding: 64px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+
+  h2 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: #e1eeea;
+    margin: 0;
+    line-height: 125%;
+  }
+
+  p {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #bfd1d7;
+    line-height: 150%;
+    margin: 0;
+    max-width: 512px;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .cta-section-container {
+      padding: 80px 32px;
+    }
+
+    h2 {
+      font-size: 40px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .cta-section-container {
+      padding: 96px 112px;
+    }
+
+    .staircase-svg {
+      width: 560px;
+      height: 560px;
+    }
+  }
+</style>
+
+<section>
+  <svg
+    class="staircase-svg"
+    viewBox="0 0 800 800"
+    xmlns="http://www.w3.org/2000/svg"
+    id="closing-cta-staircase-svg"
+  >
+    <rect x="0.5" y="735.5" width="64" height="64"></rect>
+    <rect x="80.5" y="655.5" width="64" height="64"></rect>
+    <rect x="80.5" y="735.5" width="64" height="64"></rect>
+    <rect x="160.5" y="575.5" width="64" height="64"></rect>
+    <rect x="160.5" y="655.5" width="64" height="64"></rect>
+    <rect x="160.5" y="735.5" width="64" height="64"></rect>
+    <rect x="240.5" y="495.5" width="64" height="64"></rect>
+    <rect x="240.5" y="575.5" width="64" height="64"></rect>
+    <rect x="240.5" y="655.5" width="64" height="64"></rect>
+    <rect x="240.5" y="735.5" width="64" height="64"></rect>
+    <rect x="320.5" y="415.5" width="64" height="64"></rect>
+    <rect x="320.5" y="495.5" width="64" height="64"></rect>
+    <rect x="320.5" y="575.5" width="64" height="64"></rect>
+    <rect x="320.5" y="655.5" width="64" height="64"></rect>
+    <rect x="320.5" y="735.5" width="64" height="64"></rect>
+    <rect x="400.5" y="335.5" width="64" height="64"></rect>
+    <rect x="400.5" y="415.5" width="64" height="64"></rect>
+    <rect x="400.5" y="495.5" width="64" height="64"></rect>
+    <rect x="400.5" y="575.5" width="64" height="64"></rect>
+    <rect x="400.5" y="655.5" width="64" height="64"></rect>
+    <rect x="400.5" y="735.5" width="64" height="64"></rect>
+    <rect x="480.5" y="255.5" width="64" height="64"></rect>
+    <rect x="480.5" y="335.5" width="64" height="64"></rect>
+    <rect x="480.5" y="415.5" width="64" height="64"></rect>
+    <rect x="480.5" y="495.5" width="64" height="64"></rect>
+    <rect x="480.5" y="575.5" width="64" height="64"></rect>
+    <rect x="480.5" y="655.5" width="64" height="64"></rect>
+    <rect x="480.5" y="735.5" width="64" height="64"></rect>
+    <rect x="560.5" y="175.5" width="64" height="64"></rect>
+    <rect x="560.5" y="255.5" width="64" height="64"></rect>
+    <rect x="560.5" y="335.5" width="64" height="64"></rect>
+    <rect x="560.5" y="415.5" width="64" height="64"></rect>
+    <rect x="560.5" y="495.5" width="64" height="64"></rect>
+    <rect x="560.5" y="575.5" width="64" height="64"></rect>
+    <rect x="560.5" y="655.5" width="64" height="64"></rect>
+    <rect x="560.5" y="735.5" width="64" height="64"></rect>
+    <rect x="640.5" y="95.5" width="64" height="64"></rect>
+    <rect x="640.5" y="175.5" width="64" height="64"></rect>
+    <rect x="640.5" y="255.5" width="64" height="64"></rect>
+    <rect x="640.5" y="335.5" width="64" height="64"></rect>
+    <rect x="640.5" y="415.5" width="64" height="64"></rect>
+    <rect x="640.5" y="495.5" width="64" height="64"></rect>
+    <rect x="640.5" y="575.5" width="64" height="64"></rect>
+    <rect x="640.5" y="655.5" width="64" height="64"></rect>
+    <rect x="640.5" y="735.5" width="64" height="64"></rect>
+    <rect x="720.5" y="15.5" width="64" height="64"></rect>
+    <rect x="720.5" y="95.5" width="64" height="64"></rect>
+    <rect x="720.5" y="175.5" width="64" height="64"></rect>
+    <rect x="720.5" y="255.5" width="64" height="64"></rect>
+    <rect x="720.5" y="335.5" width="64" height="64"></rect>
+    <rect x="720.5" y="415.5" width="64" height="64"></rect>
+    <rect x="720.5" y="495.5" width="64" height="64"></rect>
+    <rect x="720.5" y="575.5" width="64" height="64"></rect>
+    <rect x="720.5" y="655.5" width="64" height="64"></rect>
+    <rect x="720.5" y="735.5" width="64" height="64"></rect>
+  </svg>
+  <div class="cta-section-container">
+    <h2>Ready to Get Started?</h2>
+    <p>
+      Join our webinar to learn how our dual sector strategy can work for you.
+    </p>
+    <DualCTA />
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    function initAnimation() {
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+        return;
+      }
+
+      var gsapLib = window.gsap;
+      var svg = document.getElementById("closing-cta-staircase-svg");
+      if (!svg) return;
+
+      var rects = svg.querySelectorAll("rect");
+      if (rects.length === 0) return;
+
+      gsapLib.set(rects, { stroke: "#152429" });
+
+      var tl = gsapLib.timeline({ repeat: -1 });
+
+      tl.to({}, { duration: 3 });
+
+      tl.to(rects, {
+        stroke: "#30414D",
+        duration: 0.2,
+        stagger: {
+          amount: 0.5,
+          from: "start",
+        },
+      });
+
+      tl.to(rects, {
+        stroke: "#152429",
+        duration: 0.5,
+        stagger: {
+          amount: 1,
+          from: "start",
+        },
+      });
+    }
+
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initAnimation);
+        } else {
+          initAnimation();
+        }
+      } else {
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAnimation);
+          } else {
+            initAnimation();
+          }
+        });
+      }
+    }
+
+    startAnimation();
+  })();
+</script>
