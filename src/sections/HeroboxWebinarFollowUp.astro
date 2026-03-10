@@ -234,7 +234,7 @@
     gap: 12px;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 32px;
+    margin-bottom: 12px;
   }
 
   .form input {
@@ -312,7 +312,7 @@
 
   .form-disclaimer {
     font-family: "Roboto", sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     line-height: 160%;
     color: #bfd1d7;
@@ -331,7 +331,7 @@
     border-radius: 0;
     width: auto;
     max-width: none;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     text-decoration: underline;
     transition: color 0.2s ease;
@@ -339,7 +339,7 @@
 
   .form-disclaimer .terms-link {
     color: #d3fbd8;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .form-disclaimer .terms-link:hover {
@@ -349,12 +349,41 @@
 
   .form-disclaimer .privacy-link {
     color: #9dd6a3;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .form-disclaimer .privacy-link:hover {
     color: #e1eeea;
     background: transparent;
+  }
+
+  .login-prompt {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #bfd1d7;
+    text-align: center;
+    margin-top: 16px !important;
+  }
+
+  .login-prompt .login-link {
+    display: inline;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    width: auto;
+    max-width: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #d3fbd8;
+    text-decoration: underline;
+  }
+
+  .login-prompt .login-link:hover {
+    background: transparent;
+    border: none;
+    color: #e1eeea;
   }
 
   .phone-error {
@@ -608,6 +637,12 @@
               <span class="button-text">Create Account</span>
               <span class="loader"></span>
             </button>
+            <p class="login-prompt">
+              Already have an account? <a
+                href="https://invest.robertventures.com/login"
+                class="login-link">Log In</a
+              >
+            </p>
             <p class="form-disclaimer">
               By submitting 'Create Account', I have read and agree to the <a
                 href="/terms-of-use"
