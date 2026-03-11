@@ -74,6 +74,14 @@
         } else {
             console.warn('Microsoft Clarity is not initialized.');
         }
+
+        // POSTHOG: cta_click (or event override)
+        if (window.posthogTrack) {
+            window.posthogTrack(eventName, {
+                cta_text: ctaText,
+                button_location: buttonLocation
+            });
+        }
     }
 
     // Function to trigger phone click events
@@ -105,6 +113,14 @@
         } else {
             console.warn('Microsoft Clarity is not initialized.');
         }
+
+        // POSTHOG: phone_click
+        if (window.posthogTrack) {
+            window.posthogTrack('phone_click', {
+                phone_number: phoneNumber,
+                button_location: buttonLocation
+            });
+        }
     }
 
     // Function to trigger social media click events
@@ -132,6 +148,14 @@
         } else {
             console.warn('Microsoft Clarity is not initialized.');
         }
+
+        // POSTHOG: social_click
+        if (window.posthogTrack) {
+            window.posthogTrack('social_click', {
+                platform: platform,
+                click_location: clickLocation
+            });
+        }
     }
 
     // Function to trigger navigation click events
@@ -158,6 +182,14 @@
             console.log('Clarity navigation_click event triggered:', eventData);
         } else {
             console.warn('Microsoft Clarity is not initialized.');
+        }
+
+        // POSTHOG: navigation_click
+        if (window.posthogTrack) {
+            window.posthogTrack('navigation_click', {
+                link_text: linkText,
+                click_location: clickLocation
+            });
         }
     }
 

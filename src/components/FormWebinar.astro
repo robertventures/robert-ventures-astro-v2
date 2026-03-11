@@ -611,6 +611,11 @@ const analyticsEvents = {
               (window as any).clarity("event", "webinarFormStarted");
               console.log("Clarity event triggered: webinarFormStarted");
             }
+
+            // POSTHOG: webinar_form_started
+            if ((window as any).posthogTrack) {
+              (window as any).posthogTrack("webinar_form_started");
+            }
           }
         });
 
@@ -743,6 +748,14 @@ const analyticsEvents = {
       utils.triggerEvent("session_type_selected", "sessionTypeSelected", {
         session_type: sessionType,
       });
+
+      // POSTHOG: webinar_session_selected
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("webinar_session_selected", {
+          session_type: sessionType,
+          session_date: selectedOption.getAttribute("data-date") || "",
+        });
+      }
     });
   }
 
@@ -876,9 +889,29 @@ const analyticsEvents = {
     }
   }
 
+  // =============================================
+  // POSTHOG TRACKING — events fired in this form
+  // =============================================
+  // webinar_form_started            → first focus on any field       (line ~615)
+  // webinar_invest_intent_selected  → invest amount dropdown change  (line ~899)
+  // webinar_session_selected        → session date/time change       (line ~754)
+  // webinar_form_submitted          → submit click, before validation (line ~916)
+  // webinar_registration_failed     → server returns non-200         (line ~1155)
+  // webinar_registered              → success + posthogIdentify      (line ~1225)
+  // =============================================
+
   function setupFormSubmission(form, elements) {
     const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } =
       elements;
+
+    // POSTHOG: webinar_invest_intent_selected
+    investSelectEl.addEventListener("change", function () {
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("webinar_invest_intent_selected", {
+          invest_intent: (this as HTMLSelectElement).value,
+        });
+      }
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -886,6 +919,16 @@ const analyticsEvents = {
       buttonText.style.display = "none";
       loader.style.display = "inline-block";
       submitButton.disabled = true;
+
+      // POSTHOG: webinar_form_submitted
+      if ((window as any).posthogTrack) {
+        const selectedOpt = selectEl.querySelector("option:checked");
+        const isInstantAtSubmit = selectedOpt?.getAttribute("data-is-instant") === "true";
+        (window as any).posthogTrack("webinar_form_submitted", {
+          invest_intent: investSelectEl.value,
+          session_type: isInstantAtSubmit ? "on_demand" : "live",
+        });
+      }
 
       // --- PHONE VALIDATION ---
       const phoneRaw = phoneInput.value.replace(/\D/g, "");
@@ -1117,6 +1160,14 @@ const analyticsEvents = {
         if (!res.ok) {
           signupError.textContent = "Registration failed. Please try again.";
           resetFormState(buttonText, loader, submitButton);
+
+          // POSTHOG: webinar_registration_failed
+          if ((window as any).posthogTrack) {
+            (window as any).posthogTrack("webinar_registration_failed", {
+              invest_intent: investSelectEl.value,
+              session_type: isInstant ? "on_demand" : "live",
+            });
+          }
           return;
         }
 
@@ -1167,6 +1218,28 @@ const analyticsEvents = {
           session_date: isoDateUTC,
           session_type: isInstant ? "on_demand" : "live",
         });
+
+        // POSTHOG: posthogIdentify + webinar_registered
+        if ((window as any).posthogIdentify) {
+          const emailStr = typeof userEmail === "string" ? userEmail : "";
+          (window as any).posthogIdentify(emailStr, {
+            name: formData.get("full_name"),
+            email: emailStr,
+            phone: formData.get("phone_number"),
+            ghl_contact_id: result.ghl_contact_id,
+            invest_intent: formData.get("invest_intent"),
+            session_type: isInstant ? "on_demand" : "live",
+            registration_page: window.location.pathname,
+          });
+        }
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("webinar_registered", {
+            invest_intent: formData.get("invest_intent"),
+            session_date: isoDateUTC,
+            session_type: isInstant ? "on_demand" : "live",
+            ghl_contact_id: result.ghl_contact_id,
+          });
+        }
 
         // Fire Meta Pixel CompleteRegistration with deduplication eventID
         // Skip for low investment intent ($1k/$5k) to improve Meta ad optimization quality

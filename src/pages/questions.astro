@@ -371,6 +371,41 @@ const contactTimeOptions = [
     const form = document.getElementById("questions") as HTMLFormElement;
     if (!form) return;
 
+    // =============================================
+    // POSTHOG TRACKING — events fired on this page
+    // =============================================
+    // questions_form_started    → first radio selection   (below)
+    // questions_field_selected  → every radio change      (below)
+    // questions_completed       → successful submission   (in submit handler)
+    // posthogSetPerson          → saves answers to person (in submit handler)
+    // =============================================
+
+    // POSTHOG: questions_form_started (fires once on first interaction)
+    let questionsStarted = false;
+    form.addEventListener("focusin", function (e: FocusEvent) {
+      if (questionsStarted) return;
+      const target = e.target as HTMLElement;
+      if (["INPUT"].includes(target.tagName)) {
+        questionsStarted = true;
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("questions_form_started");
+        }
+      }
+    });
+
+    // POSTHOG: questions_field_selected (fires on every radio change)
+    form.addEventListener("change", function (e: Event) {
+      const target = e.target as HTMLInputElement;
+      if (target.type === "radio") {
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("questions_field_selected", {
+            field_name: target.name,
+            field_value: target.value,
+          });
+        }
+      }
+    });
+
     // Update button text for on-demand users so they know they'll watch the webinar next
     const webinarSession = (() => {
       try {
@@ -443,6 +478,24 @@ const contactTimeOptions = [
           // Trigger GA4 and Clarity events for questions completion
           triggerEvent("questions_completed", "questionsCompleted");
           triggerEvent("portfolio_value_added", "portfolioValueAdded");
+
+          // POSTHOG: questions_completed
+          if ((window as any).posthogTrack) {
+            (window as any).posthogTrack("questions_completed", {
+              investment_timeline: formData.get("investment_timeline"),
+              age_bracket: formData.get("age_bracket"),
+              preferred_contact_time: formData.get("preferred_contact_time"),
+            });
+          }
+
+          // POSTHOG: save answers to person profile
+          if ((window as any).posthogSetPerson) {
+            (window as any).posthogSetPerson({
+              investment_timeline: formData.get("investment_timeline"),
+              age_bracket: formData.get("age_bracket"),
+              preferred_contact_time: formData.get("preferred_contact_time"),
+            });
+          }
 
           // On-demand users: redirect to the pre-recorded webinar watch room
           // Scheduled users: redirect to the thank-you page with countdown
