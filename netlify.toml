@@ -24,3 +24,17 @@
   to = "https://rt.robertventures.com/:splat"
   status = 200
   force = true
+
+# Reverse proxy for PostHog — routes through our domain so ad blockers can't intercept it
+# /static/* must come first (more specific) to hit the assets CDN; /* catches event data
+[[redirects]]
+  from = "/phog/static/*"
+  to = "https://us-assets.i.posthog.com/static/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/phog/*"
+  to = "https://us.i.posthog.com/:splat"
+  status = 200
+  force = true
