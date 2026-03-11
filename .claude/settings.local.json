@@ -6,7 +6,8 @@
       "Bash(git log:*)",
       "Bash(npx astro check --no-install)",
       "Bash(npx tsc --noEmit)",
-      "Bash(npx astro:*)"
+      "Bash(npx astro:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

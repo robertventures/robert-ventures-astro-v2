@@ -1,5 +1,6 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
+import { getRequestCountry } from "../../lib/getRequestCountry";
 import { notifySlack } from "../../lib/notifySlack";
 import { createAccountSchema } from "../../lib/schemas/create-account.schema";
 
@@ -12,10 +13,10 @@ import { createAccountSchema } from "../../lib/schemas/create-account.schema";
  *
  * Checks:
  *   1. Honeypot field — bots fill the hidden `website` field; humans don't see it
- *   2. Country check — reads the CF-IPCountry header Cloudflare injects on every
- *      request. No external API call needed — Cloudflare already knows the country.
- *      Only "US" is allowed. VPNs ("T1"), unknown IPs ("XX"), and all other
- *      countries are blocked. Absent header (local dev) → fail-open.
+ *   2. Country check — reads Netlify's x-nf-geo header (base64 JSON with country
+ *      code). Only "US" is allowed. The Netlify edge function in netlify.toml
+ *      already blocks non-US traffic at the CDN layer; this is a backup.
+ *      Absent header (local dev) → fail-open.
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -45,18 +46,15 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // ── 2. COUNTRY CHECK (via Cloudflare header) ───────────────────────────
-    // Cloudflare automatically sets CF-IPCountry on every request with the
-    // visitor's ISO 3166-1 alpha-2 country code (e.g. "US", "GB", "DE").
-    // VPNs and anonymising proxies are tagged "T1". Unknown IPs are tagged "XX".
-    // This header is injected server-side — it cannot be spoofed by the client.
-    //
-    // Only allow "US". Everything else is blocked, including VPNs ("T1") and
-    // unresolvable IPs ("XX"). Fail-open only when the header is absent entirely
-    // (local dev without Cloudflare in front).
-    const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
-    if (cfCountry && cfCountry !== "US") {
-      console.log("🌍 Non-US registration blocked:", { country: cfCountry });
+    // ── 2. COUNTRY CHECK (via Netlify geo header) ──────────────────────────
+    // Netlify provides the visitor's country in the x-nf-geo header (base64 JSON).
+    // The edge function in netlify.toml already blocks non-US traffic at the CDN
+    // layer — this is a defense-in-depth backup in case the edge function is ever
+    // removed or misconfigured. Fail-open only when no geo data is available
+    // (local dev without Netlify in front).
+    const country = getRequestCountry(request);
+    if (country && country !== "US") {
+      console.log("🌍 Non-US registration blocked:", { country });
       return new Response(
         JSON.stringify({ detail: "Registration is currently only available in the United States" }),
         { status: 400, headers: { "Content-Type": "application/json" } }

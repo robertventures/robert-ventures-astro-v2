@@ -29,7 +29,5 @@ export default async (request, context) => {
   return context.next();
 };
 
-// This edge function only runs on the webinar registration API
-export const config = {
-  path: "/api/webinar-registration",
-};
+// Routing is configured in netlify.toml (covers both /api/webinar-registration
+// and /api/create-account). No inline config needed here.

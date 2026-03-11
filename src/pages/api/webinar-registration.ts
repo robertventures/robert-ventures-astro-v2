@@ -29,6 +29,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { createHash } from "crypto";
+import { getRequestCountry } from "../../lib/getRequestCountry";
 import { notifySlack } from "../../lib/notifySlack";
 import { autoCorrectEmail, normalizeNameCase, splitFullName } from "../../lib/formHelpers";
 import { webinarRegistrationSchema } from "../../lib/schemas/webinar-registration.schema";
@@ -84,13 +85,13 @@ export const POST: APIRoute = async ({ request }) => {
     // ========================================
     // SPAM PROTECTION: COUNTRY CHECK
     // ========================================
-    // Cloudflare injects CF-IPCountry on every request with the visitor's
-    // ISO 3166-1 alpha-2 country code. VPNs are tagged "T1", unknown IPs "XX".
-    // This header is server-side only — it cannot be spoofed by the client.
-    // Only allow "US". Fail-open when header is absent (local dev).
-    const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
-    if (cfCountry && cfCountry !== "US") {
-      console.log("🌍 Non-US webinar registration blocked:", { country: cfCountry });
+    // Netlify provides the visitor's country in the x-nf-geo header (base64 JSON).
+    // The edge function in netlify.toml already blocks non-US traffic at the CDN
+    // layer — this is a defense-in-depth backup. Fail-open only when no geo data
+    // is available (local dev without Netlify in front).
+    const country = getRequestCountry(request);
+    if (country && country !== "US") {
+      console.log("🌍 Non-US webinar registration blocked:", { country });
       return new Response(JSON.stringify({ message: "Registration successful" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
