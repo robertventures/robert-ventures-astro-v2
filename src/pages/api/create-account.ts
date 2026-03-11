@@ -13,12 +13,12 @@ import { createAccountSchema } from "../../lib/schemas/create-account.schema";
  *
  * Checks:
  *   1. Honeypot field — bots fill the hidden `website` field; humans don't see it
- *   2. Country check — reads Netlify's x-nf-geo header (base64 JSON with country
- *      code). Only "US" is allowed. The Netlify edge function in netlify.toml
- *      already blocks non-US traffic at the CDN layer; this is a backup.
- *      Absent header (local dev) → fail-open.
+ *   2. Country check — reads Netlify's context.geo via Astro locals. Only "US"
+ *      is allowed. The Netlify edge function in netlify.toml already blocks
+ *      non-US traffic at the CDN layer; this is a backup.
+ *      No geo data (local dev) → fail-open.
  */
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const rawBody = await request.json();
 
@@ -46,13 +46,13 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // ── 2. COUNTRY CHECK (via Netlify geo header) ──────────────────────────
-    // Netlify provides the visitor's country in the x-nf-geo header (base64 JSON).
+    // ── 2. COUNTRY CHECK (via Netlify context.geo) ─────────────────────────
+    // The Astro Netlify adapter exposes geo data at locals.netlify.context.geo.
     // The edge function in netlify.toml already blocks non-US traffic at the CDN
     // layer — this is a defense-in-depth backup in case the edge function is ever
     // removed or misconfigured. Fail-open only when no geo data is available
     // (local dev without Netlify in front).
-    const country = getRequestCountry(request);
+    const country = getRequestCountry(request, locals);
     if (country && country !== "US") {
       console.log("🌍 Non-US registration blocked:", { country });
       return new Response(

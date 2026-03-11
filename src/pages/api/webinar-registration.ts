@@ -37,7 +37,7 @@ import { webinarRegistrationSchema } from "../../lib/schemas/webinar-registratio
 // ========================================
 // MAIN API HANDLER
 // ========================================
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   // ========================================
   // INITIALIZATION & ENVIRONMENT SETUP
   // ========================================
@@ -85,11 +85,11 @@ export const POST: APIRoute = async ({ request }) => {
     // ========================================
     // SPAM PROTECTION: COUNTRY CHECK
     // ========================================
-    // Netlify provides the visitor's country in the x-nf-geo header (base64 JSON).
+    // The Astro Netlify adapter exposes geo data at locals.netlify.context.geo.
     // The edge function in netlify.toml already blocks non-US traffic at the CDN
     // layer — this is a defense-in-depth backup. Fail-open only when no geo data
     // is available (local dev without Netlify in front).
-    const country = getRequestCountry(request);
+    const country = getRequestCountry(request, locals);
     if (country && country !== "US") {
       console.log("🌍 Non-US webinar registration blocked:", { country });
       return new Response(JSON.stringify({ message: "Registration successful" }), {

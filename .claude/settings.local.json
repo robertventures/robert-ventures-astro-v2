@@ -7,7 +7,11 @@
       "Bash(npx astro check --no-install)",
       "Bash(npx tsc --noEmit)",
       "Bash(npx astro:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(find /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/node_modules/@netlify/types -name *.d.ts)",
+      "WebSearch",
+      "WebFetch(domain:answers.netlify.com)",
+      "WebFetch(domain:docs.astro.build)"
     ]
   }
 }
