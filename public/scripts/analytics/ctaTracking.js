@@ -21,7 +21,6 @@
             '/webinar': 'webinar',
             '/questions': 'questions',
             '/webinar-thank-you': 'webinar_thank_you',
-            '/webinar-2': 'webinar',
             '/webinar-follow-up': 'webinar_follow_up',
             '/privacy-policy': 'privacy_policy',
             '/terms-of-use': 'terms_of_use',
