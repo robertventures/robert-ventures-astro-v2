@@ -143,8 +143,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Get client IP from server headers (Netlify provides this automatically)
     // No client-side IP capture needed - server always has access to the real IP
+    // x-nf-client-connection-ip is Netlify's reliable header for the real visitor IP
     const xffHeader = request.headers.get("x-forwarded-for") || "";
     const clientIpFromHeaders =
+      request.headers.get("x-nf-client-connection-ip") ||
       (xffHeader.split(",")[0] || "").trim() ||
       request.headers.get("cf-connecting-ip") ||
       request.headers.get("x-real-ip") ||
@@ -567,6 +569,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           // USED BY: Meta only - for geographic attribution and fraud prevention
           const xff = request.headers.get("x-forwarded-for") || "";
           const clientIp =
+            request.headers.get("x-nf-client-connection-ip") ||
             (xff.split(",")[0] || "").trim() ||
             request.headers.get("cf-connecting-ip") ||
             request.headers.get("x-real-ip") ||

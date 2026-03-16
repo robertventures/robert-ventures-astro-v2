@@ -11,7 +11,9 @@
       "Bash(find /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/node_modules/@netlify/types -name *.d.ts)",
       "WebSearch",
       "WebFetch(domain:answers.netlify.com)",
-      "WebFetch(domain:docs.astro.build)"
+      "WebFetch(domain:docs.astro.build)",
+      "Bash(find /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/public -name *.js -o -name *.ts)",
+      "Bash(grep -r \"location\\\\|city\\\\|state\\\\|zip\" /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/public/scripts/ --include=*.js)"
     ]
   }
 }
