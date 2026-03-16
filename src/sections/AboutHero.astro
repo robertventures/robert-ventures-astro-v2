@@ -124,26 +124,25 @@ import eduardo from "../images/eduardoaboutus.jpg";
   }
 
   .track-record-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     width: 100%;
     margin-top: 32px;
   }
 
   .track-record-stat {
-    width: 100%;
     background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     border-left: 4px solid #30414d;
-    padding: 24px 0 24px 24px;
+    padding: 16px 0 16px 16px;
   }
 
   .track-record-value {
     font-family: "Roboto Serif", serif;
-    font-size: 40px;
+    font-size: 28px;
     font-weight: 500;
     color: #d3fbd8;
     line-height: 100%;
@@ -152,7 +151,7 @@ import eduardo from "../images/eduardoaboutus.jpg";
   }
 
   .track-record-label {
-    font-size: 20px;
+    font-size: 14px;
     color: #e1eeea;
     line-height: 100%;
     margin: 0;
@@ -178,12 +177,23 @@ import eduardo from "../images/eduardoaboutus.jpg";
     }
 
     .track-record-stats {
+      display: flex;
       flex-direction: row;
       flex-wrap: wrap;
     }
 
     .track-record-stat {
       flex: 0 0 calc(50% - 8px);
+      padding: 24px 0 24px 24px;
+      gap: 8px;
+    }
+
+    .track-record-value {
+      font-size: 40px;
+    }
+
+    .track-record-label {
+      font-size: 20px;
     }
   }
 
@@ -213,11 +223,22 @@ import eduardo from "../images/eduardoaboutus.jpg";
     }
 
     .track-record-stats {
+      display: flex;
       flex-direction: row;
     }
 
     .track-record-stat {
       flex: 1;
+      padding: 24px 0 24px 24px;
+      gap: 8px;
+    }
+
+    .track-record-value {
+      font-size: 40px;
+    }
+
+    .track-record-label {
+      font-size: 20px;
     }
   }
 
