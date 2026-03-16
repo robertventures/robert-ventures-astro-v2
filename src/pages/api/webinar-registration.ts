@@ -161,11 +161,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let geoStateCode: string | undefined;
     let geoCity: string | undefined;
     let geoZip: string | undefined;
+    let isHostingIp = false;
 
     try {
       if (ipForGeo) {
+        // Request hosting + proxy fields alongside location data for bot detection
         const geoRes = await fetch(
-          `http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,region,regionName,city,zip`
+          `http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,region,regionName,city,zip,hosting,proxy`
         );
         if (geoRes.ok) {
           const geo = await geoRes.json();
@@ -175,12 +177,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
               typeof geo.regionName === "string" && geo.regionName ? geo.regionName : undefined;
             geoCity = typeof geo.city === "string" && geo.city ? geo.city : undefined;
             geoZip = typeof geo.zip === "string" && geo.zip ? geo.zip : undefined;
+            isHostingIp = geo.hosting === true;
             console.log("📍 IP geolocation:", {
               ipForGeo,
               geoStateCode,
               geoRegionName,
               geoCity,
               geoZip,
+              hosting: geo.hosting,
+              proxy: geo.proxy,
             });
           } else {
             console.warn("⚠️ IP geolocation lookup failed:", geo?.message || "unknown error");
@@ -191,6 +196,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     } catch (e) {
       console.warn("⚠️ IP geolocation lookup threw:", e);
+    }
+
+    // ========================================
+    // SPAM PROTECTION: DATA CENTER IP CHECK
+    // ========================================
+    // If the visitor's real IP belongs to a data center (AWS, Azure, etc.),
+    // it's almost certainly a bot, not a real person browsing from home.
+    // Return fake success so the bot doesn't know it was detected.
+    if (isHostingIp) {
+      console.log(`🤖 Data center IP detected (${ipForGeo}) - rejecting bot submission`);
+      return new Response(JSON.stringify({ message: "Registration successful" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Lookup median household income by zip code using US Census Bureau API
