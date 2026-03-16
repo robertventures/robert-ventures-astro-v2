@@ -212,6 +212,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
+    // ========================================
+    // EARLY WARNING: DATA CENTER LOCATION ALERT
+    // ========================================
+    // If a lead passes bot detection but still geolocates to known data center
+    // cities, it likely means IP detection is broken again (getting server IPs
+    // instead of real user IPs). Alert #fires so we catch it fast.
+    const dataCenterLocations = [
+      { city: "ashburn", state: "VA" },
+      { city: "san jose", state: "CA" },
+    ];
+    const cityLower = (geoCity || "").toLowerCase();
+    const isDataCenterLocation = dataCenterLocations.some(
+      (loc) => cityLower === loc.city && geoStateCode === loc.state
+    );
+    if (isDataCenterLocation) {
+      await notifySlack(
+        "Webinar Registration",
+        "Data Center Location Detected",
+        `Lead geolocated to ${geoCity}, ${geoStateCode} (known data center location). IP detection may be broken — check x-real-client-ip header. IP: ${ipForGeo}`,
+        body.email
+      );
+    }
+
     // Lookup median household income by zip code using US Census Bureau API
     // Classifies zip code as "High", "Mid", or "Low" income for lead segmentation
     let incomeLevel: string | undefined;
