@@ -25,6 +25,13 @@ export default async (request, context) => {
     });
   }
 
+  // Pass the real client IP to the serverless function via a custom header.
+  // context.ip is the visitor's actual IP — reliable because edge functions
+  // run at the CDN edge before any internal routing can overwrite IP headers.
+  if (context.ip) {
+    request.headers.set("x-real-client-ip", context.ip);
+  }
+
   // Country is allowed (or couldn't be detected) - let the request through
   return context.next();
 };

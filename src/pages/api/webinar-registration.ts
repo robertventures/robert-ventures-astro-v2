@@ -141,11 +141,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
       "Webinar";
     const deviceFinal = body.device_type || serverDevice || "unknown";
 
-    // Get client IP from server headers (Netlify provides this automatically)
-    // No client-side IP capture needed - server always has access to the real IP
-    // x-nf-client-connection-ip is Netlify's reliable header for the real visitor IP
+    // Get client IP for geolocation.
+    // x-real-client-ip is set by our edge function (geo-block.js) from context.ip,
+    // which is the visitor's real IP captured at the CDN edge before internal routing.
+    // Fallbacks are for non-edge-function routes or local development.
     const xffHeader = request.headers.get("x-forwarded-for") || "";
     const clientIpFromHeaders =
+      request.headers.get("x-real-client-ip") ||
       request.headers.get("x-nf-client-connection-ip") ||
       (xffHeader.split(",")[0] || "").trim() ||
       request.headers.get("cf-connecting-ip") ||
@@ -569,6 +571,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           // USED BY: Meta only - for geographic attribution and fraud prevention
           const xff = request.headers.get("x-forwarded-for") || "";
           const clientIp =
+            request.headers.get("x-real-client-ip") ||
             request.headers.get("x-nf-client-connection-ip") ||
             (xff.split(",")[0] || "").trim() ||
             request.headers.get("cf-connecting-ip") ||
