@@ -3,6 +3,7 @@ import Image from "astro/components/Image.astro";
 import joe from "../images/joerobertaboutus.jpg";
 import matheus from "../images/mattaboutus.jpg";
 import eduardo from "../images/eduardoaboutus.jpg";
+import william from "../images/will.jpg";
 ---
 
 <style>
@@ -121,6 +122,25 @@ import eduardo from "../images/eduardoaboutus.jpg";
     line-height: 150%;
     margin: 0;
     margin-top: 32px;
+  }
+
+  .team-card-highlights {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    color: #e1eeea;
+    line-height: 150%;
+    margin: 0;
+    margin-top: 16px;
+    padding-left: 20px;
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .team-card-highlights li::marker {
+    color: #30414d;
   }
 
   .track-record-stats {
@@ -302,13 +322,15 @@ import eduardo from "../images/eduardoaboutus.jpg";
             <p class="team-card-position">Investor Relations</p>
           </div>
           <p class="team-card-description">
-            Matheus Brandão has been actively researching and investing in digital assets since
-            2017, leveraging his dual expertise in economics and accounting. With a bachelor's
-            degree in both fields and extensive experience in blockchain development and wealth
-            management, Matheus plays a vital role in analyzing market trends and managing portfolio
-            growth. His consulting background at PwC ensures that Robert Ventures adheres to the
-            highest financial standards while maintaining trust and transparency with investors.
+            Matheus leverages his dual expertise in economics and accounting to manage investor
+            relations and ensure the highest financial standards at Robert Ventures.
           </p>
+          <ul class="team-card-highlights">
+            <li>PwC wealth management background</li>
+            <li>Economics and Accounting degree</li>
+            <li>Onboarded investors over the last year</li>
+            <li>3.5 years at the company</li>
+          </ul>
         </div>
 
         <div class="team-card">
@@ -320,12 +342,34 @@ import eduardo from "../images/eduardoaboutus.jpg";
             <p class="team-card-position">Engineering & Analytics</p>
           </div>
           <p class="team-card-description">
-            Eduardo De Matos leads web design, full-stack development, analytics, CRM operations,
-            and AI systems at Robert Ventures. With eight years of software engineering experience,
-            he builds and maintains the website, data pipelines, and automations that support
-            investor onboarding and reporting, with a focus on performance, reliability, and
-            measurable outcomes.
+            Eduardo leads the technology, analytics, and AI systems that power the Robert Ventures
+            investor platform.
           </p>
+          <ul class="team-card-highlights">
+            <li>Built the Robert Ventures investor platform</li>
+            <li>Manages reporting and investor analytics</li>
+            <li>8+ years in financial technology</li>
+            <li>2.5 years at the company</li>
+          </ul>
+        </div>
+
+        <div class="team-card">
+          <div class="team-card-image">
+            <Image src={william} alt="William Forte" width={120} height={120} densities={[1.5, 2]} quality={90} />
+          </div>
+          <div class="team-card-header">
+            <h3 class="team-card-name">William Forte</h3>
+            <p class="team-card-position">Customer Relations & Business Development</p>
+          </div>
+          <p class="team-card-description">
+            William drives investor outreach and CRM operations, ensuring every investor and lead
+            receives a seamless, personal experience from first contact onward.
+          </p>
+          <ul class="team-card-highlights">
+            <li>Leads investor and lead outreach</li>
+            <li>Manages CRM and pipeline operations</li>
+            <li>Background in client relationship management</li>
+          </ul>
         </div>
       </div>
     </div>
