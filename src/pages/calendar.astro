@@ -150,6 +150,15 @@ const pageDescription =
         }
       }
 
+      // DEBUG: Log ALL postMessage events (temporary — remove after confirming prod tracking)
+      window.addEventListener("message", function (event) {
+        console.log("=== postMessage received ===");
+        console.log("Origin:", event.origin);
+        console.log("Data:", JSON.stringify(event.data, null, 2));
+        console.log("Type of data:", typeof event.data);
+        console.log("============================");
+      });
+
       // Listen for booking completion from LeadConnector iframe
       // LeadConnector sends postMessage as arrays: ["event-name", payload]
       // The booking flow sends these messages in order:
@@ -170,13 +179,21 @@ const pageDescription =
             triggerEvent("calendar_booking", "calendarBooking");
 
             // POSTHOG: calendar_booking_completed
+            console.log("posthogTrack available:", !!(window as any).posthogTrack);
             if ((window as any).posthogTrack) {
               (window as any).posthogTrack("calendar_booking_completed");
+              console.log("PostHog event sent: calendar_booking_completed");
+            } else {
+              console.warn("posthogTrack not available — PostHog event NOT sent");
             }
 
             // POSTHOG: flag person as having booked a call
+            console.log("posthogSetPerson available:", !!(window as any).posthogSetPerson);
             if ((window as any).posthogSetPerson) {
               (window as any).posthogSetPerson({ has_booked_call: true });
+              console.log("PostHog person property set: has_booked_call = true");
+            } else {
+              console.warn("posthogSetPerson not available — person property NOT set");
             }
           }
         } catch (error) {
