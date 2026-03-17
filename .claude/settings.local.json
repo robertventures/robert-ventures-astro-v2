@@ -13,7 +13,8 @@
       "WebFetch(domain:answers.netlify.com)",
       "WebFetch(domain:docs.astro.build)",
       "Bash(find /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/public -name *.js -o -name *.ts)",
-      "Bash(grep -r \"location\\\\|city\\\\|state\\\\|zip\" /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/public/scripts/ --include=*.js)"
+      "Bash(grep -r \"location\\\\|city\\\\|state\\\\|zip\" /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/public/scripts/ --include=*.js)",
+      "Bash(ls /Users/eduardodematos/Documents/GitHub/robert-ventures-astro-v2/src/pages/webinar*)"
     ]
   }
 }

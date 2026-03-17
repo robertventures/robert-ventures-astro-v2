@@ -107,7 +107,7 @@ const {
 <!-- REDTRACK PAGE VIEW PIXEL -->
 {Astro.site.hostname === "robertventures.com" && (
   <script is:inline>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const m = document.cookie.match(/(^|;\s*)rtk_click_id=([^;]+)/);
       const clickid = m ? decodeURIComponent(m[2]) : null;
       let url = '//rt.robertventures.com/postback?format=img&type=page_view';
@@ -118,7 +118,7 @@ const {
       img.height = 1;
       img.style.display = 'none';
       document.body.appendChild(img);
-    })();
+    });
   </script>
 )}
 <!-- REDTRACK PAGE VIEW PIXEL -->
