@@ -150,51 +150,37 @@ const pageDescription =
         }
       }
 
-      // Listen for messages from the iframe
-      document.addEventListener("DOMContentLoaded", function () {
-        window.addEventListener("message", function (event) {
-          // Check if the message is from LeadConnector
-          if (event.origin === "https://api.leadconnectorhq.com") {
-            try {
-              const data = event.data;
+      // Listen for booking completion from LeadConnector iframe
+      // LeadConnector sends postMessage as arrays: ["event-name", payload]
+      // The booking flow sends these messages in order:
+      //   1. ["set-sticky-contacts", "_ud", JSON_STRING, ...] — contact data
+      //   2. ["msgsndr-booking-complete", { fingerprint, calendarId }] — booking done
+      window.addEventListener("message", function (event) {
+        if (event.origin !== "https://api.leadconnectorhq.com") return;
 
-              // Check for booking completion events
-              if (data && typeof data === "object") {
-                // Look for various booking completion indicators
-                if (
-                  data.type === "booking_completed" ||
-                  data.event === "booking_completed" ||
-                  data.action === "booking_completed" ||
-                  data.status === "completed" ||
-                  (data.message && data.message.includes("booking")) ||
-                  (data.data && data.data.booking)
-                ) {
-                  console.log("Calendar booking detected:", data);
-                  triggerEvent("calendar_booking", "calendarBooking");
+        const data = event.data;
+        if (!Array.isArray(data)) return;
 
-                  // POSTHOG: calendar_booking_completed
-                  if ((window as any).posthogTrack) {
-                    (window as any).posthogTrack("calendar_booking_completed");
-                  }
+        try {
+          // Detect booking completion: "msgsndr-booking-complete"
+          if (data[0] === "msgsndr-booking-complete") {
+            console.log("Calendar booking detected:", data);
 
-                  // POSTHOG: flag person as having booked a call
-                  if ((window as any).posthogSetPerson) {
-                    (window as any).posthogSetPerson({ has_booked_call: true });
-                  }
-                }
-              }
-            } catch (error) {
-              console.error("Error processing iframe message:", error);
+            // GA4 + Clarity
+            triggerEvent("calendar_booking", "calendarBooking");
+
+            // POSTHOG: calendar_booking_completed
+            if ((window as any).posthogTrack) {
+              (window as any).posthogTrack("calendar_booking_completed");
+            }
+
+            // POSTHOG: flag person as having booked a call
+            if ((window as any).posthogSetPerson) {
+              (window as any).posthogSetPerson({ has_booked_call: true });
             }
           }
-        });
-
-        // Monitor iframe load events
-        const iframe = document.getElementById("calendar-iframe");
-        if (iframe) {
-          iframe.addEventListener("load", function () {
-            console.log("Calendar iframe loaded");
-          });
+        } catch (error) {
+          console.error("Error processing iframe message:", error);
         }
       });
     </script>
