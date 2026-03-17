@@ -112,5 +112,51 @@ const pageDescription = "Thank you for booking a Q&A call with Robert Ventures."
       </div>
     </section>
     <FooterNew />
+
+    <script>
+      // POSTHOG: calendar_booking_completed
+      // This page is only reachable after completing a booking on /calendar,
+      // so loading this page = a confirmed booking.
+      function fireBookingEvents() {
+        // PostHog: track the booking event
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("calendar_booking_completed");
+        }
+
+        // PostHog: flag person as having booked a call
+        if ((window as any).posthogSetPerson) {
+          (window as any).posthogSetPerson({ has_booked_call: true });
+        }
+
+        // GA4: push to dataLayer
+        if ((window as any).dataLayer) {
+          (window as any).dataLayer.push({ event: "calendar_booking" });
+        }
+
+        // Microsoft Clarity
+        if (typeof (window as any).clarity === "function") {
+          (window as any).clarity("event", "calendarBooking");
+        }
+      }
+
+      // Wait for PostHog to be ready (loaded via GTM, may take a moment)
+      if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
+        fireBookingEvents();
+      } else {
+        // PostHog not ready yet — wait for it to load, then fire
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
+            clearInterval(interval);
+            fireBookingEvents();
+          } else if (attempts >= 20) {
+            // After 10 seconds, fire anyway so GA4/Clarity still get tracked
+            clearInterval(interval);
+            fireBookingEvents();
+          }
+        }, 500);
+      }
+    </script>
   </body>
 </html>
