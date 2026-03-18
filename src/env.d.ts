@@ -9,6 +9,8 @@ interface ImportMetaEnv {
   readonly META_TEST_EVENT_CODE?: string;
   readonly GHL_API_KEY?: string;
   readonly WEBINARKIT_API_KEY?: string;
+  readonly SUPABASE_URL?: string;
+  readonly SUPABASE_ANON_KEY?: string;
 }
 
 interface ImportMeta {

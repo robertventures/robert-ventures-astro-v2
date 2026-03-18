@@ -18,11 +18,16 @@
  *    - Uses privacy-compliant hashed user identifiers
  *    - Includes investment intent as predicted_ltv for lead quality scoring
  *
+ * 4. SUPABASE (Analytics Database)
+ *    - Stores all registration data for analytics and reporting
+ *    - Non-blocking insert (doesn't slow down registration)
+ *    - Captures UTM, attribution, device, location, and lead quality data
+ *
  * Data Flow:
- * Input → Process Data → Send to All 3 Services → Return Success Response
+ * Input → Process Data → Send to All 4 Services → Return Success Response
  *     ↓         ↓             ↓                    ↓
  *   Form     UTM/Device    GHL + WebinarKit +    webinar_response +
- *   Data     Detection     Meta Tracking        ghl_contact_id
+ *   Data     Detection     Meta + Supabase      ghl_contact_id
  */
 
 export const prerender = false;
@@ -33,6 +38,7 @@ import { getRequestCountry } from "../../lib/getRequestCountry";
 import { notifySlack } from "../../lib/notifySlack";
 import { autoCorrectEmail, normalizeNameCase, splitFullName } from "../../lib/formHelpers";
 import { webinarRegistrationSchema } from "../../lib/schemas/webinar-registration.schema";
+import { supabase } from "../../lib/supabase";
 
 // ========================================
 // MAIN API HANDLER
@@ -133,7 +139,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     })();
 
     // Determine webinar test and other final values
-    // USED BY: GoHighLevel (custom fields), WebinarKit (customField1), Meta (not used)
+    // USED BY: GoHighLevel (custom fields), Meta (not used)
     const webinarTest = body.webinar_test || "unknown";
     const utmCampaignFinal =
       body.utm_campaign ||
@@ -492,9 +498,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // Webinar scheduling information
       date: body.date, // ISO datetime for webinar session
       fullDate: body.fullDate, // Human-readable datetime for display
-      // Custom fields for WebinarKit analytics and segmentation
-      customField1: webinarTest, // Webinar test tracking
-      customField2: body.invest_intent, // Investment intent for lead scoring
+      // Analytics and segmentation fields for WebinarKit CSV export
+      source: body?.utm?.utm_source || "direct",
+      customField1: body.invest_intent || "",
+      customField2: utmCampaignFinal,
+      customField3: body?.utm?.utm_content || "",
+      customField4: body?.utm?.utm_adgroup || body?.google_adgroup_id || "",
+      customField5: deviceFinal,
     };
 
     console.log("📤 Sending to WebinarKit:", JSON.stringify(webinarKitPayload, null, 2));
@@ -733,6 +743,57 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     } else {
       console.log("⏭️ Skipping Meta CAPI — low investment intent:", investIntentValue);
+    }
+
+    // ========================================
+    // STEP 4: SUPABASE ANALYTICS INSERT
+    // ========================================
+    // Store registration data in Supabase for analytics and reporting
+    // Non-blocking: we don't wait for this to complete before responding to the user
+    try {
+      supabase
+        .from("webinar_registrations")
+        .insert({
+          email: body.email,
+          first_name: firstName,
+          last_name: lastName,
+          phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
+          invest_intent: String(body.invest_intent || ""),
+          zip_income_level: incomeLevel || "",
+          webinar_date: body.date,
+          session_type: isInstantSession ? "on-demand" : "scheduled",
+          utm_source: body?.utm?.utm_source || "",
+          utm_medium: body?.utm?.utm_medium || "",
+          utm_campaign: utmCampaignFinal,
+          utm_content: body?.utm?.utm_content || "",
+          utm_term: body?.utm?.utm_term || "",
+          utm_id: body?.utm?.utm_id || "",
+          utm_adgroup: body?.utm?.utm_adgroup || "",
+          gclid: body?.gclid || "",
+          google_adgroup_id: body?.google_adgroup_id || "",
+          google_campaign_id: body?.google_campaign_id || "",
+          google_creative_id: body?.google_creative_id || "",
+          google_matchtype: body?.google_matchtype || "",
+          fb_ad_id: body?.fb_ad_id || "",
+          fb_adset_id: body?.fb_adset_id || "",
+          fb_placement: body?.fb_placement || "",
+          fb_site_source: body?.fb_site_source || "",
+          device_type: deviceFinal,
+          city: geoCity || "",
+          state: geoRegionName || "",
+          zip_code: geoZip || "",
+          ghl_contact_id: ghlContactId || "",
+          presentation_date: body.fullDate || "",
+        })
+        .then(({ error }) => {
+          if (error) {
+            console.error("❌ Supabase insert error:", error.message);
+          } else {
+            console.log("✅ Supabase registration saved for:", body.email);
+          }
+        });
+    } catch (err) {
+      console.error("❌ Supabase insert threw:", err);
     }
 
     // ========================================
