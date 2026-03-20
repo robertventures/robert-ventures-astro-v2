@@ -20,6 +20,9 @@ export const GET: APIRoute = async () => {
       );
     }
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(
       "https://api.senja.io/v1/testimonials?include=customer,avatar,profile_picture",
       {
@@ -28,8 +31,11 @@ export const GET: APIRoute = async () => {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
       }
     );
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const errorText = await response.text();
