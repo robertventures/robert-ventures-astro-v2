@@ -7,7 +7,8 @@
 
   // --- Capture UTM Parameters ---
   var utmParams = [
-    "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"
+    "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id",
+    "utm_adgroup"
   ];
 
   var urlParams = new URLSearchParams(window.location.search);
