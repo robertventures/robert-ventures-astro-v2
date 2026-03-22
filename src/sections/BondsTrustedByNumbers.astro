@@ -35,8 +35,8 @@ try {
 
 <style>
   section {
-    background: linear-gradient(to bottom, #111111, #101b1f);
-    color: #152429;
+    background: var(--bg-secondary);
+    color: var(--text-body);
     padding: 0;
     margin: 0;
   }
@@ -59,7 +59,7 @@ try {
     margin-bottom: 32px;
     line-height: 100%;
     text-align: left;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .columns-container {
@@ -71,11 +71,11 @@ try {
 
   .column {
     width: 100%;
-    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    background: linear-gradient(to right, rgba(62, 178, 120, 0.08), transparent);
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-left: 4px solid #30414d;
+    border-left: 4px solid var(--green-brand);
     padding: 24px 0 24px 24px;
   }
 
@@ -83,7 +83,7 @@ try {
     font-family: "Roboto Serif", serif;
     font-size: 40px;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--text-heading);
     line-height: 100%;
     font-variant-numeric: lining-nums;
     opacity: 0;
@@ -91,7 +91,7 @@ try {
 
   .description {
     font-size: 20px;
-    color: #e1eeea;
+    color: var(--text-body);
     line-height: 100%;
     opacity: 0;
   }
@@ -111,7 +111,7 @@ try {
 
   .results-text {
     font-size: 20px;
-    color: #e1eeea;
+    color: var(--text-body);
     line-height: 100%;
   }
 
@@ -167,7 +167,7 @@ try {
 
     <div class="results-label">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
-        <circle cx="6" cy="6" r="6" fill="#79EAAD"></circle>
+        <circle cx="6" cy="6" r="6" fill="#3EB278"></circle>
       </svg>
       <span class="results-text">Since Inception</span>
     </div>

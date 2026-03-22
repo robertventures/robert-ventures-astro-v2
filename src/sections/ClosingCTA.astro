@@ -4,8 +4,8 @@ import DualCTA from "../components/DualCTA.astro";
 
 <style>
   section {
-    background: linear-gradient(to bottom, #111111, #101b1f);
-    border-top: 1px solid #30414d;
+    background: var(--dark-bg);
+    border-top: 1px solid var(--dark-border);
     padding: 0;
     margin: 0;
     position: relative;
@@ -24,7 +24,7 @@ import DualCTA from "../components/DualCTA.astro";
 
   .staircase-svg rect {
     fill: none;
-    stroke: #152429;
+    stroke: rgba(255, 255, 255, 0.07);
     stroke-width: 1;
   }
 
@@ -43,7 +43,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-family: "Roboto Serif", serif;
     font-size: 32px;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--dark-text-heading);
     margin: 0;
     line-height: 125%;
   }
@@ -52,7 +52,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--dark-text-body);
     line-height: 150%;
     margin: 0;
     max-width: 512px;
@@ -166,14 +166,14 @@ import DualCTA from "../components/DualCTA.astro";
       var rects = svg.querySelectorAll("rect");
       if (rects.length === 0) return;
 
-      gsapLib.set(rects, { stroke: "#152429" });
+      gsapLib.set(rects, { stroke: "rgba(255, 255, 255, 0.07)" });
 
       var tl = gsapLib.timeline({ repeat: -1 });
 
       tl.to({}, { duration: 3 });
 
       tl.to(rects, {
-        stroke: "#30414D",
+        stroke: "rgba(255, 255, 255, 0.15)",
         duration: 0.2,
         stagger: {
           amount: 0.5,
@@ -182,7 +182,7 @@ import DualCTA from "../components/DualCTA.astro";
       });
 
       tl.to(rects, {
-        stroke: "#152429",
+        stroke: "rgba(255, 255, 255, 0.07)",
         duration: 0.5,
         stagger: {
           amount: 1,

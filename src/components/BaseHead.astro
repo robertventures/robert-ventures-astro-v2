@@ -8,6 +8,7 @@ const {
   description,
   image = "/images/svg/rv-logo.svg",
   rtkCampaignId = "697c996793ba48f6ba89582f",
+  loadScrollTrigger = false,
 } = Astro.props;
 ---
 
@@ -78,6 +79,29 @@ const {
     }
     loadGSAP();
 </script>
+
+<!-- ScrollTrigger (loaded only on pages that need it) -->
+{loadScrollTrigger && (
+  <script is:inline>
+    (function() {
+      function loadScrollTriggerPlugin() {
+        var st = document.createElement('script');
+        st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+        st.onload = function() {
+          window.gsap.registerPlugin(window.ScrollTrigger);
+          window.scrollTriggerLoaded = true;
+          window.dispatchEvent(new Event('scrollTriggerLoaded'));
+        };
+        document.head.appendChild(st);
+      }
+      if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
+        loadScrollTriggerPlugin();
+      } else {
+        window.addEventListener('gsapLoaded', loadScrollTriggerPlugin);
+      }
+    })();
+  </script>
+)}
 
 <link rel="preload" href="/images/svg/waves.svg" as="image" />
 

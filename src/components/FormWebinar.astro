@@ -135,27 +135,27 @@ const analyticsEvents = {
   }
 
   input {
-    border: 1px solid #30414d;
+    border: 1px solid var(--border-light);
     flex-grow: 1;
-    background-color: #152429;
+    background-color: var(--bg-primary);
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.75rem;
-    color: #e1eeea;
+    color: var(--text-heading);
     transition: border-color 0.2s ease;
     font-size: 1rem;
   }
 
   select {
-    border: 1px solid #30414d;
+    border: 1px solid var(--border-light);
     flex-grow: 1;
-    background-color: #152429;
+    background-color: var(--bg-primary);
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.75rem;
-    color: #e1eeea;
+    color: var(--text-heading);
     transition: border-color 0.2s ease;
     font-size: 1rem;
   }
@@ -163,16 +163,16 @@ const analyticsEvents = {
   input:focus,
   select:focus {
     outline: none;
-    border: 1px solid #d3fbd8;
+    border: 1px solid var(--green-brand);
   }
 
   input::placeholder {
-    color: #8a9ca3;
+    color: var(--text-muted);
     opacity: 1;
   }
 
   select:invalid {
-    color: #8a9ca3;
+    color: var(--text-muted);
     opacity: 1;
   }
 
@@ -180,19 +180,19 @@ const analyticsEvents = {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: #152429;
-    border: 1px solid #30414d;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-light);
     width: 100%;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   select:required:not(:invalid) {
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   select option {
-    background-color: #152429;
-    color: #e1eeea;
+    background-color: var(--bg-primary);
+    color: var(--text-heading);
   }
 
   select option[disabled] {
@@ -200,9 +200,9 @@ const analyticsEvents = {
   }
 
   button {
-    background-color: #d3fbd8;
-    border: 1px solid #d3fbd8;
-    color: #152429;
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #FFFFFF;
     border-radius: 8px;
     padding: 12px;
     font-size: 18px;
@@ -225,13 +225,13 @@ const analyticsEvents = {
   }
 
   button:active {
-    background-color: #9ebca2;
-    border-color: #9ebca2;
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   button:hover {
-    background-color: #b8f5c4;
-    border-color: #b8f5c4;
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   button:disabled {
@@ -287,12 +287,12 @@ const analyticsEvents = {
 
   .phone-input-wrapper input[type="tel"] {
     padding-left: calc(22px + 12px + 1rem) !important;
-    background-color: #152429;
-    color: #e1eeea;
+    background-color: var(--bg-primary);
+    color: var(--text-heading);
   }
 
   .phone-input-wrapper input[type="tel"]:focus {
-    border: 1px solid #d3fbd8;
+    border: 1px solid var(--green-brand);
   }
 
   @media only screen and (min-width: 990px) {

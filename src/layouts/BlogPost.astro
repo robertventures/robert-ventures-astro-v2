@@ -55,7 +55,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       }
       .title h1 {
         margin: 0 0 0.5em 0;
-        color: #152429;
+        color: var(--text-heading);
         font-family: var(--font-heading);
       }
       .date {
@@ -72,7 +72,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       .prose :global(h4),
       .prose :global(h5),
       .prose :global(h6) {
-        color: #152429;
+        color: var(--text-heading);
         font-family: var(--font-heading);
       }
 

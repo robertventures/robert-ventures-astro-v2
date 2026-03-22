@@ -41,7 +41,7 @@ import FormWebinar from "../components/FormWebinar.astro";
   }
 
   p.name {
-    color: #1d1d1f;
+    color: var(--text-heading);
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1; /* 1.25rem */
@@ -50,7 +50,7 @@ import FormWebinar from "../components/FormWebinar.astro";
   }
 
   p.position {
-    color: #505050;
+    color: var(--text-body);
     text-align: center;
     font-weight: 500;
     line-height: 160%; /* 1.8rem */
@@ -59,7 +59,7 @@ import FormWebinar from "../components/FormWebinar.astro";
   }
 
   p.info {
-    color: #505050;
+    color: var(--text-body);
     font-size: 1.25rem;
     font-weight: 500;
     line-height: 150%; /* 1.875rem */
@@ -77,11 +77,11 @@ import FormWebinar from "../components/FormWebinar.astro";
     padding: 1rem;
 
     border-radius: 0.5rem;
-    border: 1px solid #afb5bc;
+    border: 1px solid var(--border-light);
   }
 
   .block-title {
-    color: #1d1d1f;
+    color: var(--text-heading);
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 100%; /* 0.875rem */
@@ -91,13 +91,13 @@ import FormWebinar from "../components/FormWebinar.astro";
 
   .block-value {
     font-size: 2rem;
-    color: #281480;
+    color: var(--green-brand);
     font-weight: 600;
     line-height: 100%; /* 2rem */
   }
 
   .extra-info {
-    color: #505050;
+    color: var(--text-body);
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.6; /* 1.6rem */

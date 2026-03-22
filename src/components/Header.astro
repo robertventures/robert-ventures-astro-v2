@@ -1,5 +1,5 @@
 ---
-import Rvlogo from "../images/logo-horizontal-darkbg.svg";
+import Rvlogo from "../images/logo-horizontal-whitebg.svg";
 
 import Opener from "../images/svg/link-icon.svg";
 ---
@@ -14,7 +14,8 @@ import Opener from "../images/svg/link-icon.svg";
     padding: 0 16px;
     position: relative;
     z-index: 1001; /* Ensure the header is above the mobile menu */
-    background-color: #101b1f;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-light);
     height: 64px;
   }
 
@@ -57,7 +58,7 @@ import Opener from "../images/svg/link-icon.svg";
 
   nav a {
     padding: 1em 0.5em;
-    color: #e1eeea;
+    color: var(--text-heading);
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
@@ -92,7 +93,7 @@ import Opener from "../images/svg/link-icon.svg";
 
   .hamburger svg {
     transition: transform 0.3s ease-in-out;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .mobile-menu {
@@ -277,7 +278,7 @@ import Opener from "../images/svg/link-icon.svg";
     }
 
     .desktop-links a {
-      color: #e1eeea;
+      color: var(--text-heading);
       text-decoration: none;
       font-size: 1rem;
       font-weight: 500;
@@ -288,7 +289,7 @@ import Opener from "../images/svg/link-icon.svg";
     }
 
     .login-link a {
-      color: #e1eeea;
+      color: var(--text-heading);
       text-decoration: none;
       font-size: 1rem;
       font-weight: 500;
@@ -309,9 +310,9 @@ import Opener from "../images/svg/link-icon.svg";
       gap: 0.625rem;
 
       border-radius: 1.5625rem;
-      border: 1px solid #30414d;
-      background: #152429;
-      color: #e1eeea;
+      border: 1px solid var(--green-brand);
+      background: var(--green-brand);
+      color: #FFFFFF;
     }
   }
 

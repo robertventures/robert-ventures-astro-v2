@@ -38,8 +38,8 @@ const contactTimeOptions = [
     <meta name="robots" content="noindex" />
     <style>
       section {
-        background: linear-gradient(to bottom, #101b1f, #111111);
-        color: #e1eeea;
+        background: var(--bg-secondary);
+        color: var(--text-body);
         min-height: 80vh;
         display: flex;
         align-items: center;
@@ -62,7 +62,7 @@ const contactTimeOptions = [
       }
 
       h1 {
-        color: #e1eeea;
+        color: var(--text-heading);
         text-align: center;
         font-family: var(--font-heading);
         font-size: 32px;
@@ -76,7 +76,7 @@ const contactTimeOptions = [
       .portfolio-info {
         font-size: 20px;
         font-family: var(--font-body);
-        color: #bfd1d7;
+        color: var(--text-body);
         font-weight: 500;
         margin-bottom: 0.75rem;
         line-height: 1.5;
@@ -116,15 +116,15 @@ const contactTimeOptions = [
       }
 
       button {
-        background-color: #d3fbd8;
-        color: #152429;
+        background-color: var(--green-brand);
+        color: #FFFFFF;
         padding: 15px;
         line-height: 1;
         font-family: var(--font-body);
         font-size: 1.125rem;
         font-weight: 600;
         border-radius: 8px;
-        border: 1px solid #d3fbd8;
+        border: 1px solid var(--green-brand);
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -135,12 +135,12 @@ const contactTimeOptions = [
       }
 
       button:hover {
-        background-color: #b8f5c4;
-        border-color: #b8f5c4;
+        background-color: var(--green-hover);
+        border-color: var(--green-hover);
       }
 
       button:active {
-        background-color: #9ebca2;
+        background-color: var(--green-hover);
         transform: translateY(1px);
       }
 
@@ -153,7 +153,7 @@ const contactTimeOptions = [
       .loader {
         width: 16px;
         height: 16px;
-        border: 2px solid #152429;
+        border: 2px solid #FFFFFF;
         border-top: 2px solid transparent;
         border-radius: 50%;
         display: inline-block;
@@ -173,7 +173,7 @@ const contactTimeOptions = [
       input[type="radio"] {
         width: 18px;
         height: 18px;
-        accent-color: #d3fbd8;
+        accent-color: var(--green-brand);
       }
 
       label {
@@ -203,10 +203,10 @@ const contactTimeOptions = [
         width: 100%;
         text-align: center;
         padding: 1rem 1rem;
-        border: 1px solid transparent;
+        border: 1px solid var(--border-light);
         border-radius: 8px;
-        background: #152429;
-        color: #bfd1d7;
+        background: var(--bg-primary);
+        color: var(--text-body);
         font-family: var(--font-body);
         font-size: 1rem;
         font-weight: 500;
@@ -219,19 +219,19 @@ const contactTimeOptions = [
 
       .portfolio-option-label:hover .option-box,
       .objectives-option-label:hover .option-box {
-        border-color: #30414d;
+        border-color: var(--green-brand);
       }
 
       .portfolio-option-label input[type="radio"]:focus + .option-box,
       .objectives-option-label input[type="radio"]:focus + .option-box {
-        border-color: #d3fbd8;
+        border-color: var(--green-brand);
       }
 
       .portfolio-option-label input[type="radio"]:checked + .option-box,
       .objectives-option-label input[type="radio"]:checked + .option-box {
-        border-color: #d3fbd8;
-        background-color: #152429;
-        color: #e1eeea;
+        border-color: var(--green-brand);
+        background-color: var(--green-tint);
+        color: var(--green-dark);
         border-width: 1px;
       }
 
@@ -251,7 +251,7 @@ const contactTimeOptions = [
       span.defocus {
         font-weight: 300;
         font-size: 1.125rem;
-        color: #6b7280;
+        color: var(--text-muted);
       }
 
       @media only screen and (min-width: 600px) and (max-width: 1135px) {

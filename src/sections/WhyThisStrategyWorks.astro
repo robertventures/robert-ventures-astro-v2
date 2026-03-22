@@ -9,13 +9,13 @@ import houseImg from "../images/house-169-1.jpg";
 
 <style>
   section {
-    background: linear-gradient(to bottom, #111111, #101b1f);
+    background: var(--bg-secondary);
     position: relative;
-    color: #e1eeea;
+    color: var(--text-body);
     padding: 0;
     margin: 0;
     overflow: hidden;
-    border-top: 1px solid #30414d;
+    border-top: 1px solid var(--border-light);
   }
 
   .section-container {
@@ -37,7 +37,7 @@ import houseImg from "../images/house-169-1.jpg";
     margin-bottom: 32px;
     line-height: 125%;
     text-align: left;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .cards-container {
@@ -51,7 +51,8 @@ import houseImg from "../images/house-169-1.jpg";
   }
 
   .strategy-card {
-    background: #152429;
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -192,7 +193,7 @@ import houseImg from "../images/house-169-1.jpg";
   }
 
   .card-header:first-of-type {
-    border-bottom: 1px solid #30414d;
+    border-bottom: 1px solid var(--border-light);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -220,7 +221,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--text-heading);
     margin: 0;
   }
 
@@ -241,7 +242,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--text-heading);
     line-height: 150%;
     margin: 0;
   }
@@ -250,7 +251,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 150%;
     margin: 0;
   }
@@ -283,8 +284,8 @@ import houseImg from "../images/house-169-1.jpg";
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
-    border-left: 4px solid #30414d;
+    background: linear-gradient(to right, rgba(62, 178, 120, 0.08), transparent);
+    border-left: 4px solid var(--border-light);
     padding: 24px 0 24px 24px;
   }
 
@@ -292,7 +293,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto Serif", serif;
     font-size: 40px;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--text-heading);
     line-height: 1;
     font-variant-numeric: lining-nums;
   }
@@ -301,13 +302,13 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: #e1eeea;
+    color: var(--text-heading);
     line-height: 100%;
   }
 
   .stat-item .stat-description:nth-child(3) {
     font-size: 16px;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 100%;
   }
 
@@ -321,7 +322,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--text-heading);
     line-height: 100%;
     margin: 0;
   }
@@ -340,8 +341,8 @@ import houseImg from "../images/house-169-1.jpg";
     flex-direction: row;
     gap: 12px;
     align-items: center;
-    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
-    border-left: 4px solid #30414d;
+    background: linear-gradient(to right, rgba(62, 178, 120, 0.08), transparent);
+    border-left: 4px solid var(--border-light);
     padding: 24px 0 24px 24px;
   }
 
@@ -373,7 +374,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: #e1eeea;
+    color: var(--text-heading);
     line-height: 100%;
   }
 
@@ -381,7 +382,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 100%;
   }
 
@@ -430,7 +431,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--text-heading);
     line-height: 150%;
     margin: 0;
   }
@@ -439,7 +440,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 150%;
     margin: 0;
   }
@@ -478,7 +479,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto Serif", serif;
     font-size: 40px;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--text-heading);
     line-height: 1;
   }
 
@@ -486,7 +487,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 14px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 150%;
   }
 
@@ -500,7 +501,7 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #e1eeea;
+    color: var(--text-heading);
     margin: 0;
   }
 
@@ -520,14 +521,14 @@ import houseImg from "../images/house-169-1.jpg";
     font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .list-amount {
     font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     margin-left: auto;
   }
 
