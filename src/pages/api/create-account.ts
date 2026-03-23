@@ -61,13 +61,28 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // ── 3. FORWARD TO EXTERNAL API ─────────────────────────────────────────
-    // Strip the honeypot field — invest.robertventures.com only expects
-    // { email, phone, password }.
-    const { website: _honeypot, ...forwardBody } = body;
+    // ── 3. EXTRACT REAL CLIENT IP ──────────────────────────────────────────
+    // Netlify provides the visitor's real IP in these headers.
+    // x-nf-client-connection-ip is the most reliable (Netlify built-in),
+    // x-real-client-ip is stamped by our edge function (geo-block.js),
+    // x-forwarded-for is the standard proxy header (first IP in the list).
+    const clientIp =
+      request.headers.get("x-nf-client-connection-ip") ||
+      request.headers.get("x-real-client-ip") ||
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "";
+
+    // ── 4. FORWARD TO EXTERNAL API ─────────────────────────────────────────
+    // Replace the honeypot value with "" — the backend requires the website
+    // field as an empty string (it's part of its own honeypot check).
+    const { website: _honeypot, ...rest } = body;
+    const forwardBody = { ...rest, website: "" };
     const extRes = await fetch("https://invest.robertventures.com/api/profile", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(clientIp && { "x-real-client-ip": clientIp }),
+      },
       body: JSON.stringify(forwardBody),
     });
 
