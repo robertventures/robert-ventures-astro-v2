@@ -12,10 +12,10 @@
   --text-muted: #BBBBBB;
 
   /* Brand green — CTAs & accents */
-  --green-brand: #3EB278;
-  --green-hover: #2E9162;
-  --green-dark: #1F6B43;
-  --green-tint: #EAF6EF;
+  --green-brand: #67B78F;
+  --green-hover: #4E9A74;
+  --green-dark: #2B6B47;
+  --green-tint: #EBF5EF;
 
   /* Surface / card colors */
   --surface-card: #FFFFFF;
@@ -31,8 +31,8 @@
   --dark-border: rgba(255, 255, 255, 0.1);
 
   /* Legacy aliases (used by some base styles) */
-  --accent: #3EB278;
-  --accent-dark: #2E9162;
+  --accent: #67B78F;
+  --accent-dark: #4E9A74;
   --black: 26, 26, 26;
   --gray: 96, 115, 159;
   --gray-light: 229, 229, 229;
