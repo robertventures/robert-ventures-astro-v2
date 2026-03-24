@@ -530,7 +530,22 @@ const analyticsEvents = {
 
   async function loadAndInitializeWebinarData() {
     try {
-      // Fetch webinar data
+      // Check for SSR-embedded data first (avoids client-side fetch waterfall)
+      const ssrEl = document.getElementById("ssr-webinar-data");
+      if (ssrEl && !webinarData) {
+        try {
+          const ssrData = JSON.parse(ssrEl.textContent || "");
+          if (ssrData && ssrData.results) {
+            webinarData = ssrData;
+            initializeForm(ssrData);
+            return;
+          }
+        } catch (e) {
+          // SSR data invalid, fall through to client fetch
+        }
+      }
+
+      // Fallback: fetch from API (also used for 5-minute refresh)
       const response = await fetch("/api/webinar-data", { cache: "no-store" });
       if (!response.ok) {
         console.error("Failed to fetch webinar data:", response.statusText);

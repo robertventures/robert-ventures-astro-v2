@@ -96,11 +96,16 @@ try {
 }
 ---
 
-<!-- Splide.js CSS -->
+<!-- Splide.js CSS — loaded non-render-blocking since reviews are below the fold -->
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css"
+  media="print"
+  onload="this.media='all'"
 />
+<noscript>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css" />
+</noscript>
 
 <style>
   section {
@@ -710,8 +715,8 @@ try {
   </div>
 </section>
 
-<!-- Splide.js JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<!-- Splide.js JavaScript — deferred since reviews are below the fold -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer is:inline></script>
 
 <script is:inline>
   document.addEventListener("DOMContentLoaded", function () {
