@@ -448,6 +448,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           ...(geoRegionName ? { state: geoRegionName } : {}),
           ...(geoCity ? { city: geoCity } : {}),
           ...(geoZip ? { postalCode: geoZip } : {}),
+          tags: ["Webinar_Page"],
           customField,
         };
 
@@ -503,7 +504,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       fullDate: body.fullDate, // Human-readable datetime for display
       // Analytics and segmentation fields for WebinarKit CSV export
       source: body?.utm?.utm_source || "direct",
-      customField1: body.invest_intent || "",
+      customField1: body.invest_intent
+        ? `$${Number(body.invest_intent).toLocaleString("en-US", { minimumFractionDigits: 2 })}`
+        : "",
       customField2: utmCampaignFinal,
       customField3: body?.utm?.utm_content || "",
       customField4: body?.utm?.utm_adgroup || body?.google_adgroup_id || "",
