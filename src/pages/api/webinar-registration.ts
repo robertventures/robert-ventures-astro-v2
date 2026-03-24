@@ -167,17 +167,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let geoStateCode: string | undefined;
     let geoCity: string | undefined;
     let geoZip: string | undefined;
+    let geoCountryCode: string | undefined;
     let isHostingIp = false;
 
     try {
       if (ipForGeo) {
-        // Request hosting + proxy fields alongside location data for bot detection
+        // Request hosting + proxy + countryCode fields alongside location data for bot detection
         const geoRes = await fetch(
-          `http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,region,regionName,city,zip,hosting,proxy`
+          `http://ip-api.com/json/${encodeURIComponent(ipForGeo)}?fields=status,message,countryCode,region,regionName,city,zip,hosting,proxy`
         );
         if (geoRes.ok) {
           const geo = await geoRes.json();
           if (geo && geo.status === "success") {
+            geoCountryCode = typeof geo.countryCode === "string" ? geo.countryCode : undefined;
             geoStateCode = typeof geo.region === "string" && geo.region ? geo.region : undefined;
             geoRegionName =
               typeof geo.regionName === "string" && geo.regionName ? geo.regionName : undefined;
@@ -186,6 +188,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
             isHostingIp = geo.hosting === true;
             console.log("📍 IP geolocation:", {
               ipForGeo,
+              geoCountryCode,
               geoStateCode,
               geoRegionName,
               geoCity,
@@ -207,11 +210,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================
     // SPAM PROTECTION: DATA CENTER IP CHECK
     // ========================================
-    // If the visitor's real IP belongs to a data center (AWS, Azure, etc.),
-    // it's almost certainly a bot, not a real person browsing from home.
-    // Return fake success so the bot doesn't know it was detected.
-    if (isHostingIp) {
-      console.log(`🤖 Data center IP detected (${ipForGeo}) - rejecting bot submission`);
+    // If the visitor's IP belongs to a data center (AWS, Azure, etc.),
+    // it's likely a bot — unless it's a US-based IP (probably a VPN user).
+    // Return fake success so bots don't know they were detected.
+    if (isHostingIp && geoCountryCode !== "US") {
+      console.log(`🤖 Data center IP detected (${ipForGeo}, country: ${geoCountryCode}) — rejecting bot submission`);
       return new Response(JSON.stringify({ message: "Registration successful" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },

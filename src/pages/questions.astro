@@ -371,6 +371,20 @@ const contactTimeOptions = [
     const form = document.getElementById("questions") as HTMLFormElement;
     if (!form) return;
 
+    // Check for ghl_contact_id BEFORE showing the form — if missing, the API will reject
+    // This happens when the GHL API failed during webinar registration but the user was still redirected
+    const ghlCheck = localStorage.getItem("ghl_contact_id");
+    if (!ghlCheck) {
+      console.error("ghl_contact_id missing from localStorage — registration may have been incomplete");
+      form.innerHTML = `
+        <div style="text-align: center; padding: 2rem 0;">
+          <p style="font-size: 18px; margin-bottom: 1.5rem;">Your session has expired or registration was incomplete.</p>
+          <a href="/webinar" style="display: inline-block; padding: 14px 32px; background: #d3fbd8; color: #101b1f; border-radius: 8px; text-decoration: none; font-weight: 600;">Register Again</a>
+        </div>
+      `;
+      return;
+    }
+
     // =============================================
     // POSTHOG TRACKING — events fired on this page
     // =============================================

@@ -1191,6 +1191,8 @@ const analyticsEvents = {
         if (result.ghl_contact_id) {
           localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
           console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
+        } else {
+          console.warn("⚠️ Registration succeeded but ghl_contact_id is missing from response — GHL API may have failed");
         }
 
         // Save watch room URL for on-demand sessions so the questions page can redirect there
