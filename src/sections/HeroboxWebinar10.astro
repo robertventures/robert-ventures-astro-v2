@@ -4,9 +4,9 @@ import FormWebinar from "../components/FormWebinar.astro";
 
 <style>
   section {
-    background: linear-gradient(to bottom, #101b1f, #111111);
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     position: relative;
-    color: #e1eeea;
+    color: var(--text-heading);
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -75,7 +75,7 @@ import FormWebinar from "../components/FormWebinar.astro";
     margin-bottom: 0;
     text-align: left;
     font-weight: 500;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .form-cta {
@@ -84,12 +84,12 @@ import FormWebinar from "../components/FormWebinar.astro";
 
   hr {
     height: 0.0625rem;
-    background: #30414d;
+    background: var(--border-light);
     margin-bottom: 1rem;
   }
 
   .pre-form-headline {
-    color: #bfd1d7;
+    color: var(--text-body);
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
@@ -109,16 +109,16 @@ import FormWebinar from "../components/FormWebinar.astro";
   }
 
   .pre-form-headline .highlight-returns {
-    color: #d3fbd8;
+    color: var(--green-brand);
     text-decoration: none;
     background: none;
     background-clip: unset;
     -webkit-background-clip: unset;
-    -webkit-text-fill-color: #d3fbd8;
+    -webkit-text-fill-color: var(--green-brand);
   }
 
   .next-webinar {
-    color: #e1eeea;
+    color: var(--text-heading);
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
@@ -144,11 +144,11 @@ import FormWebinar from "../components/FormWebinar.astro";
 
   .time div {
     font-weight: 600;
-    color: #e1eeea;
+    color: var(--text-heading);
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #152429;
+    border: 1px solid var(--border-light);
     border-radius: 4px;
     flex: 1;
     min-width: 0;
@@ -160,10 +160,10 @@ import FormWebinar from "../components/FormWebinar.astro";
     font-size: 40px;
     font-weight: 500;
     line-height: 100%;
-    color: #d3fbd8;
+    color: var(--green-brand);
     font-variant-numeric: lining-nums;
     background: none;
-    -webkit-text-fill-color: #d3fbd8;
+    -webkit-text-fill-color: var(--green-brand);
     background-clip: unset;
     -webkit-background-clip: unset;
   }
@@ -175,7 +175,7 @@ import FormWebinar from "../components/FormWebinar.astro";
     line-height: 100%;
     margin: 0;
     margin-top: 0.25rem;
-    color: #bfd1d7;
+    color: var(--text-body);
   }
 
   svg {
@@ -185,10 +185,11 @@ import FormWebinar from "../components/FormWebinar.astro";
   }
 
   span {
-    background: linear-gradient(90deg, #5028ff 0%, #ff592c 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--green-brand);
+    background: none;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: var(--green-brand);
   }
 
   @media only screen and (min-width: 768px) {
@@ -252,8 +253,8 @@ import FormWebinar from "../components/FormWebinar.astro";
 
   input,
   select {
-    background-color: #e1eeea;
-    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    border: 1px solid var(--border-light);
     border-radius: 6px;
     padding: 12px 16px;
     font-size: 16px;

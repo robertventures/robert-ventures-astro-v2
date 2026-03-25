@@ -42,7 +42,7 @@ const articles = (await getCollection("articles")).sort(
       }
 
       h1 {
-        color: #152429;
+        color: var(--text-heading);
         text-align: left;
         font-family: var(--font-heading);
         font-size: 32px;
@@ -61,7 +61,7 @@ const articles = (await getCollection("articles")).sort(
       }
 
       h2 {
-        color: #152429;
+        color: var(--text-heading);
         font-family: var(--font-heading);
         font-size: 1.625rem;
         font-style: normal;
@@ -90,7 +90,7 @@ const articles = (await getCollection("articles")).sort(
 
       li a:hover,
       li a:focus-visible {
-        box-shadow: 0 8px 20px rgba(35, 55, 255, 0.08);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         transform: translateY(-2px);
       }
 
@@ -104,7 +104,7 @@ const articles = (await getCollection("articles")).sort(
       }
 
       li h4 {
-        color: #152429;
+        color: var(--text-heading);
         font-family: var(--font-heading);
         font-size: 1.125rem;
         font-weight: 500;
@@ -114,7 +114,7 @@ const articles = (await getCollection("articles")).sort(
       }
 
       li p {
-        color: #505050;
+        color: var(--text-body);
         font-family: var(--font-body);
         font-size: 1rem;
         font-weight: 400;

@@ -23,16 +23,44 @@
 :root {
   --font-body: "Roboto", sans-serif;
   --font-heading: "Roboto Serif", serif;
-  --accent: #2337ff;
-  --accent-dark: #000d8a;
-  --black: 15, 18, 25;
+
+  /* Page backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f6f8;
+
+  /* Text colors */
+  --text-heading: #1a1a1a;
+  --text-body: #555555;
+  --text-muted: #bbbbbb;
+
+  /* Brand green — CTAs & accents */
+  --green-brand: #67b78f;
+  --green-hover: #4e9a74;
+  --green-dark: #2b6b47;
+  --green-tint: #ebf5ef;
+
+  /* Surface / card colors */
+  --surface-card: #ffffff;
+
+  /* Borders and dividers */
+  --border-light: #e5e5e5;
+
+  /* Dark variant (for intentionally dark sections) */
+  --dark-bg: #152420;
+  --dark-text-heading: #ffffff;
+  --dark-text-body: rgba(255, 255, 255, 0.45);
+  --dark-card-fill: rgba(255, 255, 255, 0.07);
+  --dark-border: rgba(255, 255, 255, 0.1);
+
+  /* Legacy aliases (used by some base styles) */
+  --accent: #67b78f;
+  --accent-dark: #4e9a74;
+  --black: 26, 26, 26;
   --gray: 96, 115, 159;
-  --gray-light: 229, 233, 240;
-  --gray-dark: 34, 41, 57;
+  --gray-light: 229, 229, 229;
+  --gray-dark: 26, 26, 26;
   --gray-gradient: rgba(var(--gray-light), 50%), #fff;
-  --box-shadow:
-    0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-    0 16px 32px rgba(var(--gray), 33%);
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
 
   --background: #ffffff;
 }
@@ -58,7 +86,7 @@ body {
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  color: rgb(var(--gray-dark));
+  color: var(--text-body);
   line-height: 1.7;
 }
 
@@ -76,7 +104,7 @@ h5,
 h6 {
   font-family: var(--font-heading);
   font-weight: bold;
-  color: rgb(var(--black));
+  color: var(--text-heading);
   line-height: 1.2;
   margin: 0;
 }
@@ -116,10 +144,7 @@ h6 {
 }
 
 .alt-color {
-  background: linear-gradient(90deg, #281480 0%, #3c1fbf 66.45%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--green-brand);
 }
 
 strong,
@@ -140,7 +165,7 @@ p {
   line-height: 2;
   margin: 0;
 
-  color: #505050;
+  color: var(--text-body);
 }
 
 .prose p {
@@ -284,7 +309,7 @@ h4,
 h5,
 h6 {
   /* text-wrap: balance; */
-  color: #281480;
+  color: var(--text-heading);
 }
 
 /*

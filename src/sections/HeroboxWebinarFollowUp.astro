@@ -4,9 +4,9 @@
 
 <style>
   section {
-    background: linear-gradient(to bottom, #101b1f, #111111);
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     position: relative;
-    color: #e1eeea;
+    color: var(--text-heading);
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -50,7 +50,7 @@
     margin: 0;
     line-height: 110%;
     text-align: left;
-    color: #e1eeea;
+    color: var(--text-heading);
     width: 100%;
     font-variant-numeric: lining-nums;
   }
@@ -58,7 +58,7 @@
   h1 .highlight-returns {
     font-family: "Roboto Serif", serif;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--green-brand);
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-skip-ink: auto;
@@ -69,7 +69,7 @@
     background: none;
     background-clip: unset;
     -webkit-background-clip: unset;
-    -webkit-text-fill-color: #d3fbd8;
+    -webkit-text-fill-color: var(--green-brand);
   }
 
   .deck-iframe {
@@ -85,8 +85,8 @@
   }
 
   .option-box {
-    background: #152429;
-    border: 1px solid #30414d;
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     padding: 32px;
     display: flex;
@@ -108,7 +108,7 @@
     gap: 8px;
     margin: 0;
     margin-bottom: 8px;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   h3 {
@@ -118,11 +118,11 @@
     line-height: 1;
     margin: 0;
     margin-bottom: 12px;
-    color: #bfd1d7;
+    color: var(--text-body);
   }
 
   p {
-    color: #bfd1d7;
+    color: var(--text-body);
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-style: normal;
@@ -151,7 +151,7 @@
     width: auto;
     max-width: none;
     display: inline;
-    color: #bfd1d7;
+    color: var(--text-body);
     font-size: 24px;
     font-weight: 400;
   }
@@ -159,7 +159,7 @@
   .offering-circular:hover {
     background: transparent;
     border: none;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .intro-right .sms-consent {
@@ -185,11 +185,11 @@
 
   .investment-detail-stat {
     width: 100%;
-    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    background: linear-gradient(to right, rgba(229, 229, 229, 0.25), transparent);
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-left: 4px solid #30414d;
+    border-left: 4px solid var(--border-light);
     padding: 16px 0 16px 16px;
   }
 
@@ -197,7 +197,7 @@
     font-family: "Roboto Serif", serif;
     font-size: 24px;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--green-brand);
     line-height: 100%;
     font-variant-numeric: lining-nums;
     margin: 0;
@@ -205,7 +205,7 @@
 
   .investment-detail-label {
     font-size: 16px;
-    color: #bfd1d7;
+    color: var(--text-body);
     line-height: 100%;
     margin: 0;
     font-family: "Roboto", sans-serif;
@@ -238,14 +238,14 @@
   }
 
   .form input {
-    border: 1px solid #30414d;
+    border: 1px solid var(--border-light);
     flex-grow: 1;
-    background-color: #152429;
+    background-color: #ffffff;
     padding: 1rem 0.75rem;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.75rem;
-    color: #e1eeea;
+    color: var(--text-heading);
     transition: border-color 0.2s ease;
     font-size: 1rem;
     font-family: "Roboto", sans-serif;
@@ -253,18 +253,18 @@
 
   .form input:focus {
     outline: none;
-    border: 1px solid #d3fbd8;
+    border: 1px solid var(--green-brand);
   }
 
   .form input::placeholder {
-    color: #8a9ca3;
+    color: #999999;
     opacity: 1;
   }
 
   .form button {
-    background-color: #d3fbd8;
-    border: 1px solid #d3fbd8;
-    color: #152429;
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
     border-radius: 0.75rem;
     padding: 1rem 0.75rem;
     font-size: 18px;
@@ -287,13 +287,13 @@
   }
 
   .form button:active {
-    background-color: #9ebca2;
-    border-color: #9ebca2;
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   .form button:hover {
-    background-color: #b8f5c4;
-    border-color: #b8f5c4;
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   .form button:disabled {
@@ -315,7 +315,7 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 160%;
-    color: #bfd1d7;
+    color: var(--text-body);
     text-align: center;
   }
 
@@ -338,22 +338,22 @@
   }
 
   .form-disclaimer .terms-link {
-    color: #d3fbd8;
+    color: var(--green-brand);
     font-size: 12px;
   }
 
   .form-disclaimer .terms-link:hover {
-    color: #e1eeea;
+    color: var(--text-heading);
     background: transparent;
   }
 
   .form-disclaimer .privacy-link {
-    color: #9dd6a3;
+    color: var(--green-brand);
     font-size: 12px;
   }
 
   .form-disclaimer .privacy-link:hover {
-    color: #e1eeea;
+    color: var(--text-heading);
     background: transparent;
   }
 
@@ -361,7 +361,7 @@
     font-family: "Roboto", sans-serif;
     font-size: 15px;
     font-weight: 400;
-    color: #bfd1d7;
+    color: var(--text-body);
     text-align: center;
     margin-top: 16px !important;
   }
@@ -376,14 +376,14 @@
     max-width: none;
     font-size: 15px;
     font-weight: 600;
-    color: #d3fbd8;
+    color: var(--green-brand);
     text-decoration: underline;
   }
 
   .login-prompt .login-link:hover {
     background: transparent;
     border: none;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .phone-error {
@@ -414,14 +414,14 @@
     right: 12px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    background: rgba(48, 65, 77, 0.5) !important;
-    border: 1px solid #30414d !important;
+    background: rgba(229, 229, 229, 0.5) !important;
+    border: 1px solid var(--border-light) !important;
     border-radius: 6px !important;
     padding: 6px 12px !important;
     font-family: "Roboto", sans-serif !important;
     font-size: 14px !important;
     font-weight: 500 !important;
-    color: #bfd1d7 !important;
+    color: var(--text-body) !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     line-height: 1 !important;
@@ -431,15 +431,15 @@
   }
 
   .form .password-toggle:hover {
-    background: rgba(48, 65, 77, 0.8) !important;
-    border: 1px solid #4a6070 !important;
-    color: #e1eeea !important;
+    background: rgba(229, 229, 229, 0.8) !important;
+    border: 1px solid #cccccc !important;
+    color: var(--text-heading) !important;
   }
 
   .form .password-toggle:active {
-    background: rgba(48, 65, 77, 1) !important;
-    border: 1px solid #4a6070 !important;
-    color: #e1eeea !important;
+    background: rgba(229, 229, 229, 1) !important;
+    border: 1px solid #cccccc !important;
+    color: var(--text-heading) !important;
   }
 
   .password-requirements {
@@ -459,12 +459,12 @@
   }
 
   .requirement.met {
-    color: #d3fbd8;
+    color: var(--green-brand);
   }
 
   .form .loader {
-    border: 2px solid #ffffff80;
-    border-top: 2px solid #152429;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-top: 2px solid #ffffff;
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -484,14 +484,14 @@
 
   a {
     border-radius: 8px;
-    background: #d3fbd8;
-    border: 1px solid #d3fbd8;
+    background: var(--green-brand);
+    border: 1px solid var(--green-brand);
     display: flex;
     padding: 12px;
     justify-content: center;
     width: 100%;
     max-width: 300px;
-    color: #152429;
+    color: #ffffff;
     text-decoration: none;
     font-size: 18px;
     font-weight: 600;
@@ -503,8 +503,8 @@
   }
 
   a:hover {
-    background-color: #9ebca2;
-    border-color: #9ebca2;
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {

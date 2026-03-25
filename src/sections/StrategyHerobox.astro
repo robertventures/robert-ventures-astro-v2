@@ -6,9 +6,9 @@ import DualCTA from "../components/DualCTA.astro";
 
 <style>
   section {
-    background: linear-gradient(to bottom, #101b1f, #111111);
+    background: var(--bg-secondary);
     position: relative;
-    color: #e1eeea;
+    color: var(--text-body);
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -33,7 +33,7 @@ import DualCTA from "../components/DualCTA.astro";
     line-height: 110%;
     text-decoration-style: solid;
     text-align: left;
-    color: #e1eeea;
+    color: var(--text-heading);
     max-width: 640px;
     font-family: var(--font-heading);
   }
@@ -41,7 +41,7 @@ import DualCTA from "../components/DualCTA.astro";
   .hero-subtitle {
     font-size: 20px;
     line-height: 150%;
-    color: #bfd1d7;
+    color: var(--text-body);
     text-align: left;
     margin-bottom: 32px;
     max-width: 512px;
@@ -78,7 +78,7 @@ import DualCTA from "../components/DualCTA.astro";
   .section-divider {
     width: 100%;
     height: 1px;
-    background-color: #30414d;
+    background-color: var(--border-light);
     margin: 24px 0;
   }
 
@@ -93,7 +93,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-size: 40px;
     font-weight: 500;
     line-height: 1;
-    color: #d3fbd8;
+    color: var(--text-heading);
     font-variant-numeric: lining-nums;
     text-align: left;
   }
@@ -103,7 +103,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-size: 24px;
     font-weight: 400;
     line-height: 100%;
-    color: #e1eeea;
+    color: var(--text-heading);
     text-align: left;
   }
 
@@ -119,7 +119,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-size: 20px;
     font-weight: 400;
     line-height: 100%;
-    color: #e1eeea;
+    color: var(--text-heading);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -129,7 +129,7 @@ import DualCTA from "../components/DualCTA.astro";
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: #79eaad;
+    background-color: var(--green-brand);
     display: inline-block;
   }
 
@@ -193,7 +193,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-size: 16px;
     font-weight: 500;
     line-height: 100%;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {

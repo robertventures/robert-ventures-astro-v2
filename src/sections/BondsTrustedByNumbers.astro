@@ -35,14 +35,14 @@ try {
 
 <style>
   section {
-    background: linear-gradient(to bottom, #111111, #101b1f);
-    color: #152429;
+    background: var(--bg-secondary);
+    color: var(--text-body);
     padding: 0;
     margin: 0;
   }
 
   .section-container {
-    padding: 48px 16px;
+    padding: 32px 16px;
     text-align: left;
     width: 100%;
     max-width: 100%;
@@ -56,42 +56,42 @@ try {
     font-size: 32px;
     font-weight: 500;
     margin: 0;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     line-height: 100%;
     text-align: left;
-    color: #e1eeea;
+    color: var(--text-heading);
   }
 
   .columns-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
   }
 
   .column {
     width: 100%;
-    background: linear-gradient(to right, rgba(48, 65, 77, 0.25), transparent);
+    background: linear-gradient(to right, rgba(103, 183, 143, 0.08), transparent);
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    border-left: 4px solid #30414d;
-    padding: 24px 0 24px 24px;
+    gap: 4px;
+    border-left: 4px solid var(--green-brand);
+    padding: 16px 0 16px 20px;
   }
 
   .stat-value {
     font-family: "Roboto Serif", serif;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: 500;
-    color: #d3fbd8;
+    color: var(--text-heading);
     line-height: 100%;
     font-variant-numeric: lining-nums;
     opacity: 0;
   }
 
   .description {
-    font-size: 20px;
-    color: #e1eeea;
+    font-size: 16px;
+    color: var(--text-body);
     line-height: 100%;
     opacity: 0;
   }
@@ -100,7 +100,7 @@ try {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
   }
 
   .results-label svg {
@@ -110,18 +110,18 @@ try {
   }
 
   .results-text {
-    font-size: 20px;
-    color: #e1eeea;
+    font-size: 16px;
+    color: var(--text-body);
     line-height: 100%;
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-      padding: 64px 32px;
+      padding: 48px 32px;
     }
 
     h3 {
-      font-size: 40px;
+      font-size: 36px;
     }
 
     .columns-container {
@@ -136,13 +136,13 @@ try {
 
   @media only screen and (min-width: 1136px) {
     .section-container {
-      padding: 96px 112px;
+      padding: 64px 112px;
       margin: 0;
       width: 100%;
     }
 
     h3 {
-      font-size: 40px;
+      font-size: 36px;
     }
 
     .columns-container {
@@ -156,7 +156,7 @@ try {
 
   @media only screen and (min-width: 1920px) {
     .section-container {
-      padding: 96px 312px;
+      padding: 64px 312px;
     }
   }
 </style>
@@ -167,7 +167,7 @@ try {
 
     <div class="results-label">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
-        <circle cx="6" cy="6" r="6" fill="#79EAAD"></circle>
+        <circle cx="6" cy="6" r="6" fill="#67B78F"></circle>
       </svg>
       <span class="results-text">Since Inception</span>
     </div>

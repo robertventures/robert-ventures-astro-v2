@@ -9,7 +9,7 @@ import Morning from "../images/svg/business-logos/morning.svg";
 
 <style>
   .featured-section {
-    background: #111111;
+    background: var(--bg-secondary);
     padding: 0;
     margin: 0;
   }
@@ -25,8 +25,8 @@ import Morning from "../images/svg/business-logos/morning.svg";
     width: 100%;
     padding-top: 16px;
     padding-bottom: 16px;
-    border-top: 1px solid #30414d;
-    border-bottom: 1px solid #30414d;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
     overflow: hidden;
     position: relative;
   }
@@ -59,7 +59,7 @@ import Morning from "../images/svg/business-logos/morning.svg";
   }
 
   .logo-item :global(svg) {
-    fill: #bfd1d7;
+    fill: var(--text-body);
     flex-shrink: 0;
     width: auto;
     height: auto;
@@ -67,11 +67,11 @@ import Morning from "../images/svg/business-logos/morning.svg";
   }
 
   .logo-item :global(path) {
-    fill: #bfd1d7;
+    fill: var(--text-body);
   }
 
   p.featured {
-    color: #bfd1d7;
+    color: var(--text-body);
     font-size: 16px;
     font-weight: 400;
     font-family: "Roboto", sans-serif;

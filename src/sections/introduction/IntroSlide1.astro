@@ -1,91 +1,11 @@
----
-import DualCTA from "../components/DualCTA.astro";
----
-
-<style>
-  section {
-    background: var(--dark-bg);
-    border-top: 1px solid var(--dark-border);
-    padding: 0;
-    margin: 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .staircase-svg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 400px;
-    height: 400px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .staircase-svg rect {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.07);
-    stroke-width: 1;
-  }
-
-  .cta-section-container {
-    position: relative;
-    z-index: 1;
-    padding: 64px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 24px;
-  }
-
-  h2 {
-    font-family: "Roboto Serif", serif;
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--dark-text-heading);
-    margin: 0;
-    line-height: 125%;
-  }
-
-  p {
-    font-family: "Roboto", sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--dark-text-body);
-    line-height: 150%;
-    margin: 0;
-    max-width: 512px;
-  }
-
-  @media only screen and (min-width: 600px) {
-    .cta-section-container {
-      padding: 80px 32px;
-    }
-
-    h2 {
-      font-size: 40px;
-    }
-  }
-
-  @media only screen and (min-width: 1136px) {
-    .cta-section-container {
-      padding: 96px 112px;
-    }
-
-    .staircase-svg {
-      width: 560px;
-      height: 560px;
-    }
-  }
-</style>
-
-<section>
+<section class="intro-slide" id="intro-slide-1">
+  <!-- Staircase SVG animation — background element -->
   <svg
-    class="staircase-svg"
-    viewBox="0 0 800 800"
+    class="intro-slide__staircase"
+    width="800"
+    height="800"
     xmlns="http://www.w3.org/2000/svg"
-    id="closing-cta-staircase-svg"
+    id="intro-staircase-svg"
   >
     <rect x="0.5" y="735.5" width="64" height="64"></rect>
     <rect x="80.5" y="655.5" width="64" height="64"></rect>
@@ -143,35 +63,189 @@ import DualCTA from "../components/DualCTA.astro";
     <rect x="720.5" y="655.5" width="64" height="64"></rect>
     <rect x="720.5" y="735.5" width="64" height="64"></rect>
   </svg>
-  <div class="cta-section-container">
-    <h2>Ready to Get Started?</h2>
-    <p>Join our webinar to learn how our dual sector strategy can work for you.</p>
-    <DualCTA />
+
+  <div class="intro-slide__content">
+    <div class="intro-slide__text">
+      <h1 class="intro-slide__heading">
+        Your savings earn 4%.<br />
+        Ours <span class="intro-slide__accent"
+          >up to 17%.<span class="intro-slide__underline"></span></span
+        >
+      </h1>
+      <div class="intro-slide__statements">
+        <p class="intro-slide__statement">Not projected.</p>
+        <p class="intro-slide__statement">Not estimated.</p>
+        <p class="intro-slide__statement">A fixed contractual rate.</p>
+      </div>
+    </div>
   </div>
 </section>
 
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    margin: 0;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Staircase SVG — background animation */
+  #intro-staircase-svg {
+    position: absolute;
+    bottom: -200px;
+    right: -200px;
+    width: 800px;
+    height: 800px;
+    min-width: 800px;
+    min-height: 800px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 1;
+  }
+
+  #intro-staircase-svg rect {
+    fill: none;
+    stroke: #bbbbbb;
+    stroke-opacity: 0.15;
+    stroke-width: 1;
+  }
+
+  .intro-slide__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 1136px;
+    text-align: center;
+  }
+
+  .intro-slide__text {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 12vw;
+    font-weight: 500;
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .intro-slide__accent {
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+  }
+
+  .intro-slide__underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--green-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .intro-slide__statements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .intro-slide__statement {
+    font-family: "Roboto Serif", serif;
+    color: #555555;
+    font-size: 6vw;
+    font-weight: 400;
+    line-height: 140%;
+    margin: 0;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 0 2rem;
+    }
+
+    .intro-slide__heading {
+      font-size: 8vw;
+    }
+
+    .intro-slide__statement {
+      font-size: 3.25vw;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 6rem;
+    }
+
+    .intro-slide__statement {
+      font-size: 2.25rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__content {
+      max-width: 1440px;
+    }
+
+    .intro-slide__heading {
+      font-size: 7rem;
+    }
+
+    .intro-slide__statement {
+      font-size: 2.625rem;
+    }
+  }
+</style>
+
 <script is:inline>
   (function () {
-    function initAnimation() {
+    function initStaircaseAnimation() {
       if (!window.gsapLoaded || typeof window.gsap === "undefined") {
         return;
       }
 
       const gsapLib = window.gsap;
-      const svg = document.getElementById("closing-cta-staircase-svg");
+      const svg = document.getElementById("intro-staircase-svg");
       if (!svg) return;
 
       const rects = svg.querySelectorAll("rect");
       if (rects.length === 0) return;
 
-      gsapLib.set(rects, { stroke: "rgba(255, 255, 255, 0.07)" });
+      gsapLib.set(rects, { strokeOpacity: 0.15 });
 
       const tl = gsapLib.timeline({ repeat: -1 });
 
+      // Pause before shimmer
       tl.to({}, { duration: 3 });
 
+      // Shimmer forward — rects brighten
       tl.to(rects, {
-        stroke: "rgba(255, 255, 255, 0.15)",
+        strokeOpacity: 0.6,
         duration: 0.2,
         stagger: {
           amount: 0.5,
@@ -179,8 +253,9 @@ import DualCTA from "../components/DualCTA.astro";
         },
       });
 
+      // Fade back — rects dim
       tl.to(rects, {
-        stroke: "rgba(255, 255, 255, 0.07)",
+        strokeOpacity: 0.15,
         duration: 0.5,
         stagger: {
           amount: 1,
@@ -192,16 +267,16 @@ import DualCTA from "../components/DualCTA.astro";
     function startAnimation() {
       if (window.gsapLoaded && typeof window.gsap !== "undefined") {
         if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", initAnimation);
+          document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
         } else {
-          initAnimation();
+          initStaircaseAnimation();
         }
       } else {
         window.addEventListener("gsapLoaded", function () {
           if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initAnimation);
+            document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
           } else {
-            initAnimation();
+            initStaircaseAnimation();
           }
         });
       }

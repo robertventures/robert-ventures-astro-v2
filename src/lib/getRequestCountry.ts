@@ -11,10 +11,7 @@
  * Returns the uppercase ISO 3166-1 alpha-2 country code (e.g. "US", "DE"),
  * or null when no geo data is available (e.g. local development).
  */
-export function getRequestCountry(
-  request: Request,
-  locals?: Record<string, any>,
-): string | null {
+export function getRequestCountry(request: Request, locals?: Record<string, any>): string | null {
   // 1. Netlify context geo (available in serverless functions via Astro locals)
   const netlifyCountry = locals?.netlify?.context?.geo?.country?.code;
   if (typeof netlifyCountry === "string" && netlifyCountry.length > 0) {
@@ -22,9 +19,7 @@ export function getRequestCountry(
   }
 
   // 2. Cloudflare's country header (present when site is behind CF proxy)
-  const cfCountry = (request.headers.get("cf-ipcountry") || "")
-    .trim()
-    .toUpperCase();
+  const cfCountry = (request.headers.get("cf-ipcountry") || "").trim().toUpperCase();
   if (cfCountry) {
     return cfCountry;
   }

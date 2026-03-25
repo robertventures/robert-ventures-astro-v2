@@ -1,0 +1,371 @@
+---
+
+---
+
+<section class="intro-slide" id="intro-slide-7">
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">Calculate Your Returns</h2>
+
+    <div class="intro-slide__calculator">
+      <!-- Amount display -->
+      <div class="intro-slide__amount-display">
+        <span class="intro-slide__amount-value" id="calc-amount-display">$50,000</span>
+        <span class="intro-slide__amount-label">Investment Amount</span>
+      </div>
+
+      <!-- Slider -->
+      <div class="intro-slide__slider-wrap">
+        <input
+          type="range"
+          id="calc-slider"
+          class="intro-slide__slider"
+          min="10000"
+          max="100000"
+          step="10000"
+          value="50000"
+        />
+        <div class="intro-slide__slider-labels">
+          <span>$10k</span>
+          <span>$100k</span>
+        </div>
+      </div>
+
+      <!-- Rate toggle -->
+      <div class="intro-slide__rate-toggle">
+        <button class="intro-slide__rate-btn" data-rate="0.08" id="calc-rate-8">8% Annual</button>
+        <button
+          class="intro-slide__rate-btn intro-slide__rate-btn--active"
+          data-rate="0.10"
+          id="calc-rate-10">10% Annual</button
+        >
+      </div>
+
+      <!-- Results table -->
+      <div class="intro-slide__results">
+        <table class="intro-slide__table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Total Value</th>
+              <th>Returns</th>
+            </tr>
+          </thead>
+          <tbody id="calc-results-body">
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #f4f6f5;
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .intro-slide__calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  /* Amount display */
+  .intro-slide__amount-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .intro-slide__amount-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 2.75rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 100%;
+  }
+
+  .intro-slide__amount-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #bbbbbb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Slider */
+  .intro-slide__slider-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+    padding: 0 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .intro-slide__slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e5e5;
+    outline: none;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .intro-slide__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .intro-slide__slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .intro-slide__slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: #bbbbbb;
+  }
+
+  /* Rate toggle */
+  .intro-slide__rate-toggle {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .intro-slide__rate-btn {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.625rem 1.5rem;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
+    color: #555555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .intro-slide__rate-btn--active {
+    background: #1a1a1a;
+    color: #ffffff;
+    border-color: #1a1a1a;
+  }
+
+  /* Results table */
+  .intro-slide__results {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .intro-slide__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .intro-slide__table thead th {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #bbbbbb;
+    font-weight: 500;
+    padding: 0.625rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .intro-slide__table thead th:last-child {
+    text-align: right;
+  }
+
+  .intro-slide__table tbody td {
+    font-size: 0.9375rem;
+    color: #1a1a1a;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .intro-slide__table tbody td:first-child {
+    font-weight: 500;
+    color: #555555;
+  }
+
+  .intro-slide__table tbody td:last-child {
+    text-align: right;
+    color: #4e9a74;
+    font-weight: 500;
+  }
+
+  .intro-slide__table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 0 2rem;
+    }
+
+    .intro-slide__heading {
+      font-size: 2.5rem;
+    }
+
+    .intro-slide__amount-value {
+      font-size: 3rem;
+    }
+
+    .intro-slide__rate-btn {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+    }
+
+    .intro-slide__table tbody td {
+      font-size: 1rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__content {
+      max-width: 700px;
+    }
+
+    .intro-slide__heading {
+      font-size: 3rem;
+    }
+
+    .intro-slide__amount-value {
+      font-size: 3.5rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__content {
+      max-width: 800px;
+    }
+
+    .intro-slide__heading {
+      font-size: 3.5rem;
+    }
+
+    .intro-slide__amount-value {
+      font-size: 4rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const slider = document.getElementById("calc-slider");
+    const amountDisplay = document.getElementById("calc-amount-display");
+    const btn8 = document.getElementById("calc-rate-8");
+    const btn10 = document.getElementById("calc-rate-10");
+    const tbody = document.getElementById("calc-results-body");
+
+    let currentRate = 0.1;
+    const periods = [1, 3, 5, 10];
+
+    function formatCurrency(value) {
+      return "$" + Math.round(value).toLocaleString("en-US");
+    }
+
+    function updateTable() {
+      const principal = parseInt(slider.value, 10);
+      amountDisplay.textContent = formatCurrency(principal);
+
+      let html = "";
+      for (let i = 0; i < periods.length; i++) {
+        const years = periods[i];
+        const total = principal * Math.pow(1 + currentRate, years);
+        const returns = total - principal;
+        const periodLabel = years === 1 ? "1 Year" : years + " Years";
+
+        html +=
+          "<tr>" +
+          "<td>" +
+          periodLabel +
+          "</td>" +
+          "<td>" +
+          formatCurrency(total) +
+          "</td>" +
+          "<td>+" +
+          formatCurrency(returns) +
+          "</td>" +
+          "</tr>";
+      }
+      tbody.innerHTML = html;
+    }
+
+    slider.addEventListener("input", updateTable);
+
+    btn8.addEventListener("click", function () {
+      currentRate = 0.08;
+      btn8.classList.add("intro-slide__rate-btn--active");
+      btn10.classList.remove("intro-slide__rate-btn--active");
+      updateTable();
+    });
+
+    btn10.addEventListener("click", function () {
+      currentRate = 0.1;
+      btn10.classList.add("intro-slide__rate-btn--active");
+      btn8.classList.remove("intro-slide__rate-btn--active");
+      updateTable();
+    });
+
+    // Initial render
+    updateTable();
+  })();
+</script>
