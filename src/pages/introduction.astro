@@ -18,13 +18,13 @@ const pageDescription =
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead
-      title={pageTitle}
-      description={pageDescription}
-    />
+    <BaseHead title={pageTitle} description={pageDescription} />
     <meta name="robots" content="noindex" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css"
+    />
   </head>
   <body>
     <!-- Floating logo — always visible, links home -->
@@ -34,7 +34,8 @@ const pageDescription =
 
     <!-- Slide position indicator — dots + lines on left edge -->
     <nav class="slide-indicator" aria-label="Slide navigation">
-      <button class="slide-indicator__dot is-active" data-slide="0" aria-label="Go to slide 1"></button>
+      <button class="slide-indicator__dot is-active" data-slide="0" aria-label="Go to slide 1"
+      ></button>
       <div class="slide-indicator__line"></div>
       <button class="slide-indicator__dot" data-slide="1" aria-label="Go to slide 2"></button>
       <div class="slide-indicator__line"></div>
@@ -176,13 +177,16 @@ const pageDescription =
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 1.5px solid #1A1A1A;
+    border: 1.5px solid #1a1a1a;
     padding: 0;
     background: transparent;
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   .slide-indicator__dot:hover {
@@ -200,23 +204,24 @@ const pageDescription =
 
   /* Passed state — completed dots and lines become solid dark green */
   .slide-indicator__dot.is-passed {
-    background: #1A1A1A;
-    border-color: #1A1A1A;
+    background: #1a1a1a;
+    border-color: #1a1a1a;
   }
 
   .slide-indicator__line.is-passed {
-    background: #1A1A1A;
+    background: #1a1a1a;
   }
 
   /* Active dot — solid dark green with pulse */
   .slide-indicator__dot.is-active {
-    background: #1A1A1A;
-    border-color: #1A1A1A;
+    background: #1a1a1a;
+    border-color: #1a1a1a;
     animation: dot-pulse 2s ease-in-out infinite;
   }
 
   @keyframes dot-pulse {
-    0%, 100% {
+    0%,
+    100% {
       box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.6);
     }
     50% {
@@ -292,7 +297,8 @@ const pageDescription =
   }
 
   @keyframes swipe-bounce {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(-50%) translateY(0);
     }
     50% {
@@ -318,16 +324,18 @@ const pageDescription =
 <script is:inline>
   (function () {
     // Scroll 1px to trigger Safari's bottom toolbar to minimize
-    setTimeout(function () { window.scrollTo(0, 1); }, 0);
+    setTimeout(function () {
+      window.scrollTo(0, 1);
+    }, 0);
 
-    var animatedSlides = {};
+    const animatedSlides = {};
 
     // ── Slide indicator logic ──
-    var totalSlides = document.querySelectorAll(".slide-indicator__dot").length;
+    const totalSlides = document.querySelectorAll(".slide-indicator__dot").length;
 
     function updateIndicator(activeIndex) {
-      var dots = document.querySelectorAll(".slide-indicator__dot");
-      var lines = document.querySelectorAll(".slide-indicator__line");
+      const dots = document.querySelectorAll(".slide-indicator__dot");
+      const lines = document.querySelectorAll(".slide-indicator__line");
 
       dots.forEach(function (dot, i) {
         dot.classList.remove("is-active", "is-passed");
@@ -341,7 +349,7 @@ const pageDescription =
       });
 
       // Hide swipe hint on last slide
-      var hint = document.querySelector(".swipe-hint");
+      const hint = document.querySelector(".swipe-hint");
       if (hint) {
         if (activeIndex >= totalSlides - 1) {
           hint.classList.add("is-hidden");
@@ -355,17 +363,17 @@ const pageDescription =
       if (animatedSlides[index]) return;
       if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
 
-      var gsap = window.gsap;
-      var slideEl = swiperEl.slides[index];
+      const gsap = window.gsap;
+      const slideEl = swiperEl.slides[index];
       if (!slideEl) return;
 
       animatedSlides[index] = true;
 
       if (index === 0) {
-        var text = slideEl.querySelector(".intro-slide__text");
-        var underline = slideEl.querySelector(".intro-slide__underline");
+        const text = slideEl.querySelector(".intro-slide__text");
+        const underline = slideEl.querySelector(".intro-slide__underline");
         if (text) {
-          var tl = gsap.timeline({ delay: 0.3 });
+          const tl = gsap.timeline({ delay: 0.3 });
           tl.fromTo(
             text,
             { opacity: 0, y: 60 },
@@ -381,9 +389,9 @@ const pageDescription =
           }
         }
       } else if (index === 1) {
-        var media = slideEl.querySelector(".intro-slide__media");
-        var text = slideEl.querySelector(".intro-slide__text");
-        var tl = gsap.timeline({ delay: 0.2 });
+        const media = slideEl.querySelector(".intro-slide__media");
+        const text = slideEl.querySelector(".intro-slide__text");
+        const tl = gsap.timeline({ delay: 0.2 });
         if (media) {
           tl.fromTo(
             media,
@@ -399,53 +407,8 @@ const pageDescription =
             0.15
           );
         }
-      } else if (index === 2) {
-        var content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
-      } else if (index === 3) {
-        var content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
-      } else if (index === 4) {
-        var content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
-      } else if (index === 5) {
-        var content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
-      } else if (index === 6) {
-        var content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
-      } else if (index === 7) {
-        var content = slideEl.querySelector(".intro-slide__content");
+      } else {
+        const content = slideEl.querySelector(".intro-slide__content");
         if (content) {
           gsap.fromTo(
             content,
@@ -457,7 +420,7 @@ const pageDescription =
     }
 
     function initSwiper() {
-      var swiperInstance = new Swiper(".intro-swiper", {
+      const swiperInstance = new Swiper(".intro-swiper", {
         direction: "vertical",
         speed: 600,
         touchEventsTarget: "container",
@@ -471,24 +434,22 @@ const pageDescription =
         on: {
           init: function () {
             // Animate first slide on load
-            var self = this;
             updateIndicator(0);
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-              runSlideAnimation(0, self);
+              runSlideAnimation(0, this);
             } else {
-              window.addEventListener("gsapLoaded", function () {
-                runSlideAnimation(0, self);
+              window.addEventListener("gsapLoaded", () => {
+                runSlideAnimation(0, this);
               });
             }
           },
           slideChange: function () {
-            var self = this;
-            updateIndicator(self.activeIndex);
+            updateIndicator(this.activeIndex);
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-              runSlideAnimation(self.activeIndex, self);
+              runSlideAnimation(this.activeIndex, this);
             } else {
-              window.addEventListener("gsapLoaded", function () {
-                runSlideAnimation(self.activeIndex, self);
+              window.addEventListener("gsapLoaded", () => {
+                runSlideAnimation(this.activeIndex, this);
               });
             }
           },
@@ -498,14 +459,14 @@ const pageDescription =
       // Click a dot → navigate to that slide
       document.querySelectorAll(".slide-indicator__dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
-          var slideIndex = parseInt(dot.getAttribute("data-slide"), 10);
+          const slideIndex = parseInt(dot.getAttribute("data-slide"), 10);
           swiperInstance.slideTo(slideIndex);
         });
       });
     }
 
     // Load Swiper JS from CDN
-    var script = document.createElement("script");
+    const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
     script.onload = function () {
       if (document.readyState === "loading") {
@@ -517,7 +478,7 @@ const pageDescription =
     document.head.appendChild(script);
 
     // Load Splide JS from CDN
-    var splideScript = document.createElement("script");
+    const splideScript = document.createElement("script");
     splideScript.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
     splideScript.onload = function () {
       function initSplide() {

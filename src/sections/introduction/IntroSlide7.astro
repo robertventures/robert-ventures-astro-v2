@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <section class="intro-slide" id="intro-slide-7">
@@ -32,7 +33,11 @@
       <!-- Rate toggle -->
       <div class="intro-slide__rate-toggle">
         <button class="intro-slide__rate-btn" data-rate="0.08" id="calc-rate-8">8% Annual</button>
-        <button class="intro-slide__rate-btn intro-slide__rate-btn--active" data-rate="0.10" id="calc-rate-10">10% Annual</button>
+        <button
+          class="intro-slide__rate-btn intro-slide__rate-btn--active"
+          data-rate="0.10"
+          id="calc-rate-10">10% Annual</button
+        >
       </div>
 
       <!-- Results table -->
@@ -63,7 +68,7 @@
     justify-content: center;
     overflow: hidden;
     position: relative;
-    background: #F4F6F5;
+    background: #f4f6f5;
     margin: 0;
     padding: 5rem 1.5rem 1.5rem;
     box-sizing: border-box;
@@ -81,7 +86,7 @@
 
   .intro-slide__heading {
     font-family: "Roboto Serif", serif;
-    color: #1A1A1A;
+    color: #1a1a1a;
     font-size: 2rem;
     font-weight: 500;
     line-height: 120%;
@@ -108,14 +113,14 @@
     font-family: "Roboto Serif", serif;
     font-size: 2.75rem;
     font-weight: 500;
-    color: #1A1A1A;
+    color: #1a1a1a;
     line-height: 100%;
   }
 
   .intro-slide__amount-label {
     font-family: "Roboto", sans-serif;
     font-size: 0.8125rem;
-    color: #BBBBBB;
+    color: #bbbbbb;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -136,7 +141,7 @@
     width: 100%;
     height: 6px;
     border-radius: 3px;
-    background: #E5E5E5;
+    background: #e5e5e5;
     outline: none;
     cursor: pointer;
     touch-action: none;
@@ -148,7 +153,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #1A1A1A;
+    background: #1a1a1a;
     border: 3px solid #ffffff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -158,7 +163,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: #1A1A1A;
+    background: #1a1a1a;
     border: 3px solid #ffffff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -169,7 +174,7 @@
     justify-content: space-between;
     font-family: "Roboto", sans-serif;
     font-size: 0.75rem;
-    color: #BBBBBB;
+    color: #bbbbbb;
   }
 
   /* Rate toggle */
@@ -185,7 +190,7 @@
     font-weight: 500;
     padding: 0.625rem 1.5rem;
     border-radius: 6px;
-    border: 1px solid #E5E5E5;
+    border: 1px solid #e5e5e5;
     background: #ffffff;
     color: #555555;
     cursor: pointer;
@@ -193,9 +198,9 @@
   }
 
   .intro-slide__rate-btn--active {
-    background: #1A1A1A;
+    background: #1a1a1a;
     color: #ffffff;
-    border-color: #1A1A1A;
+    border-color: #1a1a1a;
   }
 
   /* Results table */
@@ -214,11 +219,11 @@
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #BBBBBB;
+    color: #bbbbbb;
     font-weight: 500;
     padding: 0.625rem 0.75rem;
     text-align: left;
-    border-bottom: 1px solid #E5E5E5;
+    border-bottom: 1px solid #e5e5e5;
   }
 
   .intro-slide__table thead th:last-child {
@@ -227,9 +232,9 @@
 
   .intro-slide__table tbody td {
     font-size: 0.9375rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
     padding: 0.75rem;
-    border-bottom: 1px solid #E5E5E5;
+    border-bottom: 1px solid #e5e5e5;
   }
 
   .intro-slide__table tbody td:first-child {
@@ -239,7 +244,7 @@
 
   .intro-slide__table tbody td:last-child {
     text-align: right;
-    color: #4E9A74;
+    color: #4e9a74;
     font-weight: 500;
   }
 
@@ -304,35 +309,41 @@
 
 <script is:inline>
   (function () {
-    var slider = document.getElementById("calc-slider");
-    var amountDisplay = document.getElementById("calc-amount-display");
-    var btn8 = document.getElementById("calc-rate-8");
-    var btn10 = document.getElementById("calc-rate-10");
-    var tbody = document.getElementById("calc-results-body");
+    const slider = document.getElementById("calc-slider");
+    const amountDisplay = document.getElementById("calc-amount-display");
+    const btn8 = document.getElementById("calc-rate-8");
+    const btn10 = document.getElementById("calc-rate-10");
+    const tbody = document.getElementById("calc-results-body");
 
-    var currentRate = 0.10;
-    var periods = [1, 3, 5, 10];
+    let currentRate = 0.1;
+    const periods = [1, 3, 5, 10];
 
     function formatCurrency(value) {
       return "$" + Math.round(value).toLocaleString("en-US");
     }
 
     function updateTable() {
-      var principal = parseInt(slider.value, 10);
+      const principal = parseInt(slider.value, 10);
       amountDisplay.textContent = formatCurrency(principal);
 
-      var html = "";
-      for (var i = 0; i < periods.length; i++) {
-        var years = periods[i];
-        var total = principal * Math.pow(1 + currentRate, years);
-        var returns = total - principal;
-        var periodLabel = years === 1 ? "1 Year" : years + " Years";
+      let html = "";
+      for (let i = 0; i < periods.length; i++) {
+        const years = periods[i];
+        const total = principal * Math.pow(1 + currentRate, years);
+        const returns = total - principal;
+        const periodLabel = years === 1 ? "1 Year" : years + " Years";
 
         html +=
           "<tr>" +
-          "<td>" + periodLabel + "</td>" +
-          "<td>" + formatCurrency(total) + "</td>" +
-          "<td>+" + formatCurrency(returns) + "</td>" +
+          "<td>" +
+          periodLabel +
+          "</td>" +
+          "<td>" +
+          formatCurrency(total) +
+          "</td>" +
+          "<td>+" +
+          formatCurrency(returns) +
+          "</td>" +
           "</tr>";
       }
       tbody.innerHTML = html;
@@ -348,7 +359,7 @@
     });
 
     btn10.addEventListener("click", function () {
-      currentRate = 0.10;
+      currentRate = 0.1;
       btn10.classList.add("intro-slide__rate-btn--active");
       btn8.classList.remove("intro-slide__rate-btn--active");
       updateTable();

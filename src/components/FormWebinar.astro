@@ -202,7 +202,7 @@ const analyticsEvents = {
   button {
     background-color: var(--green-brand);
     border: 1px solid var(--green-brand);
-    color: #FFFFFF;
+    color: #ffffff;
     border-radius: 8px;
     padding: 12px;
     font-size: 18px;
@@ -1350,7 +1350,11 @@ const analyticsEvents = {
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) {
         const raw = parts.pop().split(";").shift();
-        try { return decodeURIComponent(raw); } catch { return raw; }
+        try {
+          return decodeURIComponent(raw);
+        } catch {
+          return raw;
+        }
       }
     } catch {}
     return undefined;

@@ -145,9 +145,7 @@ import DualCTA from "../components/DualCTA.astro";
   </svg>
   <div class="cta-section-container">
     <h2>Ready to Get Started?</h2>
-    <p>
-      Join our webinar to learn how our dual sector strategy can work for you.
-    </p>
+    <p>Join our webinar to learn how our dual sector strategy can work for you.</p>
     <DualCTA />
   </div>
 </section>
@@ -159,16 +157,16 @@ import DualCTA from "../components/DualCTA.astro";
         return;
       }
 
-      var gsapLib = window.gsap;
-      var svg = document.getElementById("closing-cta-staircase-svg");
+      const gsapLib = window.gsap;
+      const svg = document.getElementById("closing-cta-staircase-svg");
       if (!svg) return;
 
-      var rects = svg.querySelectorAll("rect");
+      const rects = svg.querySelectorAll("rect");
       if (rects.length === 0) return;
 
       gsapLib.set(rects, { stroke: "rgba(255, 255, 255, 0.07)" });
 
-      var tl = gsapLib.timeline({ repeat: -1 });
+      const tl = gsapLib.timeline({ repeat: -1 });
 
       tl.to({}, { duration: 3 });
 
