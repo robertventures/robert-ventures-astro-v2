@@ -841,6 +841,36 @@
       });
     }
 
+    // POSTHOG: signup_form_started — fires once on first form field focus
+    let formStarted = false;
+    const formInputs = form.querySelectorAll('input:not([type="hidden"])');
+    formInputs.forEach((input) => {
+      input.addEventListener("focus", () => {
+        if (!formStarted) {
+          formStarted = true;
+          if ((window as any).posthogTrack) {
+            (window as any).posthogTrack("signup_form_started");
+          }
+        }
+      });
+    });
+
+    // POSTHOG: deck_clicked — fires once when user clicks into the Canva pitch deck iframe
+    // Cross-origin iframes block direct event access, so we detect the click via
+    // the window losing focus (blur) while the iframe is the active element.
+    let deckClicked = false;
+    const deckIframe = document.querySelector(".deck-iframe iframe") as HTMLIFrameElement | null;
+    if (deckIframe) {
+      window.addEventListener("blur", () => {
+        if (!deckClicked && document.activeElement === deckIframe) {
+          deckClicked = true;
+          if ((window as any).posthogTrack) {
+            (window as any).posthogTrack("deck_clicked");
+          }
+        }
+      });
+    }
+
     function resetFormState() {
       if (buttonText) buttonText.style.display = "";
       if (loader) loader.style.display = "none";
@@ -916,8 +946,19 @@
       if (loader) loader.style.display = "inline-block";
       if (submitButton) submitButton.disabled = true;
 
+      // Extract email domain for analytics (e.g., "gmail.com")
+      const emailDomain = email.includes("@") ? email.split("@")[1] : "";
+
+      // POSTHOG: signup_started — form passed validation, about to call API
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("signup_started", { email_domain: emailDomain });
+      }
+
       // Normalize phone to E.164 format for database
       const normalizedPhone = normalizePhoneForDB(phone);
+
+      // Tracks whether PostHog signup outcome was already recorded (prevents double-firing)
+      let signupTracked = false;
 
       try {
         const response = await fetch("/api/create-account", {
@@ -936,6 +977,22 @@
         const data = await response.json();
 
         if (!response.ok) {
+          // POSTHOG: signup_failed — API returned an error
+          if ((window as any).posthogTrack) {
+            const detail = (data.detail || "").toLowerCase();
+            const errorType =
+              response.status === 429
+                ? "rate_limited"
+                : detail.includes("already") || detail.includes("exists")
+                  ? "account_exists"
+                  : "server_error";
+            (window as any).posthogTrack("signup_failed", {
+              error_type: errorType,
+              email_domain: emailDomain,
+            });
+            signupTracked = true;
+          }
+
           // Handle API error responses
           if (response.status === 429) {
             throw new Error("Too many registration attempts. Please try again later.");
@@ -945,6 +1002,19 @@
 
         // Success! Redirect to confirmation page with email and user_id
         const userId = data.user?.id || data.pendingUserId || data.id;
+
+        // POSTHOG: signup_completed + identify user by email
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("signup_completed", { email_domain: emailDomain });
+          signupTracked = true;
+        }
+        if ((window as any).posthogIdentify) {
+          (window as any).posthogIdentify(email, {
+            email: email,
+            phone: normalizedPhone,
+          });
+        }
+
         const confirmationUrl = new URL("https://invest.robertventures.com/confirmation");
         confirmationUrl.searchParams.append("email", email);
         if (userId) {
@@ -969,6 +1039,14 @@
           });
         }
       } catch (error) {
+        // POSTHOG: signup_failed — only for network/unexpected errors (API errors tracked above)
+        if (!signupTracked && (window as any).posthogTrack) {
+          (window as any).posthogTrack("signup_failed", {
+            error_type: "server_error",
+            email_domain: emailDomain,
+          });
+        }
+
         if (signupError) {
           signupError.textContent = error.message || "An error occurred. Please try again.";
           signupError.style.display = "block";
