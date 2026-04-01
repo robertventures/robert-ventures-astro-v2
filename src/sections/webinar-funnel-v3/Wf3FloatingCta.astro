@@ -1,0 +1,146 @@
+---
+
+---
+
+<div class="wf3-floating-cta" id="wf3-floating-cta">
+  <button class="wf3-floating-cta__close" type="button" aria-label="Close">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </button>
+
+  <div class="wf3-floating-cta__buttons">
+    <a href="/webinar-v3/live" class="wf3-floating-cta__btn wf3-floating-cta__btn--outline">
+      Join Joe live
+    </a>
+    <a href="/webinar-v3/call" class="wf3-floating-cta__btn wf3-floating-cta__btn--solid">
+      Book a call
+    </a>
+  </div>
+</div>
+
+<style>
+  .wf3-floating-cta {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 99;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    max-width: 200px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  .wf3-floating-cta.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .wf3-floating-cta.is-dismissed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+  }
+
+  .wf3-floating-cta__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: #bbbbbb;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  @media (hover: hover) {
+    .wf3-floating-cta__close:hover {
+      color: #1a1a1a;
+    }
+  }
+
+  .wf3-floating-cta__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .wf3-floating-cta__btn {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .wf3-floating-cta__btn--solid {
+    background: #67b78f;
+    color: #ffffff;
+    border: 1px solid #67b78f;
+  }
+
+  @media (hover: hover) {
+    .wf3-floating-cta__btn--solid:hover {
+      background: #4e9a74;
+      border-color: #4e9a74;
+    }
+  }
+
+  .wf3-floating-cta__btn--outline {
+    background: transparent;
+    color: #67b78f;
+    border: 1px solid #67b78f;
+  }
+
+  @media (hover: hover) {
+    .wf3-floating-cta__btn--outline:hover {
+      background: #ebf5ef;
+    }
+  }
+
+  /* Desktop: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf3-floating-cta {
+      bottom: 1.5rem;
+      right: 1.5rem;
+      max-width: 220px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var cta = document.getElementById("wf3-floating-cta");
+    if (!cta) return;
+
+    var closeBtn = cta.querySelector(".wf3-floating-cta__close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        cta.classList.add("is-dismissed");
+        cta.classList.remove("is-visible");
+      });
+    }
+  })();
+</script>

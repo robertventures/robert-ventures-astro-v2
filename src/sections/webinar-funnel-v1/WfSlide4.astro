@@ -1,0 +1,213 @@
+---
+
+---
+
+<section class="wf-slide" id="wf-slide-4">
+  <div class="wf-slide__content">
+    <div class="wf-slide__header">
+      <h2 class="wf-slide__heading">Choose Your Session</h2>
+      <p class="wf-slide__subtitle">Watch live or on-demand — your schedule, your choice.</p>
+    </div>
+
+    <div class="wf-slide__fields">
+      <!-- Session buttons populated by JS -->
+      <div class="wf-slide__sessions" id="wf-session-buttons"></div>
+
+      <!-- Hidden input to hold selected session value -->
+      <input type="hidden" name="session" id="wf-session-value" />
+
+      <!-- Honeypot -->
+      <input
+        type="text"
+        name="company"
+        class="company-field"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        style="position:absolute;left:-9999px;width:1px;height:1px;"
+      />
+      <input type="hidden" name="rtk_click_id" class="rtk-click-id" />
+
+      <p class="wf-slide__field-error"></p>
+
+      <button type="submit" class="wf-slide__submit">
+        <span class="wf-slide__button-text">Register Now</span>
+        <span class="wf-slide__loader"></span>
+      </button>
+    </div>
+
+    <p class="wf-slide__footnote">Free to attend. No credit card required. US residents only.</p>
+  </div>
+</section>
+
+<style>
+  .wf-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, #f4f6f5, #ffffff);
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 480px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .wf-slide__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .wf-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .wf-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  /* Session buttons */
+  .wf-slide__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Session button styles are in webinar-v1.astro global styles
+     because these elements are dynamically created by JS */
+
+  .wf-slide__field-error {
+    display: none;
+    color: red;
+    text-align: center;
+    margin: 0;
+    font-size: 0.875rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .wf-slide__submit {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--green-brand);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .wf-slide__submit:hover {
+    background-color: var(--green-hover);
+  }
+
+  .wf-slide__submit:active {
+    transform: translateY(1px);
+  }
+
+  .wf-slide__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .wf-slide__loader {
+    border: 2px solid #ffffff80;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: wf-spin 1s linear infinite;
+    display: none;
+  }
+
+  @keyframes wf-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .wf-slide__footnote {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: #888888;
+    text-align: center;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .wf-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.5rem;
+    }
+
+    .wf-slide__submit {
+      font-size: 1.125rem;
+      padding: 1.125rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf-slide__content {
+      max-width: 520px;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf-slide__content {
+      max-width: 560px;
+    }
+
+    .wf-slide__heading {
+      font-size: 3rem;
+    }
+  }
+</style>

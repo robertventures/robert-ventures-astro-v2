@@ -1,0 +1,175 @@
+---
+
+---
+
+<section class="intro-slide" id="intro-slide-4">
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">Real Assets. Real Returns.</h2>
+    <p class="intro-slide__subtitle">We build homes in the Outer Banks area of North Carolina.</p>
+
+    <div
+      class="intro-slide__slideshow splide"
+      id="re-slideshow"
+      aria-label="Construction progress photos"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide">
+            <div class="intro-slide__photo-placeholder">
+              <span>Construction Photo 1</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="intro-slide__photo-placeholder">
+              <span>Construction Photo 2</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="intro-slide__photo-placeholder">
+              <span>Construction Photo 3</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="intro-slide__photo-placeholder">
+              <span>Construction Photo 4</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="intro-slide__highlights">
+      <li>Consistent Appreciation</li>
+      <li>Strong Buyer Demand</li>
+      <li>Limited Safe Buildable Land</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .intro-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .intro-slide__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .intro-slide__highlights li {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  .intro-slide__highlights li:not(:last-child)::after {
+    content: "·";
+    margin-left: 1rem;
+    color: #bbbbbb;
+  }
+
+  .intro-slide__slideshow {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .intro-slide__photo-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #152429;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .intro-slide__photo-placeholder span {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.05em;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .intro-slide__heading {
+      font-size: 3rem;
+    }
+
+    .intro-slide__highlights li {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 3.75rem;
+    }
+
+    .intro-slide__content {
+      max-width: 700px;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__heading {
+      font-size: 4.25rem;
+    }
+
+    .intro-slide__content {
+      max-width: 800px;
+    }
+  }
+</style>

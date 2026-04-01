@@ -1,0 +1,230 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import RvLogo from "../../images/logo-horizontal-whitebg.svg";
+
+const pageTitle = "Watch the Webinar | Robert Ventures";
+const pageDescription = "Watch our investment webinar on demand.";
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <!-- Floating logo -->
+    <a href="/" class="wf3-nav-logo" aria-label="Back to Robert Ventures home">
+      <RvLogo />
+    </a>
+
+    <section class="watch-section">
+      <h1>Watch the Webinar</h1>
+      <p class="watch-subtitle">
+        Learn how everyday investors earn 10% fixed returns through Real Estate and Digital Assets.
+      </p>
+
+      <!-- Video placeholder -->
+      <div class="watch-video-placeholder">
+        <span>Webinar video will be embedded here</span>
+      </div>
+
+      <!-- What's next? -->
+      <div class="watch-next">
+        <h2>What's next?</h2>
+        <div class="watch-next__cards">
+          <a href="/webinar-v3/live" class="watch-cta watch-cta--outline">Join Joe Live</a>
+          <a href="/webinar-v3/call" class="watch-cta watch-cta--solid">Book a Call</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+
+<style>
+  /* ── Body ── */
+  body {
+    background-color: #ffffff;
+    margin: 0;
+  }
+
+  /* ── Floating logo ── */
+  .wf3-nav-logo {
+    position: fixed;
+    top: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .wf3-nav-logo:hover {
+    opacity: 1;
+  }
+
+  .wf3-nav-logo :global(svg) {
+    height: 40px;
+    width: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .wf3-nav-logo {
+      top: 1.5rem;
+    }
+
+    .wf3-nav-logo :global(svg) {
+      height: 48px;
+    }
+  }
+
+  /* ── Section ── */
+  .watch-section {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .watch-section {
+      padding: 6rem 1.5rem 3rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .watch-section {
+      padding: 6rem 1.5rem 4rem;
+    }
+  }
+
+  /* ── Heading ── */
+  h1 {
+    font-family: "Roboto Serif", serif;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1.15;
+    color: var(--text-heading, #1a1a1a);
+    margin: 0 0 0.75rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* ── Subtitle ── */
+  .watch-subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-body, #555555);
+    margin: 0 0 2rem;
+  }
+
+  /* ── Video placeholder ── */
+  .watch-video-placeholder {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    background-color: #f4f6f5;
+    border-radius: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .watch-video-placeholder span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #888888;
+    text-align: center;
+  }
+
+  /* ── What's next ── */
+  .watch-next {
+    margin-top: 0;
+  }
+
+  .watch-next h2 {
+    font-family: "Roboto Serif", serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--text-heading, #1a1a1a);
+    margin: 0 0 1rem;
+  }
+
+  .watch-next__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .watch-next__cards {
+      flex-direction: row;
+      gap: 1rem;
+    }
+  }
+
+  /* ── CTA buttons ── */
+  .watch-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+    flex: 1;
+  }
+
+  .watch-cta--outline {
+    border: 1.5px solid #67b78f;
+    background: transparent;
+    color: #67b78f;
+  }
+
+  .watch-cta--outline:hover {
+    background-color: #ebf5ef;
+  }
+
+  .watch-cta--solid {
+    border: 1.5px solid #67b78f;
+    background-color: #67b78f;
+    color: #ffffff;
+  }
+
+  .watch-cta--solid:hover {
+    background-color: #4e9a74;
+    border-color: #4e9a74;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // Guard: redirect if no lead data
+    try {
+      var lead = sessionStorage.getItem("wf3_lead");
+      if (!lead) {
+        window.location.replace("/webinar-v3");
+        return;
+      }
+    } catch (e) {
+      window.location.replace("/webinar-v3");
+      return;
+    }
+  })();
+</script>

@@ -1,0 +1,287 @@
+<section class="intro-slide" id="intro-slide-1">
+  <!-- Staircase SVG animation — background element -->
+  <svg
+    class="intro-slide__staircase"
+    width="800"
+    height="800"
+    xmlns="http://www.w3.org/2000/svg"
+    id="intro-staircase-svg"
+  >
+    <rect x="0.5" y="735.5" width="64" height="64"></rect>
+    <rect x="80.5" y="655.5" width="64" height="64"></rect>
+    <rect x="80.5" y="735.5" width="64" height="64"></rect>
+    <rect x="160.5" y="575.5" width="64" height="64"></rect>
+    <rect x="160.5" y="655.5" width="64" height="64"></rect>
+    <rect x="160.5" y="735.5" width="64" height="64"></rect>
+    <rect x="240.5" y="495.5" width="64" height="64"></rect>
+    <rect x="240.5" y="575.5" width="64" height="64"></rect>
+    <rect x="240.5" y="655.5" width="64" height="64"></rect>
+    <rect x="240.5" y="735.5" width="64" height="64"></rect>
+    <rect x="320.5" y="415.5" width="64" height="64"></rect>
+    <rect x="320.5" y="495.5" width="64" height="64"></rect>
+    <rect x="320.5" y="575.5" width="64" height="64"></rect>
+    <rect x="320.5" y="655.5" width="64" height="64"></rect>
+    <rect x="320.5" y="735.5" width="64" height="64"></rect>
+    <rect x="400.5" y="335.5" width="64" height="64"></rect>
+    <rect x="400.5" y="415.5" width="64" height="64"></rect>
+    <rect x="400.5" y="495.5" width="64" height="64"></rect>
+    <rect x="400.5" y="575.5" width="64" height="64"></rect>
+    <rect x="400.5" y="655.5" width="64" height="64"></rect>
+    <rect x="400.5" y="735.5" width="64" height="64"></rect>
+    <rect x="480.5" y="255.5" width="64" height="64"></rect>
+    <rect x="480.5" y="335.5" width="64" height="64"></rect>
+    <rect x="480.5" y="415.5" width="64" height="64"></rect>
+    <rect x="480.5" y="495.5" width="64" height="64"></rect>
+    <rect x="480.5" y="575.5" width="64" height="64"></rect>
+    <rect x="480.5" y="655.5" width="64" height="64"></rect>
+    <rect x="480.5" y="735.5" width="64" height="64"></rect>
+    <rect x="560.5" y="175.5" width="64" height="64"></rect>
+    <rect x="560.5" y="255.5" width="64" height="64"></rect>
+    <rect x="560.5" y="335.5" width="64" height="64"></rect>
+    <rect x="560.5" y="415.5" width="64" height="64"></rect>
+    <rect x="560.5" y="495.5" width="64" height="64"></rect>
+    <rect x="560.5" y="575.5" width="64" height="64"></rect>
+    <rect x="560.5" y="655.5" width="64" height="64"></rect>
+    <rect x="560.5" y="735.5" width="64" height="64"></rect>
+    <rect x="640.5" y="95.5" width="64" height="64"></rect>
+    <rect x="640.5" y="175.5" width="64" height="64"></rect>
+    <rect x="640.5" y="255.5" width="64" height="64"></rect>
+    <rect x="640.5" y="335.5" width="64" height="64"></rect>
+    <rect x="640.5" y="415.5" width="64" height="64"></rect>
+    <rect x="640.5" y="495.5" width="64" height="64"></rect>
+    <rect x="640.5" y="575.5" width="64" height="64"></rect>
+    <rect x="640.5" y="655.5" width="64" height="64"></rect>
+    <rect x="640.5" y="735.5" width="64" height="64"></rect>
+    <rect x="720.5" y="15.5" width="64" height="64"></rect>
+    <rect x="720.5" y="95.5" width="64" height="64"></rect>
+    <rect x="720.5" y="175.5" width="64" height="64"></rect>
+    <rect x="720.5" y="255.5" width="64" height="64"></rect>
+    <rect x="720.5" y="335.5" width="64" height="64"></rect>
+    <rect x="720.5" y="415.5" width="64" height="64"></rect>
+    <rect x="720.5" y="495.5" width="64" height="64"></rect>
+    <rect x="720.5" y="575.5" width="64" height="64"></rect>
+    <rect x="720.5" y="655.5" width="64" height="64"></rect>
+    <rect x="720.5" y="735.5" width="64" height="64"></rect>
+  </svg>
+
+  <div class="intro-slide__content">
+    <div class="intro-slide__text">
+      <h1 class="intro-slide__heading">
+        Your savings earn 4%.<br />
+        Ours <span class="intro-slide__accent"
+          >up to 17%.<span class="intro-slide__underline"></span></span
+        >
+      </h1>
+      <div class="intro-slide__statements">
+        <p class="intro-slide__statement">Not projected.</p>
+        <p class="intro-slide__statement">Not estimated.</p>
+        <p class="intro-slide__statement">A fixed contractual rate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    margin: 0;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Staircase SVG — background animation */
+  #intro-staircase-svg {
+    position: absolute;
+    bottom: -200px;
+    right: -200px;
+    width: 800px;
+    height: 800px;
+    min-width: 800px;
+    min-height: 800px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 1;
+  }
+
+  #intro-staircase-svg rect {
+    fill: none;
+    stroke: #bbbbbb;
+    stroke-opacity: 0.15;
+    stroke-width: 1;
+  }
+
+  .intro-slide__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 1136px;
+    text-align: center;
+  }
+
+  .intro-slide__text {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 12vw;
+    font-weight: 500;
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .intro-slide__accent {
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+  }
+
+  .intro-slide__underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--green-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .intro-slide__statements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .intro-slide__statement {
+    font-family: "Roboto Serif", serif;
+    color: #555555;
+    font-size: 6vw;
+    font-weight: 400;
+    line-height: 140%;
+    margin: 0;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 0 2rem;
+    }
+
+    .intro-slide__heading {
+      font-size: 8vw;
+    }
+
+    .intro-slide__statement {
+      font-size: 3.25vw;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 6rem;
+    }
+
+    .intro-slide__statement {
+      font-size: 2.25rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__content {
+      max-width: 1440px;
+    }
+
+    .intro-slide__heading {
+      font-size: 7rem;
+    }
+
+    .intro-slide__statement {
+      font-size: 2.625rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function initStaircaseAnimation() {
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+        return;
+      }
+
+      const gsapLib = window.gsap;
+      const svg = document.getElementById("intro-staircase-svg");
+      if (!svg) return;
+
+      const rects = svg.querySelectorAll("rect");
+      if (rects.length === 0) return;
+
+      gsapLib.set(rects, { strokeOpacity: 0.15 });
+
+      const tl = gsapLib.timeline({ repeat: -1 });
+
+      // Pause before shimmer
+      tl.to({}, { duration: 3 });
+
+      // Shimmer forward — rects brighten
+      tl.to(rects, {
+        strokeOpacity: 0.6,
+        duration: 0.2,
+        stagger: {
+          amount: 0.5,
+          from: "start",
+        },
+      });
+
+      // Fade back — rects dim
+      tl.to(rects, {
+        strokeOpacity: 0.15,
+        duration: 0.5,
+        stagger: {
+          amount: 1,
+          from: "start",
+        },
+      });
+    }
+
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+        } else {
+          initStaircaseAnimation();
+        }
+      } else {
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+          } else {
+            initStaircaseAnimation();
+          }
+        });
+      }
+    }
+
+    startAnimation();
+  })();
+</script>

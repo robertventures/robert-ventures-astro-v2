@@ -1,0 +1,183 @@
+---
+
+---
+
+<section class="wf-slide" id="wf-slide-3">
+  <div class="wf-slide__content">
+    <div class="wf-slide__header">
+      <h2 class="wf-slide__heading">How much capital are you looking to allocate?</h2>
+      <p class="wf-slide__subtitle">
+        This doesn't represent any commitment — it helps us tailor the experience to you.
+      </p>
+    </div>
+
+    <!-- Amount buttons populated statically -->
+    <div class="wf-slide__amounts" id="wf-amount-buttons">
+      <button type="button" class="wf-slide__amount-btn" data-value="1000-5000">$1,000 – $5,000</button>
+      <button type="button" class="wf-slide__amount-btn" data-value="10000-25000">$10,000 – $25,000</button>
+      <button type="button" class="wf-slide__amount-btn" data-value="50000-100000">$50,000 – $100,000</button>
+      <button type="button" class="wf-slide__amount-btn" data-value="100000+">$100,000+</button>
+    </div>
+
+    <input type="hidden" name="invest_intent" id="wf-invest-value" />
+
+    <p class="wf-slide__field-error"></p>
+    <button type="button" class="wf-slide__continue" data-next-slide="3">Continue</button>
+  </div>
+</section>
+
+<style>
+  .wf-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 480px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .wf-slide__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .wf-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 125%;
+    margin: 0;
+  }
+
+  .wf-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  /* Amount buttons — stacked full-width (matches session buttons) */
+  .wf-slide__amounts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .wf-slide__amount-btn {
+    width: 100%;
+    padding: 1rem;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  @media (hover: hover) {
+    .wf-slide__amount-btn:hover {
+      border-color: var(--green-brand);
+      background: rgba(235, 245, 239, 0.3);
+    }
+  }
+
+  .wf-slide__amount-btn.is-selected {
+    border-color: var(--green-brand);
+    background: #ebf5ef;
+  }
+
+  .wf-slide__field-error {
+    display: none;
+    color: red;
+    text-align: center;
+    margin: 0;
+    font-size: 0.875rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .wf-slide__continue {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--green-brand);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__continue:hover {
+    background-color: var(--green-hover);
+  }
+
+  .wf-slide__continue:active {
+    transform: translateY(1px);
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .wf-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.25rem;
+    }
+
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf-slide__content {
+      max-width: 520px;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf-slide__content {
+      max-width: 560px;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.75rem;
+    }
+  }
+</style>

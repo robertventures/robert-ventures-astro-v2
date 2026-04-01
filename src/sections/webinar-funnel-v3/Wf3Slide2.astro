@@ -1,0 +1,379 @@
+---
+import Image from "astro/components/Image.astro";
+import usFlag from "../../images/usflag.png";
+---
+
+<section class="wf3-slide" id="wf3-slide-2">
+  <div class="wf3-slide__content">
+    <div class="wf3-slide__text">
+      <h1 class="wf3-slide__heading">Let's Get You Started</h1>
+      <p class="wf3-slide__subtitle">Enter your details to continue</p>
+    </div>
+
+    <div class="wf3-slide__fields">
+      <input
+        type="text"
+        id="wf3-name"
+        name="full_name"
+        placeholder="Full Name"
+        required
+        pattern="[^@]+"
+        title="Please enter your name, not your email address."
+        class="wf3-slide__input"
+      />
+      <input
+        type="email"
+        id="wf3-email"
+        name="email"
+        placeholder="Email Address"
+        required
+        class="wf3-slide__input"
+      />
+      <div class="wf3-slide__phone-wrapper">
+        <Image src={usFlag} alt="US Flag" height={22} class="wf3-slide__phone-flag" />
+        <input
+          type="tel"
+          id="wf3-phone"
+          name="phone_number"
+          placeholder="(555) 555-5555"
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          class="wf3-slide__input"
+        />
+      </div>
+
+      <!-- Capital allocation -->
+      <select name="invest_intent" id="wf3-invest-value" class="wf3-slide__select">
+        <option value="" disabled selected>How much are you looking to allocate?</option>
+        <option value="5000">$5,000</option>
+        <option value="10000">$10,000</option>
+        <option value="25000">$25,000</option>
+        <option value="50000">$50,000</option>
+        <option value="100000+">$100,000+</option>
+      </select>
+
+      <!-- Honeypot -->
+      <input
+        type="text"
+        name="company"
+        autocomplete="off"
+        tabindex="-1"
+        class="wf3-slide__honeypot"
+      />
+
+      <!-- RedTrack click ID -->
+      <input type="hidden" id="wf3-rtk-click-id" name="rtk_click_id" />
+
+      <p id="wf3-form-error" class="wf3-slide__field-error"></p>
+
+      <button type="button" class="wf3-slide__btn" data-action="capture-lead">Continue</button>
+    </div>
+
+    <div class="wf3-slide__trust">
+      <span class="wf3-slide__trust-item">SEC Qualified</span>
+      <span class="wf3-slide__trust-divider"></span>
+      <span class="wf3-slide__trust-item">70+ Investors</span>
+      <span class="wf3-slide__trust-divider"></span>
+      <span class="wf3-slide__trust-item">100% Payment Record</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wf3-slide {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf3-slide__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .wf3-slide__text {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .wf3-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .wf3-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .wf3-slide__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .wf3-slide__input {
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: var(--text-heading);
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .wf3-slide__input:focus {
+    outline: none;
+    border: 1px solid var(--green-brand);
+  }
+
+  .wf3-slide__input::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+
+  .wf3-slide__phone-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .wf3-slide__phone-flag {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    height: 22px;
+    object-fit: contain;
+    aspect-ratio: 22/16;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .wf3-slide__phone-wrapper .wf3-slide__input {
+    padding-left: calc(22px + 12px + 1rem) !important;
+  }
+
+  /* Capital allocation dropdown */
+  .wf3-slide__select {
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: #999999;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    cursor: pointer;
+  }
+
+  .wf3-slide__select.has-value {
+    color: var(--text-heading);
+  }
+
+  .wf3-slide__select:focus {
+    outline: none;
+    border: 1px solid var(--green-brand);
+  }
+
+  /* Honeypot — hidden from real users */
+  .wf3-slide__honeypot {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    tab-index: -1;
+  }
+
+  .wf3-slide__field-error {
+    display: none;
+    color: red;
+    text-align: center;
+    margin: 0;
+    font-size: 0.875rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  /* CTA button */
+  .wf3-slide__btn {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--green-brand);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  @media (hover: hover) {
+    .wf3-slide__btn:hover {
+      background-color: var(--green-hover);
+    }
+  }
+
+  .wf3-slide__btn:active {
+    transform: translateY(1px);
+  }
+
+  .wf3-slide__trust {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .wf3-slide__trust-item {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    letter-spacing: 0.02em;
+  }
+
+  .wf3-slide__trust-divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #bbbbbb;
+    flex-shrink: 0;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .wf3-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .wf3-slide__heading {
+      font-size: 3.25rem;
+    }
+
+    .wf3-slide__subtitle {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf3-slide__content {
+      max-width: 520px;
+    }
+
+    .wf3-slide__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf3-slide__content {
+      max-width: 560px;
+    }
+
+    .wf3-slide__heading {
+      font-size: 4rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function initWf3Slide2Animation() {
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+        return;
+      }
+
+      var gsapLib = window.gsap;
+
+      // Content entrance animation
+      var textBlock = document.querySelector("#wf3-slide-2 .wf3-slide__text");
+      if (textBlock) {
+        gsapLib.to(textBlock, {
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      }
+    }
+
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initWf3Slide2Animation);
+        } else {
+          initWf3Slide2Animation();
+        }
+      } else {
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initWf3Slide2Animation);
+          } else {
+            initWf3Slide2Animation();
+          }
+        });
+      }
+    }
+
+    startAnimation();
+
+    // Toggle has-value class on dropdown when a value is selected
+    var select = document.getElementById("wf3-invest-value");
+    if (select) {
+      select.addEventListener("change", function () {
+        if (select.value) {
+          select.classList.add("has-value");
+        } else {
+          select.classList.remove("has-value");
+        }
+      });
+    }
+  })();
+</script>

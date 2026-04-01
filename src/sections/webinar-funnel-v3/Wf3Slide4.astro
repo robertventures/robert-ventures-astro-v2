@@ -1,0 +1,175 @@
+---
+
+---
+
+<section class="wf3-slide" id="wf3-slide-4">
+  <div class="wf3-slide__content">
+    <h2 class="wf3-slide__heading">Real Assets. Real Returns.</h2>
+    <p class="wf3-slide__subtitle">We build homes in the Outer Banks area of North Carolina.</p>
+
+    <div
+      class="wf3-slide__slideshow splide"
+      id="wf3-property-carousel"
+      aria-label="Construction progress photos"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide">
+            <div class="wf3-slide__photo-placeholder">
+              <span>Construction Photo 1</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="wf3-slide__photo-placeholder">
+              <span>Construction Photo 2</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="wf3-slide__photo-placeholder">
+              <span>Construction Photo 3</span>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="wf3-slide__photo-placeholder">
+              <span>Construction Photo 4</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="wf3-slide__highlights">
+      <li>Consistent Appreciation</li>
+      <li>Strong Buyer Demand</li>
+      <li>Limited Safe Buildable Land</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .wf3-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf3-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .wf3-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .wf3-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .wf3-slide__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .wf3-slide__highlights li {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  .wf3-slide__highlights li:not(:last-child)::after {
+    content: "\00B7";
+    margin-left: 1rem;
+    color: #bbbbbb;
+  }
+
+  .wf3-slide__slideshow {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .wf3-slide__photo-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #152429;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .wf3-slide__photo-placeholder span {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.05em;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .wf3-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .wf3-slide__heading {
+      font-size: 3rem;
+    }
+
+    .wf3-slide__highlights li {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf3-slide__heading {
+      font-size: 3.75rem;
+    }
+
+    .wf3-slide__content {
+      max-width: 700px;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf3-slide__heading {
+      font-size: 4.25rem;
+    }
+
+    .wf3-slide__content {
+      max-width: 800px;
+    }
+  }
+</style>
