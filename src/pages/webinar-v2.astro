@@ -1342,33 +1342,6 @@ try {
         },
       });
 
-      // Scroll/swipe up to go to previous slide
-      var lastWheelTime = 0;
-      document.querySelector(".wf-swiper").addEventListener("wheel", function (e) {
-        if (isTransitioning || !swiperInstance) return;
-        var now = Date.now();
-        if (now - lastWheelTime < 800) return;
-        if (e.deltaY < 0 && swiperInstance.activeIndex > 0) {
-          lastWheelTime = now;
-          isTransitioning = true;
-          swiperInstance.slidePrev();
-        }
-      }, { passive: true });
-
-      // Touch swipe up to go to previous slide
-      var touchStartY = 0;
-      document.querySelector(".wf-swiper").addEventListener("touchstart", function (e) {
-        touchStartY = e.touches[0].clientY;
-      }, { passive: true });
-      document.querySelector(".wf-swiper").addEventListener("touchend", function (e) {
-        if (isTransitioning || !swiperInstance) return;
-        var deltaY = e.changedTouches[0].clientY - touchStartY;
-        if (deltaY > 60 && swiperInstance.activeIndex > 0) {
-          isTransitioning = true;
-          swiperInstance.slidePrev();
-        }
-      }, { passive: true });
-
       // Dot navigation — only allow going backward
       document.querySelectorAll(".wf-indicator__dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
