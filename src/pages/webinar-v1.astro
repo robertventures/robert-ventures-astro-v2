@@ -4,7 +4,6 @@ import RvLogo from "../images/logo-horizontal-whitebg.svg";
 import WfSlide1 from "../sections/webinar-funnel-v1/WfSlide1.astro";
 import WfSlide2 from "../sections/webinar-funnel-v1/WfSlide2.astro";
 import WfSlide3 from "../sections/webinar-funnel-v1/WfSlide3.astro";
-import WfSlide4 from "../sections/webinar-funnel-v1/WfSlide4.astro";
 import WfSlide5 from "../sections/webinar-funnel-v1/WfSlide5.astro";
 import WfSlide6 from "../sections/webinar-funnel-v1/WfSlide6.astro";
 
@@ -87,8 +86,6 @@ try {
       <button class="wf-indicator__dot" data-slide="2" aria-label="Go to slide 3"></button>
       <div class="wf-indicator__line"></div>
       <button class="wf-indicator__dot" data-slide="3" aria-label="Go to slide 4"></button>
-      <div class="wf-indicator__line"></div>
-      <button class="wf-indicator__dot" data-slide="4" aria-label="Go to slide 5"></button>
     </nav>
 
     <form class="wf-form" id="wf-registration-form" novalidate>
@@ -97,7 +94,6 @@ try {
           <div class="swiper-slide"><WfSlide2 /></div>
           <div class="swiper-slide"><WfSlide3 /></div>
           <div class="swiper-slide"><WfSlide1 /></div>
-          <div class="swiper-slide"><WfSlide4 /></div>
           <div class="swiper-slide"><WfSlide5 /></div>
           <div class="swiper-slide"><WfSlide6 /></div>
         </div>
@@ -410,13 +406,13 @@ try {
     }, 0);
 
     var animatedSlides = {};
-    var totalSlides = 5;
+    var totalSlides = 4;
     var swiperInstance = null;
     var isTransitioning = false;
 
     // Slides where forward scrolling is locked — user must press a button to advance
-    // Index 2 = form, 3 = capital allocation, 4 = questions
-    var lockedSlides = { 2: true, 3: true, 4: true };
+    // Index 2 = form, 3 = questions
+    var lockedSlides = { 2: true, 3: true };
 
     function updateSlideScrollLock(index) {
       if (!swiperInstance) return;
@@ -557,7 +553,6 @@ try {
     // ── Option button groups (personalize questions + allocate) ──
     function setupOptionButtons() {
       var groups = [
-        { containerId: "wf-invest-amount", hiddenId: "wf-invest-value" },
         { containerId: "wf-invest-timing", hiddenId: "wf-invest-timing-value" },
         { containerId: "wf-age-range", hiddenId: "wf-age-range-value" },
       ];
@@ -1091,7 +1086,7 @@ try {
           : false;
         if (window.posthogTrack) {
           window.posthogTrack("webinar_form_submitted", {
-            invest_intent: document.getElementById("wf-invest-value") ? document.getElementById("wf-invest-value").value : "",
+            invest_intent: document.getElementById("wf-invest-select") ? document.getElementById("wf-invest-select").value : "",
             session_type: isInstantAtSubmit ? "on_demand" : "live",
           });
         }
@@ -1355,6 +1350,15 @@ try {
       });
     }
 
+    // ── Invest dropdown ──
+    function setupInvestDropdown() {
+      var investSelect = document.getElementById("wf-invest-select");
+      if (!investSelect) return;
+      investSelect.addEventListener("change", function () {
+        investSelect.classList.add("has-value");
+      });
+    }
+
     // ── Boot ──
     function boot() {
       captureCmpid();
@@ -1362,6 +1366,7 @@ try {
       setupPhoneFormatting();
       setupContinueButtons();
       setupOptionButtons();
+      setupInvestDropdown();
       loadWebinarData();
       setupFormSubmission();
 
