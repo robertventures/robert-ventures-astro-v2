@@ -5,6 +5,8 @@ import WfSlide1 from "../sections/webinar-funnel-v1/WfSlide1.astro";
 import WfSlide2 from "../sections/webinar-funnel-v1/WfSlide2.astro";
 import WfSlide3 from "../sections/webinar-funnel-v1/WfSlide3.astro";
 import WfSlide4 from "../sections/webinar-funnel-v1/WfSlide4.astro";
+import WfSlide5 from "../sections/webinar-funnel-v1/WfSlide5.astro";
+import WfSlide6 from "../sections/webinar-funnel-v1/WfSlide6.astro";
 
 const pageTitle = "Investment Webinar | Robert Ventures";
 const pageDescription =
@@ -85,15 +87,19 @@ try {
       <button class="wf-indicator__dot" data-slide="2" aria-label="Go to slide 3"></button>
       <div class="wf-indicator__line"></div>
       <button class="wf-indicator__dot" data-slide="3" aria-label="Go to slide 4"></button>
+      <div class="wf-indicator__line"></div>
+      <button class="wf-indicator__dot" data-slide="4" aria-label="Go to slide 5"></button>
     </nav>
 
     <form class="wf-form" id="wf-registration-form" novalidate>
       <div class="swiper wf-swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide"><WfSlide2 /></div>
-          <div class="swiper-slide"><WfSlide1 /></div>
           <div class="swiper-slide"><WfSlide3 /></div>
+          <div class="swiper-slide"><WfSlide1 /></div>
           <div class="swiper-slide"><WfSlide4 /></div>
+          <div class="swiper-slide"><WfSlide5 /></div>
+          <div class="swiper-slide"><WfSlide6 /></div>
         </div>
       </div>
     </form>
@@ -404,9 +410,18 @@ try {
     }, 0);
 
     var animatedSlides = {};
-    var totalSlides = 4;
+    var totalSlides = 5;
     var swiperInstance = null;
     var isTransitioning = false;
+
+    // Slides where forward scrolling is locked — user must press a button to advance
+    // Index 2 = form, 3 = capital allocation, 4 = questions
+    var lockedSlides = { 2: true, 3: true, 4: true };
+
+    function updateSlideScrollLock(index) {
+      if (!swiperInstance) return;
+      swiperInstance.allowSlideNext = !lockedSlides[index];
+    }
 
     // ── Indicator logic ──
     function updateIndicator(activeIndex) {
@@ -445,8 +460,28 @@ try {
 
       animatedSlides[index] = true;
 
-      if (index === 1) {
-        // Slide 1 (form): text fade-in + underline animation
+      if (index === 0) {
+        // Intro slide: content fade-in + underline grow
+        var introContent = slideEl.querySelector(".wf-slide__content");
+        var introUnderline = slideEl.querySelector(".wf-slide__underline");
+        if (introContent) {
+          var introTl = gsap.timeline({ delay: 0.2 });
+          introTl.fromTo(
+            introContent,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          );
+          if (introUnderline) {
+            introTl.fromTo(
+              introUnderline,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.6, ease: "power2.out" },
+              "-=0.2"
+            );
+          }
+        }
+      } else if (index === 2) {
+        // Slide 2 (form): text fade-in + underline animation
         var text = slideEl.querySelector(".wf-slide__text");
         var underline = slideEl.querySelector(".wf-slide__underline");
         if (text) {
@@ -506,41 +541,40 @@ try {
 
     // ── Continue buttons ──
     function setupContinueButtons() {
-      document.querySelectorAll(".wf-slide__continue").forEach(function (btn) {
+      document.querySelectorAll("[data-next-slide]").forEach(function (btn) {
         btn.addEventListener("click", function () {
           var nextSlide = parseInt(btn.getAttribute("data-next-slide"), 10);
-          var currentSlide = nextSlide - 1;
+          var currentSlide = swiperInstance ? swiperInstance.activeIndex : nextSlide - 1;
           if (validateSlide(currentSlide) && swiperInstance) {
             isTransitioning = true;
-            var amountBtns = document.getElementById("wf-amount-buttons");
-            if (amountBtns) amountBtns.style.pointerEvents = "none";
+            swiperInstance.allowSlideNext = true;
             swiperInstance.slideTo(nextSlide);
           }
         });
       });
     }
 
-    // ── Amount buttons ──
-    function setupAmountButtons() {
-      var container = document.getElementById("wf-amount-buttons");
-      var hiddenInput = document.getElementById("wf-invest-value");
-      if (!container || !hiddenInput) return;
+    // ── Option button groups (personalize questions + allocate) ──
+    function setupOptionButtons() {
+      var groups = [
+        { containerId: "wf-invest-amount", hiddenId: "wf-invest-value" },
+        { containerId: "wf-invest-timing", hiddenId: "wf-invest-timing-value" },
+        { containerId: "wf-age-range", hiddenId: "wf-age-range-value" },
+      ];
 
-      container.querySelectorAll(".wf-slide__amount-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          if (isTransitioning) return;
-          container.querySelectorAll(".wf-slide__amount-btn").forEach(function (b) {
-            b.classList.remove("is-selected");
-          });
-          btn.classList.add("is-selected");
-          hiddenInput.value = btn.getAttribute("data-value");
+      groups.forEach(function (group) {
+        var container = document.getElementById(group.containerId);
+        var hiddenInput = document.getElementById(group.hiddenId);
+        if (!container || !hiddenInput) return;
 
-          // Analytics
-          if (window.posthogTrack) {
-            window.posthogTrack("webinar_invest_intent_selected", {
-              invest_intent: btn.getAttribute("data-value"),
+        container.querySelectorAll(".wf-slide__option-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            container.querySelectorAll(".wf-slide__option-btn").forEach(function (b) {
+              b.classList.remove("is-selected");
             });
-          }
+            btn.classList.add("is-selected");
+            hiddenInput.value = btn.getAttribute("data-value");
+          });
         });
       });
     }
@@ -627,55 +661,27 @@ try {
     }
 
     function populateSessionsDropdown(data) {
-      var container = document.getElementById("wf-session-buttons");
+      var selectEl = document.getElementById("wf-session-select");
       var hiddenInput = document.getElementById("wf-session-value");
-      if (!container || !hiddenInput) return;
+      if (!selectEl || !hiddenInput) return;
 
       var userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      container.innerHTML = "";
 
-      function selectSession(btn) {
-        // Deselect all
-        container.querySelectorAll(".wf-slide__session-btn").forEach(function (b) {
-          b.classList.remove("is-selected");
-        });
-        // Select this one
-        btn.classList.add("is-selected");
-        // Store full data in hidden input
-        hiddenInput.value = btn.getAttribute("data-value");
-        hiddenInput.setAttribute("data-date", btn.getAttribute("data-date"));
-        hiddenInput.setAttribute("data-timezone", btn.getAttribute("data-timezone"));
-        hiddenInput.setAttribute("data-is-instant", btn.getAttribute("data-is-instant"));
-        hiddenInput.setAttribute("data-webinar-id", btn.getAttribute("data-webinar-id"));
-        if (btn.getAttribute("data-original-timezone")) {
-          hiddenInput.setAttribute("data-original-timezone", btn.getAttribute("data-original-timezone"));
-        }
-
-        // Analytics
-        var isInstant = btn.getAttribute("data-is-instant") === "true";
-        var sessionType = isInstant ? "on_demand" : "live";
-        triggerEvent("session_type_selected", "sessionTypeSelected", { session_type: sessionType });
-        if (window.posthogTrack) {
-          window.posthogTrack("webinar_session_selected", {
-            session_type: sessionType,
-            session_date: btn.getAttribute("data-date") || "",
-          });
-        }
+      // Clear existing options except the placeholder
+      while (selectEl.options.length > 1) {
+        selectEl.remove(1);
       }
 
-      // On-demand button
+      // On-demand option
       if (data.onDemandAvailable) {
-        var instantBtn = document.createElement("button");
-        instantBtn.type = "button";
-        instantBtn.className = "wf-slide__session-btn";
-        instantBtn.setAttribute("data-value", "instant");
-        instantBtn.setAttribute("data-date", "instant");
-        instantBtn.setAttribute("data-timezone", userTz);
-        instantBtn.setAttribute("data-is-instant", "true");
-        instantBtn.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.onDemand) || "");
-        instantBtn.innerHTML = '<span class="wf-slide__session-label">Watch Now — On Demand</span><span class="wf-slide__session-meta">Start watching immediately</span>';
-        instantBtn.addEventListener("click", function () { selectSession(instantBtn); });
-        container.appendChild(instantBtn);
+        var instantOpt = document.createElement("option");
+        instantOpt.value = "instant";
+        instantOpt.setAttribute("data-date", "instant");
+        instantOpt.setAttribute("data-timezone", userTz);
+        instantOpt.setAttribute("data-is-instant", "true");
+        instantOpt.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.onDemand) || "");
+        instantOpt.textContent = "Watch Now — On Demand";
+        selectEl.appendChild(instantOpt);
       }
 
       // Scheduled sessions
@@ -724,20 +730,45 @@ try {
         var tzShort = tzMatch
           ? tzMatch[0]
           : nextDate.toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop();
-        var timeLeftString = formatTimeLeft(nextDate);
 
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "wf-slide__session-btn";
-        btn.setAttribute("data-value", session.id);
-        btn.setAttribute("data-date", nextDate.toISOString());
-        btn.setAttribute("data-timezone", userTz);
-        btn.setAttribute("data-original-timezone", details.timeZone);
-        btn.setAttribute("data-is-instant", "false");
-        btn.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.scheduled) || "");
-        btn.innerHTML = '<span class="wf-slide__session-label">Live: ' + weekday + ", " + month + "/" + day + ", " + time + " " + tzShort + '</span><span class="wf-slide__session-meta">' + timeLeftString + "</span>";
-        btn.addEventListener("click", function () { selectSession(btn); });
-        container.appendChild(btn);
+        var opt = document.createElement("option");
+        opt.value = session.id;
+        opt.setAttribute("data-date", nextDate.toISOString());
+        opt.setAttribute("data-timezone", userTz);
+        opt.setAttribute("data-original-timezone", details.timeZone);
+        opt.setAttribute("data-is-instant", "false");
+        opt.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.scheduled) || "");
+        opt.textContent = "Live: " + weekday + ", " + month + "/" + day + ", " + time + " " + tzShort;
+        selectEl.appendChild(opt);
+      });
+
+      // Handle selection change
+      selectEl.addEventListener("change", function () {
+        var selectedOpt = selectEl.options[selectEl.selectedIndex];
+        if (!selectedOpt || !selectedOpt.value) return;
+
+        selectEl.classList.add("has-value");
+
+        // Copy data to hidden input
+        hiddenInput.value = selectedOpt.value;
+        hiddenInput.setAttribute("data-date", selectedOpt.getAttribute("data-date") || "");
+        hiddenInput.setAttribute("data-timezone", selectedOpt.getAttribute("data-timezone") || "");
+        hiddenInput.setAttribute("data-is-instant", selectedOpt.getAttribute("data-is-instant") || "");
+        hiddenInput.setAttribute("data-webinar-id", selectedOpt.getAttribute("data-webinar-id") || "");
+        if (selectedOpt.getAttribute("data-original-timezone")) {
+          hiddenInput.setAttribute("data-original-timezone", selectedOpt.getAttribute("data-original-timezone"));
+        }
+
+        // Analytics
+        var isInstant = selectedOpt.getAttribute("data-is-instant") === "true";
+        var sessionType = isInstant ? "on_demand" : "live";
+        triggerEvent("session_type_selected", "sessionTypeSelected", { session_type: sessionType });
+        if (window.posthogTrack) {
+          window.posthogTrack("webinar_session_selected", {
+            session_type: sessionType,
+            session_date: selectedOpt.getAttribute("data-date") || "",
+          });
+        }
       });
     }
 
@@ -1033,7 +1064,7 @@ try {
         var submitButton = form.querySelector("button[type='submit']");
         var buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
         var loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
-        var errorEl = document.querySelector("#wf-slide-4 .wf-slide__field-error");
+        var errorEl = document.querySelector("#wf-slide-5 .wf-slide__field-error");
 
         if (!selectEl || !selectEl.value) {
           showError(errorEl, "Please select a session.");
@@ -1227,7 +1258,7 @@ try {
         // Simulate success after a short delay
         setTimeout(function () {
           resetForm(buttonText, loader, submitButton);
-          alert("TEST MODE: Registration data captured. Check console for payload.\n\nIn production this would submit to /api/webinar-registration and redirect to /questions.");
+          showThankYou(payload);
         }, 800);
       });
     }
@@ -1238,6 +1269,29 @@ try {
       if (submitButton) submitButton.disabled = false;
     }
 
+    // ── Thank you slide ──
+    function showThankYou(payload) {
+      var sessionSpan = document.getElementById("wf-confirmation-session");
+      if (sessionSpan) {
+        if (payload.is_instant) {
+          sessionSpan.textContent = "On Demand";
+        } else {
+          sessionSpan.textContent = payload.fullDate;
+        }
+      }
+
+      // Hide indicator and slide to thank you
+      var indicator = document.querySelector(".wf-indicator");
+      if (indicator) indicator.style.display = "none";
+      var hint = document.querySelector(".wf-hint");
+      if (hint) hint.style.display = "none";
+
+      if (swiperInstance) {
+        swiperInstance.allowSlideNext = true;
+        swiperInstance.slideTo(totalSlides);
+      }
+    }
+
     // ── Swiper init ──
     function initSwiper() {
       swiperInstance = new Swiper(".wf-swiper", {
@@ -1245,14 +1299,18 @@ try {
         speed: 600,
         touchEventsTarget: "container",
         touchStartPreventDefault: false,
-        allowTouchMove: false,
-        mousewheel: false,
+        allowTouchMove: true,
+        mousewheel: {
+          forceToAxis: true,
+          thresholdDelta: 30,
+        },
         keyboard: {
-          enabled: false,
+          enabled: true,
         },
         on: {
           init: function () {
             updateIndicator(0);
+            updateSlideScrollLock(0);
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
               runSlideAnimation(0, this);
             } else {
@@ -1264,33 +1322,13 @@ try {
           },
           slideChangeTransitionStart: function () {
             isTransitioning = true;
-            var amountBtns = document.getElementById("wf-amount-buttons");
-            if (amountBtns) amountBtns.style.pointerEvents = "none";
           },
           slideChangeTransitionEnd: function () {
             isTransitioning = false;
-            var amountBtns = document.getElementById("wf-amount-buttons");
-            if (amountBtns) {
-              setTimeout(function () {
-                amountBtns.style.pointerEvents = "";
-              }, 200);
-            }
           },
           slideChange: function () {
             updateIndicator(this.activeIndex);
-
-            // Reset capital-allocation buttons when arriving at slide 2
-            // Prevents accidental selection from touch events bleeding through during transition
-            if (this.activeIndex === 2) {
-              var amountContainer = document.getElementById("wf-amount-buttons");
-              var investInput = document.getElementById("wf-invest-value");
-              if (amountContainer) {
-                amountContainer.querySelectorAll(".wf-slide__amount-btn").forEach(function (b) {
-                  b.classList.remove("is-selected");
-                });
-              }
-              if (investInput) investInput.value = "";
-            }
+            updateSlideScrollLock(this.activeIndex);
 
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
               runSlideAnimation(this.activeIndex, this);
@@ -1304,18 +1342,14 @@ try {
         },
       });
 
-      // Dot navigation
+      // Dot navigation — only allow going backward
       document.querySelectorAll(".wf-indicator__dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
           var targetSlide = parseInt(dot.getAttribute("data-slide"), 10);
           var currentSlide = swiperInstance.activeIndex;
-          // Only allow navigating to completed slides or current + 1 (if validated)
-          if (targetSlide <= currentSlide) {
+          if (targetSlide < currentSlide) {
+            swiperInstance.allowSlideNext = true;
             swiperInstance.slideTo(targetSlide);
-          } else if (targetSlide === currentSlide + 1) {
-            if (validateSlide(currentSlide)) {
-              swiperInstance.slideTo(targetSlide);
-            }
           }
         });
       });
@@ -1327,7 +1361,7 @@ try {
       initializeRtkClickIdCapture();
       setupPhoneFormatting();
       setupContinueButtons();
-      setupAmountButtons();
+      setupOptionButtons();
       loadWebinarData();
       setupFormSubmission();
 

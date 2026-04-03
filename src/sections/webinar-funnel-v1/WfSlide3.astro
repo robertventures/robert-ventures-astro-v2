@@ -2,27 +2,57 @@
 
 ---
 
-<section class="wf-slide" id="wf-slide-3">
+<section class="wf-slide" id="wf-slide-about">
   <div class="wf-slide__content">
-    <div class="wf-slide__header">
-      <h2 class="wf-slide__heading">How much capital are you looking to allocate?</h2>
-      <p class="wf-slide__subtitle">
-        This doesn't represent any commitment — it helps us tailor the experience to you.
-      </p>
+    <div class="wf-slide__media">
+      <div class="wf-slide__video-wrapper">
+        <div class="wf-slide__video-placeholder">
+          <!-- Replace this div with a <video> element once the file is ready -->
+          <svg
+            class="wf-slide__play-icon"
+            viewBox="0 0 64 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="32" cy="32" r="32" fill="rgba(26, 26, 26, 0.6)"></circle>
+            <polygon points="26,20 26,44 46,32" fill="#ffffff"></polygon>
+          </svg>
+        </div>
+        <div class="wf-slide__photo-caption">
+          <span class="wf-slide__photo-name">Joe Robert</span>
+          <span class="wf-slide__photo-role">Manager & Founder</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Amount buttons populated statically -->
-    <div class="wf-slide__amounts" id="wf-amount-buttons">
-      <button type="button" class="wf-slide__amount-btn" data-value="1000-5000">$1,000 – $5,000</button>
-      <button type="button" class="wf-slide__amount-btn" data-value="10000-25000">$10,000 – $25,000</button>
-      <button type="button" class="wf-slide__amount-btn" data-value="50000-100000">$50,000 – $100,000</button>
-      <button type="button" class="wf-slide__amount-btn" data-value="100000+">$100,000+</button>
+    <div class="wf-slide__text">
+      <h2 class="wf-slide__heading">Hello, I'm Joe Robert</h2>
+      <p class="wf-slide__subheading">Manager & Founder of Robert Ventures</p>
+
+      <div class="wf-slide__stats-grid">
+        <div class="wf-slide__stat">
+          <span class="wf-slide__stat-value">20+</span>
+          <span class="wf-slide__stat-label">Years of Experience</span>
+        </div>
+        <div class="wf-slide__stat">
+          <span class="wf-slide__stat-value">100%</span>
+          <span class="wf-slide__stat-label">Payments Record</span>
+        </div>
+        <div class="wf-slide__stat">
+          <span class="wf-slide__stat-value">$10M+</span>
+          <span class="wf-slide__stat-label">Raised from Private Investors</span>
+        </div>
+        <div class="wf-slide__stat">
+          <span class="wf-slide__stat-value">200+</span>
+          <span class="wf-slide__stat-label">Properties Sold</span>
+        </div>
+      </div>
     </div>
 
-    <input type="hidden" name="invest_intent" id="wf-invest-value" />
-
-    <p class="wf-slide__field-error"></p>
-    <button type="button" class="wf-slide__continue" data-next-slide="3">Continue</button>
+    <button type="button" class="wf-slide__chevron" data-next-slide="2" aria-label="Scroll to next slide">
+      <span class="wf-slide__chevron-arrow"></span>
+      <span class="wf-slide__chevron-arrow"></span>
+    </button>
   </div>
 </section>
 
@@ -37,7 +67,7 @@
     position: relative;
     background: #ffffff;
     margin: 0;
-    padding: 5rem 1.5rem 1.5rem;
+    padding: 8rem 1.5rem 1.5rem;
     box-sizing: border-box;
   }
 
@@ -45,17 +75,72 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    max-width: 480px;
+    gap: 1.25rem;
     width: 100%;
+    max-width: 480px;
     opacity: 0;
   }
 
-  .wf-slide__header {
-    text-align: center;
+  /* Photo wrapper */
+  .wf-slide__media {
+    width: 100%;
+  }
+
+  .wf-slide__video-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .wf-slide__video-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #152429;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wf-slide__play-icon {
+    width: 64px;
+    height: 64px;
+    opacity: 0.8;
+  }
+
+  .wf-slide__photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(26, 26, 26, 0.8), transparent);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.125rem;
+  }
+
+  .wf-slide__photo-name {
+    font-family: "Roboto Serif", serif;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 130%;
+  }
+
+  .wf-slide__photo-role {
+    font-family: "Roboto", sans-serif;
+    color: #67b78f;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 130%;
+  }
+
+  /* Text & stats */
+  .wf-slide__text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .wf-slide__heading {
@@ -63,100 +148,136 @@
     color: #1a1a1a;
     font-size: 1.75rem;
     font-weight: 500;
-    line-height: 125%;
+    line-height: 130%;
     margin: 0;
+    text-align: center;
   }
 
-  .wf-slide__subtitle {
+  .wf-slide__subheading {
     font-family: "Roboto", sans-serif;
-    font-size: 0.9375rem;
     color: #555555;
-    margin: 0;
-    line-height: 150%;
+    text-align: center;
+    margin: -1.65rem 0 0;
+    font-weight: 400;
+    font-size: 1rem;
   }
 
-  /* Amount buttons — stacked full-width (matches session buttons) */
-  .wf-slide__amounts {
+  .wf-slide__stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .wf-slide__stat {
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid #67b78f;
+    padding: 0.625rem 0.75rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
+    gap: 0.125rem;
   }
 
-  .wf-slide__amount-btn {
-    width: 100%;
-    padding: 1rem;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 0.75rem;
-    background: #ffffff;
-    cursor: pointer;
-    text-align: center;
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+  .wf-slide__stat-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.25rem;
     font-weight: 500;
     color: #1a1a1a;
-    transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease;
+    line-height: 100%;
   }
 
-  @media (hover: hover) {
-    .wf-slide__amount-btn:hover {
-      border-color: var(--green-brand);
-      background: rgba(235, 245, 239, 0.3);
+  .wf-slide__stat-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    color: #555555;
+    line-height: 130%;
+  }
+
+  /* Scroll chevron */
+  .wf-slide__chevron {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    animation: wf-chevron-bounce 1.5s ease-in-out infinite;
+  }
+
+  .wf-slide__chevron-arrow {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-right: 2.5px solid #555555;
+    border-bottom: 2.5px solid #555555;
+    transform: rotate(45deg);
+    margin-top: -6px;
+  }
+
+  .wf-slide__chevron-arrow:first-child {
+    margin-top: 0;
+    opacity: 0.4;
+  }
+
+  @keyframes wf-chevron-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
     }
   }
 
-  .wf-slide__amount-btn.is-selected {
-    border-color: var(--green-brand);
-    background: #ebf5ef;
-  }
+  @media only screen and (min-width: 600px) {
+    .wf-slide__chevron-arrow {
+      width: 16px;
+      height: 16px;
+      border-right-width: 3px;
+      border-bottom-width: 3px;
+      margin-top: -7px;
+    }
 
-  .wf-slide__field-error {
-    display: none;
-    color: red;
-    text-align: center;
-    margin: 0;
-    font-size: 0.875rem;
-    font-family: "Roboto", sans-serif;
-  }
-
-  .wf-slide__continue {
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #ffffff;
-    background: var(--green-brand);
-    border: none;
-    border-radius: 8px;
-    padding: 1rem;
-    width: 100%;
-    cursor: pointer;
-    transition:
-      background-color 0.2s ease,
-      transform 0.2s ease;
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  .wf-slide__continue:hover {
-    background-color: var(--green-hover);
-  }
-
-  .wf-slide__continue:active {
-    transform: translateY(1px);
+    .wf-slide__chevron-arrow:first-child {
+      margin-top: 0;
+    }
   }
 
   /* Medium: 600px+ */
   @media only screen and (min-width: 600px) {
     .wf-slide {
-      padding: 5rem 2rem 1.5rem;
+      padding: 0 2rem;
+    }
+
+    .wf-slide__content {
+      gap: 2rem;
+      max-width: 520px;
     }
 
     .wf-slide__heading {
+      font-size: 2.5rem;
+    }
+
+    .wf-slide__subheading {
+      font-size: 1.25rem;
+    }
+
+    .wf-slide__stats-grid {
+      gap: 1rem;
+    }
+
+    .wf-slide__stat {
+      padding: 1.25rem;
+    }
+
+    .wf-slide__stat-value {
       font-size: 2.25rem;
     }
 
+    .wf-slide__stat-label {
+      font-size: 0.9375rem;
+    }
   }
 
   /* Large: 1136px+ */
@@ -166,7 +287,27 @@
     }
 
     .wf-slide__heading {
+      font-size: 3.25rem;
+    }
+
+    .wf-slide__subheading {
+      font-size: 1.5rem;
+    }
+
+    .wf-slide__stat-value {
       font-size: 2.5rem;
+    }
+
+    .wf-slide__stat-label {
+      font-size: 1rem;
+    }
+
+    .wf-slide__photo-name {
+      font-size: 1.5rem;
+    }
+
+    .wf-slide__photo-role {
+      font-size: 1rem;
     }
   }
 
@@ -177,6 +318,14 @@
     }
 
     .wf-slide__heading {
+      font-size: 3.75rem;
+    }
+
+    .wf-slide__subheading {
+      font-size: 1.75rem;
+    }
+
+    .wf-slide__stat-value {
       font-size: 2.75rem;
     }
   }

@@ -5,38 +5,28 @@
 <section class="wf-slide" id="wf-slide-4">
   <div class="wf-slide__content">
     <div class="wf-slide__header">
-      <h2 class="wf-slide__heading">Choose Your Session</h2>
-      <p class="wf-slide__subtitle">Watch live or on-demand — your schedule, your choice.</p>
+      <h2 class="wf-slide__heading">Let's Personalize Your Experience</h2>
     </div>
 
     <div class="wf-slide__fields">
-      <!-- Session buttons populated by JS -->
-      <div class="wf-slide__sessions" id="wf-session-buttons"></div>
-
-      <!-- Hidden input to hold selected session value -->
-      <input type="hidden" name="session" id="wf-session-value" />
-
-      <!-- Honeypot -->
-      <input
-        type="text"
-        name="company"
-        class="company-field"
-        tabindex="-1"
-        autocomplete="off"
-        aria-hidden="true"
-        style="position:absolute;left:-9999px;width:1px;height:1px;"
-      />
-      <input type="hidden" name="rtk_click_id" class="rtk-click-id" />
+      <p class="wf-slide__question-label">How much capital are you looking to allocate?</p>
+      <div class="wf-slide__options" id="wf-invest-amount">
+        <button type="button" class="wf-slide__option-btn" data-value="1000">$1,000</button>
+        <button type="button" class="wf-slide__option-btn" data-value="5000">$5,000</button>
+        <button type="button" class="wf-slide__option-btn" data-value="10000">$10,000</button>
+        <button type="button" class="wf-slide__option-btn" data-value="25000">$25,000</button>
+        <button type="button" class="wf-slide__option-btn" data-value="50000">$50,000</button>
+        <button type="button" class="wf-slide__option-btn" data-value="100000+">$100,000+</button>
+      </div>
+      <input type="hidden" name="invest_intent" id="wf-invest-value" />
 
       <p class="wf-slide__field-error"></p>
 
-      <button type="submit" class="wf-slide__submit">
-        <span class="wf-slide__button-text">Register Now</span>
-        <span class="wf-slide__loader"></span>
-      </button>
+      <button type="button" class="wf-slide__continue" data-next-slide="4">Continue</button>
+
+      <p class="wf-slide__footnote">This is just to understand your interest — no commitment required.</p>
     </div>
 
-    <p class="wf-slide__footnote">Free to attend. No credit card required. US residents only.</p>
   </div>
 </section>
 
@@ -81,15 +71,6 @@
     margin: 0;
   }
 
-  .wf-slide__subtitle {
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
-    color: #555555;
-    margin: 0;
-    line-height: 150%;
-  }
-
-  /* Session buttons */
   .wf-slide__fields {
     display: flex;
     flex-direction: column;
@@ -98,8 +79,49 @@
     position: relative;
   }
 
-  /* Session button styles are in webinar-v1.astro global styles
-     because these elements are dynamically created by JS */
+  .wf-slide__question-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333333;
+    margin: 0;
+    text-align: center;
+  }
+
+  .wf-slide__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .wf-slide__option-btn {
+    padding: 0.875rem 0.5rem;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  @media (hover: hover) {
+    .wf-slide__option-btn:hover {
+      border-color: var(--green-brand);
+      background: rgba(235, 245, 239, 0.3);
+    }
+  }
+
+  .wf-slide__option-btn.is-selected {
+    border-color: var(--green-brand);
+    background: #ebf5ef;
+  }
 
   .wf-slide__field-error {
     display: none;
@@ -110,9 +132,9 @@
     font-family: "Roboto", sans-serif;
   }
 
-  .wf-slide__submit {
+  .wf-slide__continue {
     font-family: "Roboto", sans-serif;
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #ffffff;
     background: var(--green-brand);
@@ -126,42 +148,16 @@
       transform 0.2s ease;
     text-align: center;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
   }
 
-  .wf-slide__submit:hover {
-    background-color: var(--green-hover);
+  @media (hover: hover) {
+    .wf-slide__continue:hover {
+      background-color: var(--green-hover);
+    }
   }
 
-  .wf-slide__submit:active {
+  .wf-slide__continue:active {
     transform: translateY(1px);
-  }
-
-  .wf-slide__submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .wf-slide__loader {
-    border: 2px solid #ffffff80;
-    border-top: 2px solid #fff;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: wf-spin 1s linear infinite;
-    display: none;
-  }
-
-  @keyframes wf-spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
   }
 
   .wf-slide__footnote {
@@ -181,11 +177,6 @@
 
     .wf-slide__heading {
       font-size: 2.5rem;
-    }
-
-    .wf-slide__submit {
-      font-size: 1.125rem;
-      padding: 1.125rem;
     }
   }
 

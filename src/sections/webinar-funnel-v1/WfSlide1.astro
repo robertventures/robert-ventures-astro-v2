@@ -7,10 +7,10 @@ import usFlag from "../../images/usflag.png";
   <div class="wf-slide__content">
     <div class="wf-slide__text">
       <h1 class="wf-slide__heading">
-        Let's Get You<br />
-        <span class="wf-slide__accent">Started.<span class="wf-slide__underline"></span></span>
+        Join Our Free<br />
+        <span class="wf-slide__accent">Webinar.<span class="wf-slide__underline"></span></span>
       </h1>
-      <p class="wf-slide__subtitle">Reserve your spot in under 60 seconds.</p>
+      <p class="wf-slide__subtitle">Learn how everyday investors are earning up to 17.04% fixed annual returns.</p>
     </div>
 
     <div class="wf-slide__fields">
@@ -43,16 +43,20 @@ import usFlag from "../../images/usflag.png";
           class="wf-slide__input"
         />
       </div>
+      <!-- Session dropdown populated by JS -->
+      <select name="session_display" id="wf-session-select" class="wf-slide__select">
+        <option value="" disabled selected>Choose your session</option>
+      </select>
+      <input type="hidden" name="session" id="wf-session-value" />
+
       <p class="wf-slide__field-error"></p>
-      <button type="button" class="wf-slide__continue" data-next-slide="2">Continue</button>
+      <button type="button" class="wf-slide__continue" data-next-slide="3">Continue</button>
     </div>
 
     <div class="wf-slide__trust">
-      <span class="wf-slide__trust-item">SEC Qualified</span>
+      <span class="wf-slide__trust-item">30-Minute Session</span>
       <span class="wf-slide__trust-divider"></span>
-      <span class="wf-slide__trust-item">70+ Investors</span>
-      <span class="wf-slide__trust-divider"></span>
-      <span class="wf-slide__trust-item">100% Payment Record</span>
+      <span class="wf-slide__trust-item">100% Free</span>
     </div>
   </div>
 </section>
@@ -78,7 +82,7 @@ import usFlag from "../../images/usflag.png";
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.25rem;
     width: 100%;
     max-width: 480px;
   }
@@ -174,8 +178,37 @@ import usFlag from "../../images/usflag.png";
   }
 
   .wf-slide__input::placeholder {
-    color: var(--text-muted);
+    color: #999999;
     opacity: 1;
+  }
+
+  /* Session dropdown */
+  .wf-slide__select {
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: #999999;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    cursor: pointer;
+  }
+
+  .wf-slide__select.has-value {
+    color: var(--text-heading);
+  }
+
+  .wf-slide__select:focus {
+    outline: none;
+    border: 1px solid var(--green-brand);
   }
 
   .wf-slide__field-error {
