@@ -6,17 +6,30 @@
   <div class="wf-slide__content">
     <div class="wf-slide__media">
       <div class="wf-slide__video-wrapper">
-        <div class="wf-slide__video-placeholder">
-          <!-- Replace this div with a <video> element once the file is ready -->
-          <svg
-            class="wf-slide__play-icon"
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div class="wf-slide__video-container" id="wf-video-container">
+          <mux-player
+            id="wf-mux-player"
+            playback-id="01OU5cTDLdaueb3uDOARyV8Wx5mXFzBq2lSNavSCtDBU"
+            preload="metadata"
+            stream-type="on-demand"
+            default-show-captions
+          ></mux-player>
+          <button
+            class="wf-slide__play-overlay"
+            id="wf-play-overlay"
+            type="button"
+            aria-label="Play video"
           >
-            <circle cx="32" cy="32" r="32" fill="rgba(26, 26, 26, 0.6)"></circle>
-            <polygon points="26,20 26,44 46,32" fill="#ffffff"></polygon>
-          </svg>
+            <svg
+              class="wf-slide__play-icon"
+              viewBox="0 0 64 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="32" cy="32" r="32" fill="rgba(26, 26, 26, 0.6)"></circle>
+              <polygon points="26,20 26,44 46,32" fill="#ffffff"></polygon>
+            </svg>
+          </button>
         </div>
         <div class="wf-slide__photo-caption">
           <span class="wf-slide__photo-name">Joe Robert</span>
@@ -92,13 +105,40 @@
     overflow: hidden;
   }
 
-  .wf-slide__video-placeholder {
+  .wf-slide__video-container {
+    position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
     background: #152429;
+  }
+
+  .wf-slide__video-container mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+  }
+
+  .wf-slide__play-overlay {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+
+  .wf-slide__play-overlay.is-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .wf-slide__play-icon {
@@ -117,6 +157,12 @@
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .wf-slide__photo-caption.is-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .wf-slide__photo-name {

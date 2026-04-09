@@ -57,6 +57,7 @@ try {
     />
     <meta name="robots" content="noindex" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs" />
   </head>
   <body>
     {
@@ -1170,6 +1171,14 @@ try {
             updateIndicator(this.activeIndex);
             updateSlideScrollLock(this.activeIndex);
 
+            // Pause video if user leaves the video slide
+            if (this.activeIndex !== 1) {
+              var videoPlayer = document.getElementById("wf-mux-player");
+              if (videoPlayer && !videoPlayer.paused) {
+                videoPlayer.pause();
+              }
+            }
+
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
               runSlideAnimation(this.activeIndex, this);
             } else {
@@ -1205,6 +1214,129 @@ try {
       });
     }
 
+    // ── Mux Video analytics ──
+    function setupMuxAnalytics() {
+      var player = document.getElementById("wf-mux-player");
+      var overlay = document.getElementById("wf-play-overlay");
+      var caption = document.querySelector(".wf-slide__photo-caption");
+      if (!player) return;
+
+      var lastReportedProgress = 0;
+      var totalWatchTime = 0;
+      var lastTimeUpdate = 0;
+      var playCount = 0;
+
+      // Custom play overlay — trigger play and hide overlay
+      if (overlay) {
+        overlay.addEventListener("click", function () {
+          player.play();
+        });
+      }
+
+      // Play event
+      player.addEventListener("play", function () {
+        playCount++;
+        if (overlay) overlay.classList.add("is-hidden");
+        if (caption) caption.classList.add("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "wf-intro-joe-robert",
+            play_count: playCount,
+            is_first_play: playCount === 1,
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      });
+
+      // Pause event (ignore when video ends naturally)
+      player.addEventListener("pause", function () {
+        if (player.ended) return;
+
+        if (overlay) overlay.classList.remove("is-hidden");
+        if (caption) caption.classList.remove("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_pause", {
+            video_id: "wf-intro-joe-robert",
+            current_time: Math.round(player.currentTime || 0),
+            duration: Math.round(player.duration || 0),
+            percent_watched: player.duration
+              ? Math.round((player.currentTime / player.duration) * 100)
+              : 0,
+            total_watch_time: Math.round(totalWatchTime),
+          });
+        }
+      });
+
+      // Ended event
+      player.addEventListener("ended", function () {
+        if (overlay) overlay.classList.remove("is-hidden");
+        if (caption) caption.classList.remove("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_completed", {
+            video_id: "wf-intro-joe-robert",
+            duration: Math.round(player.duration || 0),
+            total_watch_time: Math.round(totalWatchTime),
+          });
+        }
+      });
+
+      // Timeupdate — track cumulative watch time and milestone progress
+      player.addEventListener("timeupdate", function () {
+        var now = Date.now();
+        if (lastTimeUpdate && now - lastTimeUpdate < 2000) {
+          totalWatchTime += (now - lastTimeUpdate) / 1000;
+        }
+        lastTimeUpdate = now;
+
+        if (!player.duration) return;
+        var pct = Math.round((player.currentTime / player.duration) * 100);
+        var milestones = [25, 50, 75, 100];
+        for (var i = 0; i < milestones.length; i++) {
+          if (pct >= milestones[i] && lastReportedProgress < milestones[i]) {
+            lastReportedProgress = milestones[i];
+            if (window.posthogTrack) {
+              window.posthogTrack("video_progress", {
+                video_id: "wf-intro-joe-robert",
+                milestone: milestones[i],
+                current_time: Math.round(player.currentTime),
+                duration: Math.round(player.duration),
+                total_watch_time: Math.round(totalWatchTime),
+              });
+            }
+          }
+        }
+      });
+
+      // Error handling
+      player.addEventListener("error", function () {
+        if (window.posthogTrack) {
+          window.posthogTrack("video_error", {
+            video_id: "wf-intro-joe-robert",
+          });
+        }
+        if (overlay) overlay.classList.remove("is-hidden");
+      });
+    }
+
+    // ── Mux Video preloading ──
+    function setupMuxPreloading() {
+      var player = document.getElementById("wf-mux-player");
+      if (!player) return;
+
+      // HTML starts with preload="metadata" (immediate).
+      // After page fully loads, switch to "auto" to buffer the full video.
+      if (document.readyState === "complete") {
+        player.setAttribute("preload", "auto");
+      } else {
+        window.addEventListener("load", function () {
+          player.setAttribute("preload", "auto");
+        });
+      }
+    }
+
     // ── Boot ──
     function boot() {
       captureCmpid();
@@ -1214,6 +1346,8 @@ try {
       setupInvestDropdown();
       loadWebinarData();
       setupFormSubmission();
+      setupMuxPreloading();
+      setupMuxAnalytics();
 
       // Refresh webinar data every 5 minutes
       setInterval(
@@ -1233,6 +1367,12 @@ try {
         5 * 60 * 1000
       );
     }
+
+    // Load Mux Player from CDN (module script, non-blocking)
+    var muxScript = document.createElement("script");
+    muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+    muxScript.type = "module";
+    document.head.appendChild(muxScript);
 
     // Load Swiper from CDN
     var swiperScript = document.createElement("script");
