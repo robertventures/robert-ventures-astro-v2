@@ -1,0 +1,506 @@
+---
+// Calculate Your Returns - Redesigned
+---
+
+<style>
+  section {
+    background: var(--bg-secondary);
+    color: var(--text-heading);
+    padding: 0;
+    margin: 0;
+  }
+
+  .section-container {
+    padding: 48px 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    .section-container::before {
+      top: 32px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container::before {
+      top: 48px;
+    }
+  }
+
+  h3 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0 0 32px 0;
+    line-height: 125%;
+    text-align: left;
+    color: var(--text-heading);
+  }
+
+  .calculator-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0;
+  }
+
+  .controls-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .control-label {
+    font-size: 20px;
+    color: var(--text-body);
+    font-weight: 400;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 12px;
+  }
+
+  .button-group.stacked {
+    flex-direction: column;
+  }
+
+  .calc-button {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    color: var(--text-heading);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 100%;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+  }
+
+  .calc-button.active {
+    border-color: var(--green-brand);
+    background: var(--green-tint);
+  }
+
+  .lockup-button {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .lockup-period {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 100%;
+    color: var(--text-body);
+  }
+
+  .lockup-apy {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 100%;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+  }
+
+  .amount-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .results-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+  }
+
+  .result-label {
+    font-size: 20px;
+    color: var(--text-body);
+    text-align: left;
+  }
+
+  .result-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 1;
+    text-align: left;
+    font-variant-numeric: lining-nums;
+  }
+
+  .comparison-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    margin-top: 8px;
+  }
+
+  #ten-year-projection,
+  #compound-comparison {
+    margin-top: 0;
+    gap: 8px;
+  }
+
+  #ten-year-result,
+  #comparison-result {
+    font-size: 24px;
+  }
+
+  .comparison-label {
+    font-size: 16px;
+    color: var(--text-body);
+    text-align: left;
+  }
+
+  .comparison-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 1;
+    text-align: left;
+    font-variant-numeric: lining-nums;
+  }
+
+  .result-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border-light);
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 384px;
+    margin-top: 20px;
+  }
+
+  .cta-button {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .cta-primary {
+    background: var(--green-brand);
+    color: #ffffff;
+    border: 1px solid var(--green-brand);
+  }
+
+  .cta-secondary {
+    background: transparent;
+    color: var(--green-brand);
+    border: 2px solid var(--green-brand);
+  }
+
+  .disclaimer-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 150%;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    .section-container {
+      padding: 64px 32px;
+    }
+
+    h3 {
+      font-size: 40px;
+    }
+  }
+
+  @media only screen and (min-width: 800px) {
+    .controls-section {
+      max-width: 512px;
+    }
+
+    .results-section {
+      max-width: 512px;
+      align-items: center;
+    }
+
+    .calculator-wrapper {
+      flex-direction: row;
+      justify-content: center;
+      gap: 80px;
+      align-items: flex-start;
+    }
+
+    .control-label {
+      text-align: center;
+    }
+
+    .result-label,
+    .result-value,
+    .comparison-label,
+    .comparison-value {
+      text-align: center;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 96px 112px;
+    }
+
+    h3 {
+      font-size: 40px;
+    }
+
+    .controls-section {
+      max-width: 512px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 96px 312px;
+    }
+  }
+</style>
+
+<section id="calculator">
+  <div class="section-container">
+    <h3>Calculate Your Returns</h3>
+
+    <div class="calculator-wrapper">
+      <!-- Controls Section -->
+      <div class="controls-section">
+        <!-- Lock-up Period -->
+        <div class="control-group">
+          <label class="control-label">Choose term:</label>
+          <div class="button-group">
+            <button class="calc-button lockup-button active" data-lockup="3" data-apy="10">
+              <span class="lockup-period">3 Years commitment</span>
+              <span class="lockup-apy">10%</span>
+            </button>
+            <button class="calc-button lockup-button" data-lockup="1" data-apy="8">
+              <span class="lockup-period">1 Year commitment</span>
+              <span class="lockup-apy">8%</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Return Options -->
+        <div class="control-group">
+          <label class="control-label">Return Options:</label>
+          <div class="button-group stacked">
+            <button class="calc-button active" data-return="compound">Compound</button>
+            <button class="calc-button" data-return="monthly">Monthly</button>
+          </div>
+        </div>
+
+        <!-- Investment Amount -->
+        <div class="control-group">
+          <label class="control-label">Investment Amount:</label>
+          <div class="amount-buttons">
+            <button class="calc-button" data-amount="1000">1k</button>
+            <button class="calc-button" data-amount="10000">10k</button>
+            <button class="calc-button" data-amount="50000">50k</button>
+            <button class="calc-button active" data-amount="100000">100k</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-section">
+        <span class="result-label">Total with Interest:</span>
+        <span class="result-value" id="total-result">$133,100</span>
+        <div class="result-divider"></div>
+        <div class="comparison-field" id="compound-comparison" style="display: none;">
+          <span class="comparison-label">10 years maturity:</span>
+          <span class="comparison-value" id="comparison-result">+$3,100</span>
+        </div>
+        <div class="comparison-field" id="ten-year-projection" style="display: none;">
+          <span class="comparison-label">10 years maturity:</span>
+          <span class="comparison-value" id="ten-year-result">$0</span>
+        </div>
+        <div class="cta-buttons">
+          <a
+            href="/webinar"
+            class="cta-button cta-primary"
+            data-track-cta="get_started"
+            data-track-location="calculator">Get Started</a
+          >
+          <p class="disclaimer-text">
+            Investing involves risk, including potential inability to make scheduled payments. This
+            calculator is for illustrative purposes only.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // State
+  let selectedLockup = 3;
+  let selectedApy = 10;
+  let selectedReturn = "compound";
+  let selectedAmount = 100000;
+
+  // Selectors — cast to HTMLElement so .dataset is accessible
+  const lockupButtons = document.querySelectorAll<HTMLElement>("[data-lockup]");
+  const returnButtons = document.querySelectorAll<HTMLElement>("[data-return]");
+  const amountButtons = document.querySelectorAll<HTMLElement>("[data-amount]");
+  const totalResult = document.getElementById("total-result");
+
+  // Helper to toggle active state
+  function setActive(buttons, activeButton) {
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    activeButton.classList.add("active");
+  }
+
+  // Calculate returns
+  function calculateReturns() {
+    const principal = selectedAmount;
+    const years = selectedLockup;
+    const annualRate = selectedApy / 100;
+
+    let total = 0;
+
+    if (selectedReturn === "compound") {
+      // Compound interest formula: A = P(1 + r/n)^(nt)
+      // With monthly compounding: n = 12
+      const monthlyRate = annualRate / 12;
+      const months = years * 12;
+      total = principal * Math.pow(1 + monthlyRate, months);
+    } else {
+      // Monthly payments (simple interest paid out monthly)
+      const monthlyRate = annualRate / 12;
+      const months = years * 12;
+      const monthlyInterest = principal * monthlyRate;
+      const totalInterest = monthlyInterest * months;
+      total = principal + totalInterest;
+    }
+
+    // Format and display
+    const formatted = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(total);
+
+    totalResult.textContent = formatted;
+    calculateComparison();
+  }
+
+  // Calculate comparison
+  function calculateComparison() {
+    const comparisonField = document.getElementById("compound-comparison");
+    const comparisonResult = document.getElementById("comparison-result");
+    const tenYearField = document.getElementById("ten-year-projection");
+    const tenYearResult = document.getElementById("ten-year-result");
+
+    if (selectedReturn === "monthly") {
+      tenYearField.style.display = "none";
+
+      // Calculate 10 year monthly projection
+      const principal = selectedAmount;
+      const years = 10;
+      const annualRate = selectedApy / 100;
+      const monthlyRate = annualRate / 12;
+      const months = years * 12;
+
+      // Monthly payments: interest is paid out monthly, principal stays the same
+      const monthlyInterest = principal * monthlyRate;
+      const totalInterest = monthlyInterest * months;
+      const tenYearTotal = principal + totalInterest;
+
+      // Format and display
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(tenYearTotal);
+
+      comparisonResult.textContent = formatted;
+      comparisonField.style.display = "flex";
+    } else {
+      comparisonField.style.display = "none";
+
+      // Calculate 10 year projection
+      const principal = selectedAmount;
+      const years = 10;
+      const annualRate = selectedApy / 100;
+      const monthlyRate = annualRate / 12;
+      const months = years * 12;
+      const tenYearTotal = principal * Math.pow(1 + monthlyRate, months);
+
+      const formattedTenYear = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(tenYearTotal);
+
+      tenYearResult.textContent = formattedTenYear;
+      tenYearField.style.display = "flex";
+    }
+  }
+
+  // Event Listeners
+  lockupButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedLockup = parseInt(button.dataset.lockup);
+      selectedApy = parseInt(button.dataset.apy);
+      setActive(lockupButtons, button);
+      calculateReturns();
+    });
+  });
+
+  returnButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedReturn = button.dataset.return;
+      setActive(returnButtons, button);
+      calculateReturns();
+    });
+  });
+
+  amountButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedAmount = parseInt(button.dataset.amount);
+      setActive(amountButtons, button);
+      calculateReturns();
+    });
+  });
+
+  // Initial calculation
+  calculateReturns();
+</script>

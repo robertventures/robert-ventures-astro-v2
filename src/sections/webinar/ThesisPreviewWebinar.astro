@@ -1,0 +1,132 @@
+<section>
+  <div class="section-container">
+    <h3>What You'll Learn in This Webinar</h3>
+
+    <div class="concepts-grid">
+      <div class="concept-card">
+        <span class="concept-label">Why Two Scarce Assets</span>
+        <span class="concept-detail">How real estate + Bitcoin work together in one bond.</span>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">The Math Behind 17%</span>
+        <span class="concept-detail">How 10% compounded monthly adds up — and why it's not a projection.</span>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">Who's Behind It</span>
+        <span class="concept-detail">The founder's 15-year track record with $10M+ in investor capital.</span>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">How to Get Started</span>
+        <span class="concept-detail">What it takes to invest — minimums, terms, and next steps.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    background: var(--bg-secondary);
+    color: var(--text-body);
+    padding: 0;
+    margin: 0;
+  }
+
+  .section-container {
+    padding: 32px 16px;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  h3 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0 0 24px 0;
+    line-height: 100%;
+    text-align: left;
+    color: var(--text-heading);
+  }
+
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .concept-card {
+    background: var(--surface-card);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .concept-label {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .concept-detail {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 140%;
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    .section-container {
+      padding: 48px 32px;
+    }
+
+    h3 {
+      font-size: 36px;
+    }
+
+    .concepts-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .section-container {
+      padding: 64px 112px;
+      margin: 0;
+      width: 100%;
+    }
+
+    h3 {
+      font-size: 36px;
+    }
+
+    .concepts-grid {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .concept-label {
+      font-size: 20px;
+    }
+
+    .concept-detail {
+      font-size: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .section-container {
+      padding: 64px 312px;
+    }
+  }
+</style>

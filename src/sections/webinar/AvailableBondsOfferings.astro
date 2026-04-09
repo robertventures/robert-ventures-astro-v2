@@ -1,0 +1,362 @@
+---
+// Available Bonds Offerings Section
+---
+
+<style>
+  section {
+    background: var(--bg-secondary);
+    color: var(--text-heading);
+    padding: 0;
+    margin: 0;
+  }
+
+  .section-container {
+    padding: 48px 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .globe-decoration {
+    display: block;
+    position: absolute;
+    bottom: -720px;
+    left: -350px;
+    width: 940px;
+    height: 942px;
+    background-image: url("/src/images/sphere-shape.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  h2 {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 110%;
+    color: var(--text-heading);
+  }
+
+  .description {
+    font-size: 20px;
+    color: var(--text-body);
+    line-height: 1.5;
+    max-width: 480px;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .bond-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border: 1px solid var(--border-light);
+  }
+
+  .bond-card.featured {
+    background: var(--green-tint);
+    color: var(--text-heading);
+    border: 1px solid var(--border-light);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .card-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-light);
+    margin-top: 12px;
+    margin-bottom: 24px;
+  }
+
+  .apy-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .apy-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .bond-card.featured .apy-value {
+    color: var(--text-heading);
+  }
+
+  .bond-card:not(.featured) .apy-value {
+    color: var(--text-heading);
+  }
+
+  .apy-label {
+    font-family: "Roboto Serif", serif;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .bond-card.featured .apy-label {
+    color: var(--text-heading);
+  }
+
+  .bond-card:not(.featured) .apy-label {
+    color: var(--text-heading);
+  }
+
+  .lockup-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    align-self: flex-start;
+  }
+
+  .bond-card.featured .lockup-badge {
+    background: #ffffff;
+    color: var(--green-dark);
+  }
+
+  .bond-card:not(.featured) .lockup-badge {
+    background: var(--green-tint);
+    color: var(--green-dark);
+  }
+
+  .card-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .bond-card.featured .card-description {
+    color: var(--text-body);
+  }
+
+  .bond-card:not(.featured) .card-description {
+    color: var(--text-body);
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+  }
+
+  .bond-card.featured .feature-item {
+    color: var(--text-heading);
+  }
+
+  .bond-card:not(.featured) .feature-item {
+    color: var(--text-heading);
+  }
+
+  .feature-item::before {
+    content: "✓";
+    color: var(--green-brand);
+    font-weight: bold;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 12px;
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 100%;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+    align-self: stretch;
+    box-sizing: border-box;
+    margin-top: 8px;
+  }
+
+  .cta-button:active {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    section {
+      padding: 0;
+    }
+
+    .section-container {
+      padding: 64px 32px;
+    }
+
+    .cards-container {
+      flex-direction: row;
+      gap: 32px;
+    }
+
+    h2 {
+      font-size: 48px;
+    }
+
+    .bond-card {
+      flex: 1;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    section {
+      padding: 0 56px 0 56px;
+    }
+
+    .section-container {
+      padding: 96px 56px;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    .section-header {
+      flex: 1;
+    }
+
+    .cards-container {
+      flex: 2;
+      flex-direction: row;
+      gap: 32px;
+    }
+
+    h2 {
+      font-size: 56px;
+    }
+
+    .bond-card {
+      flex: 1;
+      padding: 32px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    section {
+      padding: 0 156px 0 156px;
+    }
+
+    .section-container {
+      padding: 96px 156px;
+    }
+  }
+</style>
+
+<section>
+  <div class="section-container">
+    <div class="globe-decoration"></div>
+    <div class="section-header">
+      <h2>Available Bond Offerings</h2>
+      <p class="description">
+        Competitive rates and flexible terms available for all US investors.
+      </p>
+    </div>
+
+    <div class="cards-container">
+      <!-- 10% APY Bond - Featured -->
+      <div class="bond-card featured">
+        <div class="card-header">
+          <div class="apy-display">
+            <span class="apy-value">10%</span>
+            <span class="apy-label">Annual Returns</span>
+          </div>
+          <div class="card-divider"></div>
+          <span class="lockup-badge">3 Years Minimum Commitment</span>
+        </div>
+
+        <p class="card-description">Higher returns and sustainable long-term capital growth.</p>
+
+        <div class="features-list">
+          <div class="feature-item">Monthly payouts</div>
+          <div class="feature-item">Compound returns</div>
+        </div>
+
+        <a
+          href="/webinar"
+          class="cta-button"
+          data-track-cta="get_started"
+          data-track-location="bond_10_percent">Get Started</a
+        >
+      </div>
+
+      <!-- 8% APY Bond -->
+      <div class="bond-card">
+        <div class="card-header">
+          <div class="apy-display">
+            <span class="apy-value">8%</span>
+            <span class="apy-label">Annual Returns</span>
+          </div>
+          <div class="card-divider"></div>
+          <span class="lockup-badge">1 Year Minimum Commitment</span>
+        </div>
+
+        <p class="card-description">Shorter commitment and quick access to capital.</p>
+
+        <div class="features-list">
+          <div class="feature-item">Monthly payouts</div>
+          <div class="feature-item">Compound returns</div>
+        </div>
+
+        <a
+          href="/webinar"
+          class="cta-button"
+          data-track-cta="get_started"
+          data-track-location="bond_8_percent">Get Started</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
