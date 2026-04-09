@@ -22,13 +22,6 @@ const ageBracketOptions = [
   { value: "65_plus", label: "65+" },
 ];
 
-// Preferred contact time options (single select)
-const contactTimeOptions = [
-  { value: "Morning", label: "Morning (9 AM - 12 PM)" },
-  { value: "Afternoon", label: "Afternoon (12 PM - 5 PM)" },
-  { value: "Evening", label: "Evening (5 PM - 8 PM)" },
-  { value: "Weekends", label: "Weekends (10 AM - 2 PM)" },
-];
 ---
 
 <!doctype html>
@@ -90,21 +83,11 @@ const contactTimeOptions = [
         margin-bottom: 2rem;
       }
 
-      /* Objectives as a grid of selectable boxes */
-      .objectives-container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        margin-bottom: 2.5rem;
-      }
 
       /* Grid column adjustments for larger screens */
       @media only screen and (min-width: 768px) {
         .portfolio-value-container {
           grid-template-columns: repeat(2, 1fr);
-        }
-        .objectives-container {
-          grid-template-columns: 1fr;
         }
       }
 
@@ -217,36 +200,21 @@ const contactTimeOptions = [
           color 0.15s ease;
       }
 
-      .portfolio-option-label:hover .option-box,
-      .objectives-option-label:hover .option-box {
+      .portfolio-option-label:hover .option-box {
         border-color: var(--green-brand);
       }
 
-      .portfolio-option-label input[type="radio"]:focus + .option-box,
-      .objectives-option-label input[type="radio"]:focus + .option-box {
+      .portfolio-option-label input[type="radio"]:focus + .option-box {
         border-color: var(--green-brand);
       }
 
-      .portfolio-option-label input[type="radio"]:checked + .option-box,
-      .objectives-option-label input[type="radio"]:checked + .option-box {
+      .portfolio-option-label input[type="radio"]:checked + .option-box {
         border-color: var(--green-brand);
         background-color: var(--green-tint);
         color: var(--green-dark);
         border-width: 1px;
       }
 
-      /* Objectives grid item styles (radios) */
-      .objectives-option-label {
-        display: block;
-        padding: 0;
-      }
-      .objectives-option-label input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-        pointer-events: none;
-      }
 
       span.defocus {
         font-weight: 300;
@@ -308,23 +276,6 @@ const contactTimeOptions = [
                 ageBracketOptions.map((option) => (
                   <label class="portfolio-option-label">
                     <input type="radio" name="age_bracket" value={option.value} required={true} />
-                    <span class="option-box">{option.label}</span>
-                  </label>
-                ))
-              }
-            </div>
-
-            <p class="portfolio-info">When is the best time to contact you?</p>
-            <div class="objectives-container">
-              {
-                contactTimeOptions.map((option) => (
-                  <label class="objectives-option-label">
-                    <input
-                      type="radio"
-                      name="preferred_contact_time"
-                      value={option.value}
-                      required={true}
-                    />
                     <span class="option-box">{option.label}</span>
                   </label>
                 ))
@@ -459,11 +410,9 @@ const contactTimeOptions = [
 
       // Store form answers in localStorage
       const investmentTimeline = formData.get("investment_timeline");
-      const preferredContactTime = formData.get("preferred_contact_time");
       const ageBracket = formData.get("age_bracket");
 
       localStorage.setItem("investment_timeline", investmentTimeline?.toString() || "");
-      localStorage.setItem("preferred_contact_time", preferredContactTime?.toString() || "");
       localStorage.setItem("age_bracket", ageBracket?.toString() || "");
 
       // Add webinar sign-up date from localStorage if available
@@ -475,7 +424,6 @@ const contactTimeOptions = [
 
       console.log("Stored answers in localStorage:", {
         investmentTimeline,
-        preferredContactTime,
         ageBracket,
       });
 
@@ -498,7 +446,6 @@ const contactTimeOptions = [
             (window as any).posthogTrack("questions_completed", {
               investment_timeline: formData.get("investment_timeline"),
               age_bracket: formData.get("age_bracket"),
-              preferred_contact_time: formData.get("preferred_contact_time"),
             });
           }
 
@@ -507,7 +454,6 @@ const contactTimeOptions = [
             (window as any).posthogSetPerson({
               investment_timeline: formData.get("investment_timeline"),
               age_bracket: formData.get("age_bracket"),
-              preferred_contact_time: formData.get("preferred_contact_time"),
             });
           }
 

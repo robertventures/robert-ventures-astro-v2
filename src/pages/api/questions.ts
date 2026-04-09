@@ -5,7 +5,6 @@ export const prerender = false; // Ensure this route is server-rendered
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const investmentTimeline = formData.get("investment_timeline")?.toString();
-  const preferredContactTime = formData.get("preferred_contact_time")?.toString();
   const ghlContactId = formData.get("ghl_contact_id")?.toString();
   const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
   const ageBracket = formData.get("age_bracket")?.toString();
@@ -15,7 +14,6 @@ export const POST: APIRoute = async ({ request }) => {
   const missing: string[] = [];
   if (!ghlContactId) missing.push("ghl_contact_id");
   if (!investmentTimeline) missing.push("investment_timeline");
-  if (!preferredContactTime) missing.push("preferred_contact_time");
   if (!ageBracket) missing.push("age_bracket");
 
   if (missing.length > 0) {
@@ -28,7 +26,6 @@ export const POST: APIRoute = async ({ request }) => {
   // These are the unique field keys from your GoHighLevel system.
   const customFields: Record<string, string> = {
     investment_timeline: investmentTimeline!,
-    preferred_contact_time: preferredContactTime!,
     age_bracket: ageBracket!,
   };
 
