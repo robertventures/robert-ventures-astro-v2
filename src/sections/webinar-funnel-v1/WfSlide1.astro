@@ -7,8 +7,8 @@ import usFlag from "../../images/usflag.png";
   <div class="wf-slide__content">
     <div class="wf-slide__text">
       <h1 class="wf-slide__heading">
-        Join Our Free<br />
-        <span class="wf-slide__accent">Webinar.<span class="wf-slide__underline"></span></span>
+        Get the Full<br />
+        <span class="wf-slide__accent">Presentation.<span class="wf-slide__underline"></span></span>
       </h1>
       <p class="wf-slide__subtitle">Learn how everyday investors are earning up to 17.04% fixed annual returns.</p>
     </div>
@@ -45,7 +45,7 @@ import usFlag from "../../images/usflag.png";
       </div>
       <!-- Capital allocation dropdown -->
       <select name="invest_intent" id="wf-invest-select" class="wf-slide__select">
-        <option value="" disabled hidden selected>How much capital are you looking to allocate?</option>
+        <option value="" selected>How much are you looking to invest?</option>
         <option value="1000">$1,000</option>
         <option value="5000">$5,000</option>
         <option value="10000">$10,000</option>
@@ -54,18 +54,18 @@ import usFlag from "../../images/usflag.png";
         <option value="100000+">$100,000+</option>
       </select>
 
-      <!-- Session dropdown populated by JS -->
-      <select name="session_display" id="wf-session-select" class="wf-slide__select">
-        <option value="" disabled selected>Choose your session</option>
-      </select>
+      <!-- Session value for silent registration (populated by JS, not displayed) -->
       <input type="hidden" name="session" id="wf-session-value" />
 
       <p class="wf-slide__field-error"></p>
-      <button type="button" class="wf-slide__continue" data-next-slide="3">Continue</button>
+      <button type="submit" class="wf-slide__continue">
+        <span class="wf-slide__button-text">Get Access</span>
+        <span class="wf-slide__loader"></span>
+      </button>
     </div>
 
     <div class="wf-slide__trust">
-      <span class="wf-slide__trust-item">30-Minute Session</span>
+      <span class="wf-slide__trust-item">No Commitment</span>
       <span class="wf-slide__trust-divider"></span>
       <span class="wf-slide__trust-item">100% Free</span>
     </div>
@@ -193,7 +193,26 @@ import usFlag from "../../images/usflag.png";
     opacity: 1;
   }
 
-  /* Session dropdown */
+  .wf-slide__loader {
+    border: 2px solid #ffffff80;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: wf-spin 1s linear infinite;
+    display: none;
+  }
+
+  @keyframes wf-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Capital allocation dropdown */
   .wf-slide__select {
     border: 1px solid var(--border-light);
     background-color: var(--bg-primary);

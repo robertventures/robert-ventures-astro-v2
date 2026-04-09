@@ -123,7 +123,7 @@ export const GET: APIRoute = async () => {
         onDemand: onDemandWebinarId,
       },
       // Include on-demand option explicitly (set to false to temporarily hide)
-      onDemandAvailable: true,
+      onDemandAvailable: false,
     };
 
     // Return the webinar data to the frontend

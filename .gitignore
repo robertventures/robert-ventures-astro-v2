@@ -41,11 +41,8 @@ src/storage
 # Claude Code
 CLAUDE.md
 
-# Cursor local config — rules are personal, not shared with the repo
-.cursor/
-
-
-OLD_CLAUDE.md
-
 # Local documentation (not pushed to GitHub)
 docs/
+
+# Campaign assets (local only)
+campaign/

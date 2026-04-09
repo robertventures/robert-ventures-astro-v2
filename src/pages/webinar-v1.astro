@@ -4,12 +4,10 @@ import RvLogo from "../images/logo-horizontal-whitebg.svg";
 import WfSlide1 from "../sections/webinar-funnel-v1/WfSlide1.astro";
 import WfSlide2 from "../sections/webinar-funnel-v1/WfSlide2.astro";
 import WfSlide3 from "../sections/webinar-funnel-v1/WfSlide3.astro";
-import WfSlide5 from "../sections/webinar-funnel-v1/WfSlide5.astro";
-import WfSlide6 from "../sections/webinar-funnel-v1/WfSlide6.astro";
 
-const pageTitle = "Investment Webinar | Robert Ventures";
+const pageTitle = "Learn More | Robert Ventures";
 const pageDescription =
-  "Join our free webinar to learn how Robert Ventures delivers 8-10% fixed annual returns through Real Estate and Digital Assets.";
+  "Learn how Robert Ventures delivers up to 17.04% fixed annual returns with beach houses and Bitcoin.";
 
 export const prerender = false;
 
@@ -40,7 +38,7 @@ try {
       ssrWebinarData = {
         results: filteredResults,
         webinarIds: { scheduled: scheduledWebinarId, onDemand: onDemandWebinarId },
-        onDemandAvailable: true,
+        onDemandAvailable: false,
       };
     }
   }
@@ -84,8 +82,6 @@ try {
       <button class="wf-indicator__dot" data-slide="1" aria-label="Go to slide 2"></button>
       <div class="wf-indicator__line"></div>
       <button class="wf-indicator__dot" data-slide="2" aria-label="Go to slide 3"></button>
-      <div class="wf-indicator__line"></div>
-      <button class="wf-indicator__dot" data-slide="3" aria-label="Go to slide 4"></button>
     </nav>
 
     <form class="wf-form" id="wf-registration-form" novalidate>
@@ -94,8 +90,6 @@ try {
           <div class="swiper-slide"><WfSlide2 /></div>
           <div class="swiper-slide"><WfSlide3 /></div>
           <div class="swiper-slide"><WfSlide1 /></div>
-          <div class="swiper-slide"><WfSlide5 /></div>
-          <div class="swiper-slide"><WfSlide6 /></div>
         </div>
       </div>
     </form>
@@ -142,69 +136,6 @@ try {
     }
   }
 
-  /* Session buttons — dynamically created, so must be global */
-  .wf-slide__sessions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .wf-slide__sessions:empty::after {
-    content: "Loading sessions...";
-    font-family: "Roboto", sans-serif;
-    font-size: 0.875rem;
-    color: #bbbbbb;
-    text-align: center;
-    padding: 1rem;
-  }
-
-  .wf-slide__session-btn {
-    width: 100%;
-    padding: 1rem;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 0.75rem;
-    background: #ffffff;
-    cursor: pointer;
-    text-align: center;
-    transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    font-family: "Roboto", sans-serif;
-  }
-
-  @media (hover: hover) {
-    .wf-slide__session-btn:hover {
-      border-color: #67b78f;
-      background: rgba(235, 245, 239, 0.3);
-    }
-  }
-
-  .wf-slide__session-btn.is-selected {
-    border-color: #67b78f;
-    background: #ebf5ef;
-  }
-
-  .wf-slide__session-label {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #1a1a1a;
-    line-height: 130%;
-    display: block;
-    text-align: center;
-  }
-
-  .wf-slide__session-meta {
-    font-size: 0.8125rem;
-    color: #555555;
-    line-height: 130%;
-    display: block;
-    text-align: center;
-  }
 </style>
 
 <style>
@@ -406,13 +337,13 @@ try {
     }, 0);
 
     var animatedSlides = {};
-    var totalSlides = 4;
+    var totalSlides = 3;
     var swiperInstance = null;
     var isTransitioning = false;
 
     // Slides where forward scrolling is locked — user must press a button to advance
-    // Index 2 = form, 3 = questions
-    var lockedSlides = { 2: true, 3: true };
+    // Index 2 = form (submit triggers redirect)
+    var lockedSlides = { 2: true };
 
     function updateSlideScrollLock(index) {
       if (!swiperInstance) return;
@@ -550,29 +481,6 @@ try {
       });
     }
 
-    // ── Option button groups (personalize questions + allocate) ──
-    function setupOptionButtons() {
-      var groups = [
-        { containerId: "wf-invest-timing", hiddenId: "wf-invest-timing-value" },
-        { containerId: "wf-age-range", hiddenId: "wf-age-range-value" },
-      ];
-
-      groups.forEach(function (group) {
-        var container = document.getElementById(group.containerId);
-        var hiddenInput = document.getElementById(group.hiddenId);
-        if (!container || !hiddenInput) return;
-
-        container.querySelectorAll(".wf-slide__option-btn").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            container.querySelectorAll(".wf-slide__option-btn").forEach(function (b) {
-              b.classList.remove("is-selected");
-            });
-            btn.classList.add("is-selected");
-            hiddenInput.value = btn.getAttribute("data-value");
-          });
-        });
-      });
-    }
 
     // ── Phone formatting ──
     function setupPhoneFormatting() {
@@ -656,30 +564,13 @@ try {
     }
 
     function populateSessionsDropdown(data) {
-      var selectEl = document.getElementById("wf-session-select");
       var hiddenInput = document.getElementById("wf-session-value");
-      if (!selectEl || !hiddenInput) return;
+      if (!hiddenInput) return;
 
       var userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
 
-      // Clear existing options except the placeholder
-      while (selectEl.options.length > 1) {
-        selectEl.remove(1);
-      }
-
-      // On-demand option
-      if (data.onDemandAvailable) {
-        var instantOpt = document.createElement("option");
-        instantOpt.value = "instant";
-        instantOpt.setAttribute("data-date", "instant");
-        instantOpt.setAttribute("data-timezone", userTz);
-        instantOpt.setAttribute("data-is-instant", "true");
-        instantOpt.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.onDemand) || "");
-        instantOpt.textContent = "Watch Now — On Demand";
-        selectEl.appendChild(instantOpt);
-      }
-
-      // Scheduled sessions
+      // Parse all ongoing sessions and compute their next dates
       var sessions = data.results.filter(function (item) {
         try {
           var parsed = JSON.parse(item.id);
@@ -696,7 +587,7 @@ try {
             var nextDate = session.date
               ? new Date(session.date)
               : calculateNextSessionDate(details);
-            return { session: session, nextDate: nextDate };
+            return { session: session, details: details, nextDate: nextDate };
           } catch (e) {
             return null;
           }
@@ -706,65 +597,42 @@ try {
           return a.nextDate.getTime() - b.nextDate.getTime();
         });
 
-      sessionsWithDates.slice(0, 2).forEach(function (item) {
-        var session = item.session;
-        var nextDate = item.nextDate;
-        var details = JSON.parse(session.id);
-
-        var weekday = nextDate.toLocaleString("en-US", { weekday: "short" });
-        var month = nextDate.getMonth() + 1;
-        var day = nextDate.getDate();
-        var time = nextDate.toLocaleString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        });
-        var tzMatch = nextDate
-          .toLocaleTimeString("en-US", { timeZoneName: "short" })
-          .match(/GMT[+-]\d+/);
-        var tzShort = tzMatch
-          ? tzMatch[0]
-          : nextDate.toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop();
-
-        var opt = document.createElement("option");
-        opt.value = session.id;
-        opt.setAttribute("data-date", nextDate.toISOString());
-        opt.setAttribute("data-timezone", userTz);
-        opt.setAttribute("data-original-timezone", details.timeZone);
-        opt.setAttribute("data-is-instant", "false");
-        opt.setAttribute("data-webinar-id", (data.webinarIds && data.webinarIds.scheduled) || "");
-        opt.textContent = "Live: " + weekday + ", " + month + "/" + day + ", " + time + " " + tzShort;
-        selectEl.appendChild(opt);
-      });
-
-      // Handle selection change
-      selectEl.addEventListener("change", function () {
-        var selectedOpt = selectEl.options[selectEl.selectedIndex];
-        if (!selectedOpt || !selectedOpt.value) return;
-
-        selectEl.classList.add("has-value");
-
-        // Copy data to hidden input
-        hiddenInput.value = selectedOpt.value;
-        hiddenInput.setAttribute("data-date", selectedOpt.getAttribute("data-date") || "");
-        hiddenInput.setAttribute("data-timezone", selectedOpt.getAttribute("data-timezone") || "");
-        hiddenInput.setAttribute("data-is-instant", selectedOpt.getAttribute("data-is-instant") || "");
-        hiddenInput.setAttribute("data-webinar-id", selectedOpt.getAttribute("data-webinar-id") || "");
-        if (selectedOpt.getAttribute("data-original-timezone")) {
-          hiddenInput.setAttribute("data-original-timezone", selectedOpt.getAttribute("data-original-timezone"));
+      // Find the first session that falls on a Sunday
+      var sundaySession = null;
+      for (var i = 0; i < sessionsWithDates.length; i++) {
+        if (sessionsWithDates[i].nextDate.getDay() === 0) {
+          sundaySession = sessionsWithDates[i];
+          break;
         }
+      }
 
-        // Analytics
-        var isInstant = selectedOpt.getAttribute("data-is-instant") === "true";
-        var sessionType = isInstant ? "on_demand" : "live";
-        triggerEvent("session_type_selected", "sessionTypeSelected", { session_type: sessionType });
-        if (window.posthogTrack) {
-          window.posthogTrack("webinar_session_selected", {
-            session_type: sessionType,
-            session_date: selectedOpt.getAttribute("data-date") || "",
-          });
-        }
-      });
+      var nextDate, sessionId, originalTimezone;
+
+      if (sundaySession) {
+        nextDate = sundaySession.nextDate;
+        sessionId = sundaySession.session.id;
+        originalTimezone = sundaySession.details.timeZone || "America/New_York";
+      } else {
+        // No Sunday session in API data — calculate the next Sunday
+        var fallbackDetails = {
+          type: "ongoing",
+          day: "Sunday",
+          time: "2:00",
+          period: "PM",
+          timeZone: "America/New_York",
+        };
+        nextDate = calculateNextSessionDate(fallbackDetails);
+        sessionId = JSON.stringify(fallbackDetails);
+        originalTimezone = fallbackDetails.timeZone;
+      }
+
+      // Populate hidden input with all required data-* attributes
+      hiddenInput.value = sessionId;
+      hiddenInput.setAttribute("data-date", nextDate.toISOString());
+      hiddenInput.setAttribute("data-timezone", userTz);
+      hiddenInput.setAttribute("data-original-timezone", originalTimezone);
+      hiddenInput.setAttribute("data-is-instant", "false");
+      hiddenInput.setAttribute("data-webinar-id", scheduledWebinarId);
     }
 
     function calculateNextSessionDate(details) {
@@ -1059,10 +927,10 @@ try {
         var submitButton = form.querySelector("button[type='submit']");
         var buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
         var loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
-        var errorEl = document.querySelector("#wf-slide-5 .wf-slide__field-error");
+        var errorEl = document.querySelector("#wf-slide-1 .wf-slide__field-error");
 
         if (!selectEl || !selectEl.value) {
-          showError(errorEl, "Please select a session.");
+          showError(errorEl, "Session unavailable. Please refresh the page.");
           return;
         }
 
@@ -1250,10 +1118,10 @@ try {
           session: payload.is_instant ? "On Demand" : payload.date,
         });
 
-        // Simulate success after a short delay
+        // Simulate success after a short delay, then redirect to presentation
         setTimeout(function () {
           resetForm(buttonText, loader, submitButton);
-          showThankYou(payload);
+          window.location.href = "/introduction-v2";
         }, 800);
       });
     }
@@ -1262,29 +1130,6 @@ try {
       if (buttonText) buttonText.style.display = "";
       if (loader) loader.style.display = "none";
       if (submitButton) submitButton.disabled = false;
-    }
-
-    // ── Thank you slide ──
-    function showThankYou(payload) {
-      var sessionSpan = document.getElementById("wf-confirmation-session");
-      if (sessionSpan) {
-        if (payload.is_instant) {
-          sessionSpan.textContent = "On Demand";
-        } else {
-          sessionSpan.textContent = payload.fullDate;
-        }
-      }
-
-      // Hide indicator and slide to thank you
-      var indicator = document.querySelector(".wf-indicator");
-      if (indicator) indicator.style.display = "none";
-      var hint = document.querySelector(".wf-hint");
-      if (hint) hint.style.display = "none";
-
-      if (swiperInstance) {
-        swiperInstance.allowSlideNext = true;
-        swiperInstance.slideTo(totalSlides);
-      }
     }
 
     // ── Swiper init ──
@@ -1354,6 +1199,7 @@ try {
     function setupInvestDropdown() {
       var investSelect = document.getElementById("wf-invest-select");
       if (!investSelect) return;
+      investSelect.selectedIndex = 0;
       investSelect.addEventListener("change", function () {
         investSelect.classList.add("has-value");
       });
@@ -1365,7 +1211,6 @@ try {
       initializeRtkClickIdCapture();
       setupPhoneFormatting();
       setupContinueButtons();
-      setupOptionButtons();
       setupInvestDropdown();
       loadWebinarData();
       setupFormSubmission();
