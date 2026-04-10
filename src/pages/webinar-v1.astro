@@ -57,7 +57,10 @@ try {
     />
     <meta name="robots" content="noindex" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
   </head>
   <body>
     {
@@ -136,7 +139,6 @@ try {
       padding-left: 2.5rem !important;
     }
   }
-
 </style>
 
 <style>
@@ -337,14 +339,14 @@ try {
       window.scrollTo(0, 1);
     }, 0);
 
-    var animatedSlides = {};
-    var totalSlides = 3;
-    var swiperInstance = null;
-    var isTransitioning = false;
+    const animatedSlides = {};
+    const totalSlides = 3;
+    let swiperInstance = null;
+    let isTransitioning = false;
 
     // Slides where forward scrolling is locked — user must press a button to advance
     // Index 2 = form (submit triggers redirect)
-    var lockedSlides = { 2: true };
+    const lockedSlides = { 2: true };
 
     function updateSlideScrollLock(index) {
       if (!swiperInstance) return;
@@ -353,8 +355,8 @@ try {
 
     // ── Indicator logic ──
     function updateIndicator(activeIndex) {
-      var dots = document.querySelectorAll(".wf-indicator__dot");
-      var lines = document.querySelectorAll(".wf-indicator__line");
+      const dots = document.querySelectorAll(".wf-indicator__dot");
+      const lines = document.querySelectorAll(".wf-indicator__line");
 
       dots.forEach(function (dot, i) {
         dot.classList.remove("is-active", "is-passed");
@@ -367,7 +369,7 @@ try {
         if (i < activeIndex) line.classList.add("is-passed");
       });
 
-      var hint = document.querySelector(".wf-hint");
+      const hint = document.querySelector(".wf-hint");
       if (hint) {
         if (activeIndex >= totalSlides - 1) {
           hint.classList.add("is-hidden");
@@ -382,18 +384,18 @@ try {
       if (animatedSlides[index]) return;
       if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
 
-      var gsap = window.gsap;
-      var slideEl = swiper.slides[index];
+      const gsap = window.gsap;
+      const slideEl = swiper.slides[index];
       if (!slideEl) return;
 
       animatedSlides[index] = true;
 
       if (index === 0) {
         // Intro slide: content fade-in + underline grow
-        var introContent = slideEl.querySelector(".wf-slide__content");
-        var introUnderline = slideEl.querySelector(".wf-slide__underline");
+        const introContent = slideEl.querySelector(".wf-slide__content");
+        const introUnderline = slideEl.querySelector(".wf-slide__underline");
         if (introContent) {
-          var introTl = gsap.timeline({ delay: 0.2 });
+          const introTl = gsap.timeline({ delay: 0.2 });
           introTl.fromTo(
             introContent,
             { opacity: 0, y: 40 },
@@ -410,10 +412,10 @@ try {
         }
       } else if (index === 2) {
         // Slide 2 (form): text fade-in + underline animation
-        var text = slideEl.querySelector(".wf-slide__text");
-        var underline = slideEl.querySelector(".wf-slide__underline");
+        const text = slideEl.querySelector(".wf-slide__text");
+        const underline = slideEl.querySelector(".wf-slide__underline");
         if (text) {
-          var tl = gsap.timeline({ delay: 0.3 });
+          const tl = gsap.timeline({ delay: 0.3 });
           tl.fromTo(
             text,
             { opacity: 0, y: 60 },
@@ -429,7 +431,7 @@ try {
           }
         }
         // Also animate the fields below the text
-        var fields = slideEl.querySelector(".wf-slide__fields");
+        const fields = slideEl.querySelector(".wf-slide__fields");
         if (fields) {
           gsap.fromTo(
             fields,
@@ -438,7 +440,7 @@ try {
           );
         }
       } else {
-        var content = slideEl.querySelector(".wf-slide__content");
+        const content = slideEl.querySelector(".wf-slide__content");
         if (content) {
           gsap.fromTo(
             content,
@@ -471,8 +473,8 @@ try {
     function setupContinueButtons() {
       document.querySelectorAll("[data-next-slide]").forEach(function (btn) {
         btn.addEventListener("click", function () {
-          var nextSlide = parseInt(btn.getAttribute("data-next-slide"), 10);
-          var currentSlide = swiperInstance ? swiperInstance.activeIndex : nextSlide - 1;
+          const nextSlide = parseInt(btn.getAttribute("data-next-slide"), 10);
+          const currentSlide = swiperInstance ? swiperInstance.activeIndex : nextSlide - 1;
           if (validateSlide(currentSlide) && swiperInstance) {
             isTransitioning = true;
             swiperInstance.allowSlideNext = true;
@@ -482,16 +484,15 @@ try {
       });
     }
 
-
     // ── Phone formatting ──
     function setupPhoneFormatting() {
-      var phoneInputs = document.querySelectorAll("input[name='phone_number']");
+      const phoneInputs = document.querySelectorAll("input[name='phone_number']");
       phoneInputs.forEach(function (input) {
         input.addEventListener("input", function (e) {
-          var target = e.target;
-          var digits = target.value.replace(/\D/g, "");
+          const target = e.target;
+          let digits = target.value.replace(/\D/g, "");
           if (digits.length > 10) digits = digits.slice(0, 10);
-          var formatted = "";
+          let formatted = "";
           if (digits.length > 0) {
             if (digits.length <= 3) {
               formatted = "(" + digits;
@@ -511,10 +512,10 @@ try {
 
         input.addEventListener("paste", function (e) {
           e.preventDefault();
-          var clipboardData = e.clipboardData || window.clipboardData;
-          var pastedText = clipboardData.getData("text");
-          var digits = pastedText.replace(/\D/g, "").slice(0, 10);
-          var formatted = "";
+          const clipboardData = e.clipboardData || window.clipboardData;
+          const pastedText = clipboardData.getData("text");
+          const digits = pastedText.replace(/\D/g, "").slice(0, 10);
+          let formatted = "";
           if (digits.length > 0) {
             if (digits.length <= 3) {
               formatted = "(" + digits;
@@ -531,14 +532,14 @@ try {
     }
 
     // ── Webinar data loading ──
-    var webinarData = null;
+    let webinarData = null;
 
     function loadWebinarData() {
       // Try SSR-embedded data first
-      var ssrEl = document.getElementById("ssr-webinar-data");
+      const ssrEl = document.getElementById("ssr-webinar-data");
       if (ssrEl) {
         try {
-          var ssrData = JSON.parse(ssrEl.textContent || "");
+          const ssrData = JSON.parse(ssrEl.textContent || "");
           if (ssrData && ssrData.results) {
             webinarData = ssrData;
             populateSessionsDropdown(ssrData);
@@ -565,27 +566,27 @@ try {
     }
 
     function populateSessionsDropdown(data) {
-      var hiddenInput = document.getElementById("wf-session-value");
+      const hiddenInput = document.getElementById("wf-session-value");
       if (!hiddenInput) return;
 
-      var userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      var scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
 
       // Parse all ongoing sessions and compute their next dates
-      var sessions = data.results.filter(function (item) {
+      const sessions = data.results.filter(function (item) {
         try {
-          var parsed = JSON.parse(item.id);
+          const parsed = JSON.parse(item.id);
           return parsed && parsed.type === "ongoing";
         } catch (e) {
           return false;
         }
       });
 
-      var sessionsWithDates = sessions
+      const sessionsWithDates = sessions
         .map(function (session) {
           try {
-            var details = JSON.parse(session.id);
-            var nextDate = session.date
+            const details = JSON.parse(session.id);
+            const nextDate = session.date
               ? new Date(session.date)
               : calculateNextSessionDate(details);
             return { session: session, details: details, nextDate: nextDate };
@@ -599,15 +600,15 @@ try {
         });
 
       // Find the first session that falls on a Sunday
-      var sundaySession = null;
-      for (var i = 0; i < sessionsWithDates.length; i++) {
+      let sundaySession = null;
+      for (let i = 0; i < sessionsWithDates.length; i++) {
         if (sessionsWithDates[i].nextDate.getDay() === 0) {
           sundaySession = sessionsWithDates[i];
           break;
         }
       }
 
-      var nextDate, sessionId, originalTimezone;
+      let nextDate, sessionId, originalTimezone;
 
       if (sundaySession) {
         nextDate = sundaySession.nextDate;
@@ -615,7 +616,7 @@ try {
         originalTimezone = sundaySession.details.timeZone || "America/New_York";
       } else {
         // No Sunday session in API data — calculate the next Sunday
-        var fallbackDetails = {
+        const fallbackDetails = {
           type: "ongoing",
           day: "Sunday",
           time: "2:00",
@@ -637,35 +638,35 @@ try {
     }
 
     function calculateNextSessionDate(details) {
-      var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      var targetDay = weekdays.indexOf(details.day);
-      var timeParts = details.time.split(":").map(Number);
-      var hour24 = timeParts[0];
-      var minutes = timeParts[1];
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const targetDay = weekdays.indexOf(details.day);
+      const timeParts = details.time.split(":").map(Number);
+      let hour24 = timeParts[0];
+      const minutes = timeParts[1];
       if (details.period.toUpperCase() === "PM" && hour24 < 12) hour24 += 12;
       if (details.period.toUpperCase() === "AM" && hour24 === 12) hour24 = 0;
 
-      var now = new Date();
-      var currentTzTime = new Date(
+      const now = new Date();
+      const currentTzTime = new Date(
         now.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
       );
-      var currentDay = currentTzTime.getDay();
-      var daysToAdd = (targetDay - currentDay + 7) % 7;
+      const currentDay = currentTzTime.getDay();
+      let daysToAdd = (targetDay - currentDay + 7) % 7;
 
       if (daysToAdd === 0) {
-        var currentHour = currentTzTime.getHours();
-        var currentMinute = currentTzTime.getMinutes();
+        const currentHour = currentTzTime.getHours();
+        const currentMinute = currentTzTime.getMinutes();
         if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
           daysToAdd = 7;
         }
       }
 
-      var sessionDate = new Date(currentTzTime);
+      const sessionDate = new Date(currentTzTime);
       sessionDate.setDate(sessionDate.getDate() + daysToAdd);
       sessionDate.setHours(hour24, minutes, 0, 0);
 
-      var tempDate = new Date(sessionDate.toISOString().slice(0, -1));
-      var tzOffset =
+      const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+      const tzOffset =
         new Date(
           tempDate.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
         ).getTime() - tempDate.getTime();
@@ -673,17 +674,17 @@ try {
     }
 
     function formatTimeLeft(targetDate) {
-      var now = new Date();
-      var diff = targetDate.getTime() - now.getTime();
+      const now = new Date();
+      let diff = targetDate.getTime() - now.getTime();
       if (diff <= 0) return "(Started)";
 
-      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       diff -= days * (1000 * 60 * 60 * 24);
-      var hours = Math.floor(diff / (1000 * 60 * 60));
+      const hours = Math.floor(diff / (1000 * 60 * 60));
       diff -= hours * (1000 * 60 * 60);
-      var mins = Math.floor(diff / (1000 * 60));
+      const mins = Math.floor(diff / (1000 * 60));
 
-      var result = [];
+      const result = [];
       if (days > 0) result.push(days + (days === 1 ? " day" : " days"));
       if (hours > 0) result.push(hours + (hours === 1 ? " hour" : " hours"));
       if (mins > 0 && days === 0) result.push(mins + (mins === 1 ? " minute" : " minutes"));
@@ -707,18 +708,18 @@ try {
 
     function getESTTimestamp(userTimezone) {
       userTimezone = userTimezone || "America/New_York";
-      var now = new Date();
-      var userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
-      var utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
-      var offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
-      var offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
-      var offsetSign = offsetMinutes >= 0 ? "+" : "-";
-      var year = userLocalTime.getFullYear();
-      var month = String(userLocalTime.getMonth() + 1).padStart(2, "0");
-      var day = String(userLocalTime.getDate()).padStart(2, "0");
-      var hours = String(userLocalTime.getHours()).padStart(2, "0");
-      var mins = String(userLocalTime.getMinutes()).padStart(2, "0");
-      var secs = String(userLocalTime.getSeconds()).padStart(2, "0");
+      const now = new Date();
+      const userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
+      const utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
+      const offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
+      const offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
+      const offsetSign = offsetMinutes >= 0 ? "+" : "-";
+      const year = userLocalTime.getFullYear();
+      const month = String(userLocalTime.getMonth() + 1).padStart(2, "0");
+      const day = String(userLocalTime.getDate()).padStart(2, "0");
+      const hours = String(userLocalTime.getHours()).padStart(2, "0");
+      const mins = String(userLocalTime.getMinutes()).padStart(2, "0");
+      const secs = String(userLocalTime.getSeconds()).padStart(2, "0");
       return (
         year +
         "-" +
@@ -740,10 +741,10 @@ try {
 
     function getCookie(name) {
       try {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
         if (parts.length === 2) {
-          var raw = parts.pop().split(";").shift();
+          const raw = parts.pop().split(";").shift();
           try {
             return decodeURIComponent(raw);
           } catch (e) {
@@ -756,13 +757,13 @@ try {
 
     function getRtkClickId() {
       if (typeof window.rtkClickID !== "undefined" && window.rtkClickID) return window.rtkClickID;
-      var cookieName = "rtkclickid-store";
-      var cookies = document.cookie.split(";");
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
+      const cookieName = "rtkclickid-store";
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
         if (cookie.startsWith(cookieName + "=")) return cookie.substring(cookieName.length + 1);
       }
-      var stored = getCookie("rtk_click_id");
+      const stored = getCookie("rtk_click_id");
       if (stored) return stored;
       return null;
     }
@@ -783,8 +784,8 @@ try {
 
     function captureCmpid() {
       try {
-        var urlParams = new URLSearchParams(window.location.search);
-        var cmpid = urlParams.get("cmpid");
+        const urlParams = new URLSearchParams(window.location.search);
+        const cmpid = urlParams.get("cmpid");
         if (cmpid) {
           document.cookie =
             "cmpid=" +
@@ -795,16 +796,16 @@ try {
     }
 
     function initializeRtkClickIdCapture() {
-      var immediate = getRtkClickId();
+      const immediate = getRtkClickId();
       if (immediate) {
         setRtkClickIdField(immediate);
         return;
       }
-      var maxAttempts = 30;
-      var attempts = 0;
-      var interval = setInterval(function () {
+      const maxAttempts = 30;
+      let attempts = 0;
+      const interval = setInterval(function () {
         attempts++;
-        var clickId = getRtkClickId();
+        const clickId = getRtkClickId();
         if (clickId || attempts >= maxAttempts) {
           setRtkClickIdField(clickId);
           clearInterval(interval);
@@ -817,13 +818,13 @@ try {
     }
 
     function getFbc() {
-      var fbcCookie = getCookie("_fbc");
+      const fbcCookie = getCookie("_fbc");
       if (fbcCookie) return fbcCookie;
       try {
-        var url = new URL(window.location.href);
-        var fbclid = url.searchParams.get("fbclid");
+        const url = new URL(window.location.href);
+        const fbclid = url.searchParams.get("fbclid");
         if (fbclid) {
-          var ts = Math.floor(Date.now() / 1000);
+          const ts = Math.floor(Date.now() / 1000);
           return "fb.1." + ts + "." + fbclid;
         }
       } catch (e) {}
@@ -832,7 +833,7 @@ try {
 
     function generateEventId() {
       try {
-        var buf = new Uint32Array(2);
+        const buf = new Uint32Array(2);
         crypto.getRandomValues(buf);
         return (
           "rv_reg_" + Date.now().toString(36) + "_" + buf[0].toString(36) + buf[1].toString(36)
@@ -843,7 +844,7 @@ try {
     }
 
     function getFullDateString(isoDateUTC, sessionTimeZone) {
-      var date = new Date(isoDateUTC);
+      const date = new Date(isoDateUTC);
       return date.toLocaleString("en-US", {
         weekday: "long",
         month: "long",
@@ -857,14 +858,14 @@ try {
     }
 
     function getLocalDateTimeString(isoDateUTC, userTimeZone) {
-      var date = new Date(isoDateUTC);
-      var datePart = date.toLocaleDateString("en-US", {
+      const date = new Date(isoDateUTC);
+      const datePart = date.toLocaleDateString("en-US", {
         weekday: "long",
         month: "long",
         day: "numeric",
         timeZone: userTimeZone,
       });
-      var timePart = date.toLocaleTimeString("en-US", {
+      const timePart = date.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
@@ -874,15 +875,15 @@ try {
     }
 
     function buildGoogleCalendarUrl(isoDateUTC) {
-      var startDate = new Date(isoDateUTC);
-      var endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
+      const startDate = new Date(isoDateUTC);
+      const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
       function fmt(d) {
-        var y = d.getUTCFullYear();
-        var m = String(d.getUTCMonth() + 1).padStart(2, "0");
-        var dy = String(d.getUTCDate()).padStart(2, "0");
-        var h = String(d.getUTCHours()).padStart(2, "0");
-        var mi = String(d.getUTCMinutes()).padStart(2, "0");
-        var s = String(d.getUTCSeconds()).padStart(2, "0");
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const dy = String(d.getUTCDate()).padStart(2, "0");
+        const h = String(d.getUTCHours()).padStart(2, "0");
+        const mi = String(d.getUTCMinutes()).padStart(2, "0");
+        const s = String(d.getUTCSeconds()).padStart(2, "0");
         return y + m + dy + "T" + h + mi + s + "Z";
       }
       return (
@@ -895,7 +896,7 @@ try {
     }
 
     function detectDeviceFromUA(ua) {
-      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
       if (!isMobile) return "desktop";
       if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
       return "android";
@@ -903,14 +904,14 @@ try {
 
     // ── Form submission ──
     function setupFormSubmission() {
-      var form = document.getElementById("wf-registration-form");
+      const form = document.getElementById("wf-registration-form");
       if (!form) return;
 
       // Track form started (first interaction)
-      var formStartedFired = false;
+      let formStartedFired = false;
       form.addEventListener("focusin", function (e) {
         if (formStartedFired) return;
-        var target = e.target;
+        const target = e.target;
         if (target.tagName === "INPUT" || target.tagName === "SELECT") {
           formStartedFired = true;
           if (window.dataLayer) window.dataLayer.push({ event: "webinar_form_started" });
@@ -924,11 +925,11 @@ try {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        var selectEl = document.getElementById("wf-session-value");
-        var submitButton = form.querySelector("button[type='submit']");
-        var buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
-        var loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
-        var errorEl = document.querySelector("#wf-slide-1 .wf-slide__field-error");
+        const selectEl = document.getElementById("wf-session-value");
+        const submitButton = form.querySelector("button[type='submit']");
+        const buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
+        const loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
+        const errorEl = document.querySelector("#wf-slide-1 .wf-slide__field-error");
 
         if (!selectEl || !selectEl.value) {
           showError(errorEl, "Session unavailable. Please refresh the page.");
@@ -936,7 +937,7 @@ try {
         }
 
         // Validate all slides before submitting
-        for (var i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
           if (!validateSlide(i)) {
             if (swiperInstance) swiperInstance.slideTo(i);
             return;
@@ -950,24 +951,26 @@ try {
 
         // PostHog: form submitted
         // selectEl is the hidden input with data attrs set by session button click
-        var isInstantAtSubmit = selectEl
+        const isInstantAtSubmit = selectEl
           ? selectEl.getAttribute("data-is-instant") === "true"
           : false;
         if (window.posthogTrack) {
           window.posthogTrack("webinar_form_submitted", {
-            invest_intent: document.getElementById("wf-invest-select") ? document.getElementById("wf-invest-select").value : "",
+            invest_intent: document.getElementById("wf-invest-select")
+              ? document.getElementById("wf-invest-select").value
+              : "",
             session_type: isInstantAtSubmit ? "on_demand" : "live",
           });
         }
 
-        var formData = new FormData(form);
+        const formData = new FormData(form);
         // selectEl IS the hidden input element — it holds all session data attributes directly
-        var selectedOption = selectEl;
-        var isInstant = selectedOption
+        const selectedOption = selectEl;
+        const isInstant = selectedOption
           ? selectedOption.getAttribute("data-is-instant") === "true"
           : false;
 
-        var isoDateUTC, sessionValue, sessionDetails;
+        let isoDateUTC, sessionValue, sessionDetails;
         if (isInstant) {
           isoDateUTC = "instant";
           sessionValue = "instant";
@@ -993,13 +996,13 @@ try {
         }
 
         // Persist invest intent
-        var selectedInvest = formData.get("invest_intent") || "";
+        const selectedInvest = formData.get("invest_intent") || "";
         try {
           localStorage.setItem("invest_intent", selectedInvest);
         } catch (e) {}
 
         // UTM params
-        var baseUtmParams = [
+        const baseUtmParams = [
           "utm_source",
           "utm_medium",
           "utm_campaign",
@@ -1008,25 +1011,25 @@ try {
           "utm_id",
           "utm_adgroup",
         ];
-        var urlParams = new URLSearchParams(window.location.search);
-        var utmParamSet = new Set(baseUtmParams);
+        const urlParams = new URLSearchParams(window.location.search);
+        const utmParamSet = new Set(baseUtmParams);
         urlParams.forEach(function (_v, key) {
           if (key.startsWith("utm_")) utmParamSet.add(key);
         });
-        var utmData = {};
+        const utmData = {};
         utmParamSet.forEach(function (param) {
-          var val = urlParams.get(param) || getCookie(param);
+          const val = urlParams.get(param) || getCookie(param);
           if (val) utmData[param] = val;
         });
 
         // Attribution fields
-        var fbAttribution = {
+        const fbAttribution = {
           fb_ad_id: getCookie("fb_ad_id"),
           fb_adset_id: getCookie("fb_adset_id"),
           fb_placement: getCookie("fb_placement"),
           fb_site_source: getCookie("fb_site_source"),
         };
-        var googleAttribution = {
+        const googleAttribution = {
           google_matchtype: getCookie("google_matchtype"),
           google_adgroup_id: getCookie("google_adgroup_id"),
           google_creative_id: getCookie("google_creative_id"),
@@ -1038,24 +1041,24 @@ try {
           wbraid: getCookie("wbraid"),
           gbraid: getCookie("gbraid"),
         };
-        var gclid = urlParams.get("gclid") || getCookie("gclid");
-        var deviceType;
+        const gclid = urlParams.get("gclid") || getCookie("gclid");
+        let deviceType;
         try {
           deviceType = localStorage.getItem("device_type");
         } catch (e) {}
         if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
-        var utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
-        var webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
-        var webinarId = selectedOption ? selectedOption.getAttribute("data-webinar-id") || "" : "";
-        var rtkClickId = getRtkClickId();
+        const utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
+        const webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
+        const webinarId = selectedOption ? selectedOption.getAttribute("data-webinar-id") || "" : "";
+        const rtkClickId = getRtkClickId();
         setRtkClickIdField(rtkClickId);
 
-        var payload = {
+        const payload = {
           session: isInstant ? "instant" : sessionDetails.id,
           name: formData.get("full_name"),
           email: formData.get("email"),
           phone_number: (function () {
-            var v = formData.get("phone_number");
+            const v = formData.get("phone_number");
             return typeof v === "string" ? v.replace(/\D/g, "") : "";
           })(),
           invest_intent: formData.get("invest_intent"),
@@ -1155,7 +1158,7 @@ try {
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
               runSlideAnimation(0, this);
             } else {
-              var self = this;
+              const self = this;
               window.addEventListener("gsapLoaded", function () {
                 runSlideAnimation(0, self);
               });
@@ -1173,7 +1176,7 @@ try {
 
             // Pause video if user leaves the video slide
             if (this.activeIndex !== 1) {
-              var videoPlayer = document.getElementById("wf-mux-player");
+              const videoPlayer = document.getElementById("wf-mux-player");
               if (videoPlayer && !videoPlayer.paused) {
                 videoPlayer.pause();
               }
@@ -1182,7 +1185,7 @@ try {
             if (window.gsapLoaded && typeof window.gsap !== "undefined") {
               runSlideAnimation(this.activeIndex, this);
             } else {
-              var self = this;
+              const self = this;
               window.addEventListener("gsapLoaded", function () {
                 runSlideAnimation(self.activeIndex, self);
               });
@@ -1194,8 +1197,8 @@ try {
       // Dot navigation — only allow going backward
       document.querySelectorAll(".wf-indicator__dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
-          var targetSlide = parseInt(dot.getAttribute("data-slide"), 10);
-          var currentSlide = swiperInstance.activeIndex;
+          const targetSlide = parseInt(dot.getAttribute("data-slide"), 10);
+          const currentSlide = swiperInstance.activeIndex;
           if (targetSlide < currentSlide) {
             swiperInstance.allowSlideNext = true;
             swiperInstance.slideTo(targetSlide);
@@ -1206,7 +1209,7 @@ try {
 
     // ── Invest dropdown ──
     function setupInvestDropdown() {
-      var investSelect = document.getElementById("wf-invest-select");
+      const investSelect = document.getElementById("wf-invest-select");
       if (!investSelect) return;
       investSelect.selectedIndex = 0;
       investSelect.addEventListener("change", function () {
@@ -1216,15 +1219,15 @@ try {
 
     // ── Mux Video analytics ──
     function setupMuxAnalytics() {
-      var player = document.getElementById("wf-mux-player");
-      var overlay = document.getElementById("wf-play-overlay");
-      var caption = document.querySelector(".wf-slide__photo-caption");
+      const player = document.getElementById("wf-mux-player");
+      const overlay = document.getElementById("wf-play-overlay");
+      const caption = document.querySelector(".wf-slide__photo-caption");
       if (!player) return;
 
-      var lastReportedProgress = 0;
-      var totalWatchTime = 0;
-      var lastTimeUpdate = 0;
-      var playCount = 0;
+      let lastReportedProgress = 0;
+      let totalWatchTime = 0;
+      let lastTimeUpdate = 0;
+      let playCount = 0;
 
       // Custom play overlay — trigger play and hide overlay
       if (overlay) {
@@ -1285,16 +1288,16 @@ try {
 
       // Timeupdate — track cumulative watch time and milestone progress
       player.addEventListener("timeupdate", function () {
-        var now = Date.now();
+        const now = Date.now();
         if (lastTimeUpdate && now - lastTimeUpdate < 2000) {
           totalWatchTime += (now - lastTimeUpdate) / 1000;
         }
         lastTimeUpdate = now;
 
         if (!player.duration) return;
-        var pct = Math.round((player.currentTime / player.duration) * 100);
-        var milestones = [25, 50, 75, 100];
-        for (var i = 0; i < milestones.length; i++) {
+        const pct = Math.round((player.currentTime / player.duration) * 100);
+        const milestones = [25, 50, 75, 100];
+        for (let i = 0; i < milestones.length; i++) {
           if (pct >= milestones[i] && lastReportedProgress < milestones[i]) {
             lastReportedProgress = milestones[i];
             if (window.posthogTrack) {
@@ -1323,7 +1326,7 @@ try {
 
     // ── Mux Video preloading ──
     function setupMuxPreloading() {
-      var player = document.getElementById("wf-mux-player");
+      const player = document.getElementById("wf-mux-player");
       if (!player) return;
 
       // HTML starts with preload="metadata" (immediate).
@@ -1369,13 +1372,13 @@ try {
     }
 
     // Load Mux Player from CDN (module script, non-blocking)
-    var muxScript = document.createElement("script");
+    const muxScript = document.createElement("script");
     muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
     muxScript.type = "module";
     document.head.appendChild(muxScript);
 
     // Load Swiper from CDN
-    var swiperScript = document.createElement("script");
+    const swiperScript = document.createElement("script");
     swiperScript.src = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
     swiperScript.onload = function () {
       if (document.readyState === "loading") {
