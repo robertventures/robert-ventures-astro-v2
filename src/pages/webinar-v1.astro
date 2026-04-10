@@ -1,9 +1,9 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import RvLogo from "../images/logo-horizontal-whitebg.svg";
-import WfSlide1 from "../sections/webinar-funnel-v1/WfSlide1.astro";
-import WfSlide2 from "../sections/webinar-funnel-v1/WfSlide2.astro";
-import WfSlide3 from "../sections/webinar-funnel-v1/WfSlide3.astro";
+import WfLeadCapture from "../sections/webinar-funnel-v1/WfLeadCapture.astro";
+import WfHero from "../sections/webinar-funnel-v1/WfHero.astro";
+import WfFounderIntro from "../sections/webinar-funnel-v1/WfFounderIntro.astro";
 
 const pageTitle = "Learn More | Robert Ventures";
 const pageDescription =
@@ -91,9 +91,9 @@ try {
     <form class="wf-form" id="wf-registration-form" novalidate>
       <div class="swiper wf-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide"><WfSlide2 /></div>
-          <div class="swiper-slide"><WfSlide3 /></div>
-          <div class="swiper-slide"><WfSlide1 /></div>
+          <div class="swiper-slide"><WfHero /></div>
+          <div class="swiper-slide"><WfFounderIntro /></div>
+          <div class="swiper-slide"><WfLeadCapture /></div>
         </div>
       </div>
     </form>
