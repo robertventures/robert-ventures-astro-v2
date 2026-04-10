@@ -1220,7 +1220,6 @@ try {
     // ── Mux Video analytics ──
     function setupMuxAnalytics() {
       const player = document.getElementById("wf-mux-player");
-      const overlay = document.getElementById("wf-play-overlay");
       const caption = document.querySelector(".wf-slide__photo-caption");
       if (!player) return;
 
@@ -1229,17 +1228,9 @@ try {
       let lastTimeUpdate = 0;
       let playCount = 0;
 
-      // Custom play overlay — trigger play and hide overlay
-      if (overlay) {
-        overlay.addEventListener("click", function () {
-          player.play();
-        });
-      }
-
       // Play event
       player.addEventListener("play", function () {
         playCount++;
-        if (overlay) overlay.classList.add("is-hidden");
         if (caption) caption.classList.add("is-hidden");
 
         if (window.posthogTrack) {
@@ -1256,7 +1247,6 @@ try {
       player.addEventListener("pause", function () {
         if (player.ended) return;
 
-        if (overlay) overlay.classList.remove("is-hidden");
         if (caption) caption.classList.remove("is-hidden");
 
         if (window.posthogTrack) {
@@ -1274,7 +1264,6 @@ try {
 
       // Ended event
       player.addEventListener("ended", function () {
-        if (overlay) overlay.classList.remove("is-hidden");
         if (caption) caption.classList.remove("is-hidden");
 
         if (window.posthogTrack) {
@@ -1320,7 +1309,6 @@ try {
             video_id: "wf-intro-joe-robert",
           });
         }
-        if (overlay) overlay.classList.remove("is-hidden");
       });
     }
 
