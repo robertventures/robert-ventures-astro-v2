@@ -1,0 +1,114 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<dialog id={id} class="modal">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <h2 class="modal-heading">Register for the Webinar</h2>
+    <p class="modal-subheading">Fill out the form below to reserve your spot.</p>
+    <slot />
+  </div>
+</dialog>
+
+<style>
+  dialog.modal {
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+    margin: auto;
+    background: #ffffff;
+    width: calc(100% - 32px);
+    max-width: 480px;
+    max-height: calc(100dvh - 48px);
+    overflow: visible;
+  }
+
+  dialog.modal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-content {
+    position: relative;
+    padding: 32px 24px 24px;
+    overflow-y: auto;
+    max-height: calc(100dvh - 48px);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: color 0.15s ease;
+  }
+
+  .modal-close:hover {
+    color: #1a1a1a;
+  }
+
+  .modal-heading {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin: 0 0 4px;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .modal-subheading {
+    font-size: 14px;
+    color: var(--text-body);
+    margin: 0 0 20px;
+    font-family: "Roboto", sans-serif;
+    line-height: 150%;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Open: any element with data-modal-open="<id>" opens the matching dialog
+    document.querySelectorAll<HTMLElement>("[data-modal-open]").forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const targetId = trigger.getAttribute("data-modal-open");
+        if (targetId) {
+          const dialog = document.getElementById(targetId) as HTMLDialogElement | null;
+          dialog?.showModal();
+        }
+      });
+    });
+
+    // Close: .modal-close buttons inside a dialog
+    document.querySelectorAll<HTMLButtonElement>("dialog.modal .modal-close").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dialog = btn.closest("dialog") as HTMLDialogElement | null;
+        dialog?.close();
+      });
+    });
+
+    // Backdrop click: clicking the dialog element itself (outside .modal-content)
+    document.querySelectorAll<HTMLDialogElement>("dialog.modal").forEach((dialog) => {
+      dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) {
+          dialog.close();
+        }
+      });
+    });
+  });
+</script>

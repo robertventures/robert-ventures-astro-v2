@@ -379,3 +379,8 @@ section {
     max-width: 1440px; /* Constrain heavily on ultra-wide */
   }
 }
+
+/* Prevent body scroll when a modal dialog is open */
+html:has(dialog[open]) {
+  overflow: hidden;
+}

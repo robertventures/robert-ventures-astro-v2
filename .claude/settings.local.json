@@ -5,7 +5,9 @@
       "Bash(npx prettier:*)",
       "Bash(npm run:*)",
       "Bash(ls src/pages/webinar-v*.astro)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(npx untun:*)",
+      "Bash(jobs -l)"
     ]
   }
 }

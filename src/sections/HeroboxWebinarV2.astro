@@ -1,5 +1,5 @@
 ---
-import FormWebinarV2 from "../components/FormWebinarV2.astro";
+
 ---
 
 <style>
@@ -15,7 +15,7 @@ import FormWebinarV2 from "../components/FormWebinarV2.astro";
   .section-container {
     position: relative;
     z-index: 1;
-    padding: 48px 16px;
+    padding: 48px 16px 24px;
     background: transparent;
     border-radius: 0;
     text-align: center;
@@ -25,107 +25,146 @@ import FormWebinarV2 from "../components/FormWebinarV2.astro";
   }
 
   #main-form .section-content {
-    margin: 0;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0 auto;
     width: 100%;
-    max-width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: start;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 16px;
+  }
+
+  @media only screen and (min-width: 1136px) {
+    #main-form .section-content {
+      max-width: 100%;
+      display: grid;
+      grid-template-columns: 4fr 5fr;
+      grid-template-rows: auto auto;
+      gap: 16px 48px;
+      align-items: center;
+    }
+
+    .content-column {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .video-column {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+
+    .get-started-btn {
+      grid-column: 1;
+      grid-row: 2;
+    }
   }
 
   .content-column {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: none;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 16px;
   }
 
-  .content-column p {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    line-height: 150%;
-    font-size: 20px;
-    margin-bottom: 0;
-  }
-
-  .form-column {
-    display: flex;
-    flex-direction: column;
+  .video-column {
     width: 100%;
-    max-width: none;
-    margin-left: auto;
   }
 
   h1 {
-    font-size: 48px;
+    font-size: 42px;
     margin: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 0;
     text-align: left;
     font-weight: 500;
     color: var(--text-heading);
   }
 
-  h1 span {
-    color: var(--green-brand);
-    background: none;
-    background-clip: unset;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: var(--green-brand);
+  @media only screen and (max-width: 413px) {
+    h1 {
+      font-size: clamp(32px, 10vw, 42px);
+    }
   }
 
-  .form-cta {
+  @media only screen and (min-width: 600px) {
+    h1 {
+      font-size: 48px;
+    }
+  }
+
+  .accent {
+    position: relative;
+    display: inline-block;
+  }
+
+  .underline {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
     width: 100%;
+    height: 5px;
+    background: var(--green-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underline-in 0.6s ease-out 0.3s forwards;
   }
 
-  .pre-form-headline {
+  @keyframes underline-in {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .subtitle {
     color: var(--text-body);
     font-family: "Roboto", sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
-    line-height: 150%;
-
-    margin-bottom: 0;
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
-
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
-    width: fit-content;
-    text-align: left;
-  }
-
-  .pre-form-cta {
-    font-family: "Roboto", sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 150%;
-    color: var(--text-heading);
+    line-height: 160%;
     margin: 0;
     text-align: left;
   }
 
-  svg {
-    display: inline-block;
-    max-height: 100%;
-    width: auto;
+  .video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #152429;
+    border-radius: 8px;
   }
 
-  span {
-    color: var(--green-brand);
-    background: none;
-    background-clip: unset;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: var(--green-brand);
+  .video-container mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+  }
+
+  .get-started-btn {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    border-radius: 8px;
+    width: 100%;
+    padding: 14px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .get-started-btn:hover {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 
   @media only screen and (min-width: 768px) {
@@ -139,14 +178,6 @@ import FormWebinarV2 from "../components/FormWebinarV2.astro";
     .section-container {
       padding: 64px 32px;
     }
-
-    .content-column {
-      max-width: none;
-    }
-
-    .form-column {
-      max-width: none;
-    }
   }
 
   @media only screen and (min-width: 1136px) {
@@ -155,15 +186,6 @@ import FormWebinarV2 from "../components/FormWebinarV2.astro";
       margin: 0;
       width: 100%;
     }
-
-    .content-column {
-      max-width: 640px;
-    }
-
-    .form-column {
-      max-width: 480px;
-      margin-left: auto;
-    }
   }
 
   @media only screen and (min-width: 1920px) {
@@ -171,61 +193,38 @@ import FormWebinarV2 from "../components/FormWebinarV2.astro";
       padding: 96px 312px;
     }
   }
-
-  @media only screen and (max-width: 1135px) {
-    #main-form .section-content {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media only screen and (min-width: 1136px) {
-    h1 {
-      margin-bottom: 0;
-      font-size: 48px;
-      text-align: left;
-      font-weight: 500;
-    }
-  }
-
-  input,
-  select {
-    background-color: #ffffff;
-    border: 1px solid var(--border-light);
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 16px;
-    color: #1a1a1a;
-    width: 100%;
-  }
-
-  input::placeholder,
-  select::placeholder {
-    color: #6b7280;
-  }
-
-  input:focus,
-  select:focus {
-    outline: none;
-    border-color: #1e40af;
-    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-  }
 </style>
 
 <section>
   <div id="main-form" class="section-container">
     <div class="section-content">
       <div class="content-column">
-        <h1>Built on the Outer Banks. <span>Stacked in Bitcoin.</span></h1>
+        <h1>
+          Two Hard Assets.<br />One Strategy.<br /><span class="accent"
+            >Up to 17% a Year.<span class="underline"></span></span
+          >
+        </h1>
 
-        <p class="pre-form-headline">10% Compounded Monthly — Up to 17% Avg. Annual Returns.</p>
-        <p class="pre-form-cta">Join Our Exclusive Investor Webinar</p>
+        <p class="subtitle">
+          We build coastal properties on the Outer Banks and hold Bitcoin as an institutional-grade
+          digital reserve.
+        </p>
+
       </div>
 
-      <div class="form-column">
-        <div class="form-cta">
-          <FormWebinarV2 />
+      <div class="video-column">
+        <div class="video-container">
+          <mux-player
+            id="wf-mux-player"
+            playback-id="w7IiFxqJcprmmknK1o7ubdU4cyjgr4XEM3MyuAGfVQw"
+            env-key="hr9aevib299lcvfdoip01jd60"
+            preload="metadata"
+            stream-type="on-demand"
+            default-show-captions></mux-player>
         </div>
       </div>
+
+      <button class="get-started-btn" data-modal-open="webinar-modal"> Get Started </button>
     </div>
   </div>
 </section>

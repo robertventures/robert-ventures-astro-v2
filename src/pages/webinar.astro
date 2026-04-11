@@ -1,6 +1,8 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
+import Modal from "../components/Modal.astro";
+import FormWebinarV2 from "../components/FormWebinarV2.astro";
 
 import HeroboxWebinarV2 from "../sections/HeroboxWebinarV2.astro";
 import Featured from "../sections/webinar/Featured.astro";
@@ -63,6 +65,10 @@ try {
       rtkCampaignId="697c996793ba48f6ba89582f"
     />
     <meta property="og:url" content="https://robertventures.com/webinar" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
   </head>
   <body>
     {
@@ -81,5 +87,17 @@ try {
     <ReviewsV2 />
     <FAQ />
     <FooterNew />
+
+    <Modal id="webinar-modal">
+      <FormWebinarV2 />
+    </Modal>
+
+    <script is:inline>
+      // Load Mux Player from CDN (module script, non-blocking)
+      const muxScript = document.createElement("script");
+      muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+      muxScript.type = "module";
+      document.head.appendChild(muxScript);
+    </script>
   </body>
 </html>
