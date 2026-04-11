@@ -66,8 +66,9 @@ try {
     />
     <meta property="og:url" content="https://robertventures.com/webinar" />
     <link
-      rel="modulepreload"
-      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player"
+      as="script"
     />
   </head>
   <body>
@@ -92,12 +93,6 @@ try {
       <FormWebinarV2 />
     </Modal>
 
-    <script is:inline>
-      // Load Mux Player from CDN (module script, non-blocking)
-      const muxScript = document.createElement("script");
-      muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
-      muxScript.type = "module";
-      document.head.appendChild(muxScript);
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer is:inline></script>
   </body>
 </html>
