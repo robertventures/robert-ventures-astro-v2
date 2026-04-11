@@ -1,15 +1,6 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)",
-      "Bash(npx prettier:*)",
-      "Bash(npm run:*)",
-      "Bash(ls src/pages/webinar-v*.astro)",
-      "Bash(git mv:*)",
-      "Bash(npx untun:*)",
-      "Bash(jobs -l)",
-      "WebFetch(domain:docs.mux.com)",
-      "WebFetch(domain:www.mux.com)"
     ]
   }
 }
