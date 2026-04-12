@@ -232,11 +232,98 @@ const isDev = import.meta.env.DEV;
 </section>
 
 <script>
-  const player = document.getElementById("wf-mux-player");
-  if (player) {
+  (function () {
+    const player = document.getElementById("wf-mux-player") as HTMLMediaElement | null;
+    if (!player) return;
+
+    const VIDEO_ID = "landing-video";
+    let playCount = 0;
+    let totalWatchTime = 0;
+    let lastTimeUpdate = 0;
+    let lastReportedProgress = 0;
+
+    // Play event
     player.addEventListener("play", () => {
-      const title = player.getAttribute("metadata-video-title") || "unknown";
-      localStorage.setItem("landing_video", title);
-    }, { once: true });
-  }
+      playCount++;
+
+      // Preserve existing localStorage flag for registration form
+      if (playCount === 1) {
+        const title = player.getAttribute("metadata-video-title") || "unknown";
+        localStorage.setItem("landing_video", title);
+      }
+
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("video_play", {
+          video_id: VIDEO_ID,
+          play_count: playCount,
+          is_first_play: playCount === 1,
+          current_time: Math.round(player.currentTime || 0),
+        });
+      }
+    });
+
+    // Pause event (ignore when video ends naturally)
+    player.addEventListener("pause", () => {
+      if (player.ended) return;
+
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("video_pause", {
+          video_id: VIDEO_ID,
+          current_time: Math.round(player.currentTime || 0),
+          duration: Math.round(player.duration || 0),
+          percent_watched: player.duration
+            ? Math.round((player.currentTime / player.duration) * 100)
+            : 0,
+          total_watch_time: Math.round(totalWatchTime),
+        });
+      }
+    });
+
+    // Completed event
+    player.addEventListener("ended", () => {
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("video_completed", {
+          video_id: VIDEO_ID,
+          duration: Math.round(player.duration || 0),
+          total_watch_time: Math.round(totalWatchTime),
+        });
+      }
+    });
+
+    // Timeupdate — track cumulative watch time and milestone progress
+    player.addEventListener("timeupdate", () => {
+      const now = Date.now();
+      if (lastTimeUpdate && now - lastTimeUpdate < 2000) {
+        totalWatchTime += (now - lastTimeUpdate) / 1000;
+      }
+      lastTimeUpdate = now;
+
+      if (!player.duration) return;
+      const pct = Math.round((player.currentTime / player.duration) * 100);
+      const milestones = [25, 50, 75, 100];
+      for (const milestone of milestones) {
+        if (pct >= milestone && lastReportedProgress < milestone) {
+          lastReportedProgress = milestone;
+          if ((window as any).posthogTrack) {
+            (window as any).posthogTrack("video_progress", {
+              video_id: VIDEO_ID,
+              milestone,
+              current_time: Math.round(player.currentTime),
+              duration: Math.round(player.duration),
+              total_watch_time: Math.round(totalWatchTime),
+            });
+          }
+        }
+      }
+    });
+
+    // Error event
+    player.addEventListener("error", () => {
+      if ((window as any).posthogTrack) {
+        (window as any).posthogTrack("video_error", {
+          video_id: VIDEO_ID,
+        });
+      }
+    });
+  })();
 </script>
