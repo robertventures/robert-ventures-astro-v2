@@ -435,6 +435,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
           cmpid: body?.cmpid ?? "none",
           // Ad group name from RedTrack (utm_adgroup macro: {_agname})
           ad_group: body?.utm?.utm_adgroup ?? "none",
+          // Landing video: which video the user clicked play on before registering
+          landing_video: body.landing_video || "No",
         };
 
         // Prepare the complete payload for GoHighLevel API

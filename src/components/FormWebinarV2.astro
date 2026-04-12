@@ -1158,6 +1158,8 @@ const analyticsEvents = {
         google_placement: googleAttribution.google_placement,
         wbraid: googleAttribution.wbraid,
         gbraid: googleAttribution.gbraid,
+        // Landing video: stores which video the user clicked play on (from localStorage)
+        landing_video: localStorage.getItem("landing_video") || "No",
       };
 
       console.log("Payload being sent:", payload);

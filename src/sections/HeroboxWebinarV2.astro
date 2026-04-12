@@ -1,5 +1,5 @@
 ---
-
+const isDev = import.meta.env.DEV;
 ---
 
 <style>
@@ -221,6 +221,7 @@
             metadata-viewer-user-id="anonymous"
             preload="metadata"
             stream-type="on-demand"
+            disable-tracking={isDev}
             default-show-captions></mux-player>
         </div>
       </div>
@@ -229,3 +230,13 @@
     </div>
   </div>
 </section>
+
+<script>
+  const player = document.getElementById("wf-mux-player");
+  if (player) {
+    player.addEventListener("play", () => {
+      const title = player.getAttribute("metadata-video-title") || "unknown";
+      localStorage.setItem("landing_video", title);
+    }, { once: true });
+  }
+</script>
