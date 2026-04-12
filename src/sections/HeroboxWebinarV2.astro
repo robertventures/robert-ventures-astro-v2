@@ -248,8 +248,7 @@ const isDev = import.meta.env.DEV;
 
       // Preserve existing localStorage flag for registration form
       if (playCount === 1) {
-        const title = player.getAttribute("metadata-video-title") || "unknown";
-        localStorage.setItem("landing_video", title);
+        localStorage.setItem("landing_video", "Yes");
       }
 
       if ((window as any).posthogTrack) {

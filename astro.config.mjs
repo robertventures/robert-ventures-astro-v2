@@ -10,6 +10,9 @@ import tunnel from "astro-tunnel";
 // https://astro.build/config
 export default defineConfig({
   site: "https://robertventures.com",
+  image: {
+    quality: 85,
+  },
   build: {
     inlineStylesheets: "always",
   },
