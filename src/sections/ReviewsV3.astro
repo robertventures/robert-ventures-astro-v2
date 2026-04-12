@@ -1,0 +1,792 @@
+---
+import { Image } from "astro:assets";
+import ReviewStar from "../images/review-star.svg";
+
+// Interface for review data from Senja
+interface Review {
+  name: string;
+  avatar: string;
+  text: string;
+  date: string;
+  rating: number;
+}
+
+function mapSenjaToReview(raw: any): Review {
+  const dateStr = raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "";
+  let formattedDate = "";
+  if (dateStr) {
+    try {
+      const date = new Date(dateStr);
+      formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch (e) {
+      formattedDate = dateStr;
+    }
+  }
+
+  return {
+    name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+    avatar:
+      raw?.customer_avatar ??
+      raw?.avatar ??
+      raw?.profile_picture ??
+      raw?.profile_pic ??
+      raw?.customer?.avatar ??
+      raw?.user?.avatar ??
+      "",
+    text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+    date: formattedDate,
+    rating: raw?.rating ?? raw?.stars ?? 5,
+  };
+}
+
+let reviews: Review[] = [];
+
+try {
+  const apiUrl = new URL("/api/testimonials", Astro.url);
+  const response = await fetch(apiUrl);
+  if (response.ok) {
+    const payload = await response.json();
+
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    const approvedOnly = (rawList as any[])
+      .filter((t) => t?.approved === true)
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0);
+
+    const nonVideoOnly = (rawList as any[])
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0);
+
+    reviews = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+  }
+} catch (error) {
+  console.error("Failed to fetch reviews from Senja:", error);
+}
+
+// Fetch unique investors count from local stats API
+let uniqueInvestors = 68;
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const statsResponse = await fetch(statsUrl);
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+    if (typeof statsData.usersWithInvestments === "number") {
+      uniqueInvestors = statsData.usersWithInvestments;
+    }
+  }
+} catch (error) {
+  // Fallback value is already set
+}
+
+// Hardcoded fallback reviews (same as ReviewsV2)
+const fallbackReviews: Review[] = [
+  {
+    name: "Stephen Romesburg",
+    avatar: "",
+    text: "Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments.",
+    date: "Nov 1, 2025",
+    rating: 5,
+  },
+  {
+    name: "Michael J Francis",
+    avatar: "",
+    text: "I like that with Robert Ventures, I can always talk to a real person when I have questions. Everything isn't just online or with a robot. If I have any concerns, I can reach someone directly, and that makes me feel comfortable and confident with my investment.",
+    date: "Nov 1, 2025",
+    rating: 5,
+  },
+  {
+    name: "Francisco Landaverde",
+    avatar: "",
+    text: "I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them.",
+    date: "Sep 16, 2025",
+    rating: 5,
+  },
+  {
+    name: "Sarah Johnson",
+    avatar: "",
+    text: "The investment process was straightforward and transparent. I appreciate the monthly updates and the ability to track my returns in real-time. The team is responsive and professional, making this a reliable investment option.",
+    date: "Oct 15, 2025",
+    rating: 5,
+  },
+  {
+    name: "David Chen",
+    avatar: "",
+    text: "I've been investing with Robert Ventures for several months now and the returns have been consistent. The platform is user-friendly and the customer support team is always available to answer questions. Highly recommend for anyone looking for stable returns.",
+    date: "Oct 28, 2025",
+    rating: 5,
+  },
+  {
+    name: "Emily Rodriguez",
+    avatar: "",
+    text: "What I love most about Robert Ventures is the transparency and regular communication. They provide detailed reports and keep investors informed every step of the way. The returns are exactly as promised and the process is seamless.",
+    date: "Nov 5, 2025",
+    rating: 5,
+  },
+];
+
+const displayReviews = reviews.length > 0 ? reviews : fallbackReviews;
+
+// Star SVG as inline string for JS to inject into cards
+const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
+
+// Build face image URLs from Senja reviewer avatars only
+const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.trim().length > 0);
+---
+
+<style>
+  section {
+    background: var(--bg-secondary);
+    color: var(--text-heading);
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .reviews-v3-container {
+    padding: 48px 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  h3 {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0 0 32px 0;
+    line-height: 125%;
+    text-align: left;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+  }
+
+  /* --- Split Layout: photos left, testimonial right --- */
+  .split-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+
+  /* --- Photo Collage (left side on desktop) --- */
+  .photo-collage {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    margin-bottom: -24px;
+    z-index: 0;
+  }
+
+  .face-card {
+    position: absolute;
+    border-radius: 12px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #ddd;
+  }
+
+  .face-card.visible {
+    opacity: 1;
+  }
+
+  .face-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 5 photos with varied sizes and aspect ratios */
+  .face-card[data-face="0"] {
+    width: 110px;
+    height: 130px;
+    top: 30%;
+    left: 35%;
+    z-index: 3;
+  }
+
+  .face-card[data-face="1"] {
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 5%;
+    z-index: 2;
+  }
+
+  .face-card[data-face="2"] {
+    width: 90px;
+    height: 115px;
+    top: 0;
+    right: 5%;
+    z-index: 2;
+  }
+
+  .face-card[data-face="3"] {
+    width: 105px;
+    height: 80px;
+    bottom: 0;
+    left: 5%;
+    z-index: 1;
+  }
+
+  .face-card[data-face="4"] {
+    width: 95px;
+    height: 115px;
+    bottom: 0;
+    right: 5%;
+    z-index: 1;
+  }
+
+  /* --- Testimonial Card (right side on desktop) --- */
+  .testimonial-side {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .review-card {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+  }
+
+  .review-card.visible {
+    opacity: 1;
+  }
+
+  .card-stars {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .card-quote {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-heading);
+    line-height: 150%;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .card-quote.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  .read-more {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--green-brand);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: none;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+  }
+
+  .card-name {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-heading);
+    margin: 0;
+    line-height: 100%;
+  }
+
+  .card-date {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* --- Tablet (600px+) --- */
+  @media only screen and (min-width: 600px) {
+    .reviews-v3-container {
+      padding: 64px 32px;
+    }
+
+    h3 {
+      font-size: 40px;
+    }
+
+    .split-layout {
+      flex-direction: row;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .photo-collage {
+      flex: 0 0 240px;
+      height: 280px;
+      margin-bottom: 0;
+      z-index: auto;
+    }
+
+    .testimonial-side {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-quote {
+      font-size: 17px;
+    }
+
+    .face-card[data-face="0"] {
+      width: 110px;
+      height: 135px;
+    }
+    .face-card[data-face="1"] {
+      width: 100px;
+      height: 100px;
+      left: 0;
+    }
+    .face-card[data-face="2"] {
+      width: 90px;
+      height: 115px;
+      right: 0;
+    }
+    .face-card[data-face="3"] {
+      width: 110px;
+      height: 80px;
+      left: 5%;
+    }
+    .face-card[data-face="4"] {
+      width: 95px;
+      height: 120px;
+      right: 2%;
+    }
+  }
+
+  /* --- Desktop (1136px+) --- */
+  @media only screen and (min-width: 1136px) {
+    .reviews-v3-container {
+      padding: 96px 112px;
+    }
+
+    .split-layout {
+      gap: 64px;
+    }
+
+    .photo-collage {
+      flex: 0 0 340px;
+      height: 360px;
+    }
+
+    .card-quote {
+      font-size: 18px;
+    }
+
+    .face-card[data-face="0"] {
+      width: 130px;
+      height: 160px;
+    }
+    .face-card[data-face="1"] {
+      width: 125px;
+      height: 125px;
+      top: 0;
+      left: 0;
+    }
+    .face-card[data-face="2"] {
+      width: 110px;
+      height: 140px;
+      top: 0;
+      right: 0;
+    }
+    .face-card[data-face="3"] {
+      width: 130px;
+      height: 95px;
+      bottom: 0;
+      left: 2%;
+    }
+    .face-card[data-face="4"] {
+      width: 115px;
+      height: 145px;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  /* --- Ultra-wide (1920px+) --- */
+  @media only screen and (min-width: 1920px) {
+    .reviews-v3-container {
+      padding: 96px 312px;
+    }
+
+    .photo-collage {
+      flex: 0 0 400px;
+      height: 400px;
+    }
+
+    .face-card[data-face="0"] {
+      width: 150px;
+      height: 185px;
+    }
+    .face-card[data-face="1"] {
+      width: 145px;
+      height: 145px;
+    }
+    .face-card[data-face="2"] {
+      width: 130px;
+      height: 165px;
+    }
+    .face-card[data-face="3"] {
+      width: 150px;
+      height: 110px;
+    }
+    .face-card[data-face="4"] {
+      width: 135px;
+      height: 170px;
+    }
+  }
+
+  /* --- Respect reduced motion preference --- */
+  @media (prefers-reduced-motion: reduce) {
+    .face-card,
+    .review-card {
+      transition: none;
+    }
+  }
+</style>
+
+<section>
+  <div class="reviews-v3-container">
+    <h3>Trusted by {uniqueInvestors}+ Investors</h3>
+    <div
+      class="split-layout"
+      id="reviews-v3-stage"
+      data-reviews={JSON.stringify(
+        displayReviews.map(({ name, text, rating, date }) => ({ name, text, rating, date }))
+      )}
+      data-star-svg={starSvg}
+      data-faces={JSON.stringify(faceUrls)}
+    >
+      <!-- Left: photo collage -->
+      <div class="photo-collage" role="presentation">
+        <div class="face-card" data-face="0"></div>
+        <div class="face-card" data-face="1"></div>
+        <div class="face-card" data-face="2"></div>
+        <div class="face-card" data-face="3"></div>
+        <div class="face-card" data-face="4"></div>
+      </div>
+
+      <!-- Right: testimonial card -->
+      <div class="testimonial-side">
+        <div class="review-card" data-card="0">
+          <div class="card-stars"></div>
+          <p class="card-quote"></p>
+          <a class="read-more" href="javascript:void(0)">Read more</a>
+          <div class="card-footer">
+            <p class="card-name"></p>
+            <p class="card-date"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    var stage = document.getElementById("reviews-v3-stage");
+    if (!stage) return;
+
+    // Parse data from server
+    var reviewsData = [];
+    try {
+      reviewsData = JSON.parse(stage.getAttribute("data-reviews") || "[]");
+    } catch (e) {
+      return;
+    }
+    if (reviewsData.length === 0) return;
+
+    var starSvg = stage.getAttribute("data-star-svg") || "";
+    var faceUrls = [];
+    try {
+      faceUrls = JSON.parse(stage.getAttribute("data-faces") || "[]");
+    } catch (e) {}
+
+    // --- Shuffle utility ---
+    function shuffle(arr) {
+      var shuffled = arr.slice();
+      for (var i = shuffled.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = tmp;
+      }
+      return shuffled;
+    }
+
+    // --- Review card cycling ---
+    var card = stage.querySelector(".review-card");
+    var shuffledReviews = shuffle(reviewsData);
+    var reviewIndex = 0;
+
+    function getNextReview() {
+      var review = shuffledReviews[reviewIndex];
+      reviewIndex = (reviewIndex + 1) % shuffledReviews.length;
+      if (reviewIndex === 0) shuffledReviews = shuffle(reviewsData);
+      return review;
+    }
+
+    function populateCard(review) {
+      var starsEl = card.querySelector(".card-stars");
+      var quoteEl = card.querySelector(".card-quote");
+      var nameEl = card.querySelector(".card-name");
+      var dateEl = card.querySelector(".card-date");
+
+      var starCount = Math.min(Math.max(Math.round(review.rating || 5), 1), 5);
+      var html = "";
+      for (var s = 0; s < starCount; s++) html += starSvg;
+      starsEl.innerHTML = html;
+      quoteEl.textContent = review.text;
+      quoteEl.classList.remove("expanded");
+      nameEl.textContent = review.name;
+      dateEl.textContent = review.date || "";
+
+      // Show/hide read more based on whether text is truncated
+      var readMoreEl = card.querySelector(".read-more");
+      if (readMoreEl) {
+        readMoreEl.textContent = "Read more";
+        // Check after render if text is actually truncated
+        requestAnimationFrame(function () {
+          if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
+            readMoreEl.style.display = "none";
+          } else {
+            readMoreEl.style.display = "";
+          }
+        });
+      }
+    }
+
+    function cycleCard() {
+      card.classList.remove("visible");
+      setTimeout(function () {
+        populateCard(getNextReview());
+        setTimeout(function () {
+          card.classList.add("visible");
+        }, 50);
+      }, 600);
+    }
+
+    // --- Face card cycling (no duplicates on screen) ---
+    var faceCards = stage.querySelectorAll(".face-card");
+    var shuffledFaces = faceUrls.length > 0 ? shuffle(faceUrls) : [];
+    var faceIndex = 0;
+    var activeSlotUrls = {};
+
+    function getVisibleUrls() {
+      var urls = {};
+      for (var key in activeSlotUrls) {
+        if (activeSlotUrls[key]) urls[activeSlotUrls[key]] = true;
+      }
+      return urls;
+    }
+
+    function getNextFace(slotIndex) {
+      if (shuffledFaces.length === 0) return null;
+      var visible = getVisibleUrls();
+      for (var attempt = 0; attempt < shuffledFaces.length; attempt++) {
+        var url = shuffledFaces[faceIndex];
+        faceIndex = (faceIndex + 1) % shuffledFaces.length;
+        if (faceIndex === 0) shuffledFaces = shuffle(faceUrls);
+        if (!visible[url] || url === activeSlotUrls[slotIndex]) {
+          activeSlotUrls[slotIndex] = url;
+          return url;
+        }
+      }
+      var fallback = shuffledFaces[faceIndex];
+      faceIndex = (faceIndex + 1) % shuffledFaces.length;
+      activeSlotUrls[slotIndex] = fallback;
+      return fallback;
+    }
+
+    function populateFace(card, slotIndex) {
+      var url = getNextFace(slotIndex);
+      if (!url) return;
+      var img = card.querySelector("img");
+      if (!img) {
+        img = document.createElement("img");
+        img.alt = "";
+        img.loading = "lazy";
+        img.style.cssText =
+          "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;";
+        card.appendChild(img);
+      }
+      img.src = url;
+    }
+
+    // --- Analytics ---
+    function getPageName() {
+      var path = window.location.pathname;
+      var pageMap = { "/": "homepage", "/about-us": "about_us", "/reviews": "reviews" };
+      return (
+        pageMap[path] || path.replace(/^\//, "").replace(/\/$/, "").replace(/-/g, "_") || "unknown"
+      );
+    }
+
+    function triggerEvent(eventName, clarityEventName, eventData) {
+      eventData = eventData || {};
+      if (window.dataLayer) {
+        window.dataLayer.push(Object.assign({ event: eventName }, eventData));
+      }
+      if (typeof clarity === "function") {
+        Object.keys(eventData).forEach(function (key) {
+          clarity("set", key, String(eventData[key]));
+        });
+        clarity("event", clarityEventName);
+      }
+    }
+
+    // --- Timer management ---
+    var timers = [];
+    var isRunning = false;
+    var viewTracked = false;
+
+    try {
+      viewTracked = sessionStorage.getItem("reviews_mosaic_tracked") === "true";
+    } catch (e) {}
+
+    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Face cycling intervals (staggered per circle)
+    function startCycling() {
+      if (isRunning) return;
+      isRunning = true;
+
+      // Show the testimonial card
+      populateCard(getNextReview());
+      card.classList.add("visible");
+
+      // Show face cards with stagger
+      if (faceUrls.length > 0) {
+        for (var f = 0; f < faceCards.length; f++) {
+          (function (idx) {
+            populateFace(faceCards[idx], idx);
+            setTimeout(function () {
+              faceCards[idx].classList.add("visible");
+            }, idx * 400);
+          })(f);
+        }
+      }
+
+      if (prefersReducedMotion) return;
+
+      // Cycle the testimonial card
+      var cardTimer = setTimeout(function () {
+        cycleCard();
+        var cardInterval = setInterval(cycleCard, 15000);
+        timers.push(cardInterval);
+      }, 15000);
+      timers.push(cardTimer);
+
+      // Face cards: show once and stay (no cycling)
+    }
+
+    function stopCycling() {
+      isRunning = false;
+      timers.forEach(function (t) {
+        clearTimeout(t);
+        clearInterval(t);
+      });
+      timers = [];
+      activeSlotUrls = {};
+    }
+
+    // --- IntersectionObserver ---
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            startCycling();
+            if (!viewTracked) {
+              viewTracked = true;
+              try {
+                sessionStorage.setItem("reviews_mosaic_tracked", "true");
+              } catch (e) {}
+              triggerEvent("reviews_mosaic_viewed", "reviewsMosaicViewed", {
+                page_name: getPageName(),
+              });
+            }
+          } else {
+            stopCycling();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(stage);
+
+    // Read more toggle
+    var readMoreBtn = card.querySelector(".read-more");
+    if (readMoreBtn) {
+      readMoreBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var quoteEl = card.querySelector(".card-quote");
+        var isExpanded = quoteEl.classList.contains("expanded");
+        if (isExpanded) {
+          quoteEl.classList.remove("expanded");
+          readMoreBtn.textContent = "Read more";
+        } else {
+          quoteEl.classList.add("expanded");
+          readMoreBtn.textContent = "Read less";
+        }
+      });
+    }
+
+    // Pause when tab hidden
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        stopCycling();
+      } else if (stage.getBoundingClientRect().top < window.innerHeight) {
+        startCycling();
+      }
+    });
+  });
+</script>
