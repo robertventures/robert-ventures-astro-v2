@@ -221,7 +221,7 @@ const isDev = import.meta.env.DEV;
             metadata-viewer-user-id="anonymous"
             preload="metadata"
             stream-type="on-demand"
-            disable-tracking={isDev}
+            disable-tracking={isDev || undefined}
             default-show-captions></mux-player>
         </div>
       </div>
