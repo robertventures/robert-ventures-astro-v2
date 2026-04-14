@@ -31,6 +31,8 @@
         >
       </div>
     </div>
+
+    <button class="cta-btn" data-modal-open="webinar-modal">Join the Free Webinar</button>
   </div>
 </section>
 
@@ -92,6 +94,30 @@
     line-height: 140%;
   }
 
+  .cta-btn {
+    margin-top: 24px;
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    border-radius: 8px;
+    width: 100%;
+    padding: 14px 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 100%;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+  }
+
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
       padding: 48px 32px;
@@ -121,6 +147,11 @@
     .concepts-grid {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: 20px;
+    }
+
+    .cta-btn {
+      width: auto;
+      max-width: 320px;
     }
 
     .concept-label {
