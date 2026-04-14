@@ -120,9 +120,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Process UTM parameters from both request body and referer URL
     // USED BY: GoHighLevel (custom fields), WebinarKit (not used), Meta (event attribution)
     const referer = request.headers.get("referer") || "";
-    let refUrl: URL | null = null;
+    let _refUrl: URL | null = null;
     try {
-      refUrl = referer ? new URL(referer) : null;
+      _refUrl = referer ? new URL(referer) : null;
     } catch {}
 
     // UTM values are read inline where needed (from body first, then referer query)
@@ -140,7 +140,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Determine webinar test and other final values
     // USED BY: GoHighLevel (custom fields), Meta (not used)
-    const webinarTest = body.webinar_test || "unknown";
+    const _webinarTest = body.webinar_test || "unknown";
     const utmCampaignFinal =
       body.utm_campaign ||
       (body?.utm && typeof body.utm === "object" ? body.utm.utm_campaign : undefined) ||

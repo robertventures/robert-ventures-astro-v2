@@ -138,13 +138,13 @@
   let notificationsActive = true; // overall enable/disable flag
   let scheduledTaskId = null; // single scheduler for all phases
   let formInteractionTimeout = null;
-  let isVisible = false; // current DOM visibility state of the bar
+  let _isVisible = false; // current DOM visibility state of the bar
 
   function getNotificationElement() {
     return document.querySelector(".notification");
   }
 
-  function updateNotification(user) {
+  function updateNotification(user: any) {
     const notification = getNotificationElement();
     if (!notification) return;
 
@@ -157,7 +157,7 @@
     }
   }
 
-  function scheduleNext(delayMs, task) {
+  function scheduleNext(delayMs: number, task: () => void) {
     if (scheduledTaskId) {
       clearTimeout(scheduledTaskId);
     }
@@ -177,7 +177,7 @@
 
     notification.classList.add("show");
     notification.classList.remove("hide");
-    isVisible = true;
+    _isVisible = true;
 
     scheduleNext(SHOW_DURATION_MS, hideNotification);
   }
@@ -188,7 +188,7 @@
       notification.classList.add("hide");
       notification.classList.remove("show");
     }
-    isVisible = false;
+    _isVisible = false;
 
     if (!notificationsActive || document.hidden) return;
     currentUserIndex = (currentUserIndex + 1) % sampleUsers.length;
@@ -216,7 +216,7 @@
       notification.classList.add("hide");
       notification.classList.remove("show");
     }
-    isVisible = false;
+    _isVisible = false;
   }
 
   function restartNotifications() {
@@ -265,7 +265,7 @@
         notification.classList.add("hide");
         notification.classList.remove("show");
       }
-      isVisible = false;
+      _isVisible = false;
     } else {
       if (notificationsActive) {
         scheduleNext(RESUME_DELAY_MS, maybeShowIfActive);

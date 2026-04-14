@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 import FooterNew from "../../components/FooterNew.astro";
 
 const articles = (await getCollection("articles")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
@@ -179,7 +179,7 @@ const articles = (await getCollection("articles")).sort(
             <h1>Latest News and Events</h1>
             <ul>
               {
-                articles.map((post) => (
+                articles.map((post: any) => (
                   <li>
                     <a
                       href={`/articles/${post.slug}`}

@@ -3,18 +3,6 @@ import Image from "astro/components/Image.astro";
 import Opener from "../images/icons/opener.svg";
 import usFlag from "../images/icons/usflag.png";
 
-// Component configuration
-const formConfig = {
-  maxSessions: 2,
-  defaultTimezone: "America/New_York",
-  estOffset: -5,
-};
-
-// Analytics events
-const analyticsEvents = {
-  registerNow: { ga4: "register_now", clarity: "registerNow" },
-  webinarRegistered: { ga4: "webinar_registered", clarity: "webinarRegistered" },
-};
 ---
 
 <div class="form">
@@ -307,7 +295,7 @@ const analyticsEvents = {
   // Utility functions
   const utils = {
     // Format phone number
-    formatPhoneNumber: (value) => {
+    formatPhoneNumber: (value: string) => {
       const digits = value.replace(/\D/g, "");
       if (digits.length <= 3) return digits;
       if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
@@ -338,7 +326,7 @@ const analyticsEvents = {
     },
 
     // Format time left
-    formatTimeLeft: (targetDate) => {
+    formatTimeLeft: (targetDate: Date) => {
       const now = new Date();
       let diff = targetDate.getTime() - now.getTime();
       if (diff <= 0) return "(Started)";
@@ -359,7 +347,7 @@ const analyticsEvents = {
     },
 
     // Trigger analytics events
-    triggerEvent: (eventName, clarityEventName, eventData = {}) => {
+    triggerEvent: (eventName: string, clarityEventName: string, eventData: Record<string, string> = {}) => {
       if ((window as any).dataLayer) {
         (window as any).dataLayer.push({
           event: eventName,
@@ -381,7 +369,7 @@ const analyticsEvents = {
   };
 
   // Main webinar form functionality
-  let webinarData = null;
+  let webinarData: any = null;
   const countdownIntervals = new Map(); // Store intervals for cleanup
 
   window.addEventListener("DOMContentLoaded", async () => {
@@ -512,7 +500,7 @@ const analyticsEvents = {
     }, 500);
   }
 
-  function setRtkClickIdField(value) {
+  function setRtkClickIdField(value: string | null) {
     document.querySelectorAll("input[name='rtk_click_id']").forEach((input) => {
       const field = input as HTMLInputElement;
       field.value = value || "";
@@ -563,7 +551,7 @@ const analyticsEvents = {
     }
   }
 
-  function initializeForm(data) {
+  function initializeForm(data: any) {
     document.querySelectorAll(".form").forEach((formContainer, index) => {
       const form = formContainer.querySelector("form.form-cta");
       if (!form) return;
@@ -577,8 +565,7 @@ const analyticsEvents = {
       const elements = getFormElements(form, formContainer);
       if (!elements) return;
 
-      const { selectEl, phoneInput, timeElements, signupError, submitButton, buttonText, loader } =
-        elements;
+      const { selectEl, timeElements } = elements;
 
       // Populate sessions dropdown
       populateSessionsDropdown(selectEl, data);
@@ -593,7 +580,7 @@ const analyticsEvents = {
       // Setup form submission (only once)
       const formEl = form as HTMLFormElement;
       if (!formEl.dataset.initialized) {
-        setupFormSubmission(form, elements);
+        setupFormSubmission(formEl, elements);
         formEl.dataset.initialized = "true";
       }
 
@@ -639,7 +626,7 @@ const analyticsEvents = {
     });
   }
 
-  function getFormElements(form, formContainer) {
+  function getFormElements(form: Element, formContainer: Element) {
     const selectEl = form.querySelector("select[name='session']");
     const investSelectEl = form.querySelector("select[name='invest_intent']");
     const phoneInput = form.querySelector("input[name='phone_number']");
@@ -678,7 +665,7 @@ const analyticsEvents = {
     };
   }
 
-  function populateSessionsDropdown(selectEl, data) {
+  function populateSessionsDropdown(selectEl: Element, data: any) {
     const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     // Clear and add default option
@@ -697,7 +684,7 @@ const analyticsEvents = {
     }
 
     // STEP 2: Get ongoing (scheduled) sessions
-    const sessions = data.results.filter((item) => {
+    const sessions = data.results.filter((item: any) => {
       try {
         const parsed = JSON.parse(item.id);
         return parsed && parsed.type === "ongoing";
@@ -707,7 +694,7 @@ const analyticsEvents = {
     });
 
     const sessionsWithDates = sessions
-      .map((session) => {
+      .map((session: any) => {
         try {
           const details = JSON.parse(session.id);
           const nextDate = session.date
@@ -720,10 +707,10 @@ const analyticsEvents = {
         }
       })
       .filter(Boolean)
-      .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+      .sort((a: any, b: any) => a.nextDate.getTime() - b.nextDate.getTime());
 
     // STEP 3: Add only the next 2 scheduled sessions
-    sessionsWithDates.slice(0, 2).forEach((item) => {
+    sessionsWithDates.slice(0, 2).forEach((item: any) => {
       const { session, nextDate } = item;
       const details = JSON.parse(session.id);
 
@@ -756,7 +743,7 @@ const analyticsEvents = {
     });
 
     // Fire GA4 event whenever the user changes their session selection
-    selectEl.addEventListener("change", function () {
+    selectEl.addEventListener("change", function (this: HTMLSelectElement) {
       const selectedOption = this.options[this.selectedIndex];
       const isInstant = selectedOption.getAttribute("data-is-instant") === "true";
       const sessionType = isInstant ? "on_demand" : "live";
@@ -774,7 +761,7 @@ const analyticsEvents = {
     });
   }
 
-  function calculateNextSessionDate(details) {
+  function calculateNextSessionDate(details: any) {
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const targetDay = weekdays.indexOf(details.day);
     const [hours, minutes] = details.time.split(":").map(Number);
@@ -804,7 +791,7 @@ const analyticsEvents = {
     sessionDate.setDate(sessionDate.getDate() + daysToAdd);
     sessionDate.setHours(hour24, minutes, 0, 0);
 
-    const sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
+    const _sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
     const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
     const tzOffset =
       new Date(
@@ -816,7 +803,7 @@ const analyticsEvents = {
     return new Date(sessionDate.getTime() - tzOffset);
   }
 
-  function initializeCountdown(timeElements, data) {
+  function initializeCountdown(timeElements: any, data: any) {
     // Clear any existing interval for this form
     // Time elements are now siblings of .form, so find the form container via parent
     const timeContainer = timeElements.daysSpan.closest(".time") as HTMLElement;
@@ -827,7 +814,7 @@ const analyticsEvents = {
       clearInterval(countdownIntervals.get(formId));
     }
 
-    const sessions = data.results.filter((item) => {
+    const sessions = data.results.filter((item: any) => {
       try {
         const parsed = JSON.parse(item.id);
         return parsed && parsed.type === "ongoing";
@@ -839,7 +826,7 @@ const analyticsEvents = {
     if (sessions.length > 0) {
       // Use the same logic as the dropdown to find the next upcoming session
       const sessionsWithDates = sessions
-        .map((session) => {
+        .map((session: any) => {
           try {
             const details = JSON.parse(session.id);
             const nextDate = session.date
@@ -852,7 +839,7 @@ const analyticsEvents = {
           }
         })
         .filter(Boolean)
-        .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+        .sort((a: any, b: any) => a.nextDate.getTime() - b.nextDate.getTime());
 
       if (sessionsWithDates.length > 0) {
         let currentSessionIndex = 0;
@@ -915,7 +902,7 @@ const analyticsEvents = {
   // webinar_registered              → success + posthogIdentify      (line ~1225)
   // =============================================
 
-  function setupFormSubmission(form, elements) {
+  function setupFormSubmission(form: HTMLFormElement, elements: any) {
     const { selectEl, investSelectEl, signupError, submitButton, buttonText, loader, phoneInput } =
       elements;
 
@@ -928,7 +915,7 @@ const analyticsEvents = {
       }
     });
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
       signupError.textContent = "";
       buttonText.style.display = "none";
@@ -966,7 +953,7 @@ const analyticsEvents = {
         signupError.textContent = "Please enter your name, not your email address.";
         signupError.style.display = "block";
         resetFormState(buttonText, loader, submitButton);
-        form.querySelector("input[name='full_name']")?.focus();
+        (form.querySelector("input[name='full_name']") as HTMLElement)?.focus();
         return;
       }
       // --- END NAME VALIDATION ---
@@ -1078,14 +1065,14 @@ const analyticsEvents = {
       const gclid = urlParams.get("gclid") || getCookie("gclid");
 
       // Device detection fallback
-      function detectDeviceFromUA(ua) {
+      function detectDeviceFromUA(ua: string) {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
         if (!isMobile) return "desktop";
         if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
         if (/Android/i.test(ua)) return "android";
         return "android";
       }
-      let deviceType;
+      let deviceType: string | null;
       try {
         deviceType = localStorage.getItem("device_type");
       } catch {}
@@ -1234,7 +1221,7 @@ const analyticsEvents = {
 
         // Trigger analytics events
         utils.triggerEvent("webinar_registered", "webinarRegistered", {
-          invest_intent: formData.get("invest_intent"),
+          invest_intent: (formData.get("invest_intent") as string) || "",
           session_date: isoDateUTC,
           session_type: isInstant ? "on_demand" : "live",
         });
@@ -1283,13 +1270,13 @@ const analyticsEvents = {
     });
   }
 
-  function resetFormState(buttonText, loader, submitButton) {
+  function resetFormState(buttonText: HTMLElement, loader: HTMLElement, submitButton: HTMLButtonElement) {
     buttonText.style.display = "";
     loader.style.display = "none";
     submitButton.disabled = false;
   }
 
-  function getFullDateString(isoDateUTC, sessionTimeZone) {
+  function getFullDateString(isoDateUTC: string, sessionTimeZone: string) {
     const date = new Date(isoDateUTC);
     const options = {
       weekday: "long",
@@ -1305,7 +1292,7 @@ const analyticsEvents = {
   }
 
   // Format: "Sunday, January 25 at 6:00 PM" (no timezone, with "at")
-  function getLocalDateTimeString(isoDateUTC, userTimeZone) {
+  function getLocalDateTimeString(isoDateUTC: string, userTimeZone: string) {
     const date = new Date(isoDateUTC);
     const dateOptions = {
       weekday: "long",
@@ -1363,7 +1350,7 @@ const analyticsEvents = {
     }
   }
 
-  function getCookie(name) {
+  function getCookie(name: string) {
     try {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);

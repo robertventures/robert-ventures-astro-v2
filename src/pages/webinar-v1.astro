@@ -66,6 +66,7 @@ try {
     {
       ssrWebinarData && (
         <script
+          is:inline
           type="application/json"
           id="ssr-webinar-data"
           set:html={JSON.stringify(ssrWebinarData)}
@@ -342,7 +343,7 @@ try {
     const animatedSlides = {};
     const totalSlides = 3;
     let swiperInstance = null;
-    let isTransitioning = false;
+    let _isTransitioning = false;
 
     // Slides where forward scrolling is locked — user must press a button to advance
     // Index 2 = form (submit triggers redirect)
@@ -476,7 +477,7 @@ try {
           const nextSlide = parseInt(btn.getAttribute("data-next-slide"), 10);
           const currentSlide = swiperInstance ? swiperInstance.activeIndex : nextSlide - 1;
           if (validateSlide(currentSlide) && swiperInstance) {
-            isTransitioning = true;
+            _isTransitioning = true;
             swiperInstance.allowSlideNext = true;
             swiperInstance.slideTo(nextSlide);
           }
@@ -512,7 +513,7 @@ try {
 
         input.addEventListener("paste", function (e) {
           e.preventDefault();
-          const clipboardData = e.clipboardData || window.clipboardData;
+          var clipboardData = e.clipboardData || /** @type {any} */ (window).clipboardData;
           const pastedText = clipboardData.getData("text");
           const digits = pastedText.replace(/\D/g, "").slice(0, 10);
           let formatted = "";
@@ -532,7 +533,7 @@ try {
     }
 
     // ── Webinar data loading ──
-    let webinarData = null;
+    let _webinarData = null;
 
     function loadWebinarData() {
       // Try SSR-embedded data first
@@ -541,7 +542,7 @@ try {
         try {
           const ssrData = JSON.parse(ssrEl.textContent || "");
           if (ssrData && ssrData.results) {
-            webinarData = ssrData;
+            _webinarData = ssrData;
             populateSessionsDropdown(ssrData);
             return;
           }
@@ -557,7 +558,7 @@ try {
           return res.json();
         })
         .then(function (data) {
-          webinarData = data;
+          _webinarData = data;
           populateSessionsDropdown(data);
         })
         .catch(function (err) {
@@ -673,7 +674,7 @@ try {
       return new Date(sessionDate.getTime() - tzOffset);
     }
 
-    function formatTimeLeft(targetDate) {
+    function _formatTimeLeft(targetDate) {
       const now = new Date();
       let diff = targetDate.getTime() - now.getTime();
       if (diff <= 0) return "(Started)";
@@ -693,7 +694,7 @@ try {
     }
 
     // ── Analytics helpers ──
-    function triggerEvent(eventName, clarityEventName, eventData) {
+    function _triggerEvent(eventName, clarityEventName, eventData) {
       eventData = eventData || {};
       if (window.dataLayer) {
         window.dataLayer.push(Object.assign({ event: eventName }, eventData));
@@ -1165,10 +1166,10 @@ try {
             }
           },
           slideChangeTransitionStart: function () {
-            isTransitioning = true;
+            _isTransitioning = true;
           },
           slideChangeTransitionEnd: function () {
-            isTransitioning = false;
+            _isTransitioning = false;
           },
           slideChange: function () {
             updateIndicator(this.activeIndex);
@@ -1349,7 +1350,7 @@ try {
             })
             .then(function (data) {
               if (data) {
-                webinarData = data;
+                _webinarData = data;
                 populateSessionsDropdown(data);
               }
             })

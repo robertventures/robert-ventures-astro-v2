@@ -65,7 +65,10 @@ try {
       rtkCampaignId="697c996793ba48f6ba89582f"
     />
     <meta property="og:url" content="https://robertventures.com/webinar" />
-    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
     <link rel="preconnect" href="https://stream.mux.com" crossorigin />
     <link rel="preconnect" href="https://inferred.litix.io" crossorigin />
   </head>
@@ -73,6 +76,7 @@ try {
     {
       ssrWebinarData && (
         <script
+          is:inline
           type="application/json"
           id="ssr-webinar-data"
           set:html={JSON.stringify(ssrWebinarData)}

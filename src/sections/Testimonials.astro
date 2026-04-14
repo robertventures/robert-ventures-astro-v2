@@ -46,7 +46,7 @@ try {
       ? payload
       : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
 
-    const mapped = (rawList as any[]).map(mapSenjaToTestimonial);
+    const _mapped = (rawList as any[]).map(mapSenjaToTestimonial);
     const nonVideoOnly = (rawList as any[])
       .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
       .map(mapSenjaToTestimonial);

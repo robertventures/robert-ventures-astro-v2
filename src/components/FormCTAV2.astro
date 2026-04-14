@@ -60,7 +60,7 @@ import Arrow from "../images/icons/right-arrow.svg";
 
 <script>
   // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName, clarityEventName) {
+  function triggerEvent(eventName: string, clarityEventName: string) {
     // Push event to Google Tag Manager's dataLayer
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({

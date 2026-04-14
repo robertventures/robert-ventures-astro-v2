@@ -80,7 +80,7 @@ try {
 }
 
 // Fetch unique investors count from local stats API
-let uniqueInvestors = 68; // Default fallback value
+let _uniqueInvestors = 68; // Default fallback value
 
 try {
   const statsUrl = new URL("/api/stats", Astro.url);
@@ -88,7 +88,7 @@ try {
   if (statsResponse.ok) {
     const statsData = await statsResponse.json();
     if (typeof statsData.usersWithInvestments === "number") {
-      uniqueInvestors = statsData.usersWithInvestments;
+      _uniqueInvestors = statsData.usersWithInvestments;
     }
   }
 } catch (error) {
@@ -101,7 +101,7 @@ try {
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css"
   media="print"
-  onload="this.media='all'"
+  onload="this.setAttribute('media','all')"
 />
 <noscript>
   <link
@@ -424,7 +424,7 @@ try {
                             <div class="stars">
                               {Array.from({
                                 length: Math.min(Math.max(Math.round(review.rating), 1), 5),
-                              }).map((_, i) => (
+                              }).map((_, _i) => (
                                 <span class="star">
                                   <ReviewStar />
                                 </span>

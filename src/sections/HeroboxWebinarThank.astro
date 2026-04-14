@@ -382,8 +382,8 @@ import Outlook from "../images/icons/outlook.svg";
     const start = new Date(session.date);
     const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour duration
 
-    const pad = (n) => String(n).padStart(2, "0");
-    const formatDate = (d) =>
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const formatDate = (d: Date) =>
       d.getUTCFullYear() +
       pad(d.getUTCMonth() + 1) +
       pad(d.getUTCDate()) +
@@ -473,7 +473,7 @@ import Outlook from "../images/icons/outlook.svg";
       const data = await response.json();
 
       // Find the next upcoming session
-      const sessions = data.results.filter((item) => {
+      const sessions = data.results.filter((item: any) => {
         try {
           const parsed = JSON.parse(item.id);
           return parsed && parsed.type === "ongoing";
@@ -485,7 +485,7 @@ import Outlook from "../images/icons/outlook.svg";
       if (sessions.length > 0) {
         // Use the same logic as the webinar form to find the next session
         const sessionsWithDates = sessions
-          .map((session) => {
+          .map((session: any) => {
             try {
               const details = JSON.parse(session.id);
               const nextDate = session.date
@@ -498,7 +498,7 @@ import Outlook from "../images/icons/outlook.svg";
             }
           })
           .filter(Boolean)
-          .sort((a, b) => a.nextDate.getTime() - b.nextDate.getTime());
+          .sort((a: any, b: any) => a.nextDate.getTime() - b.nextDate.getTime());
 
         if (sessionsWithDates.length > 0) {
           const nextSession = sessionsWithDates[0];
@@ -524,7 +524,7 @@ import Outlook from "../images/icons/outlook.svg";
     }
   }
 
-  function calculateNextSessionDate(details) {
+  function calculateNextSessionDate(details: any) {
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const targetDay = weekdays.indexOf(details.day);
     const [hours, minutes] = details.time.split(":").map(Number);
@@ -554,7 +554,7 @@ import Outlook from "../images/icons/outlook.svg";
     sessionDate.setDate(sessionDate.getDate() + daysToAdd);
     sessionDate.setHours(hour24, minutes, 0, 0);
 
-    const sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
+    const _sessionUTC = new Date(sessionDate.getTime() - sessionDate.getTimezoneOffset() * 60000);
     const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
     const tzOffset =
       new Date(
@@ -566,7 +566,7 @@ import Outlook from "../images/icons/outlook.svg";
     return new Date(sessionDate.getTime() - tzOffset);
   }
 
-  function getFullDateString(isoDateUTC, sessionTimeZone) {
+  function getFullDateString(isoDateUTC: string, sessionTimeZone: string) {
     const date = new Date(isoDateUTC);
     const options = {
       weekday: "long",
@@ -582,7 +582,7 @@ import Outlook from "../images/icons/outlook.svg";
   }
 
   // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName, clarityEventName) {
+  function triggerEvent(eventName: string, clarityEventName: string) {
     // Push event to Google Tag Manager's dataLayer
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
@@ -697,7 +697,7 @@ import Outlook from "../images/icons/outlook.svg";
     if (!session) return alert("Webinar session info not found.");
     const start = new Date(session.date);
     const end = new Date(start.getTime() + 60 * 60 * 1000);
-    const format = (d) => d.toISOString().replace(/-|:|\.\d+/g, "");
+    const format = (d: Date) => d.toISOString().replace(/-|:|\.\d+/g, "");
     const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(session.title || "Robert Ventures Webinar")}&dates=${format(start)}/${format(end)}&details=${encodeURIComponent("Join the Robert Ventures Webinar! " + (session.fullDate || ""))}`;
     window.open(url, "_blank");
   }
@@ -706,7 +706,7 @@ import Outlook from "../images/icons/outlook.svg";
     if (!session) return alert("Webinar session info not found.");
     const start = new Date(session.date);
     const end = new Date(start.getTime() + 60 * 60 * 1000);
-    const format = (d) => d.toISOString();
+    const format = (d: Date) => d.toISOString();
     const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(session.title || "Robert Ventures Webinar")}&body=${encodeURIComponent("Join the Robert Ventures Webinar! " + (session.fullDate || ""))}&startdt=${format(start)}&enddt=${format(end)}`;
     window.open(url, "_blank");
   }

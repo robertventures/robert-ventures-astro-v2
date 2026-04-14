@@ -380,8 +380,8 @@
   const totalResult = document.getElementById("total-result");
 
   // Helper to toggle active state
-  function setActive(buttons, activeButton) {
-    buttons.forEach((btn) => btn.classList.remove("active"));
+  function setActive(buttons: any, activeButton: any) {
+    buttons.forEach((btn: any) => btn.classList.remove("active"));
     activeButton.classList.add("active");
   }
 

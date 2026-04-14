@@ -771,7 +771,7 @@
 
     // Email: Force lowercase and prevent uppercase
     if (emailInput) {
-      emailInput.addEventListener("input", (e) => {
+      emailInput.addEventListener("input", (_e) => {
         const start = emailInput.selectionStart;
         const end = emailInput.selectionEnd;
         emailInput.value = emailInput.value.toLowerCase();
@@ -781,7 +781,7 @@
 
     // Phone: Format as user types
     if (phoneInput) {
-      phoneInput.addEventListener("input", (e) => {
+      phoneInput.addEventListener("input", (_e) => {
         const cursorPosition = phoneInput.selectionStart;
         const previousLength = phoneInput.value.length;
         const formatted = formatPhone(phoneInput.value);
@@ -801,7 +801,7 @@
     }
 
     // Password Validation Logic
-    const validatePassword = (value) => {
+    const validatePassword = (value: string) => {
       const results = {
         length: value.length >= 8,
         uppercase: /[A-Z]/.test(value),
@@ -871,7 +871,7 @@
       });
     }
 
-    function resetFormState() {
+    function _resetFormState() {
       if (buttonText) buttonText.style.display = "";
       if (loader) loader.style.display = "none";
       if (submitButton) submitButton.disabled = false;

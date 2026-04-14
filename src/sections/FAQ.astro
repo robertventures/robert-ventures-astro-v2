@@ -1,6 +1,6 @@
 ---
 import Opener from "../images/icons/caretdown.svg";
-const formatAnswer = (raw) => {
+const formatAnswer = (raw: string) => {
   if (!raw) return "";
   const normalized = String(raw).trim().replace(/\r\n/g, "\n");
   const paragraphs = normalized.split(/\n{2,}/);

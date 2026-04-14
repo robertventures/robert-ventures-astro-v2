@@ -101,7 +101,7 @@ try {
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css"
   media="print"
-  onload="this.media='all'"
+  onload="this.setAttribute('media','all')"
 />
 <noscript>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css" />
@@ -421,7 +421,7 @@ try {
                             <div class="stars">
                               {Array.from({
                                 length: Math.min(Math.max(Math.round(review.rating), 1), 5),
-                              }).map((_, i) => (
+                              }).map((_, _i) => (
                                 <span class="star">
                                   <ReviewStar />
                                 </span>

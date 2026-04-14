@@ -110,7 +110,7 @@ const {
 
 <!-- GOOGLE TAG MANAGER -->
 {Astro.site.hostname === "robertventures.com" && (
-  <script src="/scripts/gtm.js" defer></script>
+  <script is:inline src="/scripts/gtm.js" defer></script>
 )}
 <!-- GOOGLE TAG MANAGER -->
 
@@ -150,16 +150,16 @@ const {
 
 
 <!-- EVENTS HANDLER -->
-<script src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
-<script src="/scripts/analytics/ctaTracking.js" defer></script>
-<script src="/scripts/analytics/posthogTracking.js" defer></script>
+<script is:inline src="/scripts/analytics/GA4ClarityTriggers.js" async></script>
+<script is:inline src="/scripts/analytics/ctaTracking.js" defer></script>
+<script is:inline src="/scripts/analytics/posthogTracking.js" defer></script>
 <!-- EVENTS HANDLER -->
 
 <!-- userAttribution.js: Captures UTM parameters and ad attribution from the URL and stores them as subdomain-scoped cookies for cross-domain attribution. -->
-<script src="/scripts/userAttribution.js" defer></script>
+<script is:inline src="/scripts/userAttribution.js" defer></script>
 
 <!-- deviceDetection.js: Detects device type (desktop, ios, android, mobile) and stores it in localStorage for analytics and attribution. -->
-<script src="/scripts/deviceDetection.js" defer></script>
+<script is:inline src="/scripts/deviceDetection.js" defer></script>
 
 <!-- REDTRACK — captures RTK click ID on every page for ad attribution -->
 <!-- Intercepts uniclick.js API calls so they go through our first-party proxy (/rtk/*) -->

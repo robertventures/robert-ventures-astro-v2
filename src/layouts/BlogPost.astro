@@ -6,7 +6,7 @@ import FooterNew from "../components/FooterNew.astro";
 
 type Props = CollectionEntry<"articles">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate: _pubDate, updatedDate: _updatedDate, heroImage: _heroImage } = Astro.props;
 ---
 
 <html lang="en">
