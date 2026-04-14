@@ -144,6 +144,45 @@ const isDev = import.meta.env.DEV;
     --media-object-position: center;
   }
 
+  .video-fallback {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #152429;
+  }
+
+  .video-fallback img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+  }
+
+  .video-fallback .fallback-cta {
+    position: absolute;
+    bottom: 24px;
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .video-fallback .fallback-cta:hover {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+  }
+
   .get-started-btn {
     background-color: var(--green-brand);
     border: 1px solid var(--green-brand);
@@ -221,8 +260,23 @@ const isDev = import.meta.env.DEV;
             metadata-viewer-user-id="anonymous"
             preload="metadata"
             stream-type="on-demand"
+            max-resolution="1080p"
+            rendition-order="desc"
+            poster="https://image.mux.com/w7IiFxqJcprmmknK1o7ubdU4cyjgr4XEM3MyuAGfVQw/thumbnail.webp?time=2&width=960"
+            placeholder="https://image.mux.com/w7IiFxqJcprmmknK1o7ubdU4cyjgr4XEM3MyuAGfVQw/thumbnail.webp?time=2&width=16"
             disable-tracking={isDev || undefined}
             default-show-captions></mux-player>
+          <div class="video-fallback" id="video-fallback">
+            <img
+              src="https://image.mux.com/w7IiFxqJcprmmknK1o7ubdU4cyjgr4XEM3MyuAGfVQw/thumbnail.webp?time=2&width=960"
+              alt="Investment strategy presentation"
+              width="960"
+              height="540"
+            />
+            <button class="fallback-cta" data-modal-open="webinar-modal">
+              Watch the Full Presentation
+            </button>
+          </div>
         </div>
       </div>
 
@@ -316,12 +370,46 @@ const isDev = import.meta.env.DEV;
       }
     });
 
-    // Error event
+    // Error recovery — retry once for transient failures, then show fallback
+    const MAX_RETRIES = 1;
+    let retryCount = 0;
+
+    function showFallback() {
+      const fallback = document.getElementById("video-fallback");
+      if (fallback) fallback.style.display = "flex";
+      if (player) player.style.display = "none";
+    }
+
     player.addEventListener("error", () => {
+      const mediaError = (player as any).error || {};
+      const errorCode = mediaError.code || 0;
+      const errorMessage = mediaError.message || "unknown";
+
       if ((window as any).posthogTrack) {
         (window as any).posthogTrack("video_error", {
           video_id: VIDEO_ID,
+          error_code: errorCode,
+          error_message: errorMessage,
+          retry_count: retryCount,
+          user_agent: navigator.userAgent,
+          connection_type: (navigator as any).connection?.effectiveType || "unknown",
+          current_time: Math.round(player.currentTime || 0),
         });
+      }
+
+      // Retry network (2) and decode (3) errors once — code 4 (unsupported) won't improve on retry
+      const retryableCodes = [2, 3];
+      if (retryableCodes.includes(errorCode) && retryCount < MAX_RETRIES) {
+        retryCount++;
+        setTimeout(() => {
+          const playbackId = player.getAttribute("playback-id");
+          player.removeAttribute("playback-id");
+          requestAnimationFrame(() => {
+            player.setAttribute("playback-id", playbackId || "");
+          });
+        }, 2000);
+      } else {
+        showFallback();
       }
     });
   })();

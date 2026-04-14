@@ -65,7 +65,9 @@ try {
       rtkCampaignId="697c996793ba48f6ba89582f"
     />
     <meta property="og:url" content="https://robertventures.com/webinar" />
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@mux/mux-player" as="script" />
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs" />
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
+    <link rel="preconnect" href="https://inferred.litix.io" crossorigin />
   </head>
   <body>
     {
@@ -89,6 +91,13 @@ try {
       <FormWebinarV2 />
     </Modal>
 
-    <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer is:inline></script>
+    <script is:inline>
+      (function () {
+        var s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+        s.type = "module";
+        document.head.appendChild(s);
+      })();
+    </script>
   </body>
 </html>
