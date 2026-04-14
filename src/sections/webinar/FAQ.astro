@@ -78,7 +78,7 @@ const faqs = [
     font-weight: 500;
     margin: 0 0 32px 0;
     line-height: 125%;
-    text-align: left;
+    text-align: center;
     color: var(--text-heading);
     font-variant-numeric: lining-nums;
   }
@@ -89,6 +89,9 @@ const faqs = [
     gap: 16px;
     margin-bottom: 0;
     align-items: start;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .faq-container {
@@ -129,6 +132,7 @@ const faqs = [
   button.accordion svg {
     flex-shrink: 0;
     margin-left: 16px;
+    transition: transform 0.3s ease;
   }
 
   button.accordion.active svg {
@@ -141,23 +145,17 @@ const faqs = [
   }
 
   .panel {
-    padding: 0;
     max-height: 0;
-    height: 0;
-    min-height: 0;
     overflow: hidden;
     background-color: transparent;
-    display: block;
-    flex-shrink: 0;
-    margin: 0;
-    border: 0;
-    line-height: 0;
+    padding: 0 16px;
+    transition:
+      max-height 0.35s ease,
+      padding 0.35s ease;
   }
 
   .panel.expanded {
     padding: 0 16px 16px 16px;
-    height: auto;
-    max-height: 2000px;
   }
 
   .panel > div {
@@ -213,12 +211,20 @@ const faqs = [
     }
 
     .faqs {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr;
     }
 
     h3 {
       font-size: 40px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel {
+      transition: none;
+    }
+    button.accordion svg {
+      transition: none;
     }
   }
 
@@ -310,8 +316,16 @@ const faqs = [
     const allPanels = container.querySelectorAll(".panel");
     allPanels.forEach((panel) => {
       panel.classList.remove("expanded");
-      (panel as HTMLElement).style.maxHeight = "";
-      (panel as HTMLElement).style.height = "";
+      (panel as HTMLElement).style.maxHeight = "0";
+    });
+
+    // Clean up max-height after expand animation completes
+    container.addEventListener("transitionend", function (event) {
+      const panel = event.target as HTMLElement;
+      if (!panel.classList.contains("panel")) return;
+      if (panel.classList.contains("expanded")) {
+        panel.style.maxHeight = "none";
+      }
     });
 
     container.addEventListener("click", function (event) {
@@ -336,27 +350,33 @@ const faqs = [
 
       allPanels.forEach((panel) => {
         if (panel !== clickedPanel) {
-          panel.classList.remove("expanded");
-          (panel as HTMLElement).style.maxHeight = "";
-          (panel as HTMLElement).style.height = "";
+          const el = panel as HTMLElement;
+          if (panel.classList.contains("expanded")) {
+            el.style.maxHeight = el.scrollHeight + "px";
+            el.offsetHeight; // force reflow
+            el.style.maxHeight = "0";
+            panel.classList.remove("expanded");
+          }
         }
       });
 
       // Toggle the clicked button and panel
       if (isCurrentlyOpen) {
-        // Collapsing: remove classes immediately
+        // Collapsing: animate from current height to 0
         button.classList.remove("active");
         button.setAttribute("aria-expanded", "false");
+        const panel = clickedPanel as HTMLElement;
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        panel.offsetHeight; // force reflow
+        panel.style.maxHeight = "0";
         clickedPanel.classList.remove("expanded");
-        (clickedPanel as HTMLElement).style.maxHeight = "";
-        (clickedPanel as HTMLElement).style.height = "";
       } else {
-        // Expanding: add classes immediately for instant response
+        // Expanding: measure content height and animate to it
         button.classList.add("active");
         button.setAttribute("aria-expanded", "true");
-        (clickedPanel as HTMLElement).style.maxHeight = "";
-        (clickedPanel as HTMLElement).style.height = "";
         clickedPanel.classList.add("expanded");
+        const panel = clickedPanel as HTMLElement;
+        panel.style.maxHeight = panel.scrollHeight + "px";
 
         // Track FAQ open event
         const faqSlug = (button as HTMLElement).dataset.faqSlug || "unknown";
