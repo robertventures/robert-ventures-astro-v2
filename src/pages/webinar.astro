@@ -71,6 +71,10 @@ try {
     />
     <link rel="preconnect" href="https://stream.mux.com" crossorigin />
     <link rel="preconnect" href="https://inferred.litix.io" crossorigin />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+      is:inline></script>
   </head>
   <body>
     {
@@ -94,14 +98,5 @@ try {
     <Modal id="webinar-modal">
       <FormWebinarV2 />
     </Modal>
-
-    <script is:inline>
-      (function () {
-        var s = document.createElement("script");
-        s.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
-        s.type = "module";
-        document.head.appendChild(s);
-      })();
-    </script>
   </body>
 </html>

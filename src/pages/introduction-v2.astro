@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import IntroCompoundingGrowth from "../sections/introduction-v2/IntroCompoundingGrowth.astro";
+import IntroValueProposition from "../sections/introduction-v2/IntroValueProposition.astro";
 import IntroFounderVideo from "../sections/introduction-v2/IntroFounderVideo.astro";
 import IntroRealEstateAssets from "../sections/introduction-v2/IntroRealEstateAssets.astro";
 import IntroBondOfferings from "../sections/introduction-v2/IntroBondOfferings.astro";
@@ -44,6 +45,8 @@ const pageDescription =
       <button class="slide-indicator__dot" data-slide="4" aria-label="Go to slide 5"></button>
       <div class="slide-indicator__line"></div>
       <button class="slide-indicator__dot" data-slide="5" aria-label="Go to slide 6"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-slide="6" aria-label="Go to slide 7"></button>
       <!-- <div class="slide-indicator__line"></div>
       <button class="slide-indicator__dot" data-slide="7" aria-label="Go to slide 8"></button> -->
     </nav>
@@ -56,6 +59,9 @@ const pageDescription =
 
     <div class="swiper intro-swiper">
       <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <IntroValueProposition />
+        </div>
         <div class="swiper-slide">
           <IntroFounderVideo />
         </div>
@@ -362,7 +368,7 @@ const pageDescription =
 
       animatedSlides[index] = true;
 
-      if (index === 0) {
+      if (index === 1) {
         // Joe Robert bio slide: set content visible, then stagger media + text
         const content = slideEl.querySelector(".intro-slide__content");
         const media = slideEl.querySelector(".intro-slide__media");
