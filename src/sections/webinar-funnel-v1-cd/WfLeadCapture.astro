@@ -1,0 +1,351 @@
+---
+import Image from "astro/components/Image.astro";
+import usFlag from "../../images/icons/usflag.png";
+---
+
+<section class="wf-slide" id="wf-slide-1">
+  <div class="wf-slide__content">
+    <div class="wf-slide__text">
+      <span class="wf-slide__tag">For CD Holders</span>
+      <h1 class="wf-slide__heading">
+        See the Full<br />
+        <span class="wf-slide__accent">Presentation.<span class="wf-slide__underline"></span></span>
+      </h1>
+      <p class="wf-slide__subtitle">Watch how CD savers are earning a fixed 8-10%, built on real estate and digital assets.</p>
+    </div>
+
+    <div class="wf-slide__fields">
+      <input
+        type="text"
+        name="full_name"
+        placeholder="Full Name"
+        required
+        pattern="[^@]+"
+        title="Please enter your name, not your email address."
+        class="wf-slide__input"
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        required
+        class="wf-slide__input"
+      />
+      <div class="wf-slide__phone-wrapper">
+        <Image src={usFlag} alt="US Flag" height={22} class="wf-slide__phone-flag" />
+        <input
+          type="tel"
+          name="phone_number"
+          placeholder="(555) 555-5555"
+          required
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          class="wf-slide__input"
+        />
+      </div>
+      <!-- Capital allocation dropdown -->
+      <select name="invest_intent" id="wf-invest-select" class="wf-slide__select">
+        <option value="" selected>How much are you looking to invest?</option>
+        <option value="1000">$1,000</option>
+        <option value="5000">$5,000</option>
+        <option value="10000">$10,000</option>
+        <option value="25000">$25,000</option>
+        <option value="50000">$50,000</option>
+        <option value="100000+">$100,000+</option>
+      </select>
+
+      <!-- Session value for silent registration (populated by JS, not displayed) -->
+      <input type="hidden" name="session" id="wf-session-value" />
+
+      <p class="wf-slide__field-error"></p>
+      <button type="submit" class="wf-slide__continue">
+        <span class="wf-slide__button-text">Get Access</span>
+        <span class="wf-slide__loader"></span>
+      </button>
+    </div>
+
+    <div class="wf-slide__trust">
+      <span class="wf-slide__trust-item">No Commitment</span>
+      <span class="wf-slide__trust-divider"></span>
+      <span class="wf-slide__trust-item">100% Free</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wf-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .wf-slide__text {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .wf-slide__tag {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-brand);
+    background: #ebf5ef;
+    padding: 0.375rem 1rem;
+    border-radius: 100px;
+  }
+
+  .wf-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .wf-slide__accent {
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+  }
+
+  .wf-slide__underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--green-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .wf-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .wf-slide__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .wf-slide__input {
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: var(--text-heading);
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .wf-slide__input:focus {
+    outline: none;
+    border: 1px solid var(--green-brand);
+  }
+
+  .wf-slide__phone-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .wf-slide__phone-flag {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    height: 22px;
+    object-fit: contain;
+    aspect-ratio: 22/16;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .wf-slide__phone-wrapper .wf-slide__input {
+    padding-left: calc(22px + 12px + 1rem) !important;
+  }
+
+  .wf-slide__input::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+
+  .wf-slide__loader {
+    border: 2px solid #ffffff80;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: wf-spin 1s linear infinite;
+    display: none;
+  }
+
+  @keyframes wf-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Capital allocation dropdown */
+  .wf-slide__select {
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    color: #999999;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    cursor: pointer;
+  }
+
+  .wf-slide__select.has-value {
+    color: var(--text-heading);
+  }
+
+  .wf-slide__select:focus {
+    outline: none;
+    border: 1px solid var(--green-brand);
+  }
+
+  .wf-slide__field-error {
+    display: none;
+    color: red;
+    text-align: center;
+    margin: 0;
+    font-size: 0.875rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .wf-slide__continue {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--green-brand);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__continue:hover {
+    background-color: var(--green-hover);
+  }
+
+  .wf-slide__continue:active {
+    transform: translateY(1px);
+  }
+
+  .wf-slide__trust {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .wf-slide__trust-item {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    letter-spacing: 0.02em;
+  }
+
+  .wf-slide__trust-divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #bbbbbb;
+    flex-shrink: 0;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .wf-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .wf-slide__heading {
+      font-size: 3.25rem;
+    }
+
+    .wf-slide__subtitle {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .wf-slide__content {
+      max-width: 520px;
+    }
+
+    .wf-slide__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf-slide__content {
+      max-width: 560px;
+    }
+
+    .wf-slide__heading {
+      font-size: 4rem;
+    }
+  }
+</style>

@@ -1,0 +1,257 @@
+---
+import { Image } from "astro:assets";
+import outerBanks1 from "../../assets/outer-banks/outer-banks-1.jpg";
+import outerBanks2 from "../../assets/outer-banks/outer-banks-2.jpg";
+import outerBanks3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import outerBanks4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import outerBanks5 from "../../assets/outer-banks/outer-banks-5.jpg";
+import outerBanks6 from "../../assets/outer-banks/outer-banks-6.jpg";
+import outerBanks7 from "../../assets/outer-banks/outer-banks-7.jpg";
+
+const photos = [
+  { src: outerBanks1, alt: "Outer Banks construction photo 1" },
+  { src: outerBanks2, alt: "Outer Banks construction photo 2" },
+  { src: outerBanks3, alt: "Outer Banks construction photo 3" },
+  { src: outerBanks4, alt: "Outer Banks construction photo 4" },
+  { src: outerBanks5, alt: "Outer Banks construction photo 5" },
+  { src: outerBanks6, alt: "Outer Banks construction photo 6" },
+  { src: outerBanks7, alt: "Outer Banks construction photo 7" },
+];
+
+const sizes = "(min-width: 1920px) 600px, (min-width: 1136px) 560px, (min-width: 600px) 520px, 90vw";
+const widths = [600, 1000, 1400];
+---
+
+<section class="intro-slide" id="intro-slide-4">
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">Real estate. Real scarcity.</h2>
+    <p class="intro-slide__subtitle">
+      We build coastal properties in the Outer Banks. Real collateral behind your fixed rate.
+    </p>
+
+    <div
+      class="intro-slide__slideshow splide"
+      id="re-slideshow"
+      aria-label="Construction progress photos"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {
+            photos.map((photo, index) => (
+              <li class="splide__slide">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={widths}
+                  sizes={sizes}
+                  format="webp"
+                  quality={75}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  class="intro-slide__photo"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <ul class="intro-slide__benefits">
+      <li class="intro-slide__benefit">
+        <span class="intro-slide__benefit-title">Built and owned directly</span>
+        <span class="intro-slide__benefit-desc">
+          We hold and operate every property directly. No fund layer, no middlemen.
+        </span>
+      </li>
+      <li class="intro-slide__benefit">
+        <span class="intro-slide__benefit-title">Scarce land, rising prices</span>
+        <span class="intro-slide__benefit-desc">
+          88% of Dare County is protected. Prices doubled in 9 years ($311K to $622K).
+        </span>
+      </li>
+    </ul>
+    <p class="intro-slide__source">Source: Dare County Housing Task Force, 2024</p>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    margin: 0;
+    padding: 4rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 480px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .intro-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .intro-slide__heading + .intro-slide__subtitle {
+    margin-top: -0.5rem;
+  }
+
+  .intro-slide__slideshow {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .intro-slide__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .intro-slide__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .intro-slide__benefit {
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid #67b78f;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .intro-slide__benefit-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 130%;
+  }
+
+  .intro-slide__benefit-desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    line-height: 140%;
+  }
+
+  .intro-slide__source {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    color: #888888;
+    text-align: center;
+    font-style: italic;
+    margin: 0;
+    line-height: 140%;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .intro-slide__content {
+      gap: 1.5rem;
+      max-width: 520px;
+    }
+
+    .intro-slide__heading {
+      font-size: 2.75rem;
+    }
+
+    .intro-slide__benefits {
+      gap: 1rem;
+    }
+
+    .intro-slide__benefit {
+      padding: 1rem 1.25rem;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.25rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 0.9375rem;
+    }
+
+    .intro-slide__source {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 3.25rem;
+    }
+
+    .intro-slide__content {
+      max-width: 560px;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.375rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 1rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__heading {
+      font-size: 3.75rem;
+    }
+
+    .intro-slide__content {
+      max-width: 600px;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.5rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 1.0625rem;
+    }
+  }
+</style>

@@ -6,17 +6,19 @@
   <div class="intro-slide__content">
     <div class="intro-slide__media">
       <div class="intro-slide__video-wrapper">
-        <div class="intro-slide__video-placeholder">
-          <!-- Replace this div with a <video> element once the file is ready -->
-          <svg
-            class="intro-slide__play-icon"
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="32" cy="32" r="32" fill="rgba(26, 26, 26, 0.6)"></circle>
-            <polygon points="26,20 26,44 46,32" fill="#ffffff"></polygon>
-          </svg>
+        <div class="intro-slide__video-container">
+          <mux-player
+            id="intro-mux-player"
+            playback-id="zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00"
+            env-key="hr9aevib299lcvfdoip01jd60"
+            preload="metadata"
+            stream-type="on-demand"
+            max-resolution="1080p"
+            rendition-order="desc"
+            poster="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=214&height=121&time=5"
+            placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
+            default-show-captions
+          ></mux-player>
         </div>
         <div class="intro-slide__photo-caption">
           <span class="intro-slide__photo-name">Joe Robert</span>
@@ -28,7 +30,7 @@
     <div class="intro-slide__text">
       <h2 class="intro-slide__heading">Managed by its founder.</h2>
       <p class="intro-slide__subheading">
-        The same person designed the strategy, and manages the portfolio.
+        25 years in asset management. 200 deals. $10 million returned.
       </p>
 
       <div class="intro-slide__stats-grid">
@@ -89,37 +91,49 @@
     overflow: hidden;
   }
 
-  .intro-slide__video-placeholder {
+  .intro-slide__video-container {
+    position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
     background: #152429;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .intro-slide__play-icon {
-    width: 64px;
-    height: 64px;
-    opacity: 0.8;
+  .intro-slide__video-container mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
   }
 
   .intro-slide__photo-caption {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
-    padding: 1rem;
-    background: linear-gradient(to top, rgba(26, 26, 26, 0.8), transparent);
+    padding: 0.75rem 1rem;
+    background: linear-gradient(
+      to top right,
+      rgba(26, 26, 26, 0.85),
+      rgba(26, 26, 26, 0)
+    );
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .intro-slide__photo-caption.is-hidden {
+    opacity: 0;
   }
 
   .intro-slide__photo-name {
     font-family: "Roboto Serif", serif;
     color: #ffffff;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 500;
     line-height: 130%;
   }
@@ -127,7 +141,7 @@
   .intro-slide__photo-role {
     font-family: "Roboto", sans-serif;
     color: #67b78f;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 400;
     line-height: 130%;
   }
@@ -253,11 +267,11 @@
     }
 
     .intro-slide__photo-name {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
     }
 
     .intro-slide__photo-role {
-      font-size: 1rem;
+      font-size: 0.9375rem;
     }
   }
 

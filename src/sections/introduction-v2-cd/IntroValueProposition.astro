@@ -1,0 +1,223 @@
+---
+
+---
+
+<section class="intro-slide" id="intro-slide-value-proposition">
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">Fixed 8-10%, built on real assets.</h2>
+    <p class="intro-slide__body">
+      No guessing. No volatility. A fixed-rate contract built on real assets, not a bank balance sheet.
+    </p>
+
+    <p class="intro-slide__transition">Here's how it works:</p>
+
+    <ul class="intro-slide__benefits">
+      <li class="intro-slide__benefit">
+        <span class="intro-slide__benefit-title">Real Estate</span>
+        <span class="intro-slide__benefit-desc"
+          >Coastal properties we build where land is scarce.</span
+        >
+      </li>
+      <li class="intro-slide__benefit">
+        <span class="intro-slide__benefit-title">Digital Assets</span>
+        <span class="intro-slide__benefit-desc"
+          >A scarce, capped-supply asset held at a federally chartered U.S. bank.</span
+        >
+      </li>
+      <li class="intro-slide__benefit">
+        <span class="intro-slide__benefit-title">Fixed Yield</span>
+        <span class="intro-slide__benefit-desc"
+          >Your return is set by contract. It doesn't move with the market.</span
+        >
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    height: 100svh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    margin: 0;
+    padding: 4rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 480px;
+    opacity: 0;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .intro-slide__body {
+    font-family: "Roboto", sans-serif;
+    color: #555555;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .intro-slide__heading + .intro-slide__body {
+    margin-top: -0.5rem;
+  }
+
+  .intro-slide__transition {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 140%;
+    margin: 0.5rem 0 0;
+    text-align: center;
+  }
+
+  .intro-slide__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .intro-slide__benefit {
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid #67b78f;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .intro-slide__benefit-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 130%;
+  }
+
+  .intro-slide__benefit-desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    line-height: 140%;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 5rem 2rem 1.5rem;
+    }
+
+    .intro-slide__content {
+      gap: 1.5rem;
+      max-width: 520px;
+    }
+
+    .intro-slide__heading {
+      font-size: 2.75rem;
+    }
+
+    .intro-slide__body {
+      font-size: 1.125rem;
+    }
+
+    .intro-slide__transition {
+      font-size: 1.25rem;
+    }
+
+    .intro-slide__benefits {
+      gap: 1rem;
+    }
+
+    .intro-slide__benefit {
+      padding: 1rem 1.25rem;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.25rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 0.9375rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__content {
+      max-width: 560px;
+    }
+
+    .intro-slide__heading {
+      font-size: 3.25rem;
+    }
+
+    .intro-slide__body {
+      font-size: 1.25rem;
+    }
+
+    .intro-slide__transition {
+      font-size: 1.375rem;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.375rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 1rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__content {
+      max-width: 600px;
+    }
+
+    .intro-slide__heading {
+      font-size: 3.75rem;
+    }
+
+    .intro-slide__body {
+      font-size: 1.375rem;
+    }
+
+    .intro-slide__transition {
+      font-size: 1.5rem;
+    }
+
+    .intro-slide__benefit-title {
+      font-size: 1.5rem;
+    }
+
+    .intro-slide__benefit-desc {
+      font-size: 1.0625rem;
+    }
+  }
+</style>
