@@ -4,11 +4,14 @@
 
 <section class="intro-slide" id="intro-slide-2">
   <div class="intro-slide__content">
-    <h2 class="intro-slide__heading">How 10% APY Turns Into 17.07%</h2>
+    <h2 class="intro-slide__heading">How 10% APY turns into 17.07%</h2>
+    <p class="intro-slide__subtitle">
+      Interest earns interest. The longer you hold, the higher your average yearly return.
+    </p>
 
     <div class="intro-slide__cards">
       <div class="intro-slide__card">
-        <p class="intro-slide__card-growth-label">With compounding, your effective rate grows:</p>
+        <p class="intro-slide__card-growth-label">Here's how it grows over time:</p>
 
         <div class="intro-slide__growth-table">
           <div class="intro-slide__growth-row">
@@ -28,9 +31,7 @@
         <div class="intro-slide__growth-hero">
           <span class="intro-slide__growth-hero-label">In 10 years</span>
           <span class="intro-slide__growth-hero-value">17.07%</span>
-          <span class="intro-slide__growth-hero-effective"
-            >Average annual returns with compounding</span
-          >
+          <span class="intro-slide__growth-hero-effective">Your average yearly return</span>
         </div>
       </div>
     </div>
@@ -70,6 +71,19 @@
     line-height: 120%;
     text-align: center;
     margin: 0;
+  }
+
+  .intro-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .intro-slide__heading + .intro-slide__subtitle {
+    margin-top: -0.75rem;
   }
 
   .intro-slide__cards {

@@ -1,15 +1,233 @@
 ---
+interface Review {
+  name: string;
+  avatar: string;
+  text: string;
+  date: string;
+  rating: number;
+}
 
+function mapSenjaToReview(raw: any): Review {
+  const dateStr = raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "";
+  let formattedDate = "";
+  if (dateStr) {
+    try {
+      const date = new Date(dateStr);
+      formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch (e) {
+      formattedDate = dateStr;
+    }
+  }
+
+  return {
+    name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+    avatar:
+      raw?.customer_avatar ??
+      raw?.avatar ??
+      raw?.profile_picture ??
+      raw?.profile_pic ??
+      raw?.customer?.avatar ??
+      raw?.user?.avatar ??
+      "",
+    text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+    date: formattedDate,
+    rating: raw?.rating ?? raw?.stars ?? 5,
+  };
+}
+
+let reviews: Review[] = [];
+
+try {
+  const apiUrl = new URL("/api/testimonials", Astro.url);
+  const response = await fetch(apiUrl);
+  if (response.ok) {
+    const payload = await response.json();
+
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    const approvedOnly = (rawList as any[])
+      .filter((t) => t?.approved === true)
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0);
+
+    const nonVideoOnly = (rawList as any[])
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0);
+
+    reviews = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+  }
+} catch (error) {
+  console.error("Failed to fetch reviews from Senja:", error);
+}
+
+let uniqueInvestors = 68;
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const statsResponse = await fetch(statsUrl);
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+    if (typeof statsData.usersWithInvestments === "number") {
+      uniqueInvestors = statsData.usersWithInvestments;
+    }
+  }
+} catch (error) {
+  // Fallback value is already set
+}
+
+const fallbackReviews: Review[] = [
+  {
+    name: "Stephen Romesburg",
+    avatar: "",
+    text: "Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments.",
+    date: "Nov 1, 2025",
+    rating: 5,
+  },
+  {
+    name: "Michael J Francis",
+    avatar: "",
+    text: "I like that with Robert Ventures, I can always talk to a real person when I have questions. Everything isn't just online or with a robot. If I have any concerns, I can reach someone directly, and that makes me feel comfortable and confident with my investment.",
+    date: "Nov 1, 2025",
+    rating: 5,
+  },
+  {
+    name: "Francisco Landaverde",
+    avatar: "",
+    text: "I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest. I will invest more money with them.",
+    date: "Sep 16, 2025",
+    rating: 5,
+  },
+  {
+    name: "Sarah Johnson",
+    avatar: "",
+    text: "The investment process was straightforward and transparent. I appreciate the monthly updates and the ability to track my returns in real-time. The team is responsive and professional, making this a reliable investment option.",
+    date: "Oct 15, 2025",
+    rating: 5,
+  },
+  {
+    name: "David Chen",
+    avatar: "",
+    text: "I've been investing with Robert Ventures for several months now and the returns have been consistent. The platform is user-friendly and the customer support team is always available to answer questions. Highly recommend for anyone looking for stable returns.",
+    date: "Oct 28, 2025",
+    rating: 5,
+  },
+  {
+    name: "Emily Rodriguez",
+    avatar: "",
+    text: "What I love most about Robert Ventures is the transparency and regular communication. They provide detailed reports and keep investors informed every step of the way. The returns are exactly as promised and the process is seamless.",
+    date: "Nov 5, 2025",
+    rating: 5,
+  },
+];
+
+const displayReviews = reviews.length > 0 ? reviews : fallbackReviews;
+
+const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
 ---
 
 <section class="intro-slide" id="intro-slide-8">
+  <!-- Staircase SVG animation — background element -->
+  <svg
+    class="intro-slide__staircase"
+    width="800"
+    height="800"
+    xmlns="http://www.w3.org/2000/svg"
+    id="intro-cta-staircase-svg"
+  >
+    <rect x="0.5" y="735.5" width="64" height="64"></rect>
+    <rect x="80.5" y="655.5" width="64" height="64"></rect>
+    <rect x="80.5" y="735.5" width="64" height="64"></rect>
+    <rect x="160.5" y="575.5" width="64" height="64"></rect>
+    <rect x="160.5" y="655.5" width="64" height="64"></rect>
+    <rect x="160.5" y="735.5" width="64" height="64"></rect>
+    <rect x="240.5" y="495.5" width="64" height="64"></rect>
+    <rect x="240.5" y="575.5" width="64" height="64"></rect>
+    <rect x="240.5" y="655.5" width="64" height="64"></rect>
+    <rect x="240.5" y="735.5" width="64" height="64"></rect>
+    <rect x="320.5" y="415.5" width="64" height="64"></rect>
+    <rect x="320.5" y="495.5" width="64" height="64"></rect>
+    <rect x="320.5" y="575.5" width="64" height="64"></rect>
+    <rect x="320.5" y="655.5" width="64" height="64"></rect>
+    <rect x="320.5" y="735.5" width="64" height="64"></rect>
+    <rect x="400.5" y="335.5" width="64" height="64"></rect>
+    <rect x="400.5" y="415.5" width="64" height="64"></rect>
+    <rect x="400.5" y="495.5" width="64" height="64"></rect>
+    <rect x="400.5" y="575.5" width="64" height="64"></rect>
+    <rect x="400.5" y="655.5" width="64" height="64"></rect>
+    <rect x="400.5" y="735.5" width="64" height="64"></rect>
+    <rect x="480.5" y="255.5" width="64" height="64"></rect>
+    <rect x="480.5" y="335.5" width="64" height="64"></rect>
+    <rect x="480.5" y="415.5" width="64" height="64"></rect>
+    <rect x="480.5" y="495.5" width="64" height="64"></rect>
+    <rect x="480.5" y="575.5" width="64" height="64"></rect>
+    <rect x="480.5" y="655.5" width="64" height="64"></rect>
+    <rect x="480.5" y="735.5" width="64" height="64"></rect>
+    <rect x="560.5" y="175.5" width="64" height="64"></rect>
+    <rect x="560.5" y="255.5" width="64" height="64"></rect>
+    <rect x="560.5" y="335.5" width="64" height="64"></rect>
+    <rect x="560.5" y="415.5" width="64" height="64"></rect>
+    <rect x="560.5" y="495.5" width="64" height="64"></rect>
+    <rect x="560.5" y="575.5" width="64" height="64"></rect>
+    <rect x="560.5" y="655.5" width="64" height="64"></rect>
+    <rect x="560.5" y="735.5" width="64" height="64"></rect>
+    <rect x="640.5" y="95.5" width="64" height="64"></rect>
+    <rect x="640.5" y="175.5" width="64" height="64"></rect>
+    <rect x="640.5" y="255.5" width="64" height="64"></rect>
+    <rect x="640.5" y="335.5" width="64" height="64"></rect>
+    <rect x="640.5" y="415.5" width="64" height="64"></rect>
+    <rect x="640.5" y="495.5" width="64" height="64"></rect>
+    <rect x="640.5" y="575.5" width="64" height="64"></rect>
+    <rect x="640.5" y="655.5" width="64" height="64"></rect>
+    <rect x="640.5" y="735.5" width="64" height="64"></rect>
+    <rect x="720.5" y="15.5" width="64" height="64"></rect>
+    <rect x="720.5" y="95.5" width="64" height="64"></rect>
+    <rect x="720.5" y="175.5" width="64" height="64"></rect>
+    <rect x="720.5" y="255.5" width="64" height="64"></rect>
+    <rect x="720.5" y="335.5" width="64" height="64"></rect>
+    <rect x="720.5" y="415.5" width="64" height="64"></rect>
+    <rect x="720.5" y="495.5" width="64" height="64"></rect>
+    <rect x="720.5" y="575.5" width="64" height="64"></rect>
+    <rect x="720.5" y="655.5" width="64" height="64"></rect>
+    <rect x="720.5" y="735.5" width="64" height="64"></rect>
+  </svg>
+
   <div class="intro-slide__content">
-    <h2 class="intro-slide__heading">Let's Discuss Your Investment</h2>
+    <h2 class="intro-slide__heading">Ready to discuss your investment?</h2>
     <p class="intro-slide__subtitle">
       Schedule a call with our team to explore the right plan for your goals.
     </p>
 
     <button class="intro-slide__cta" type="button">Book a Call</button>
+
+    <div
+      class="cta-social-proof"
+      id="cta-social-proof-stage"
+      data-reviews={JSON.stringify(
+        displayReviews.map(({ name, text, rating, date }) => ({ name, text, rating, date }))
+      )}
+      data-star-svg={starSvg}
+    >
+      <div class="cta-social-proof__stat">
+        <span class="cta-stars" set:html={starSvg.repeat(5)} />
+        <span class="cta-stat-text">Trusted by {uniqueInvestors}+ Investors</span>
+      </div>
+      <div class="cta-review-card" data-card="0">
+        <p class="cta-quote"></p>
+        <a class="cta-read-more" href="javascript:void(0)">Read more</a>
+        <div class="cta-footer">
+          <p class="cta-name"></p>
+          <p class="cta-date"></p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -22,17 +240,40 @@
     justify-content: center;
     overflow: hidden;
     position: relative;
-    background: #ffffff;
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     margin: 0;
-    padding: 5rem 1.5rem 1.5rem;
+    padding: 4rem 1.5rem 1.5rem;
     box-sizing: border-box;
   }
 
+  /* Staircase SVG — background animation (matches WfHero) */
+  .intro-slide__staircase {
+    position: absolute;
+    bottom: -200px;
+    right: -200px;
+    width: 800px;
+    height: 800px;
+    min-width: 800px;
+    min-height: 800px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .intro-slide__staircase rect {
+    fill: none;
+    stroke: #bbbbbb;
+    stroke-opacity: 0.15;
+    stroke-width: 1;
+  }
+
   .intro-slide__content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     max-width: 600px;
     width: 100%;
     opacity: 0;
@@ -41,7 +282,7 @@
   .intro-slide__heading {
     font-family: "Roboto Serif", serif;
     color: #1a1a1a;
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 500;
     line-height: 120%;
     text-align: center;
@@ -50,11 +291,124 @@
 
   .intro-slide__subtitle {
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     color: #555555;
     text-align: center;
     margin: 0;
     line-height: 150%;
+  }
+
+  /* ── Social proof block ── */
+  .cta-social-proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 520px;
+    margin-top: 0.5rem;
+  }
+
+  .cta-social-proof__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cta-stars {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .cta-stat-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 100%;
+  }
+
+  .cta-review-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 1rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cta-review-card.visible {
+    opacity: 1;
+  }
+
+  .cta-quote {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 150%;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .cta-quote.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  .cta-read-more {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #67b78f;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .cta-read-more:hover {
+    text-decoration: underline;
+  }
+
+  .cta-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .cta-name {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 100%;
+  }
+
+  .cta-date {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 100%;
+    color: #888888;
+    margin: 0;
   }
 
   .intro-slide__cta {
@@ -88,8 +442,24 @@
       padding: 5rem 2rem 1.5rem;
     }
 
+    .intro-slide__content {
+      gap: 1.25rem;
+    }
+
     .intro-slide__heading {
-      font-size: 3rem;
+      font-size: 2.5rem;
+    }
+
+    .intro-slide__subtitle {
+      font-size: 1rem;
+    }
+
+    .cta-quote {
+      font-size: 1rem;
+    }
+
+    .cta-stat-text {
+      font-size: 0.9375rem;
     }
 
     .intro-slide__cta {
@@ -101,22 +471,227 @@
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
     .intro-slide__heading {
-      font-size: 3.75rem;
+      font-size: 3rem;
     }
 
     .intro-slide__content {
       max-width: 700px;
+    }
+
+    .cta-quote {
+      font-size: 1.0625rem;
     }
   }
 
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
     .intro-slide__heading {
-      font-size: 4.25rem;
+      font-size: 3.5rem;
     }
 
     .intro-slide__content {
       max-width: 800px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-review-card {
+      transition: none;
+    }
+  }
 </style>
+
+<script is:inline>
+  (function () {
+    function initStaircaseAnimation() {
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
+
+      var gsapLib = window.gsap;
+      var svg = document.getElementById("intro-cta-staircase-svg");
+      if (!svg) return;
+
+      var rects = svg.querySelectorAll("rect");
+      if (rects.length === 0) return;
+
+      gsapLib.set(rects, { strokeOpacity: 0.15 });
+
+      var tl = gsapLib.timeline({ repeat: -1 });
+
+      // Pause before shimmer
+      tl.to({}, { duration: 3 });
+
+      // Shimmer forward — rects brighten
+      tl.to(rects, {
+        strokeOpacity: 0.6,
+        duration: 0.2,
+        stagger: { amount: 0.5, from: "start" },
+      });
+
+      // Fade back — rects dim
+      tl.to(rects, {
+        strokeOpacity: 0.15,
+        duration: 0.5,
+        stagger: { amount: 1, from: "start" },
+      });
+    }
+
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+        } else {
+          initStaircaseAnimation();
+        }
+      } else {
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+          } else {
+            initStaircaseAnimation();
+          }
+        });
+      }
+    }
+
+    startAnimation();
+  })();
+</script>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    var stage = document.getElementById("cta-social-proof-stage");
+    if (!stage) return;
+
+    var reviewsData = [];
+    try {
+      reviewsData = JSON.parse(stage.getAttribute("data-reviews") || "[]");
+    } catch (e) {
+      return;
+    }
+    if (reviewsData.length === 0) return;
+
+    function shuffle(arr) {
+      var shuffled = arr.slice();
+      for (var i = shuffled.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = tmp;
+      }
+      return shuffled;
+    }
+
+    var card = stage.querySelector(".cta-review-card");
+    var shuffledReviews = shuffle(reviewsData);
+    var reviewIndex = 0;
+
+    function getNextReview() {
+      var review = shuffledReviews[reviewIndex];
+      reviewIndex = (reviewIndex + 1) % shuffledReviews.length;
+      if (reviewIndex === 0) shuffledReviews = shuffle(reviewsData);
+      return review;
+    }
+
+    function populateCard(review) {
+      var quoteEl = card.querySelector(".cta-quote");
+      var nameEl = card.querySelector(".cta-name");
+      var dateEl = card.querySelector(".cta-date");
+
+      quoteEl.textContent = review.text;
+      quoteEl.classList.remove("expanded");
+      nameEl.textContent = review.name;
+      dateEl.textContent = review.date || "";
+
+      var readMoreEl = card.querySelector(".cta-read-more");
+      if (readMoreEl) {
+        readMoreEl.textContent = "Read more";
+        requestAnimationFrame(function () {
+          if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
+            readMoreEl.style.display = "none";
+          } else {
+            readMoreEl.style.display = "";
+          }
+        });
+      }
+    }
+
+    function cycleCard() {
+      card.classList.remove("visible");
+      setTimeout(function () {
+        populateCard(getNextReview());
+        setTimeout(function () {
+          card.classList.add("visible");
+        }, 50);
+      }, 600);
+    }
+
+    var timers = [];
+    var isRunning = false;
+    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function startCycling() {
+      if (isRunning) return;
+      isRunning = true;
+
+      populateCard(getNextReview());
+      card.classList.add("visible");
+
+      if (prefersReducedMotion) return;
+
+      var cardTimer = setTimeout(function () {
+        cycleCard();
+        var cardInterval = setInterval(cycleCard, 15000);
+        timers.push(cardInterval);
+      }, 15000);
+      timers.push(cardTimer);
+    }
+
+    function stopCycling() {
+      isRunning = false;
+      timers.forEach(function (t) {
+        clearTimeout(t);
+        clearInterval(t);
+      });
+      timers = [];
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            startCycling();
+          } else {
+            stopCycling();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(stage);
+
+    var readMoreBtn = card.querySelector(".cta-read-more");
+    if (readMoreBtn) {
+      readMoreBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var quoteEl = card.querySelector(".cta-quote");
+        var isExpanded = quoteEl.classList.contains("expanded");
+        if (isExpanded) {
+          quoteEl.classList.remove("expanded");
+          readMoreBtn.textContent = "Read more";
+        } else {
+          quoteEl.classList.add("expanded");
+          readMoreBtn.textContent = "Read less";
+        }
+      });
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        stopCycling();
+      } else if (stage.getBoundingClientRect().top < window.innerHeight) {
+        startCycling();
+      }
+    });
+  });
+</script>

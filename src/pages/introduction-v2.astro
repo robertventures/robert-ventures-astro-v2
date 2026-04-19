@@ -6,7 +6,8 @@ import IntroValueProposition from "../sections/introduction-v2/IntroValueProposi
 import IntroFounderVideo from "../sections/introduction-v2/IntroFounderVideo.astro";
 import IntroRealEstateAssets from "../sections/introduction-v2/IntroRealEstateAssets.astro";
 import IntroBondOfferings from "../sections/introduction-v2/IntroBondOfferings.astro";
-import IntroDigitalAssets from "../sections/introduction-v2/IntroDigitalAssets.astro";
+import IntroFixedYield from "../sections/introduction-v2/IntroFixedYield.astro";
+import IntroDigitalStrategy from "../sections/introduction-v2/IntroDigitalStrategy.astro";
 import IntroCallToAction from "../sections/introduction-v2/IntroCallToAction.astro";
 
 const pageTitle = "Introduction | Robert Ventures";
@@ -47,8 +48,8 @@ const pageDescription =
       <button class="slide-indicator__dot" data-slide="5" aria-label="Go to slide 6"></button>
       <div class="slide-indicator__line"></div>
       <button class="slide-indicator__dot" data-slide="6" aria-label="Go to slide 7"></button>
-      <!-- <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="7" aria-label="Go to slide 8"></button> -->
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-slide="7" aria-label="Go to slide 8"></button>
     </nav>
 
     <!-- Swipe hint — bouncing chevron at bottom center -->
@@ -63,19 +64,22 @@ const pageDescription =
           <IntroValueProposition />
         </div>
         <div class="swiper-slide">
-          <IntroFounderVideo />
-        </div>
-        <div class="swiper-slide">
           <IntroRealEstateAssets />
         </div>
         <div class="swiper-slide">
-          <IntroDigitalAssets />
+          <IntroDigitalStrategy />
+        </div>
+        <div class="swiper-slide">
+          <IntroFixedYield />
         </div>
         <div class="swiper-slide">
           <IntroBondOfferings />
         </div>
         <div class="swiper-slide">
           <IntroCompoundingGrowth />
+        </div>
+        <div class="swiper-slide">
+          <IntroFounderVideo />
         </div>
         <div class="swiper-slide">
           <IntroCallToAction />
@@ -117,6 +121,16 @@ const pageDescription =
     margin: 0 !important;
     border: none !important;
     padding-left: 2rem !important;
+  }
+
+  /* Override the site-wide `p { text-wrap: pretty }` from global.css.
+     Safari's `pretty` wraps noticeably narrower than Chrome, which breaks
+     these short subtitles into unnecessary extra lines. */
+  .intro-slide__subtitle,
+  .intro-slide__source,
+  .intro-slide__body,
+  .intro-slide__transition {
+    text-wrap: wrap;
   }
 
   @media only screen and (min-width: 600px) {
@@ -368,37 +382,31 @@ const pageDescription =
 
       animatedSlides[index] = true;
 
-      if (index === 1) {
-        // Joe Robert bio slide: set content visible, then stagger media + text
-        const content = slideEl.querySelector(".intro-slide__content");
-        const media = slideEl.querySelector(".intro-slide__media");
-        const text = slideEl.querySelector(".intro-slide__text");
+      const content = slideEl.querySelector(".intro-slide__content");
+      const media = slideEl.querySelector(".intro-slide__media");
+      const text = slideEl.querySelector(".intro-slide__text");
+
+      if (media && text) {
+        // Founder bio layout: stagger media in from left, text in from right
         if (content) gsap.set(content, { opacity: 1 });
         const tl = gsap.timeline({ delay: 0.2 });
-        if (media) {
-          tl.fromTo(
-            media,
-            { opacity: 0, x: -60 },
-            { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
-          );
-        }
-        if (text) {
-          tl.fromTo(
-            text,
-            { opacity: 0, x: 60 },
-            { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
-            0.15
-          );
-        }
-      } else {
-        const content = slideEl.querySelector(".intro-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
-          );
-        }
+        tl.fromTo(
+          media,
+          { opacity: 0, x: -60 },
+          { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
+        );
+        tl.fromTo(
+          text,
+          { opacity: 0, x: 60 },
+          { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
+          0.15
+        );
+      } else if (content) {
+        gsap.fromTo(
+          content,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
+        );
       }
     }
 
