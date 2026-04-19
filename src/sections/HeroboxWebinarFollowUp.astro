@@ -974,13 +974,15 @@
         const data = await response.json();
 
         if (!response.ok) {
+          const isAccountExists =
+            data.errorCode === "ACCOUNT_EXISTS" || response.status === 409;
+
           // POSTHOG: signup_failed — API returned an error
           if ((window as any).posthogTrack) {
-            const detail = (data.detail || "").toLowerCase();
             const errorType =
               response.status === 429
                 ? "rate_limited"
-                : detail.includes("already") || detail.includes("exists")
+                : isAccountExists
                   ? "account_exists"
                   : "server_error";
             (window as any).posthogTrack("signup_failed", {
@@ -988,6 +990,20 @@
               email_domain: emailDomain,
             });
             signupTracked = true;
+          }
+
+          // Account-already-exists: show an inline login link instead of a
+          // generic error. Hardcoded HTML (no user input), so innerHTML is safe.
+          if (isAccountExists) {
+            if (signupError) {
+              signupError.innerHTML =
+                'An account with this email already exists. <a href="https://invest.robertventures.com/login" class="login-link">Log In</a>';
+              signupError.style.display = "block";
+            }
+            if (buttonText) buttonText.style.display = "inline-block";
+            if (loader) loader.style.display = "none";
+            if (submitButton) submitButton.disabled = false;
+            return;
           }
 
           // Handle API error responses

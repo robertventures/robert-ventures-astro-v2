@@ -89,6 +89,34 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const extText = await extRes.text();
 
     if (!extRes.ok) {
+      // Detect the "account already exists" case and return a canonical
+      // { errorCode: "ACCOUNT_EXISTS" } + 409 so the client can render a login
+      // CTA without string-matching the backend's detail field. This is expected
+      // user behavior, not an incident, so we skip the Slack alert in this case.
+      let parsed: any = null;
+      try {
+        parsed = JSON.parse(extText);
+      } catch {
+        // non-JSON response — leave parsed as null
+      }
+      const message =
+        typeof parsed?.detail === "string"
+          ? parsed.detail
+          : typeof parsed?.message === "string"
+            ? parsed.message
+            : "";
+      const isAccountExists = /already|exists/i.test(message);
+
+      if (isAccountExists) {
+        return new Response(
+          JSON.stringify({
+            errorCode: "ACCOUNT_EXISTS",
+            detail: "An account with this email already exists.",
+          }),
+          { status: 409, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
       await notifySlack(
         "Account Creation",
         "External API Error",
