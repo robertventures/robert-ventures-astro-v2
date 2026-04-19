@@ -627,10 +627,9 @@
                 >
               </div>
               <div class="password-requirements" id="password-requirements">
-                <span class="requirement" data-req="length">8 Characters</span> &middot;
+                <span class="requirement" data-req="length">6 Characters</span> &middot;
                 <span class="requirement" data-req="uppercase">1 Uppercase letter</span> &middot;
-                <span class="requirement" data-req="number">1 Number</span> &middot;
-                <span class="requirement" data-req="special">1 Special character</span>
+                <span class="requirement" data-req="number">1 Number</span>
               </div>
             </div>
             <button type="submit">
@@ -734,7 +733,6 @@
       length: requirementsDiv.querySelector('[data-req="length"]'),
       uppercase: requirementsDiv.querySelector('[data-req="uppercase"]'),
       number: requirementsDiv.querySelector('[data-req="number"]'),
-      special: requirementsDiv.querySelector('[data-req="special"]'),
     };
 
     const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
@@ -803,10 +801,9 @@
     // Password Validation Logic
     const validatePassword = (value: string) => {
       const results = {
-        length: value.length >= 8,
+        length: value.length >= 6,
         uppercase: /[A-Z]/.test(value),
         number: /[0-9]/.test(value),
-        special: /[!@#$%^&*(),.?":{}|<>]/.test(value),
       };
 
       Object.keys(results).forEach((key) => {
