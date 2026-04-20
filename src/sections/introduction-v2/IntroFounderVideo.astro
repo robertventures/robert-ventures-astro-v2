@@ -247,7 +247,28 @@
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
     .intro-slide__content {
-      max-width: 520px;
+      flex-direction: row;
+      align-items: center;
+      gap: 4rem;
+      max-width: 1200px;
+    }
+
+    .intro-slide__media {
+      flex: 1 1 0;
+      min-width: 0;
+      order: 2;
+    }
+
+    .intro-slide__text {
+      flex: 1 1 0;
+      min-width: 0;
+      order: 1;
+      align-items: flex-start;
+    }
+
+    .intro-slide__heading,
+    .intro-slide__subheading {
+      text-align: left;
     }
 
     .intro-slide__heading {
@@ -278,7 +299,7 @@
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
     .intro-slide__content {
-      max-width: 560px;
+      max-width: 1400px;
     }
 
     .intro-slide__heading {

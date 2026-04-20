@@ -282,7 +282,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
   .intro-slide__heading {
     font-family: "Roboto Serif", serif;
     color: #1a1a1a;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 500;
     line-height: 120%;
     text-align: center;
@@ -413,27 +413,32 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 
   .intro-slide__cta {
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    font-size: 1.0625rem;
     font-weight: 500;
     color: #ffffff;
     background: #152429;
     border: none;
     border-radius: 8px;
-    padding: 1rem 2.5rem;
+    padding: 1.125rem 3rem;
     cursor: pointer;
     transition:
       opacity 0.2s ease,
-      transform 0.2s ease;
-    margin-top: 0.5rem;
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
   }
 
   .intro-slide__cta:hover {
-    opacity: 0.9;
+    opacity: 0.95;
     transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
   }
 
   .intro-slide__cta:active {
     transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
   }
 
   /* Medium: 600px+ */
@@ -447,7 +452,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     }
 
     .intro-slide__heading {
-      font-size: 2.5rem;
+      font-size: 2.75rem;
     }
 
     .intro-slide__subtitle {
@@ -463,15 +468,17 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     }
 
     .intro-slide__cta {
-      font-size: 1.125rem;
-      padding: 1.125rem 3rem;
+      font-size: 1.1875rem;
+      padding: 1.25rem 3.5rem;
+      margin-top: 2rem;
+      margin-bottom: 1.25rem;
     }
   }
 
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
     .intro-slide__heading {
-      font-size: 3rem;
+      font-size: 3.25rem;
     }
 
     .intro-slide__content {
@@ -486,7 +493,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
     .intro-slide__heading {
-      font-size: 3.5rem;
+      font-size: 3.75rem;
     }
 
     .intro-slide__content {
