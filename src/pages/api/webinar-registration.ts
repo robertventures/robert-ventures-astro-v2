@@ -95,14 +95,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // The edge function in netlify.toml already blocks non-US traffic at the CDN
     // layer — this is a defense-in-depth backup. Fail-open only when no geo data
     // is available (local dev without Netlify in front).
-    const country = getRequestCountry(request, locals);
-    if (country && country !== "US") {
-      console.log("🌍 Non-US webinar registration blocked:", { country });
-      return new Response(JSON.stringify({ message: "Registration successful" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    // TEMP: disabled for local testing — RESTORE BEFORE LAUNCH
+    // const country = getRequestCountry(request, locals);
+    // if (country && country !== "US") {
+    //   console.log("🌍 Non-US webinar registration blocked:", { country });
+    //   return new Response(JSON.stringify({ message: "Registration successful" }), {
+    //     status: 200,
+    //     headers: { "Content-Type": "application/json" },
+    //   });
+    // }
 
     // Reject if name field looks like an email address
     if (body.name && typeof body.name === "string" && body.name.includes("@")) {

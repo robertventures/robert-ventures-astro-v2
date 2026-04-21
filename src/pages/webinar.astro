@@ -1,9 +1,9 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
-import WfLeadCapture from "../sections/webinar-funnel-v1-cd/WfLeadCapture.astro";
-import WfHero from "../sections/webinar-funnel-v1-cd/WfHero.astro";
-import WfFounderIntro from "../sections/webinar-funnel-v1-cd/WfFounderIntro.astro";
+import WfLeadCapture from "../sections/webinar/WfLeadCapture.astro";
+import WfHero from "../sections/webinar/WfHero.astro";
+import WfFounderIntro from "../sections/webinar/WfFounderIntro.astro";
 
 const pageTitle = "Learn More | Robert Ventures";
 const pageDescription =
@@ -344,6 +344,7 @@ try {
     const totalSlides = 3;
     let swiperInstance = null;
     let _isTransitioning = false;
+    let hasPlayedFounderVideo = false;
 
     // Slides where forward scrolling is locked — user must press a button to advance
     // Index 2 = form (submit triggers redirect)
@@ -1082,7 +1083,7 @@ try {
                 selectedOption ? selectedOption.getAttribute("data-timezone") : "America/New_York"
               ),
           device_type: deviceType || undefined,
-          webinar_test: "webinar-ux_funnel-v1-cd",
+          webinar_test: "webinar-cd",
           webinar_calendar_url: webinarCalendarUrl,
           event_id: generateEventId(),
           fbp: getFbp(),
@@ -1105,6 +1106,7 @@ try {
           google_placement: googleAttribution.google_placement,
           wbraid: googleAttribution.wbraid,
           gbraid: googleAttribution.gbraid,
+          landing_video: hasPlayedFounderVideo ? "Yes" : "No",
         };
 
         localStorage.setItem(
@@ -1112,25 +1114,108 @@ try {
           getESTTimestamp(selectedOption ? selectedOption.getAttribute("data-timezone") : null)
         );
 
-        // TEST MODE: Log payload but do NOT send to GHL/WebinarKit
-        // Remove this block and uncomment the real fetch when going live
-        console.log("🧪 TEST MODE — payload captured (not sent to API):", payload);
-        console.table({
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone_number,
-          invest_intent: payload.invest_intent,
-          session: payload.is_instant ? "On Demand" : payload.date,
-        });
+        fetch("/api/webinar-registration", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error("Registration failed (" + res.status + ")");
+            return res.json();
+          })
+          .then(function (result) {
+            if (result && result.ghl_contact_id) {
+              localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
+            }
+            if (result && result.watch_room_url) {
+              localStorage.setItem("watch_room_url", result.watch_room_url);
+            }
 
-        // Simulate success after a short delay, then redirect to presentation
-        // NOTE: /introduction-v2-cd is the intended target for the CD campaign.
-        // It does not exist yet — build the CD-variant presentation as the next step.
-        // Until then this will 404. Swap to /introduction-v2 temporarily if you need the flow end-to-end.
-        setTimeout(function () {
-          resetForm(buttonText, loader, submitButton);
-          window.location.href = "/introduction-v2-cd";
-        }, 800);
+            const emailStr = typeof payload.email === "string" ? payload.email : "";
+            const nameStr = typeof payload.name === "string" ? payload.name : "";
+            const phoneStr = typeof payload.phone_number === "string" ? payload.phone_number : "";
+            if (emailStr) localStorage.setItem("userEmail", emailStr);
+            if (nameStr) localStorage.setItem("full_name", nameStr);
+            if (phoneStr) localStorage.setItem("phone_number", phoneStr);
+            localStorage.setItem(
+              "user_timezone",
+              (selectedOption && selectedOption.getAttribute("data-timezone")) ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone ||
+                "America/New_York"
+            );
+
+            localStorage.setItem(
+              "webinarSession",
+              JSON.stringify({
+                title: "Robert Ventures Webinar",
+                date: isoDateUTC,
+                timeZone: sessionDetails.timeZone,
+                fullDate: isInstant
+                  ? "Watch Now - On Demand"
+                  : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+                email: emailStr,
+                name: nameStr,
+                isInstant: isInstant,
+              })
+            );
+
+            // Microsoft Clarity identify
+            try {
+              if (emailStr && typeof window.clarity === "function") {
+                window.clarity("identify", emailStr);
+              }
+            } catch (e) {}
+
+            // PostHog identify + registered event
+            if (window.posthogIdentify) {
+              window.posthogIdentify(emailStr, {
+                name: nameStr,
+                email: emailStr,
+                phone: phoneStr,
+                ghl_contact_id: result ? result.ghl_contact_id : undefined,
+                invest_intent: payload.invest_intent,
+                session_type: isInstant ? "on_demand" : "live",
+                registration_page: window.location.pathname,
+              });
+            }
+            if (window.posthogTrack) {
+              window.posthogTrack("webinar_registered", {
+                invest_intent: payload.invest_intent,
+                session_date: isoDateUTC,
+                session_type: isInstant ? "on_demand" : "live",
+                ghl_contact_id: result ? result.ghl_contact_id : undefined,
+                landing_video_played: hasPlayedFounderVideo,
+              });
+            }
+
+            // Meta Pixel CompleteRegistration (skip low-intent tiers)
+            const investForMeta = payload.invest_intent;
+            if (investForMeta !== "1000" && investForMeta !== "5000") {
+              try {
+                if (typeof window.fbq === "function") {
+                  window.fbq(
+                    "track",
+                    "CompleteRegistration",
+                    {},
+                    { eventID: payload.event_id }
+                  );
+                }
+              } catch (e) {}
+            }
+
+            window.location.href = "/introduction";
+          })
+          .catch(function (err) {
+            console.error("Registration error:", err);
+            showError(errorEl, "Registration failed. Please try again.");
+            resetForm(buttonText, loader, submitButton);
+            if (window.posthogTrack) {
+              window.posthogTrack("webinar_registration_failed", {
+                invest_intent: payload.invest_intent,
+                session_type: isInstant ? "on_demand" : "live",
+              });
+            }
+          });
       });
     }
 
@@ -1235,6 +1320,7 @@ try {
       // Play event
       player.addEventListener("play", function () {
         playCount++;
+        hasPlayedFounderVideo = true;
         if (caption) caption.classList.add("is-hidden");
 
         if (window.posthogTrack) {

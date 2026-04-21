@@ -2,7 +2,7 @@
  * Booking Slots API Route
  *
  * Proxies GoHighLevel's v2 free-slots endpoint for the Webinar Q&A Call calendar
- * used on /introduction-v2 and /introduction-v2-cd.
+ * used on /introduction.
  *
  * Why proxy: the v2 endpoint works with our existing GHL API key, but we don't
  * want to expose the key to the browser. The frontend calls this route, which
@@ -24,7 +24,8 @@ import { notifySlack } from "../../lib/notifySlack";
 const CALENDAR_ID = "xNXEISjf314X2BFZvdaZ";
 
 export const GET: APIRoute = async ({ url }) => {
-  const ghlApiKey = import.meta.env.GHL_API_KEY;
+  // v2 calendar endpoints require a Private Integration Token, not the v1 API key
+  const ghlApiKey = import.meta.env.GHL_PIT;
 
   try {
     // Default to Eastern if the client didn't supply one
@@ -38,7 +39,7 @@ export const GET: APIRoute = async ({ url }) => {
     const endMs = Number(url.searchParams.get("endDate")) || defaultEndMs;
 
     if (!ghlApiKey) {
-      await notifySlack("Booking Slots", "Missing GHL_API_KEY", "Cannot fetch slots");
+      await notifySlack("Booking Slots", "Missing GHL_PIT", "Cannot fetch slots");
       return new Response(JSON.stringify({ error: "Booking unavailable" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },

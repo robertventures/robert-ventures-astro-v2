@@ -1317,7 +1317,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
   // Custom booking flow for the Webinar Q&A Call calendar.
   // Slots come from /api/booking-slots (proxies GHL v2 free-slots).
   // Booking calls /api/book-appointment with the ghl_contact_id stored
-  // on registration at /webinar-v1(-cd). All calendar rules (4-day window,
+  // on registration at /webinar. All calendar rules (4-day window,
   // 2h lead, 15-min granularity, no double-booking) are enforced by GHL.
   (function () {
     var root = document.querySelector("[data-booking-root]");
@@ -1654,7 +1654,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     }
 
     // TEMPORARY: Fallback identity used when the visitor didn't go through
-    // /webinar-v1(-cd) registration (e.g. dev testing, incognito, cleared
+    // /webinar registration (e.g. dev testing, incognito, cleared
     // storage). The server upserts this into GHL so the booking still lands
     // against a real contact.
     var FALLBACK_CONTACT = {

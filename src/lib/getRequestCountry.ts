@@ -12,9 +12,15 @@
  * or null when no geo data is available (e.g. local development).
  */
 export function getRequestCountry(request: Request, locals?: Record<string, any>): string | null {
-  // 1. Netlify context geo (available in serverless functions via Astro locals)
+  // 1. Netlify context geo (available in serverless functions via Astro locals).
+  // The Astro Netlify adapter injects a mock geo object in local dev
+  // (country.code: "mock"); treat that as "no geo" so dev fails open.
   const netlifyCountry = locals?.netlify?.context?.geo?.country?.code;
-  if (typeof netlifyCountry === "string" && netlifyCountry.length > 0) {
+  if (
+    typeof netlifyCountry === "string" &&
+    netlifyCountry.length > 0 &&
+    netlifyCountry.toLowerCase() !== "mock"
+  ) {
     return netlifyCountry.toUpperCase();
   }
 

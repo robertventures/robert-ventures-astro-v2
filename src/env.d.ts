@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly META_ACCESS_TOKEN?: string;
   readonly META_TEST_EVENT_CODE?: string;
   readonly GHL_API_KEY?: string;
+  readonly GHL_PIT?: string;
   readonly WEBINARKIT_API_KEY?: string;
   readonly SUPABASE_URL?: string;
   readonly SUPABASE_ANON_KEY?: string;

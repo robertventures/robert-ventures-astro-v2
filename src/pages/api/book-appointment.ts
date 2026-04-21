@@ -4,9 +4,8 @@
  * Creates a GoHighLevel appointment on the Webinar Q&A Call calendar
  * (xNXEISjf314X2BFZvdaZ) for a contact that already exists in GHL.
  *
- * The user was registered in GHL during the webinar funnel
- * (/webinar-v1, /webinar-v1-cd), which set localStorage.ghl_contact_id
- * on the browser. We reuse that contact instead of re-collecting name,
+ * The user was registered in GHL during the webinar funnel at /webinar,
+ * which set localStorage.ghl_contact_id on the browser. We reuse that contact instead of re-collecting name,
  * email, and phone in the booking UI.
  *
  * Flow:
@@ -34,7 +33,10 @@ const CALENDAR_ID = "xNXEISjf314X2BFZvdaZ";
 const LOCATION_ID = "bfHiy1NWixstyv5LQxSp";
 
 export const POST: APIRoute = async ({ request, locals }) => {
+  // v1 key for contact lookup/upsert (rest.gohighlevel.com/v1)
   const ghlApiKey = import.meta.env.GHL_API_KEY;
+  // PIT for the v2 appointment endpoint (services.leadconnectorhq.com)
+  const ghlPit = import.meta.env.GHL_PIT;
 
   try {
     const rawBody = await request.json();
@@ -66,8 +68,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    if (!ghlApiKey) {
-      await notifySlack("Book Appointment", "Missing GHL_API_KEY", "Cannot create appointment");
+    if (!ghlApiKey || !ghlPit) {
+      await notifySlack(
+        "Book Appointment",
+        "Missing GHL credentials",
+        `GHL_API_KEY present: ${!!ghlApiKey}, GHL_PIT present: ${!!ghlPit}`
+      );
       return new Response(JSON.stringify({ error: "Booking unavailable" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
@@ -175,7 +181,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${ghlApiKey}`,
+          Authorization: `Bearer ${ghlPit}`,
           Version: "2021-04-15",
           "Content-Type": "application/json",
         },
@@ -188,6 +194,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     try {
       createJson = JSON.parse(createText);
     } catch {}
+
+    // TEMP DIAGNOSTIC — remove once root cause is found
+    console.log("[book-appointment] GHL status:", createRes.status);
+    console.log("[book-appointment] GHL body:", createText.slice(0, 500));
 
     if (!createRes.ok) {
       const msg = (createJson?.message || createText || "").toString().toLowerCase();

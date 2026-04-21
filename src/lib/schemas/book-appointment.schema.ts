@@ -8,7 +8,7 @@ import { z } from "zod";
  * - timezone: IANA timezone used to format the slot, e.g. "America/New_York"
  *
  * Either ghl_contact_id OR contactInfo must be present:
- * - ghl_contact_id: set in localStorage during /webinar-v1(-cd) registration
+ * - ghl_contact_id: set in localStorage during /webinar registration
  * - contactInfo: fallback identity used when localStorage is empty (dev/test,
  *   or visitors who reached the slide without going through registration).
  *   The route will look up an existing contact by email or create one.

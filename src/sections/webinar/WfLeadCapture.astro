@@ -59,15 +59,30 @@ import usFlag from "../../images/icons/usflag.png";
       <!-- Session value for silent registration (populated by JS, not displayed) -->
       <input type="hidden" name="session" id="wf-session-value" />
 
+      <!-- Honeypot — bots fill this, humans won't (validated server-side) -->
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        class="wf-slide__honeypot"
+        aria-hidden="true"
+      />
+
       <p class="wf-slide__field-error"></p>
       <button type="submit" class="wf-slide__continue">
         <span class="wf-slide__button-text">Get Access</span>
         <span class="wf-slide__loader"></span>
       </button>
-    </div>
-
-    <div class="wf-slide__trust">
-      <span class="wf-slide__trust-item">No Commitment</span>
+      <p class="wf-slide__notice">
+        You'll be invited to our live webinar this Sunday.
+      </p>
+      <div class="wf-slide__trust">
+        <span class="wf-slide__trust-item">No Commitment</span>
+      </div>
+      <p class="wf-slide__consent">
+        By clicking Get Access, you agree to receive communications from Robert Ventures via email and SMS.
+      </p>
     </div>
   </div>
 </section>
@@ -93,7 +108,7 @@ import usFlag from "../../images/icons/usflag.png";
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1rem;
     width: 100%;
     max-width: 480px;
   }
@@ -122,9 +137,9 @@ import usFlag from "../../images/icons/usflag.png";
   .wf-slide__heading {
     font-family: "Roboto Serif", serif;
     color: #1a1a1a;
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     font-weight: 500;
-    line-height: 120%;
+    line-height: 118%;
     margin: 0;
   }
 
@@ -151,6 +166,25 @@ import usFlag from "../../images/icons/usflag.png";
     color: #555555;
     margin: 0;
     line-height: 150%;
+  }
+
+  .wf-slide__notice {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin: 0;
+    line-height: 140%;
+    text-align: center;
+  }
+
+  .wf-slide__consent {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.625rem;
+    color: #888888;
+    margin: 0;
+    line-height: 140%;
+    text-align: center;
   }
 
   .wf-slide__fields {
@@ -294,6 +328,16 @@ import usFlag from "../../images/icons/usflag.png";
     gap: 0.75rem;
     flex-wrap: wrap;
     justify-content: center;
+    margin: -0.25rem 0 0;
+  }
+
+  .wf-slide__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .wf-slide__trust-item {
@@ -317,8 +361,17 @@ import usFlag from "../../images/icons/usflag.png";
       padding: 5rem 2rem 1.5rem;
     }
 
+    .wf-slide__content {
+      gap: 1.25rem;
+    }
+
+    .wf-slide__text {
+      gap: 0.75rem;
+    }
+
     .wf-slide__heading {
       font-size: 3.25rem;
+      line-height: 120%;
     }
 
     .wf-slide__subtitle {
