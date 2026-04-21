@@ -1195,6 +1195,15 @@ import usFlag from "../images/icons/usflag.png";
           localStorage.setItem("userEmail", typeof userEmail === "string" ? userEmail : "");
         }
 
+        // Persist the user's browser timezone so downstream pages (e.g. the
+        // presentation CTA booking flow) can show availability in their local time
+        // without re-detecting.
+        const detectedTz =
+          (selectedOption && selectedOption.getAttribute("data-timezone")) ||
+          Intl.DateTimeFormat().resolvedOptions().timeZone ||
+          "America/New_York";
+        localStorage.setItem("user_timezone", detectedTz);
+
         // Identify the user in Microsoft Clarity using their email after successful registration
         try {
           const emailStr = typeof userEmail === "string" ? userEmail : "";

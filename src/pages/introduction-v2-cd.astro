@@ -96,6 +96,8 @@ const pageDescription =
         </div>
       </div>
     </div>
+
+    <script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
   </body>
 </html>
 
@@ -144,6 +146,15 @@ const pageDescription =
     section.intro-slide {
       padding-left: 2.5rem !important;
     }
+  }
+
+  /* Hide chrome while the inline booking calendar is active. The fixed logo
+     would otherwise scroll over the heading once the slide becomes scrollable
+     in booking mode. */
+  body.booking-active .slide-indicator,
+  body.booking-active .swipe-hint,
+  body.booking-active .intro-nav-logo {
+    display: none;
   }
 </style>
 
@@ -390,25 +401,8 @@ const pageDescription =
       animatedSlides[index] = true;
 
       const content = slideEl.querySelector(".intro-slide__content");
-      const media = slideEl.querySelector(".intro-slide__media");
-      const text = slideEl.querySelector(".intro-slide__text");
 
-      if (media && text) {
-        // Founder bio layout: stagger media in from left, text in from right
-        if (content) gsap.set(content, { opacity: 1 });
-        const tl = gsap.timeline({ delay: 0.2 });
-        tl.fromTo(
-          media,
-          { opacity: 0, x: -60 },
-          { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
-        );
-        tl.fromTo(
-          text,
-          { opacity: 0, x: 60 },
-          { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
-          0.15
-        );
-      } else if (content) {
+      if (content) {
         gsap.fromTo(
           content,
           { opacity: 0, y: 40 },
@@ -477,6 +471,19 @@ const pageDescription =
           const slideIndex = parseInt(dot.getAttribute("data-slide"), 10);
           swiperInstance.slideTo(slideIndex);
         });
+      });
+
+      // When the CTA slide opens its inline calendar, lock the swiper so gestures
+      // don't fight with the calendar's internal scrolling.
+      document.addEventListener("booking-mode-change", function (e) {
+        const active = !!(e.detail && e.detail.active);
+        if (active) {
+          document.body.classList.add("booking-active");
+          swiperInstance.disable();
+        } else {
+          document.body.classList.remove("booking-active");
+          swiperInstance.enable();
+        }
       });
     }
 

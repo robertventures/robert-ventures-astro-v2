@@ -148,6 +148,15 @@ const pageDescription =
       padding-left: 2.5rem !important;
     }
   }
+
+  /* Hide chrome while the inline booking calendar is active. The fixed logo
+     would otherwise scroll over the heading once the slide becomes scrollable
+     in booking mode. */
+  body.booking-active .slide-indicator,
+  body.booking-active .swipe-hint,
+  body.booking-active .intro-nav-logo {
+    display: none;
+  }
 </style>
 
 <style>
@@ -480,6 +489,20 @@ const pageDescription =
           const slideIndex = parseInt(dot.getAttribute("data-slide"), 10);
           swiperInstance.slideTo(slideIndex);
         });
+      });
+
+      // Mirror the CD page: when the CTA slide opens its inline calendar,
+      // lock the swiper and add a body flag so the page chrome (logo,
+      // indicator, swipe hint) can hide itself.
+      document.addEventListener("booking-mode-change", function (e) {
+        const active = !!(e.detail && e.detail.active);
+        if (active) {
+          document.body.classList.add("booking-active");
+          swiperInstance.disable();
+        } else {
+          document.body.classList.remove("booking-active");
+          swiperInstance.enable();
+        }
       });
     }
 
