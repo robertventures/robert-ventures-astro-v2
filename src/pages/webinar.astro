@@ -1418,6 +1418,54 @@ try {
       }
     }
 
+    // ── Allow inner scroll on form slide while preserving swipe-back to previous slide ──
+    function setupInnerScroll() {
+      const scrollable = document.getElementById("wf-slide-1");
+      if (!scrollable) return;
+
+      // Desktop: prevent Swiper's mousewheel from hijacking wheel when inner can still scroll
+      scrollable.addEventListener(
+        "wheel",
+        function (e) {
+          const canScrollDown =
+            scrollable.scrollTop < scrollable.scrollHeight - scrollable.clientHeight - 1;
+          const canScrollUp = scrollable.scrollTop > 0;
+          if ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp)) {
+            e.stopPropagation();
+          }
+        },
+        { passive: true, capture: true }
+      );
+
+      // Touch: let inner scroll win when not at top; give control back to Swiper at the top edge
+      scrollable.addEventListener(
+        "touchstart",
+        function () {
+          if (!swiperInstance) return;
+          if (scrollable.scrollTop > 0) {
+            swiperInstance.allowTouchMove = false;
+          } else {
+            swiperInstance.allowTouchMove = true;
+          }
+        },
+        { passive: true }
+      );
+      scrollable.addEventListener(
+        "touchend",
+        function () {
+          if (swiperInstance) swiperInstance.allowTouchMove = true;
+        },
+        { passive: true }
+      );
+      scrollable.addEventListener(
+        "touchcancel",
+        function () {
+          if (swiperInstance) swiperInstance.allowTouchMove = true;
+        },
+        { passive: true }
+      );
+    }
+
     // ── Boot ──
     function boot() {
       captureCmpid();
@@ -1429,6 +1477,7 @@ try {
       setupFormSubmission();
       setupMuxPreloading();
       setupMuxAnalytics();
+      setupInnerScroll();
 
       // Refresh webinar data every 5 minutes
       setInterval(
