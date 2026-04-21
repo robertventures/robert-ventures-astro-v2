@@ -20,7 +20,6 @@ const pageDescription =
   <head>
     <BaseHead title={pageTitle} description={pageDescription} />
     <meta name="robots" content="noindex" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css"
@@ -37,65 +36,41 @@ const pageDescription =
       is:inline></script>
   </head>
   <body>
-    <!-- Floating logo — always visible, links home -->
+    <!-- Floating logo, always visible, links home -->
     <a href="/" class="intro-nav-logo" aria-label="Back to Robert Ventures home">
       <RvLogo />
     </a>
 
-    <!-- Slide position indicator — dots + lines on left edge -->
-    <nav class="slide-indicator" aria-label="Slide navigation">
-      <button class="slide-indicator__dot is-active" data-slide="0" aria-label="Go to slide 1"
+    <!-- Section position indicator: dots + lines on left edge -->
+    <nav class="slide-indicator" aria-label="Section navigation">
+      <button class="slide-indicator__dot is-active" data-section="0" aria-label="Go to section 1"
       ></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="1" aria-label="Go to slide 2"></button>
+      <button class="slide-indicator__dot" data-section="1" aria-label="Go to section 2"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="2" aria-label="Go to slide 3"></button>
+      <button class="slide-indicator__dot" data-section="2" aria-label="Go to section 3"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="3" aria-label="Go to slide 4"></button>
+      <button class="slide-indicator__dot" data-section="3" aria-label="Go to section 4"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="4" aria-label="Go to slide 5"></button>
+      <button class="slide-indicator__dot" data-section="4" aria-label="Go to section 5"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="5" aria-label="Go to slide 6"></button>
+      <button class="slide-indicator__dot" data-section="5" aria-label="Go to section 6"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="6" aria-label="Go to slide 7"></button>
+      <button class="slide-indicator__dot" data-section="6" aria-label="Go to section 7"></button>
       <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-slide="7" aria-label="Go to slide 8"></button>
+      <button class="slide-indicator__dot" data-section="7" aria-label="Go to section 8"></button>
     </nav>
 
-    <!-- Swipe hint — bouncing chevron at bottom center -->
-    <div class="swipe-hint" aria-hidden="true">
-      <span class="swipe-hint__chevron"></span>
-      <span class="swipe-hint__chevron"></span>
-    </div>
-
-    <div class="swiper intro-swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <IntroValueProposition />
-        </div>
-        <div class="swiper-slide">
-          <IntroRealEstateAssets />
-        </div>
-        <div class="swiper-slide">
-          <IntroDigitalStrategy />
-        </div>
-        <div class="swiper-slide">
-          <IntroFixedYield />
-        </div>
-        <div class="swiper-slide">
-          <IntroBondOfferings />
-        </div>
-        <div class="swiper-slide">
-          <IntroCompoundingGrowth />
-        </div>
-        <div class="swiper-slide">
-          <IntroFounderVideo />
-        </div>
-        <div class="swiper-slide">
-          <IntroCallToAction />
-        </div>
-      </div>
-    </div>
+    <main class="intro-scroll">
+      <IntroValueProposition />
+      <IntroRealEstateAssets />
+      <IntroDigitalStrategy />
+      <IntroFixedYield />
+      <IntroBondOfferings />
+      <IntroCompoundingGrowth />
+      <IntroFounderVideo />
+      <IntroCallToAction />
+    </main>
 
     <script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
   </body>
@@ -106,30 +81,35 @@ const pageDescription =
     background-color: #ffffff;
     margin: 0 !important;
     padding: 0 !important;
-    /* Safari needs scrollable content to auto-hide the bottom toolbar.
-       1px of extra height gives it something to "scroll". */
-    min-height: calc(100vh + 1px);
-    overscroll-behavior: none;
   }
 
-  .intro-swiper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100svh;
-    touch-action: pan-x pinch-zoom;
+  .intro-scroll {
+    margin: 0;
+    padding: 0;
   }
 
-  .intro-swiper .swiper-slide {
-    height: 100svh;
-  }
-
+  /* Collapse sections from 100svh to natural content height + apply
+     a unified vertical rhythm across all breakpoints. */
   section.intro-slide {
-    height: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     margin: 0 !important;
     border: none !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
     padding-left: 2rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  /* First section gets extra top padding to clear the floating logo. */
+  .intro-scroll > section.intro-slide:first-child {
+    padding-top: 6.5rem !important;
+  }
+
+  /* Last section gets extra bottom padding for breathing room after the CTA. */
+  .intro-scroll > section.intro-slide:last-child {
+    padding-bottom: 6.5rem !important;
   }
 
   /* Override the site-wide `p { text-wrap: pretty }` from global.css.
@@ -144,15 +124,47 @@ const pageDescription =
 
   @media only screen and (min-width: 600px) {
     section.intro-slide {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
       padding-left: 2.5rem !important;
+      padding-right: 2rem !important;
+    }
+    .intro-scroll > section.intro-slide:first-child {
+      padding-top: 6rem !important;
+    }
+    .intro-scroll > section.intro-slide:last-child {
+      padding-bottom: 7.5rem !important;
     }
   }
 
-  /* Hide chrome while the inline booking calendar is active. The fixed logo
-     would otherwise scroll over the heading once the slide becomes scrollable
-     in booking mode. */
+  @media only screen and (min-width: 1136px) {
+    section.intro-slide {
+      padding-top: 5rem !important;
+      padding-bottom: 5rem !important;
+    }
+    .intro-scroll > section.intro-slide:first-child {
+      padding-top: 7rem !important;
+    }
+    .intro-scroll > section.intro-slide:last-child {
+      padding-bottom: 8.5rem !important;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    section.intro-slide {
+      padding-top: 6rem !important;
+      padding-bottom: 6rem !important;
+    }
+    .intro-scroll > section.intro-slide:first-child {
+      padding-top: 8rem !important;
+    }
+    .intro-scroll > section.intro-slide:last-child {
+      padding-bottom: 9.5rem !important;
+    }
+  }
+
+  /* Hide chrome while the inline booking calendar is active. */
   body.booking-active .slide-indicator,
-  body.booking-active .swipe-hint,
   body.booking-active .intro-nav-logo {
     display: none;
   }
@@ -190,7 +202,7 @@ const pageDescription =
 </style>
 
 <style>
-  /* ── Slide position indicator ── */
+  /* Section position indicator (fixed to left edge) */
   .slide-indicator {
     position: fixed;
     left: 0.25rem;
@@ -203,7 +215,6 @@ const pageDescription =
     gap: 0;
   }
 
-  /* Dot — default is hollow with dark green border */
   .slide-indicator__dot {
     width: 10px;
     height: 10px;
@@ -224,7 +235,6 @@ const pageDescription =
     background: rgba(26, 26, 26, 0.3);
   }
 
-  /* Line between dots — default is dark green at low opacity */
   .slide-indicator__line {
     width: 1.5px;
     height: 24px;
@@ -233,7 +243,6 @@ const pageDescription =
     transition: background 0.3s ease;
   }
 
-  /* Passed state — completed dots and lines become solid dark green */
   .slide-indicator__dot.is-passed {
     background: #1a1a1a;
     border-color: #1a1a1a;
@@ -243,7 +252,6 @@ const pageDescription =
     background: #1a1a1a;
   }
 
-  /* Active dot — solid dark green with pulse */
   .slide-indicator__dot.is-active {
     background: #1a1a1a;
     border-color: #1a1a1a;
@@ -291,78 +299,10 @@ const pageDescription =
   }
 </style>
 
-<style>
-  /* ── Swipe hint chevron ── */
-  .swipe-hint {
-    position: fixed;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    animation: swipe-bounce 1.5s ease-in-out infinite;
-    transition: opacity 0.4s ease;
-  }
-
-  .swipe-hint.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .swipe-hint__chevron {
-    display: block;
-    width: 14px;
-    height: 14px;
-    border-right: 2.5px solid #555555;
-    border-bottom: 2.5px solid #555555;
-    transform: rotate(45deg);
-    margin-top: -6px;
-  }
-
-  .swipe-hint__chevron:first-child {
-    margin-top: 0;
-    opacity: 0.4;
-  }
-
-  @keyframes swipe-bounce {
-    0%,
-    100% {
-      transform: translateX(-50%) translateY(0);
-    }
-    50% {
-      transform: translateX(-50%) translateY(8px);
-    }
-  }
-
-  @media only screen and (min-width: 600px) {
-    .swipe-hint__chevron {
-      width: 16px;
-      height: 16px;
-      border-right-width: 3px;
-      border-bottom-width: 3px;
-      margin-top: -7px;
-    }
-
-    .swipe-hint__chevron:first-child {
-      margin-top: 0;
-    }
-  }
-</style>
-
 <script is:inline>
   (function () {
-    // Scroll 1px to trigger Safari's bottom toolbar to minimize
-    setTimeout(function () {
-      window.scrollTo(0, 1);
-    }, 0);
-
-    const animatedSlides = {};
-
-    // ── Slide indicator logic ──
-    const totalSlides = document.querySelectorAll(".slide-indicator__dot").length;
+    const animatedSections = {};
+    let sections = [];
 
     function updateIndicator(activeIndex) {
       const dots = document.querySelectorAll(".slide-indicator__dot");
@@ -378,126 +318,101 @@ const pageDescription =
         line.classList.remove("is-passed");
         if (i < activeIndex) line.classList.add("is-passed");
       });
-
-      // Hide swipe hint on last slide
-      const hint = document.querySelector(".swipe-hint");
-      if (hint) {
-        if (activeIndex >= totalSlides - 1) {
-          hint.classList.add("is-hidden");
-        } else {
-          hint.classList.remove("is-hidden");
-        }
-      }
     }
 
-    function runSlideAnimation(index, swiperEl) {
-      if (animatedSlides[index]) return;
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
+    function runSectionAnimation(index, sectionEl) {
+      if (animatedSections[index]) return;
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+        window.addEventListener("gsapLoaded", function () {
+          runSectionAnimation(index, sectionEl);
+        });
+        return;
+      }
 
+      animatedSections[index] = true;
       const gsap = window.gsap;
-      const slideEl = swiperEl.slides[index];
-      if (!slideEl) return;
-
-      animatedSlides[index] = true;
-
-      const content = slideEl.querySelector(".intro-slide__content");
+      const content = sectionEl.querySelector(".intro-slide__content");
 
       if (content) {
         gsap.fromTo(
           content,
           { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
         );
       }
     }
 
-    function initSwiper() {
-      const swiperInstance = new Swiper(".intro-swiper", {
-        direction: "vertical",
-        speed: 600,
-        touchEventsTarget: "container",
-        mousewheel: {
-          sensitivity: 1,
-          thresholdDelta: 30,
-        },
-        keyboard: {
-          enabled: true,
-        },
-        on: {
-          init: function () {
-            // Animate first slide on load
-            updateIndicator(0);
-            if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-              runSlideAnimation(0, this);
-            } else {
-              window.addEventListener("gsapLoaded", () => {
-                runSlideAnimation(0, this);
-              });
-            }
-          },
-          slideChange: function () {
-            // Pause the founder video if the user has left its slide
-            const videoPlayer = document.getElementById("intro-mux-player");
-            if (videoPlayer && typeof videoPlayer.pause === "function" && !videoPlayer.paused) {
-              const activeSlide = this.slides[this.activeIndex];
-              if (!activeSlide || !activeSlide.contains(videoPlayer)) {
-                videoPlayer.pause();
-              }
-            }
-            updateIndicator(this.activeIndex);
-            if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-              runSlideAnimation(this.activeIndex, this);
-            } else {
-              window.addEventListener("gsapLoaded", () => {
-                runSlideAnimation(this.activeIndex, this);
-              });
-            }
-          },
-        },
+    function initScroll() {
+      sections = Array.from(document.querySelectorAll("section.intro-slide"));
+      sections.forEach(function (section, i) {
+        section.setAttribute("data-section-index", String(i));
       });
 
-      // Click chevron hint → go to next slide
-      var hint = document.querySelector(".swipe-hint");
-      if (hint) {
-        hint.style.cursor = "pointer";
-        hint.addEventListener("click", function () {
-          swiperInstance.slideNext();
-        });
-      }
-
-      // Click a dot → navigate to that slide
+      // Dot nav: click any dot to smooth-scroll to its section
       document.querySelectorAll(".slide-indicator__dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
-          const slideIndex = parseInt(dot.getAttribute("data-slide"), 10);
-          swiperInstance.slideTo(slideIndex);
+          const targetIndex = parseInt(dot.getAttribute("data-section"), 10);
+          const target = sections[targetIndex];
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
 
-      // When the CTA slide opens its inline calendar, lock the swiper so gestures
-      // don't fight with the calendar's internal scrolling.
+      const indicatorIo = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              const idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
+              updateIndicator(idx);
+            }
+          });
+        },
+        { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
+      );
+
+      const animIo = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              const idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
+              runSectionAnimation(idx, entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      sections.forEach(function (section) {
+        indicatorIo.observe(section);
+        animIo.observe(section);
+      });
+
+      if (sections[0]) runSectionAnimation(0, sections[0]);
+
+      // Pause the founder video when it scrolls out of view
+      const videoPlayer = document.getElementById("intro-mux-player");
+      if (videoPlayer && "IntersectionObserver" in window) {
+        const videoIo = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting && !videoPlayer.paused) videoPlayer.pause();
+            });
+          },
+          { threshold: 0 }
+        );
+        videoIo.observe(videoPlayer);
+      }
+
+      // The CTA section dispatches booking-mode-change when the inline calendar opens.
+      // Toggle the body class so the indicator + logo hide while booking.
       document.addEventListener("booking-mode-change", function (e) {
         const active = !!(e.detail && e.detail.active);
         if (active) {
           document.body.classList.add("booking-active");
-          swiperInstance.disable();
         } else {
           document.body.classList.remove("booking-active");
-          swiperInstance.enable();
         }
       });
     }
-
-    // Load Swiper JS from CDN
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
-    script.onload = function () {
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSwiper);
-      } else {
-        initSwiper();
-      }
-    };
-    document.head.appendChild(script);
 
     // Hide the Joe Robert caption once the user plays the video
     function setupFounderCaption() {
@@ -508,13 +423,18 @@ const pageDescription =
         caption.classList.add("is-hidden");
       });
     }
+
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", setupFounderCaption);
+      document.addEventListener("DOMContentLoaded", function () {
+        initScroll();
+        setupFounderCaption();
+      });
     } else {
+      initScroll();
       setupFounderCaption();
     }
 
-    // Load Splide JS from CDN
+    // Load Splide JS from CDN (for the real-estate carousel inside IntroRealEstateAssets)
     const splideScript = document.createElement("script");
     splideScript.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
     splideScript.onload = function () {
