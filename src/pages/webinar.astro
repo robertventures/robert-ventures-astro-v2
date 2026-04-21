@@ -1437,30 +1437,36 @@ try {
         { passive: true, capture: true }
       );
 
-      // Touch: let inner scroll win when not at top; give control back to Swiper at the top edge
+      // Touch: native scroll handles everything inside (swiper-no-swiping on the slide).
+      // Custom gesture: if user starts at the top and drags down past a threshold, go to prev slide.
+      let touchStartY = 0;
+      let touchStartScrollTop = 0;
+      let touchStartTime = 0;
+      const SWIPE_DISTANCE_THRESHOLD = 60;
+      const SWIPE_VELOCITY_THRESHOLD = 0.3; // px/ms
+
       scrollable.addEventListener(
         "touchstart",
-        function () {
-          if (!swiperInstance) return;
-          if (scrollable.scrollTop > 0) {
-            swiperInstance.allowTouchMove = false;
-          } else {
-            swiperInstance.allowTouchMove = true;
-          }
+        function (e) {
+          touchStartY = e.touches[0].clientY;
+          touchStartScrollTop = scrollable.scrollTop;
+          touchStartTime = Date.now();
         },
         { passive: true }
       );
+
       scrollable.addEventListener(
         "touchend",
-        function () {
-          if (swiperInstance) swiperInstance.allowTouchMove = true;
-        },
-        { passive: true }
-      );
-      scrollable.addEventListener(
-        "touchcancel",
-        function () {
-          if (swiperInstance) swiperInstance.allowTouchMove = true;
+        function (e) {
+          if (!swiperInstance) return;
+          if (touchStartScrollTop > 0) return; // only trigger when gesture started at the top
+          const endY = e.changedTouches[0].clientY;
+          const deltaY = endY - touchStartY;
+          const elapsed = Math.max(1, Date.now() - touchStartTime);
+          const velocity = deltaY / elapsed;
+          if (deltaY > SWIPE_DISTANCE_THRESHOLD || velocity > SWIPE_VELOCITY_THRESHOLD) {
+            swiperInstance.slidePrev();
+          }
         },
         { passive: true }
       );

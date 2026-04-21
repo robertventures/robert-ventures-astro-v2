@@ -3,7 +3,7 @@ import Image from "astro/components/Image.astro";
 import usFlag from "../../images/icons/usflag.png";
 ---
 
-<section class="wf-slide" id="wf-slide-1">
+<section class="wf-slide swiper-no-swiping" id="wf-slide-1">
   <div class="wf-slide__content">
     <div class="wf-slide__text">
       <h1 class="wf-slide__heading">
@@ -106,6 +106,7 @@ import usFlag from "../../images/icons/usflag.png";
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     position: relative;
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     margin: 0;
@@ -383,7 +384,7 @@ import usFlag from "../../images/icons/usflag.png";
   /* Medium: 600px+ */
   @media only screen and (min-width: 600px) {
     .wf-slide {
-      padding: 5rem 2rem 1.5rem;
+      padding: 7rem 2rem 1.5rem;
     }
 
     .wf-slide__content {
@@ -395,7 +396,7 @@ import usFlag from "../../images/icons/usflag.png";
     }
 
     .wf-slide__heading {
-      font-size: 3.25rem;
+      font-size: 2.75rem;
       line-height: 120%;
     }
 
@@ -406,12 +407,16 @@ import usFlag from "../../images/icons/usflag.png";
 
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
+    .wf-slide {
+      padding: 8rem 2rem 1.5rem;
+    }
+
     .wf-slide__content {
       max-width: 520px;
     }
 
     .wf-slide__heading {
-      font-size: 3.75rem;
+      font-size: 3.25rem;
     }
   }
 
