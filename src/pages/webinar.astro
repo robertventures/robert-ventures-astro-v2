@@ -454,8 +454,50 @@ try {
     }
 
     // ── Slide validation ──
-    function validateSlide(_index) {
-      // Validation disabled during testing — all slides pass freely
+    function validateSlide(index) {
+      if (index !== 2) return true;
+
+      const form = document.getElementById("wf-registration-form");
+      if (!form) return true;
+      const errorEl = document.querySelector("#wf-slide-1 .wf-slide__field-error");
+      const nameEl = form.querySelector("input[name='full_name']");
+      const emailEl = form.querySelector("input[name='email']");
+      const phoneEl = form.querySelector("input[name='phone_number']");
+      const investEl = document.getElementById("wf-invest-select");
+
+      const name = (nameEl && nameEl.value.trim()) || "";
+      const email = (emailEl && emailEl.value.trim()) || "";
+      const phoneDigits = phoneEl ? phoneEl.value.replace(/\D/g, "") : "";
+      const invest = (investEl && investEl.value) || "";
+
+      let firstInvalid = null;
+      let message = "";
+
+      if (!name || name.indexOf("@") !== -1) {
+        firstInvalid = nameEl;
+        message = "Please enter your full name.";
+      } else if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        firstInvalid = emailEl;
+        message = "Please enter a valid email address.";
+      } else if (phoneDigits.length !== 10) {
+        firstInvalid = phoneEl;
+        message = "Please enter a valid 10-digit phone number.";
+      } else if (!invest) {
+        firstInvalid = investEl;
+        message = "Please select how much you are looking to invest.";
+      }
+
+      if (firstInvalid) {
+        showError(errorEl, message);
+        try {
+          firstInvalid.focus({ preventScroll: true });
+        } catch (e) {
+          firstInvalid.focus();
+        }
+        return false;
+      }
+
+      hideError(errorEl);
       return true;
     }
 
