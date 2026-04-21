@@ -4,16 +4,19 @@
 
 <section class="intro-slide" id="intro-slide-5">
   <div class="intro-slide__content">
-    <h2 class="intro-slide__heading">Robert Ventures Bond Offerings</h2>
+    <h2 class="intro-slide__heading">Our fixed-rate options</h2>
+    <p class="intro-slide__subtitle">
+      Same fixed-rate contract. Two ways to structure your investment.
+    </p>
 
     <div class="intro-slide__bonds">
       <!-- 10% Bond — Featured -->
       <div class="intro-slide__bond intro-slide__bond--featured">
         <span class="intro-slide__bond-apy">10%</span>
         <span class="intro-slide__bond-label">Annual Returns</span>
-        <span class="intro-slide__bond-term">3 Year Minimum Commitment</span>
+        <span class="intro-slide__bond-term">3-year lock-in</span>
         <p class="intro-slide__bond-desc">
-          Higher returns and sustainable long-term capital growth.
+          Our highest rate. Built for investors committing long-term.
         </p>
         <div class="intro-slide__bond-features">
           <span class="intro-slide__bond-feature">Monthly payouts</span>
@@ -25,8 +28,8 @@
       <div class="intro-slide__bond">
         <span class="intro-slide__bond-apy">8%</span>
         <span class="intro-slide__bond-label">Annual Returns</span>
-        <span class="intro-slide__bond-term">1 Year Minimum Commitment</span>
-        <p class="intro-slide__bond-desc">Shorter commitment and quick access to capital.</p>
+        <span class="intro-slide__bond-term">1-year lock-in</span>
+        <p class="intro-slide__bond-desc">Shorter commitment, same fixed-rate contract.</p>
         <div class="intro-slide__bond-features">
           <span class="intro-slide__bond-feature">Monthly payouts</span>
           <span class="intro-slide__bond-feature">Compound returns</span>
@@ -35,8 +38,7 @@
     </div>
 
     <p class="intro-slide__footnote">
-      Your 1 or 3-year commitment is simply when your capital unlocks for withdrawal — your bond
-      continues earning until you decide to withdraw.
+      Your lock-in is when your capital unlocks. The bond keeps earning until you withdraw.
     </p>
   </div>
 </section>
@@ -60,7 +62,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     max-width: 600px;
     width: 100%;
     opacity: 0;
@@ -74,6 +76,19 @@
     line-height: 120%;
     text-align: center;
     margin: 0;
+  }
+
+  .intro-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .intro-slide__heading + .intro-slide__subtitle {
+    margin-top: -0.75rem;
   }
 
   .intro-slide__footnote {
@@ -95,7 +110,7 @@
   .intro-slide__bond {
     background: #ffffff;
     border-radius: 8px;
-    padding: 1.25rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,7 +125,7 @@
 
   .intro-slide__bond-apy {
     font-family: "Roboto Serif", serif;
-    font-size: 2.75rem;
+    font-size: 2.25rem;
     font-weight: 500;
     color: #1a1a1a;
     line-height: 100%;
@@ -149,7 +164,7 @@
     color: #555555;
     text-align: center;
     line-height: 150%;
-    margin: 0.5rem 0 0;
+    margin: 0.25rem 0 0;
   }
 
   .intro-slide__bond--featured .intro-slide__bond-desc {
@@ -182,6 +197,10 @@
   @media only screen and (min-width: 600px) {
     .intro-slide {
       padding: 0 2rem;
+    }
+
+    .intro-slide__content {
+      gap: 1.5rem;
     }
 
     .intro-slide__heading {

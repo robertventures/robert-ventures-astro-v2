@@ -1,0 +1,102 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Modal from "../components/Modal.astro";
+import FormWebinarV2 from "../components/FormWebinarV2.astro";
+
+import HeroboxWebinarV2 from "../sections/HeroboxWebinarV2.astro";
+import Featured from "../sections/webinar/Featured.astro";
+import ThesisPreviewWebinar from "../sections/webinar/ThesisPreviewWebinar.astro";
+import ReviewsV3 from "../sections/ReviewsV3.astro";
+import FAQ from "../sections/webinar/FAQ.astro";
+
+import FooterNew from "../components/FooterNew.astro";
+
+const pageTitle = "Investment Webinar - Learn About 10% APY Bonds | Robert Ventures";
+const pageDescription =
+  "Review our investor webinar presentation to learn more about our 8-10% annual interest rate corporate bonds.";
+
+export const prerender = false;
+
+// SSR: Fetch webinar data server-side to eliminate client-side waterfall
+// Instead of: HTML → JS → fetch(/api/webinar-data) → WebinarKit API
+// Now: server fetches during render, data arrives embedded in HTML
+let ssrWebinarData = null;
+try {
+  const scheduledWebinarId = "684ae034de7a164da41abe10";
+  const onDemandWebinarId = "696d0df144dee112a61d5db8";
+  const apiKey = import.meta.env.WEBINARKIT_API_KEY;
+
+  if (apiKey) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`https://webinarkit.com/api/webinar/dates/${scheduledWebinarId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+      redirect: "follow",
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (response.ok) {
+      const data = await response.json();
+      const filteredResults = data.results.filter(
+        (item: any) => item.id !== "instant" && !item.id.startsWith("jit_")
+      );
+      ssrWebinarData = {
+        results: filteredResults,
+        webinarIds: { scheduled: scheduledWebinarId, onDemand: onDemandWebinarId },
+        onDemandAvailable: true,
+      };
+    }
+  }
+} catch (e) {
+  // SSR fetch failed — form will fall back to client-side fetch
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={pageTitle}
+      description={pageDescription}
+      rtkCampaignId="697c996793ba48f6ba89582f"
+    />
+    <meta property="og:url" content="https://robertventures.com/webinar" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
+    <link rel="preconnect" href="https://inferred.litix.io" crossorigin />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+      is:inline></script>
+  </head>
+  <body>
+    {
+      ssrWebinarData && (
+        <script
+          is:inline
+          type="application/json"
+          id="ssr-webinar-data"
+          set:html={JSON.stringify(ssrWebinarData)}
+        />
+      )
+    }
+    <Header />
+    <HeroboxWebinarV2 />
+    <Featured />
+    <ThesisPreviewWebinar />
+    <ReviewsV3 />
+    <FAQ />
+    <FooterNew />
+
+    <Modal id="webinar-modal">
+      <FormWebinarV2 />
+    </Modal>
+  </body>
+</html>

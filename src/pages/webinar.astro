@@ -1,26 +1,17 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Modal from "../components/Modal.astro";
-import FormWebinarV2 from "../components/FormWebinarV2.astro";
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
+import WfLeadCapture from "../sections/webinar-funnel-v1-cd/WfLeadCapture.astro";
+import WfHero from "../sections/webinar-funnel-v1-cd/WfHero.astro";
+import WfFounderIntro from "../sections/webinar-funnel-v1-cd/WfFounderIntro.astro";
 
-import HeroboxWebinarV2 from "../sections/HeroboxWebinarV2.astro";
-import Featured from "../sections/webinar/Featured.astro";
-import ThesisPreviewWebinar from "../sections/webinar/ThesisPreviewWebinar.astro";
-import ReviewsV3 from "../sections/ReviewsV3.astro";
-import FAQ from "../sections/webinar/FAQ.astro";
-
-import FooterNew from "../components/FooterNew.astro";
-
-const pageTitle = "Investment Webinar - Learn About 10% APY Bonds | Robert Ventures";
+const pageTitle = "Learn More | Robert Ventures";
 const pageDescription =
-  "Review our investor webinar presentation to learn more about our 8-10% annual interest rate corporate bonds.";
+  "See how CD savers are moving into a fixed 8-10% yield built on real estate and digital assets.";
 
 export const prerender = false;
 
 // SSR: Fetch webinar data server-side to eliminate client-side waterfall
-// Instead of: HTML → JS → fetch(/api/webinar-data) → WebinarKit API
-// Now: server fetches during render, data arrives embedded in HTML
 let ssrWebinarData = null;
 try {
   const scheduledWebinarId = "684ae034de7a164da41abe10";
@@ -47,7 +38,7 @@ try {
       ssrWebinarData = {
         results: filteredResults,
         webinarIds: { scheduled: scheduledWebinarId, onDemand: onDemandWebinarId },
-        onDemandAvailable: true,
+        onDemandAvailable: false,
       };
     }
   }
@@ -64,17 +55,12 @@ try {
       description={pageDescription}
       rtkCampaignId="697c996793ba48f6ba89582f"
     />
-    <meta property="og:url" content="https://robertventures.com/webinar" />
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link
       rel="modulepreload"
       href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
     />
-    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
-    <link rel="preconnect" href="https://inferred.litix.io" crossorigin />
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
-      is:inline></script>
   </head>
   <body>
     {
@@ -87,16 +73,1316 @@ try {
         />
       )
     }
-    <Header />
-    <HeroboxWebinarV2 />
-    <Featured />
-    <ThesisPreviewWebinar />
-    <ReviewsV3 />
-    <FAQ />
-    <FooterNew />
 
-    <Modal id="webinar-modal">
-      <FormWebinarV2 />
-    </Modal>
+    <!-- Floating logo — always visible, links home -->
+    <a href="/" class="wf-nav-logo" aria-label="Back to Robert Ventures home">
+      <RvLogo />
+    </a>
+
+    <!-- Slide position indicator — dots + lines on left edge -->
+    <nav class="wf-indicator" aria-label="Slide navigation">
+      <button class="wf-indicator__dot is-active" data-slide="0" aria-label="Go to slide 1"
+      ></button>
+      <div class="wf-indicator__line"></div>
+      <button class="wf-indicator__dot" data-slide="1" aria-label="Go to slide 2"></button>
+      <div class="wf-indicator__line"></div>
+      <button class="wf-indicator__dot" data-slide="2" aria-label="Go to slide 3"></button>
+    </nav>
+
+    <form class="wf-form" id="wf-registration-form" novalidate>
+      <div class="swiper wf-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><WfHero /></div>
+          <div class="swiper-slide"><WfFounderIntro /></div>
+          <div class="swiper-slide"><WfLeadCapture /></div>
+        </div>
+      </div>
+    </form>
   </body>
 </html>
+
+<style is:global>
+  body {
+    background-color: #ffffff;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: calc(100vh + 1px);
+    overscroll-behavior: none;
+  }
+
+  .wf-form {
+    margin: 0;
+    padding: 0;
+  }
+
+  .wf-swiper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    touch-action: pan-x pinch-zoom;
+  }
+
+  .wf-swiper .swiper-slide {
+    height: 100svh;
+  }
+
+  section.wf-slide {
+    height: 100%;
+    margin: 0 !important;
+    border: none !important;
+    padding-left: 2rem !important;
+  }
+
+  @media only screen and (min-width: 600px) {
+    section.wf-slide {
+      padding-left: 2.5rem !important;
+    }
+  }
+</style>
+
+<style>
+  /* ── Floating logo ── */
+  .wf-nav-logo {
+    position: fixed;
+    top: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .wf-nav-logo:hover {
+    opacity: 1;
+  }
+
+  .wf-nav-logo :global(svg) {
+    height: 40px;
+    width: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .wf-nav-logo {
+      top: 1.5rem;
+    }
+
+    .wf-nav-logo :global(svg) {
+      height: 48px;
+    }
+  }
+</style>
+
+<style>
+  /* ── Slide position indicator ── */
+  .wf-indicator {
+    position: fixed;
+    left: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .wf-indicator__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid #1a1a1a;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .wf-indicator__dot:hover {
+    background: rgba(26, 26, 26, 0.3);
+  }
+
+  .wf-indicator__line {
+    width: 1.5px;
+    height: 24px;
+    background: rgba(26, 26, 26, 0.25);
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+
+  .wf-indicator__dot.is-passed {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  .wf-indicator__line.is-passed {
+    background: #1a1a1a;
+  }
+
+  .wf-indicator__dot.is-active {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    animation: wf-dot-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes wf-dot-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(26, 26, 26, 0);
+    }
+  }
+
+  @media only screen and (max-width: 479px) {
+    .wf-indicator {
+      left: 0.2rem;
+    }
+
+    .wf-indicator__dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .wf-indicator__line {
+      height: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .wf-indicator {
+      left: 0.3rem;
+    }
+
+    .wf-indicator__dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .wf-indicator__line {
+      height: 28px;
+    }
+  }
+</style>
+
+<style>
+  /* ── Swipe hint chevron ── */
+  .wf-hint {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    animation: wf-bounce 1.5s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+  }
+
+  .wf-hint.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .wf-hint__chevron {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-right: 2.5px solid #555555;
+    border-bottom: 2.5px solid #555555;
+    transform: rotate(45deg);
+    margin-top: -6px;
+  }
+
+  .wf-hint__chevron:first-child {
+    margin-top: 0;
+    opacity: 0.4;
+  }
+
+  @keyframes wf-bounce {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(8px);
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .wf-hint__chevron {
+      width: 16px;
+      height: 16px;
+      border-right-width: 3px;
+      border-bottom-width: 3px;
+      margin-top: -7px;
+    }
+
+    .wf-hint__chevron:first-child {
+      margin-top: 0;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // Scroll 1px to trigger Safari's bottom toolbar to minimize
+    setTimeout(function () {
+      window.scrollTo(0, 1);
+    }, 0);
+
+    const animatedSlides = {};
+    const totalSlides = 3;
+    let swiperInstance = null;
+    let _isTransitioning = false;
+
+    // Slides where forward scrolling is locked — user must press a button to advance
+    // Index 2 = form (submit triggers redirect)
+    const lockedSlides = { 2: true };
+
+    function updateSlideScrollLock(index) {
+      if (!swiperInstance) return;
+      swiperInstance.allowSlideNext = !lockedSlides[index];
+    }
+
+    // ── Indicator logic ──
+    function updateIndicator(activeIndex) {
+      const dots = document.querySelectorAll(".wf-indicator__dot");
+      const lines = document.querySelectorAll(".wf-indicator__line");
+
+      dots.forEach(function (dot, i) {
+        dot.classList.remove("is-active", "is-passed");
+        if (i < activeIndex) dot.classList.add("is-passed");
+        if (i === activeIndex) dot.classList.add("is-active");
+      });
+
+      lines.forEach(function (line, i) {
+        line.classList.remove("is-passed");
+        if (i < activeIndex) line.classList.add("is-passed");
+      });
+
+      const hint = document.querySelector(".wf-hint");
+      if (hint) {
+        if (activeIndex >= totalSlides - 1) {
+          hint.classList.add("is-hidden");
+        } else {
+          hint.classList.remove("is-hidden");
+        }
+      }
+    }
+
+    // ── GSAP animations ──
+    function runSlideAnimation(index, swiper) {
+      if (animatedSlides[index]) return;
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
+
+      const gsap = window.gsap;
+      const slideEl = swiper.slides[index];
+      if (!slideEl) return;
+
+      animatedSlides[index] = true;
+
+      if (index === 0) {
+        // Intro slide: content fade-in + underline grow
+        const introContent = slideEl.querySelector(".wf-slide__content");
+        const introUnderline = slideEl.querySelector(".wf-slide__underline");
+        if (introContent) {
+          const introTl = gsap.timeline({ delay: 0.2 });
+          introTl.fromTo(
+            introContent,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          );
+          if (introUnderline) {
+            introTl.fromTo(
+              introUnderline,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.6, ease: "power2.out" },
+              "-=0.2"
+            );
+          }
+        }
+      } else if (index === 2) {
+        // Slide 2 (form): text fade-in + underline animation
+        const text = slideEl.querySelector(".wf-slide__text");
+        const underline = slideEl.querySelector(".wf-slide__underline");
+        if (text) {
+          const tl = gsap.timeline({ delay: 0.3 });
+          tl.fromTo(
+            text,
+            { opacity: 0, y: 60 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+          );
+          if (underline) {
+            tl.fromTo(
+              underline,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.6, ease: "power2.out" },
+              "-=0.2"
+            );
+          }
+        }
+        // Also animate the fields below the text
+        const fields = slideEl.querySelector(".wf-slide__fields");
+        if (fields) {
+          gsap.fromTo(
+            fields,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.8 }
+          );
+        }
+      } else {
+        const content = slideEl.querySelector(".wf-slide__content");
+        if (content) {
+          gsap.fromTo(
+            content,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.2 }
+          );
+        }
+      }
+    }
+
+    // ── Slide validation ──
+    function validateSlide(_index) {
+      // Validation disabled during testing — all slides pass freely
+      return true;
+    }
+
+    function showError(el, msg) {
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = "block";
+    }
+
+    function hideError(el) {
+      if (!el) return;
+      el.textContent = "";
+      el.style.display = "none";
+    }
+
+    // ── Continue buttons ──
+    function setupContinueButtons() {
+      document.querySelectorAll("[data-next-slide]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const nextSlide = parseInt(btn.getAttribute("data-next-slide"), 10);
+          const currentSlide = swiperInstance ? swiperInstance.activeIndex : nextSlide - 1;
+          if (validateSlide(currentSlide) && swiperInstance) {
+            _isTransitioning = true;
+            swiperInstance.allowSlideNext = true;
+            swiperInstance.slideTo(nextSlide);
+          }
+        });
+      });
+    }
+
+    // ── Phone formatting ──
+    function setupPhoneFormatting() {
+      const phoneInputs = document.querySelectorAll("input[name='phone_number']");
+      phoneInputs.forEach(function (input) {
+        input.addEventListener("input", function (e) {
+          const target = e.target;
+          let digits = target.value.replace(/\D/g, "");
+          if (digits.length > 10) digits = digits.slice(0, 10);
+          let formatted = "";
+          if (digits.length > 0) {
+            if (digits.length <= 3) {
+              formatted = "(" + digits;
+            } else if (digits.length <= 6) {
+              formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+            } else {
+              formatted =
+                "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+            }
+          }
+          target.value = formatted;
+        });
+
+        input.addEventListener("keypress", function (e) {
+          if (!/[0-9]/.test(e.key)) e.preventDefault();
+        });
+
+        input.addEventListener("paste", function (e) {
+          e.preventDefault();
+          var clipboardData = e.clipboardData || /** @type {any} */ (window).clipboardData;
+          const pastedText = clipboardData.getData("text");
+          const digits = pastedText.replace(/\D/g, "").slice(0, 10);
+          let formatted = "";
+          if (digits.length > 0) {
+            if (digits.length <= 3) {
+              formatted = "(" + digits;
+            } else if (digits.length <= 6) {
+              formatted = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+            } else {
+              formatted =
+                "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+            }
+          }
+          e.target.value = formatted;
+        });
+      });
+    }
+
+    // ── Webinar data loading ──
+    let _webinarData = null;
+
+    function loadWebinarData() {
+      // Try SSR-embedded data first
+      const ssrEl = document.getElementById("ssr-webinar-data");
+      if (ssrEl) {
+        try {
+          const ssrData = JSON.parse(ssrEl.textContent || "");
+          if (ssrData && ssrData.results) {
+            _webinarData = ssrData;
+            populateSessionsDropdown(ssrData);
+            return;
+          }
+        } catch (e) {
+          // Fall through to client fetch
+        }
+      }
+
+      // Fallback: client-side fetch
+      fetch("/api/webinar-data", { cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Failed to fetch");
+          return res.json();
+        })
+        .then(function (data) {
+          _webinarData = data;
+          populateSessionsDropdown(data);
+        })
+        .catch(function (err) {
+          console.error("Failed to load webinar data:", err);
+        });
+    }
+
+    function populateSessionsDropdown(data) {
+      const hiddenInput = document.getElementById("wf-session-value");
+      if (!hiddenInput) return;
+
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
+
+      // Parse all ongoing sessions and compute their next dates
+      const sessions = data.results.filter(function (item) {
+        try {
+          const parsed = JSON.parse(item.id);
+          return parsed && parsed.type === "ongoing";
+        } catch (e) {
+          return false;
+        }
+      });
+
+      const sessionsWithDates = sessions
+        .map(function (session) {
+          try {
+            const details = JSON.parse(session.id);
+            const nextDate = session.date
+              ? new Date(session.date)
+              : calculateNextSessionDate(details);
+            return { session: session, details: details, nextDate: nextDate };
+          } catch (e) {
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .sort(function (a, b) {
+          return a.nextDate.getTime() - b.nextDate.getTime();
+        });
+
+      // Find the first session that falls on a Sunday
+      let sundaySession = null;
+      for (let i = 0; i < sessionsWithDates.length; i++) {
+        if (sessionsWithDates[i].nextDate.getDay() === 0) {
+          sundaySession = sessionsWithDates[i];
+          break;
+        }
+      }
+
+      let nextDate, sessionId, originalTimezone;
+
+      if (sundaySession) {
+        nextDate = sundaySession.nextDate;
+        sessionId = sundaySession.session.id;
+        originalTimezone = sundaySession.details.timeZone || "America/New_York";
+      } else {
+        // No Sunday session in API data — calculate the next Sunday
+        const fallbackDetails = {
+          type: "ongoing",
+          day: "Sunday",
+          time: "2:00",
+          period: "PM",
+          timeZone: "America/New_York",
+        };
+        nextDate = calculateNextSessionDate(fallbackDetails);
+        sessionId = JSON.stringify(fallbackDetails);
+        originalTimezone = fallbackDetails.timeZone;
+      }
+
+      // Populate hidden input with all required data-* attributes
+      hiddenInput.value = sessionId;
+      hiddenInput.setAttribute("data-date", nextDate.toISOString());
+      hiddenInput.setAttribute("data-timezone", userTz);
+      hiddenInput.setAttribute("data-original-timezone", originalTimezone);
+      hiddenInput.setAttribute("data-is-instant", "false");
+      hiddenInput.setAttribute("data-webinar-id", scheduledWebinarId);
+    }
+
+    function calculateNextSessionDate(details) {
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const targetDay = weekdays.indexOf(details.day);
+      const timeParts = details.time.split(":").map(Number);
+      let hour24 = timeParts[0];
+      const minutes = timeParts[1];
+      if (details.period.toUpperCase() === "PM" && hour24 < 12) hour24 += 12;
+      if (details.period.toUpperCase() === "AM" && hour24 === 12) hour24 = 0;
+
+      const now = new Date();
+      const currentTzTime = new Date(
+        now.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
+      );
+      const currentDay = currentTzTime.getDay();
+      let daysToAdd = (targetDay - currentDay + 7) % 7;
+
+      if (daysToAdd === 0) {
+        const currentHour = currentTzTime.getHours();
+        const currentMinute = currentTzTime.getMinutes();
+        if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
+          daysToAdd = 7;
+        }
+      }
+
+      const sessionDate = new Date(currentTzTime);
+      sessionDate.setDate(sessionDate.getDate() + daysToAdd);
+      sessionDate.setHours(hour24, minutes, 0, 0);
+
+      const tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+      const tzOffset =
+        new Date(
+          tempDate.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
+        ).getTime() - tempDate.getTime();
+      return new Date(sessionDate.getTime() - tzOffset);
+    }
+
+    function _formatTimeLeft(targetDate) {
+      const now = new Date();
+      let diff = targetDate.getTime() - now.getTime();
+      if (diff <= 0) return "(Started)";
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * (1000 * 60 * 60 * 24);
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * (1000 * 60 * 60);
+      const mins = Math.floor(diff / (1000 * 60));
+
+      const result = [];
+      if (days > 0) result.push(days + (days === 1 ? " day" : " days"));
+      if (hours > 0) result.push(hours + (hours === 1 ? " hour" : " hours"));
+      if (mins > 0 && days === 0) result.push(mins + (mins === 1 ? " minute" : " minutes"));
+
+      return result.length ? "In " + result.join(" ") : "Soon";
+    }
+
+    // ── Analytics helpers ──
+    function _triggerEvent(eventName, clarityEventName, eventData) {
+      eventData = eventData || {};
+      if (window.dataLayer) {
+        window.dataLayer.push(Object.assign({ event: eventName }, eventData));
+      }
+      if (typeof window.clarity === "function") {
+        Object.keys(eventData).forEach(function (key) {
+          window.clarity("set", key, eventData[key]);
+        });
+        window.clarity("event", clarityEventName);
+      }
+    }
+
+    function getESTTimestamp(userTimezone) {
+      userTimezone = userTimezone || "America/New_York";
+      const now = new Date();
+      const userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
+      const utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
+      const offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
+      const offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
+      const offsetSign = offsetMinutes >= 0 ? "+" : "-";
+      const year = userLocalTime.getFullYear();
+      const month = String(userLocalTime.getMonth() + 1).padStart(2, "0");
+      const day = String(userLocalTime.getDate()).padStart(2, "0");
+      const hours = String(userLocalTime.getHours()).padStart(2, "0");
+      const mins = String(userLocalTime.getMinutes()).padStart(2, "0");
+      const secs = String(userLocalTime.getSeconds()).padStart(2, "0");
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        "T" +
+        hours +
+        ":" +
+        mins +
+        ":" +
+        secs +
+        offsetSign +
+        "0" +
+        offsetHours +
+        ":00"
+      );
+    }
+
+    function getCookie(name) {
+      try {
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
+        if (parts.length === 2) {
+          const raw = parts.pop().split(";").shift();
+          try {
+            return decodeURIComponent(raw);
+          } catch (e) {
+            return raw;
+          }
+        }
+      } catch (e) {}
+      return undefined;
+    }
+
+    function getRtkClickId() {
+      if (typeof window.rtkClickID !== "undefined" && window.rtkClickID) return window.rtkClickID;
+      const cookieName = "rtkclickid-store";
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(cookieName + "=")) return cookie.substring(cookieName.length + 1);
+      }
+      const stored = getCookie("rtk_click_id");
+      if (stored) return stored;
+      return null;
+    }
+
+    function setRtkClickIdField(value) {
+      document.querySelectorAll("input[name='rtk_click_id']").forEach(function (input) {
+        input.value = value || "";
+      });
+      if (value) {
+        try {
+          document.cookie =
+            "rtk_click_id=" +
+            encodeURIComponent(value) +
+            "; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax";
+        } catch (e) {}
+      }
+    }
+
+    function captureCmpid() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const cmpid = urlParams.get("cmpid");
+        if (cmpid) {
+          document.cookie =
+            "cmpid=" +
+            encodeURIComponent(cmpid) +
+            "; domain=.robertventures.com; path=/; max-age=2592000; SameSite=Lax";
+        }
+      } catch (e) {}
+    }
+
+    function initializeRtkClickIdCapture() {
+      const immediate = getRtkClickId();
+      if (immediate) {
+        setRtkClickIdField(immediate);
+        return;
+      }
+      const maxAttempts = 30;
+      let attempts = 0;
+      const interval = setInterval(function () {
+        attempts++;
+        const clickId = getRtkClickId();
+        if (clickId || attempts >= maxAttempts) {
+          setRtkClickIdField(clickId);
+          clearInterval(interval);
+        }
+      }, 500);
+    }
+
+    function getFbp() {
+      return getCookie("_fbp");
+    }
+
+    function getFbc() {
+      const fbcCookie = getCookie("_fbc");
+      if (fbcCookie) return fbcCookie;
+      try {
+        const url = new URL(window.location.href);
+        const fbclid = url.searchParams.get("fbclid");
+        if (fbclid) {
+          const ts = Math.floor(Date.now() / 1000);
+          return "fb.1." + ts + "." + fbclid;
+        }
+      } catch (e) {}
+      return undefined;
+    }
+
+    function generateEventId() {
+      try {
+        const buf = new Uint32Array(2);
+        crypto.getRandomValues(buf);
+        return (
+          "rv_reg_" + Date.now().toString(36) + "_" + buf[0].toString(36) + buf[1].toString(36)
+        );
+      } catch (e) {
+        return "rv_reg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+      }
+    }
+
+    function getFullDateString(isoDateUTC, sessionTimeZone) {
+      const date = new Date(isoDateUTC);
+      return date.toLocaleString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: sessionTimeZone,
+        timeZoneName: "short",
+      });
+    }
+
+    function getLocalDateTimeString(isoDateUTC, userTimeZone) {
+      const date = new Date(isoDateUTC);
+      const datePart = date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        timeZone: userTimeZone,
+      });
+      const timePart = date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: userTimeZone,
+      });
+      return datePart + " at " + timePart;
+    }
+
+    function buildGoogleCalendarUrl(isoDateUTC) {
+      const startDate = new Date(isoDateUTC);
+      const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
+      function fmt(d) {
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const dy = String(d.getUTCDate()).padStart(2, "0");
+        const h = String(d.getUTCHours()).padStart(2, "0");
+        const mi = String(d.getUTCMinutes()).padStart(2, "0");
+        const s = String(d.getUTCSeconds()).padStart(2, "0");
+        return y + m + dy + "T" + h + mi + s + "Z";
+      }
+      return (
+        "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Robert+Ventures+Investment+Webinar&dates=" +
+        fmt(startDate) +
+        "/" +
+        fmt(endDate) +
+        "&details=Join+us+live+at+robertventures.com/webinar"
+      );
+    }
+
+    function detectDeviceFromUA(ua) {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+      if (!isMobile) return "desktop";
+      if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+      return "android";
+    }
+
+    // ── Form submission ──
+    function setupFormSubmission() {
+      const form = document.getElementById("wf-registration-form");
+      if (!form) return;
+
+      // Track form started (first interaction)
+      let formStartedFired = false;
+      form.addEventListener("focusin", function (e) {
+        if (formStartedFired) return;
+        const target = e.target;
+        if (target.tagName === "INPUT" || target.tagName === "SELECT") {
+          formStartedFired = true;
+          if (window.dataLayer) window.dataLayer.push({ event: "webinar_form_started" });
+          if (typeof window.clarity === "function") window.clarity("event", "webinarFormStarted");
+          if (window.posthogTrack) window.posthogTrack("webinar_form_started");
+        }
+      });
+
+      // Invest intent tracking is handled by setupAmountButtons()
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const selectEl = document.getElementById("wf-session-value");
+        const submitButton = form.querySelector("button[type='submit']");
+        const buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
+        const loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
+        const errorEl = document.querySelector("#wf-slide-1 .wf-slide__field-error");
+
+        if (!selectEl || !selectEl.value) {
+          showError(errorEl, "Session unavailable. Please refresh the page.");
+          return;
+        }
+
+        // Validate all slides before submitting
+        for (let i = 0; i < 3; i++) {
+          if (!validateSlide(i)) {
+            if (swiperInstance) swiperInstance.slideTo(i);
+            return;
+          }
+        }
+
+        hideError(errorEl);
+        if (buttonText) buttonText.style.display = "none";
+        if (loader) loader.style.display = "inline-block";
+        if (submitButton) submitButton.disabled = true;
+
+        // PostHog: form submitted
+        // selectEl is the hidden input with data attrs set by session button click
+        const isInstantAtSubmit = selectEl
+          ? selectEl.getAttribute("data-is-instant") === "true"
+          : false;
+        if (window.posthogTrack) {
+          window.posthogTrack("webinar_form_submitted", {
+            invest_intent: document.getElementById("wf-invest-select")
+              ? document.getElementById("wf-invest-select").value
+              : "",
+            session_type: isInstantAtSubmit ? "on_demand" : "live",
+          });
+        }
+
+        const formData = new FormData(form);
+        // selectEl IS the hidden input element — it holds all session data attributes directly
+        const selectedOption = selectEl;
+        const isInstant = selectedOption
+          ? selectedOption.getAttribute("data-is-instant") === "true"
+          : false;
+
+        let isoDateUTC, sessionValue, sessionDetails;
+        if (isInstant) {
+          isoDateUTC = "instant";
+          sessionValue = "instant";
+          sessionDetails = {
+            type: "instant",
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          };
+        } else {
+          isoDateUTC = selectedOption ? selectedOption.getAttribute("data-date") || "" : "";
+          sessionValue = selectedOption ? selectedOption.value : "";
+          if (!isoDateUTC || !sessionValue) {
+            showError(errorEl, "Invalid session data.");
+            resetForm(buttonText, loader, submitButton);
+            return;
+          }
+          try {
+            sessionDetails = JSON.parse(sessionValue);
+          } catch (err) {
+            showError(errorEl, "Invalid session format.");
+            resetForm(buttonText, loader, submitButton);
+            return;
+          }
+        }
+
+        // Persist invest intent
+        const selectedInvest = formData.get("invest_intent") || "";
+        try {
+          localStorage.setItem("invest_intent", selectedInvest);
+        } catch (e) {}
+
+        // UTM params
+        const baseUtmParams = [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_content",
+          "utm_term",
+          "utm_id",
+          "utm_adgroup",
+        ];
+        const urlParams = new URLSearchParams(window.location.search);
+        const utmParamSet = new Set(baseUtmParams);
+        urlParams.forEach(function (_v, key) {
+          if (key.startsWith("utm_")) utmParamSet.add(key);
+        });
+        const utmData = {};
+        utmParamSet.forEach(function (param) {
+          const val = urlParams.get(param) || getCookie(param);
+          if (val) utmData[param] = val;
+        });
+
+        // Attribution fields
+        const fbAttribution = {
+          fb_ad_id: getCookie("fb_ad_id"),
+          fb_adset_id: getCookie("fb_adset_id"),
+          fb_placement: getCookie("fb_placement"),
+          fb_site_source: getCookie("fb_site_source"),
+        };
+        const googleAttribution = {
+          google_matchtype: getCookie("google_matchtype"),
+          google_adgroup_id: getCookie("google_adgroup_id"),
+          google_creative_id: getCookie("google_creative_id"),
+          google_campaign_id: getCookie("google_campaign_id"),
+          google_device: getCookie("google_device"),
+          google_ad_position: getCookie("google_ad_position"),
+          google_network: getCookie("google_network"),
+          google_placement: getCookie("google_placement"),
+          wbraid: getCookie("wbraid"),
+          gbraid: getCookie("gbraid"),
+        };
+        const gclid = urlParams.get("gclid") || getCookie("gclid");
+        let deviceType;
+        try {
+          deviceType = localStorage.getItem("device_type");
+        } catch (e) {}
+        if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
+        const utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
+        const webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
+        const webinarId = selectedOption ? selectedOption.getAttribute("data-webinar-id") || "" : "";
+        const rtkClickId = getRtkClickId();
+        setRtkClickIdField(rtkClickId);
+
+        const payload = {
+          session: isInstant ? "instant" : sessionDetails.id,
+          name: formData.get("full_name"),
+          email: formData.get("email"),
+          phone_number: (function () {
+            const v = formData.get("phone_number");
+            return typeof v === "string" ? v.replace(/\D/g, "") : "";
+          })(),
+          invest_intent: formData.get("invest_intent"),
+          company: formData.get("company"),
+          date: isoDateUTC,
+          fullDate: isInstant
+            ? "Watch Now - On Demand"
+            : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+          utm: utmData,
+          gclid: gclid || undefined,
+          utm_campaign: utmCampaignTop || undefined,
+          webinar_sign_up_date: getESTTimestamp(
+            selectedOption ? selectedOption.getAttribute("data-timezone") : null
+          ),
+          user_timezone: selectedOption ? selectedOption.getAttribute("data-timezone") : "",
+          webinar_datetime_user_tz: isInstant
+            ? "Watch Now - On Demand"
+            : getLocalDateTimeString(
+                isoDateUTC,
+                selectedOption ? selectedOption.getAttribute("data-timezone") : "America/New_York"
+              ),
+          device_type: deviceType || undefined,
+          webinar_test: "webinar-ux_funnel-v1-cd",
+          webinar_calendar_url: webinarCalendarUrl,
+          event_id: generateEventId(),
+          fbp: getFbp(),
+          fbc: getFbc(),
+          is_instant: isInstant,
+          webinar_id: webinarId,
+          rtk_click_id: rtkClickId || undefined,
+          cmpid: getCookie("cmpid"),
+          fb_ad_id: fbAttribution.fb_ad_id,
+          fb_adset_id: fbAttribution.fb_adset_id,
+          fb_placement: fbAttribution.fb_placement,
+          fb_site_source: fbAttribution.fb_site_source,
+          google_matchtype: googleAttribution.google_matchtype,
+          google_adgroup_id: googleAttribution.google_adgroup_id,
+          google_creative_id: googleAttribution.google_creative_id,
+          google_campaign_id: googleAttribution.google_campaign_id,
+          google_device: googleAttribution.google_device,
+          google_ad_position: googleAttribution.google_ad_position,
+          google_network: googleAttribution.google_network,
+          google_placement: googleAttribution.google_placement,
+          wbraid: googleAttribution.wbraid,
+          gbraid: googleAttribution.gbraid,
+        };
+
+        localStorage.setItem(
+          "webinar_sign_up_date",
+          getESTTimestamp(selectedOption ? selectedOption.getAttribute("data-timezone") : null)
+        );
+
+        // TEST MODE: Log payload but do NOT send to GHL/WebinarKit
+        // Remove this block and uncomment the real fetch when going live
+        console.log("🧪 TEST MODE — payload captured (not sent to API):", payload);
+        console.table({
+          name: payload.name,
+          email: payload.email,
+          phone: payload.phone_number,
+          invest_intent: payload.invest_intent,
+          session: payload.is_instant ? "On Demand" : payload.date,
+        });
+
+        // Simulate success after a short delay, then redirect to presentation
+        // NOTE: /introduction-v2-cd is the intended target for the CD campaign.
+        // It does not exist yet — build the CD-variant presentation as the next step.
+        // Until then this will 404. Swap to /introduction-v2 temporarily if you need the flow end-to-end.
+        setTimeout(function () {
+          resetForm(buttonText, loader, submitButton);
+          window.location.href = "/introduction-v2-cd";
+        }, 800);
+      });
+    }
+
+    function resetForm(buttonText, loader, submitButton) {
+      if (buttonText) buttonText.style.display = "";
+      if (loader) loader.style.display = "none";
+      if (submitButton) submitButton.disabled = false;
+    }
+
+    // ── Swiper init ──
+    function initSwiper() {
+      swiperInstance = new Swiper(".wf-swiper", {
+        direction: "vertical",
+        speed: 600,
+        touchEventsTarget: "container",
+        touchStartPreventDefault: false,
+        allowTouchMove: true,
+        mousewheel: {
+          forceToAxis: true,
+          thresholdDelta: 30,
+        },
+        keyboard: {
+          enabled: true,
+        },
+        on: {
+          init: function () {
+            updateIndicator(0);
+            updateSlideScrollLock(0);
+            if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+              runSlideAnimation(0, this);
+            } else {
+              const self = this;
+              window.addEventListener("gsapLoaded", function () {
+                runSlideAnimation(0, self);
+              });
+            }
+          },
+          slideChangeTransitionStart: function () {
+            _isTransitioning = true;
+          },
+          slideChangeTransitionEnd: function () {
+            _isTransitioning = false;
+          },
+          slideChange: function () {
+            updateIndicator(this.activeIndex);
+            updateSlideScrollLock(this.activeIndex);
+
+            // Pause video if user leaves the video slide
+            if (this.activeIndex !== 1) {
+              const videoPlayer = document.getElementById("wf-mux-player");
+              if (videoPlayer && !videoPlayer.paused) {
+                videoPlayer.pause();
+              }
+            }
+
+            if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+              runSlideAnimation(this.activeIndex, this);
+            } else {
+              const self = this;
+              window.addEventListener("gsapLoaded", function () {
+                runSlideAnimation(self.activeIndex, self);
+              });
+            }
+          },
+        },
+      });
+
+      // Dot navigation — only allow going backward
+      document.querySelectorAll(".wf-indicator__dot").forEach(function (dot) {
+        dot.addEventListener("click", function () {
+          const targetSlide = parseInt(dot.getAttribute("data-slide"), 10);
+          const currentSlide = swiperInstance.activeIndex;
+          if (targetSlide < currentSlide) {
+            swiperInstance.allowSlideNext = true;
+            swiperInstance.slideTo(targetSlide);
+          }
+        });
+      });
+    }
+
+    // ── Invest dropdown ──
+    function setupInvestDropdown() {
+      const investSelect = document.getElementById("wf-invest-select");
+      if (!investSelect) return;
+      investSelect.selectedIndex = 0;
+      investSelect.addEventListener("change", function () {
+        investSelect.classList.add("has-value");
+      });
+    }
+
+    // ── Mux Video analytics ──
+    function setupMuxAnalytics() {
+      const player = document.getElementById("wf-mux-player");
+      const caption = document.querySelector(".wf-slide__photo-caption");
+      if (!player) return;
+
+      let lastReportedProgress = 0;
+      let totalWatchTime = 0;
+      let lastTimeUpdate = 0;
+      let playCount = 0;
+
+      // Play event
+      player.addEventListener("play", function () {
+        playCount++;
+        if (caption) caption.classList.add("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "wf-intro-joe-robert",
+            play_count: playCount,
+            is_first_play: playCount === 1,
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      });
+
+      // Pause event (ignore when video ends naturally)
+      player.addEventListener("pause", function () {
+        if (player.ended) return;
+
+        if (caption) caption.classList.remove("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_pause", {
+            video_id: "wf-intro-joe-robert",
+            current_time: Math.round(player.currentTime || 0),
+            duration: Math.round(player.duration || 0),
+            percent_watched: player.duration
+              ? Math.round((player.currentTime / player.duration) * 100)
+              : 0,
+            total_watch_time: Math.round(totalWatchTime),
+          });
+        }
+      });
+
+      // Ended event
+      player.addEventListener("ended", function () {
+        if (caption) caption.classList.remove("is-hidden");
+
+        if (window.posthogTrack) {
+          window.posthogTrack("video_completed", {
+            video_id: "wf-intro-joe-robert",
+            duration: Math.round(player.duration || 0),
+            total_watch_time: Math.round(totalWatchTime),
+          });
+        }
+      });
+
+      // Timeupdate — track cumulative watch time and milestone progress
+      player.addEventListener("timeupdate", function () {
+        const now = Date.now();
+        if (lastTimeUpdate && now - lastTimeUpdate < 2000) {
+          totalWatchTime += (now - lastTimeUpdate) / 1000;
+        }
+        lastTimeUpdate = now;
+
+        if (!player.duration) return;
+        const pct = Math.round((player.currentTime / player.duration) * 100);
+        const milestones = [25, 50, 75, 100];
+        for (let i = 0; i < milestones.length; i++) {
+          if (pct >= milestones[i] && lastReportedProgress < milestones[i]) {
+            lastReportedProgress = milestones[i];
+            if (window.posthogTrack) {
+              window.posthogTrack("video_progress", {
+                video_id: "wf-intro-joe-robert",
+                milestone: milestones[i],
+                current_time: Math.round(player.currentTime),
+                duration: Math.round(player.duration),
+                total_watch_time: Math.round(totalWatchTime),
+              });
+            }
+          }
+        }
+      });
+
+      // Error handling
+      player.addEventListener("error", function () {
+        if (window.posthogTrack) {
+          window.posthogTrack("video_error", {
+            video_id: "wf-intro-joe-robert",
+          });
+        }
+      });
+    }
+
+    // ── Mux Video preloading ──
+    function setupMuxPreloading() {
+      const player = document.getElementById("wf-mux-player");
+      if (!player) return;
+
+      // HTML starts with preload="metadata" (immediate).
+      // After page fully loads, switch to "auto" to buffer the full video.
+      if (document.readyState === "complete") {
+        player.setAttribute("preload", "auto");
+      } else {
+        window.addEventListener("load", function () {
+          player.setAttribute("preload", "auto");
+        });
+      }
+    }
+
+    // ── Boot ──
+    function boot() {
+      captureCmpid();
+      initializeRtkClickIdCapture();
+      setupPhoneFormatting();
+      setupContinueButtons();
+      setupInvestDropdown();
+      loadWebinarData();
+      setupFormSubmission();
+      setupMuxPreloading();
+      setupMuxAnalytics();
+
+      // Refresh webinar data every 5 minutes
+      setInterval(
+        function () {
+          fetch("/api/webinar-data", { cache: "no-store" })
+            .then(function (res) {
+              if (res.ok) return res.json();
+            })
+            .then(function (data) {
+              if (data) {
+                _webinarData = data;
+                populateSessionsDropdown(data);
+              }
+            })
+            .catch(function () {});
+        },
+        5 * 60 * 1000
+      );
+    }
+
+    // Load Mux Player from CDN (module script, non-blocking)
+    const muxScript = document.createElement("script");
+    muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+    muxScript.type = "module";
+    document.head.appendChild(muxScript);
+
+    // Load Swiper from CDN
+    const swiperScript = document.createElement("script");
+    swiperScript.src = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
+    swiperScript.onload = function () {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
+          initSwiper();
+          boot();
+        });
+      } else {
+        initSwiper();
+        boot();
+      }
+    };
+    document.head.appendChild(swiperScript);
+  })();
+</script>
