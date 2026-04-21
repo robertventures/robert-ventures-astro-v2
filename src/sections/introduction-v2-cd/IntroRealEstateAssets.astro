@@ -24,7 +24,7 @@ const widths = [600, 1000, 1400];
 
 <section class="intro-slide" id="intro-slide-4">
   <div class="intro-slide__content">
-    <h2 class="intro-slide__heading">Real estate. Real scarcity.</h2>
+    <h2 class="intro-slide__heading">Real estate.<br />Real scarcity.</h2>
     <p class="intro-slide__subtitle">
       We build coastal properties in the Outer Banks. Real collateral behind your fixed rate.
     </p>
@@ -219,12 +219,48 @@ const widths = [600, 1000, 1400];
 
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
-    .intro-slide__heading {
-      font-size: 3.25rem;
+    .intro-slide__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "heading  slideshow"
+        "subtitle slideshow"
+        "benefits slideshow"
+        "source   slideshow";
+      column-gap: 3rem;
+      row-gap: 0.75rem;
+      max-width: 1200px;
+      align-items: start;
     }
 
-    .intro-slide__content {
-      max-width: 560px;
+    .intro-slide__heading {
+      grid-area: heading;
+      font-size: 3.25rem;
+      text-align: left;
+    }
+
+    .intro-slide__subtitle {
+      grid-area: subtitle;
+      text-align: left;
+    }
+
+    .intro-slide__heading + .intro-slide__subtitle {
+      margin-top: 0;
+    }
+
+    .intro-slide__slideshow {
+      grid-area: slideshow;
+      align-self: center;
+    }
+
+    .intro-slide__benefits {
+      grid-area: benefits;
+      margin-top: 0.5rem;
+    }
+
+    .intro-slide__source {
+      grid-area: source;
+      text-align: left;
     }
 
     .intro-slide__benefit-title {
@@ -238,12 +274,13 @@ const widths = [600, 1000, 1400];
 
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
-    .intro-slide__heading {
-      font-size: 3.75rem;
+    .intro-slide__content {
+      max-width: 1400px;
+      column-gap: 4rem;
     }
 
-    .intro-slide__content {
-      max-width: 600px;
+    .intro-slide__heading {
+      font-size: 3.75rem;
     }
 
     .intro-slide__benefit-title {
