@@ -581,9 +581,7 @@ import Outlook from "../images/icons/outlook.svg";
     return date.toLocaleString("en-US", options);
   }
 
-  // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName: string, clarityEventName: string) {
-    // Push event to Google Tag Manager's dataLayer
+  function triggerEvent(eventName: string) {
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
         event: eventName,
@@ -591,14 +589,6 @@ import Outlook from "../images/icons/outlook.svg";
       console.log("GA4 event triggered:", eventName);
     } else {
       console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
-    }
-
-    // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === "function") {
-      (window as any).clarity("event", clarityEventName);
-      console.log("Clarity event triggered:", clarityEventName);
-    } else {
-      console.warn("Microsoft Clarity is not initialized.");
     }
   }
 
@@ -617,7 +607,7 @@ import Outlook from "../images/icons/outlook.svg";
         btn.classList.toggle("active");
 
         // Trigger analytics event for clicking "Add to Calendar" button
-        triggerEvent("add_to_calendar_clicked", "addToCalendarClicked");
+        triggerEvent("add_to_calendar_clicked");
       });
       document.addEventListener("click", function () {
         menu.classList.remove("show");
@@ -627,25 +617,25 @@ import Outlook from "../images/icons/outlook.svg";
         e.stopPropagation();
       });
       menu.querySelectorAll(".calendar-option").forEach((option) => {
-        option.addEventListener("click", function () {
+        option.addEventListener("click", function (this: HTMLElement) {
           const type = this.getAttribute("data-calendar");
           console.log("Calendar option clicked:", type);
 
           // Trigger analytics events for calendar option selection
           if (type === "ics") {
             console.log("Triggering ICS calendar event...");
-            triggerEvent("calendar_ics_selected", "calendarIcsSelected");
+            triggerEvent("calendar_ics_selected");
             console.log("ICS event triggered, now calling downloadICS...");
             downloadICS();
           }
           if (type === "google") {
             console.log("Triggering Google calendar event...");
-            triggerEvent("calendar_google_selected", "calendarGoogleSelected");
+            triggerEvent("calendar_google_selected");
             openGoogleCalendar();
           }
           if (type === "outlook") {
             console.log("Triggering Outlook calendar event...");
-            triggerEvent("calendar_outlook_selected", "calendarOutlookSelected");
+            triggerEvent("calendar_outlook_selected");
             openOutlookCalendar();
           }
 
@@ -659,7 +649,7 @@ import Outlook from "../images/icons/outlook.svg";
     const topCTAElements = document.querySelectorAll(".get-investor-guide-top");
     topCTAElements.forEach((element) => {
       element.addEventListener("click", function () {
-        triggerEvent("get_investor_guide_webinar_thankyou", "getInvestorGuideWebinarThankyou");
+        triggerEvent("get_investor_guide_webinar_thankyou");
       });
     });
 
@@ -668,17 +658,14 @@ import Outlook from "../images/icons/outlook.svg";
       {
         id: "download-investor-guide",
         eventName: "download_investor_guide_webinar_thankyou",
-        clarityEventName: "downloadInvestorGuideWebinarThankyou",
       },
       {
         id: "schedule-meeting",
         eventName: "schedule_meeting_webinar_thankyou",
-        clarityEventName: "scheduleMeetingWebinarThankyou",
       },
       {
         id: "get-started-invest",
         eventName: "get_started_invest_webinar_thankyou",
-        clarityEventName: "getStartedInvestWebinarThankyou",
       },
     ];
 
@@ -686,7 +673,7 @@ import Outlook from "../images/icons/outlook.svg";
       const elements = document.querySelectorAll("." + block.id);
       elements.forEach((element) => {
         element.addEventListener("click", function () {
-          triggerEvent(block.eventName, block.clarityEventName);
+          triggerEvent(block.eventName);
         });
       });
     });

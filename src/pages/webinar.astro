@@ -618,7 +618,15 @@ try {
     }
 
     function calculateNextSessionDate(details) {
-      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const weekdays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
       const targetDay = weekdays.indexOf(details.day);
       const timeParts = details.time.split(":").map(Number);
       let hour24 = timeParts[0];
@@ -862,7 +870,6 @@ try {
         if (target.tagName === "INPUT" || target.tagName === "SELECT") {
           formStartedFired = true;
           if (window.dataLayer) window.dataLayer.push({ event: "webinar_form_started" });
-          if (typeof window.clarity === "function") window.clarity("event", "webinarFormStarted");
           if (window.posthogTrack) window.posthogTrack("webinar_form_started");
         }
       });
@@ -872,7 +879,9 @@ try {
 
         const selectEl = document.getElementById("wf-session-value");
         const submitButton = form.querySelector("button[type='submit']");
-        const buttonText = submitButton ? submitButton.querySelector(".wf-slide__button-text") : null;
+        const buttonText = submitButton
+          ? submitButton.querySelector(".wf-slide__button-text")
+          : null;
         const loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
         const errorEl = document.querySelector(".wf-slide__field-error");
 
@@ -971,7 +980,9 @@ try {
         if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
         const utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
         const webinarCalendarUrl = buildGoogleCalendarUrl(isoDateUTC);
-        const webinarId = selectedOption ? selectedOption.getAttribute("data-webinar-id") || "" : "";
+        const webinarId = selectedOption
+          ? selectedOption.getAttribute("data-webinar-id") || ""
+          : "";
         const rtkClickId = getRtkClickId();
         setRtkClickIdField(rtkClickId);
 
@@ -1068,12 +1079,6 @@ try {
               })
             );
 
-            try {
-              if (emailStr && typeof window.clarity === "function") {
-                window.clarity("identify", emailStr);
-              }
-            } catch (e) {}
-
             if (window.posthogIdentify) {
               window.posthogIdentify(emailStr, {
                 name: nameStr,
@@ -1099,12 +1104,7 @@ try {
             if (investForMeta !== "1000" && investForMeta !== "5000") {
               try {
                 if (typeof window.fbq === "function") {
-                  window.fbq(
-                    "track",
-                    "CompleteRegistration",
-                    {},
-                    { eventID: payload.event_id }
-                  );
+                  window.fbq("track", "CompleteRegistration", {}, { eventID: payload.event_id });
                 }
               } catch (e) {}
             }

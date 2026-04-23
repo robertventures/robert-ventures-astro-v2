@@ -42,11 +42,11 @@
         return path.replace(/^\//, '').replace(/\/$/, '').replace(/-/g, '_') || 'unknown';
     }
 
-    // Function to trigger CTA click events for Microsoft Clarity and GA4
+    // Function to trigger CTA click events for GA4
     function triggerCtaEvent(ctaText, buttonLocation, eventOverride) {
         const pageName = getPageName();
         const eventName = eventOverride || 'cta_click';
-        
+
         const eventData = {
             'event': eventName,
             'cta_text': ctaText,
@@ -62,18 +62,6 @@
             console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
         }
 
-        // Send event to Microsoft Clarity
-        if (typeof clarity === 'function') {
-            // Set custom tags for Clarity session
-            clarity('set', 'cta_text', ctaText);
-            clarity('set', 'page_name', pageName);
-            clarity('set', 'button_location', buttonLocation);
-            clarity('event', eventName);
-            console.log('Clarity ' + eventName + ' event triggered:', eventData);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
-        }
-
         // POSTHOG: cta_click (or event override)
         if (window.posthogTrack) {
             window.posthogTrack(eventName, {
@@ -86,7 +74,7 @@
     // Function to trigger phone click events
     function triggerPhoneEvent(phoneNumber, buttonLocation) {
         const pageName = getPageName();
-        
+
         const eventData = {
             'event': 'phone_click',
             'phone_number': phoneNumber,
@@ -100,17 +88,6 @@
             console.log('GA4 phone_click event triggered:', eventData);
         } else {
             console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-        }
-
-        // Send event to Microsoft Clarity
-        if (typeof clarity === 'function') {
-            clarity('set', 'phone_number', phoneNumber);
-            clarity('set', 'page_name', pageName);
-            clarity('set', 'button_location', buttonLocation);
-            clarity('event', 'phoneClick');
-            console.log('Clarity phone_click event triggered:', eventData);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
         }
 
         // POSTHOG: phone_click
@@ -138,16 +115,6 @@
             console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
         }
 
-        // Send event to Microsoft Clarity
-        if (typeof clarity === 'function') {
-            clarity('set', 'platform', platform);
-            clarity('set', 'click_location', clickLocation);
-            clarity('event', 'socialClick');
-            console.log('Clarity social_click event triggered:', eventData);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
-        }
-
         // POSTHOG: social_click
         if (window.posthogTrack) {
             window.posthogTrack('social_click', {
@@ -171,16 +138,6 @@
             console.log('GA4 navigation_click event triggered:', eventData);
         } else {
             console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
-        }
-
-        // Send event to Microsoft Clarity
-        if (typeof clarity === 'function') {
-            clarity('set', 'link_text', linkText);
-            clarity('set', 'click_location', clickLocation);
-            clarity('event', 'navigationClick');
-            console.log('Clarity navigation_click event triggered:', eventData);
-        } else {
-            console.warn('Microsoft Clarity is not initialized.');
         }
 
         // POSTHOG: navigation_click

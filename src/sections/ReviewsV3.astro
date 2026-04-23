@@ -1,5 +1,4 @@
 ---
-
 // Interface for review data from Senja
 interface Review {
   name: string;
@@ -668,16 +667,10 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
       );
     }
 
-    function triggerEvent(eventName, clarityEventName, eventData) {
+    function triggerEvent(eventName, eventData) {
       eventData = eventData || {};
       if (window.dataLayer) {
         window.dataLayer.push(Object.assign({ event: eventName }, eventData));
-      }
-      if (typeof clarity === "function") {
-        Object.keys(eventData).forEach(function (key) {
-          clarity("set", key, String(eventData[key]));
-        });
-        clarity("event", clarityEventName);
       }
     }
 
@@ -747,7 +740,7 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
               try {
                 sessionStorage.setItem("reviews_mosaic_tracked", "true");
               } catch (e) {}
-              triggerEvent("reviews_mosaic_viewed", "reviewsMosaicViewed", {
+              triggerEvent("reviews_mosaic_viewed", {
                 page_name: getPageName(),
               });
             }

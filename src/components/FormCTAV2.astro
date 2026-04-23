@@ -59,9 +59,7 @@ import Arrow from "../images/icons/right-arrow.svg";
 </div>
 
 <script>
-  // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName: string, clarityEventName: string) {
-    // Push event to Google Tag Manager's dataLayer
+  function triggerEvent(eventName: string) {
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
         event: eventName,
@@ -69,14 +67,6 @@ import Arrow from "../images/icons/right-arrow.svg";
       console.log("GA4 event triggered: " + eventName);
     } else {
       console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
-    }
-
-    // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === "function") {
-      (window as any).clarity("event", clarityEventName);
-      console.log("Clarity event triggered: " + clarityEventName);
-    } else {
-      console.warn("Microsoft Clarity is not initialized.");
     }
   }
 
@@ -86,7 +76,7 @@ import Arrow from "../images/icons/right-arrow.svg";
     const investCTAs = document.querySelectorAll(".invest-cta-homepage-v2");
     investCTAs.forEach(function (investCTA) {
       investCTA.addEventListener("click", function () {
-        triggerEvent("invest_cta_homepage_click", "investCtaHomepageClick");
+        triggerEvent("invest_cta_homepage_click");
       });
     });
 
@@ -94,7 +84,7 @@ import Arrow from "../images/icons/right-arrow.svg";
     const webinarCTAs = document.querySelectorAll(".webinar-cta-homepage-v2");
     webinarCTAs.forEach(function (webinarCTA) {
       webinarCTA.addEventListener("click", function () {
-        triggerEvent("webinar_cta_homepage_click", "webinarCtaHomepageClick");
+        triggerEvent("webinar_cta_homepage_click");
       });
     });
   });

@@ -21,7 +21,6 @@ const ageBracketOptions = [
   { value: "50_64", label: "50 to 64" },
   { value: "65_plus", label: "65+" },
 ];
-
 ---
 
 <!doctype html>
@@ -82,7 +81,6 @@ const ageBracketOptions = [
         gap: 0.75rem;
         margin-bottom: 2rem;
       }
-
 
       /* Grid column adjustments for larger screens */
       @media only screen and (min-width: 768px) {
@@ -215,7 +213,6 @@ const ageBracketOptions = [
         border-width: 1px;
       }
 
-
       span.defocus {
         font-weight: 300;
         font-size: 1.125rem;
@@ -296,9 +293,7 @@ const ageBracketOptions = [
 </html>
 
 <script>
-  // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(eventName: string, clarityEventName: string) {
-    // Push event to Google Tag Manager's dataLayer
+  function triggerEvent(eventName: string) {
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
         event: eventName,
@@ -306,14 +301,6 @@ const ageBracketOptions = [
       console.log("GA4 event triggered: " + eventName);
     } else {
       console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
-    }
-
-    // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === "function") {
-      (window as any).clarity("event", clarityEventName);
-      console.log("Clarity event triggered: " + clarityEventName);
-    } else {
-      console.warn("Microsoft Clarity is not initialized.");
     }
   }
 
@@ -326,7 +313,9 @@ const ageBracketOptions = [
     // This happens when the GHL API failed during webinar registration but the user was still redirected
     const ghlCheck = localStorage.getItem("ghl_contact_id");
     if (!ghlCheck) {
-      console.error("ghl_contact_id missing from localStorage — registration may have been incomplete");
+      console.error(
+        "ghl_contact_id missing from localStorage — registration may have been incomplete"
+      );
       form.innerHTML = `
         <div style="text-align: center; padding: 2rem 0;">
           <p style="font-size: 18px; margin-bottom: 1.5rem;">Your session has expired or registration was incomplete.</p>
@@ -424,9 +413,8 @@ const ageBracketOptions = [
           const result = await response.json();
           console.log("Questions Completed:", result);
 
-          // Trigger GA4 and Clarity events for questions completion
-          triggerEvent("questions_completed", "questionsCompleted");
-          triggerEvent("portfolio_value_added", "portfolioValueAdded");
+          triggerEvent("questions_completed");
+          triggerEvent("portfolio_value_added");
 
           // POSTHOG: questions_completed
           if ((window as any).posthogTrack) {

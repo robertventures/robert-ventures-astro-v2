@@ -132,11 +132,6 @@ const pageDescription = "Thank you for booking a Q&A call with Robert Ventures."
         if ((window as any).dataLayer) {
           (window as any).dataLayer.push({ event: "calendar_booking" });
         }
-
-        // Microsoft Clarity
-        if (typeof (window as any).clarity === "function") {
-          (window as any).clarity("event", "calendarBooking");
-        }
       }
 
       // Wait for PostHog to be ready (loaded via GTM, may take a moment)
@@ -151,7 +146,7 @@ const pageDescription = "Thank you for booking a Q&A call with Robert Ventures."
             clearInterval(interval);
             fireBookingEvents();
           } else if (attempts >= 20) {
-            // After 10 seconds, fire anyway so GA4/Clarity still get tracked
+            // After 10 seconds, fire anyway so GA4 still gets tracked
             clearInterval(interval);
             fireBookingEvents();
           }

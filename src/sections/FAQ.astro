@@ -276,13 +276,7 @@ const faqs = [
 </section>
 
 <script>
-  // Function to trigger events for Microsoft Clarity and GA4
-  function triggerEvent(
-    eventName: string,
-    clarityEventName: string,
-    eventData: Record<string, string> = {}
-  ) {
-    // Push event to Google Tag Manager's dataLayer
+  function triggerEvent(eventName: string, eventData: Record<string, string> = {}) {
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
         event: eventName,
@@ -291,18 +285,6 @@ const faqs = [
       console.log("GA4 event triggered: " + eventName, eventData);
     } else {
       console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
-    }
-
-    // Send event to Microsoft Clarity
-    if (typeof (window as any).clarity === "function") {
-      // Set custom tags for Clarity session so you can filter recordings by these values
-      Object.keys(eventData).forEach((key) => {
-        (window as any).clarity("set", key, eventData[key]);
-      });
-      (window as any).clarity("event", clarityEventName);
-      console.log("Clarity event triggered: " + clarityEventName, eventData);
-    } else {
-      console.warn("Microsoft Clarity is not initialized.");
     }
   }
 
@@ -378,7 +360,7 @@ const faqs = [
 
         // Track FAQ open event
         const faqSlug = (button as HTMLElement).dataset.faqSlug || "unknown";
-        triggerEvent("faq_clicked", "faqClicked", { faq_question: faqSlug });
+        triggerEvent("faq_clicked", { faq_question: faqSlug });
       }
     });
   });
