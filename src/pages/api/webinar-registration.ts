@@ -308,10 +308,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const { firstName, lastName } = splitFullName(body.name);
     console.log("👤 Name split:", { fullName: body.name, firstName, lastName });
 
-    // Check if this is an instant (on-demand) session
-    // USED BY: GHL (custom field), WebinarKit (webinar ID selection), Response (redirect logic)
-    const isInstantSession = body.date === "instant" || body.is_instant === true;
-
     // ========================================
     // STEP 1: GO HIGH LEVEL INTEGRATION
     // ========================================
@@ -348,10 +344,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
         })();
 
         // Compute the SELECTED SESSION date in MM/DD/YYYY format for GHL calendar fields
-        // For on-demand sessions, use the registration date (today) since there's no scheduled date
         const selectedSessionCalendar = (() => {
           try {
-            if (body?.date && body.date !== "instant") {
+            if (body?.date) {
               const selectedUTC = new Date(body.date);
               if (!isNaN(selectedUTC.getTime())) {
                 const selectedLocal = new Date(
@@ -362,12 +357,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 const syyyy = selectedLocal.getFullYear();
                 return `${smm}/${sdd}/${syyyy}`;
               }
-            } else if (body?.date === "instant") {
-              // On-demand: use the current date as the webinar event date
-              const smm = userLocalTime.getMonth() + 1;
-              const sdd = userLocalTime.getDate();
-              const syyyy = userLocalTime.getFullYear();
-              return `${smm}/${sdd}/${syyyy}`;
             }
           } catch {}
           return undefined;
@@ -386,7 +375,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           userip: ipForGeo || "unknown",
           // Device type for user experience insights
           device_type: deviceFinal,
-          // Webinar selection datetime (ISO UTC format or "instant" for on-demand)
+          // Webinar selection datetime (ISO UTC format)
           webinar_date: body.date,
           // Webinar selection datetime (human-readable with timezone)
           webinar_full_date: body.fullDate,
@@ -394,13 +383,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
           webinar_date__time: body.fullDate,
           // Webinar date/time in user's local timezone (for email reminders)
           webinar_datetime_user_tz: body.webinar_datetime_user_tz || body.fullDate,
-          // Selected session date formatted in user's timezone (undefined for instant)
+          // Selected session date formatted in user's timezone
           webinar_session_date: selectedSessionDate,
           // Webinar event date in MM/DD/YYYY format for GHL calendar fields (e.g., 11/4/2025)
           webinar_event_date: selectedSessionCalendar,
-          // Session type: "instant" for on-demand, "scheduled" for live sessions
-          webinar_session_type: isInstantSession ? "instant" : "scheduled",
-          // Google Calendar URL for easy calendar integration (empty for instant)
+          // Google Calendar URL for easy calendar integration
           webinar_calendar_url: body.webinar_calendar_url || "",
           // UTM parameters for marketing attribution (always send with defaults)
           // Note: Google Ads data is mapped to UTM fields in userAttribution.js
@@ -521,11 +508,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // WebinarKit API endpoint configuration
     // Use the webinar ID from request body, or default to scheduled webinar
     const scheduledWebinarId = "684ae034de7a164da41abe10";
-    const onDemandWebinarId = "696d0df144dee112a61d5db8";
-    const webinarId = isInstantSession ? onDemandWebinarId : body.webinar_id || scheduledWebinarId;
+    const webinarId = body.webinar_id || scheduledWebinarId;
     const apiUrl = `https://webinarkit.com/api/webinar/registration/${webinarId}`;
     console.log("🔗 WebinarKit API URL:", apiUrl);
-    console.log("📋 Session type:", isInstantSession ? "on-demand" : "scheduled");
 
     const requestOptions: RequestInit = {
       method: "POST",
@@ -770,7 +755,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           invest_intent: String(body.invest_intent || ""),
           zip_income_level: incomeLevel || "",
           webinar_date: body.date,
-          session_type: isInstantSession ? "on-demand" : "scheduled",
+          session_type: "scheduled",
           utm_source: body?.utm?.utm_source || "",
           utm_medium: body?.utm?.utm_medium || "",
           utm_campaign: utmCampaignFinal,
@@ -811,26 +796,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // All integrations completed successfully - return data from each service
     const webinarResponse = JSON.parse(responseText);
 
-    // Extract watch room URL from WebinarKit response
-    // For on-demand sessions, transform replay_url to watch room URL
-    // WebinarKit returns: url (thank you page), replay_url (replay page)
-    // Watch room URL format: /webinar/watch/{id}/?t={timestamp}&r={registrant_id}
-    // The r= parameter is unique per registration and tracks attendance
-    let watchRoomUrl: string | null = null;
-    if (isInstantSession) {
-      const replayUrl = webinarResponse?.replay_url;
-      if (replayUrl) {
-        // Transform /replay/ to /webinar/watch/ to get the actual watch room
-        watchRoomUrl = replayUrl.replace("/replay/", "/webinar/watch/");
-      } else {
-        watchRoomUrl = webinarResponse?.url || null;
-      }
-    } else {
-      watchRoomUrl = webinarResponse?.url || null;
-    }
-
-    console.log("🎬 Watch room URL for redirect:", watchRoomUrl);
-
     return new Response(
       JSON.stringify({
         message: "Registration successful",
@@ -838,10 +803,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
         webinar_response: webinarResponse,
         // FROM GoHighLevel: Contact ID for CRM integration
         ghl_contact_id: ghlContactId,
-        // Session type for frontend redirect logic
-        is_instant: isInstantSession,
-        // Watch room URL for on-demand sessions (redirect destination)
-        watch_room_url: watchRoomUrl,
         // FROM Meta: No response data needed (fire-and-forget conversion tracking)
       }),
       { status: 200, headers: { "Content-Type": "application/json" } }

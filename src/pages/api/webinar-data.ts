@@ -16,7 +16,6 @@
  *  request   from platform    data            to frontend
  *
  * Usage:
- * - Called by FormWebinar.astro component for session selection
  * - Called by HeroboxWebinarThank.astro for confirmation displays
  * - Frontend caches response briefly to reduce API calls
  *
@@ -33,11 +32,8 @@ export const GET: APIRoute = async () => {
   // CONFIGURATION & SETUP
   // ========================================
 
-  // WebinarKit webinar identifiers
-  // Scheduled webinar - for live Sunday/Wednesday sessions
+  // WebinarKit webinar identifier for live Sunday sessions
   const scheduledWebinarId = "684ae034de7a164da41abe10";
-  // On-demand webinar - for instant watch sessions
-  const onDemandWebinarId = "696d0df144dee112a61d5db8";
 
   // API authentication key from environment variables
   // USED BY: WebinarKit API authentication header
@@ -107,23 +103,16 @@ export const GET: APIRoute = async () => {
     // USED BY: Extracting webinar date/time information
     const data = await response.json();
 
-    // Filter out instant/jit sessions from scheduled webinar
-    // (we use a separate on-demand webinar for instant sessions)
+    // Filter out instant/jit sessions (defensive; we only surface scheduled ones)
     const filteredResults = data.results.filter((item: any) => {
-      // Keep only ongoing (scheduled) sessions, filter out instant/jit
       return item.id !== "instant" && !item.id.startsWith("jit_");
     });
 
-    // Build enhanced response with both webinar IDs
     const enhancedData = {
       results: filteredResults,
-      // Include webinar IDs for frontend to use during registration
       webinarIds: {
         scheduled: scheduledWebinarId,
-        onDemand: onDemandWebinarId,
       },
-      // Include on-demand option explicitly (set to false to temporarily hide)
-      onDemandAvailable: false,
     };
 
     // Return the webinar data to the frontend

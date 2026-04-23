@@ -39,7 +39,6 @@ export const webinarRegistrationSchema = z
     // Webinar configuration
     fullDate: z.string().optional(),
     webinar_id: z.string().optional(),
-    is_instant: z.boolean().optional(),
     webinar_test: z.string().optional(),
     webinar_sign_up_date: z.string().optional(),
     webinar_datetime_user_tz: z.string().optional(),

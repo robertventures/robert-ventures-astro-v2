@@ -15,7 +15,6 @@ export const prerender = false;
 let ssrWebinarData = null;
 try {
   const scheduledWebinarId = "684ae034de7a164da41abe10";
-  const onDemandWebinarId = "696d0df144dee112a61d5db8";
   const apiKey = import.meta.env.WEBINARKIT_API_KEY;
 
   if (apiKey) {
@@ -37,8 +36,7 @@ try {
       );
       ssrWebinarData = {
         results: filteredResults,
-        webinarIds: { scheduled: scheduledWebinarId, onDemand: onDemandWebinarId },
-        onDemandAvailable: false,
+        webinarIds: { scheduled: scheduledWebinarId },
       };
     }
   }
@@ -616,7 +614,6 @@ try {
       hiddenInput.setAttribute("data-date", nextDate.toISOString());
       hiddenInput.setAttribute("data-timezone", userTz);
       hiddenInput.setAttribute("data-original-timezone", originalTimezone);
-      hiddenInput.setAttribute("data-is-instant", "false");
       hiddenInput.setAttribute("data-webinar-id", scheduledWebinarId);
     }
 
@@ -895,47 +892,32 @@ try {
         if (loader) loader.style.display = "inline-block";
         if (submitButton) submitButton.disabled = true;
 
-        const isInstantAtSubmit = selectEl
-          ? selectEl.getAttribute("data-is-instant") === "true"
-          : false;
         if (window.posthogTrack) {
           window.posthogTrack("webinar_form_submitted", {
             invest_intent: document.getElementById("wf-invest-select")
               ? document.getElementById("wf-invest-select").value
               : "",
-            session_type: isInstantAtSubmit ? "on_demand" : "live",
+            session_type: "live",
           });
         }
 
         const formData = new FormData(form);
         const selectedOption = selectEl;
-        const isInstant = selectedOption
-          ? selectedOption.getAttribute("data-is-instant") === "true"
-          : false;
 
-        let isoDateUTC, sessionValue, sessionDetails;
-        if (isInstant) {
-          isoDateUTC = "instant";
-          sessionValue = "instant";
-          sessionDetails = {
-            type: "instant",
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          };
-        } else {
-          isoDateUTC = selectedOption ? selectedOption.getAttribute("data-date") || "" : "";
-          sessionValue = selectedOption ? selectedOption.value : "";
-          if (!isoDateUTC || !sessionValue) {
-            showError(errorEl, "Invalid session data.");
-            resetForm(buttonText, loader, submitButton);
-            return;
-          }
-          try {
-            sessionDetails = JSON.parse(sessionValue);
-          } catch (err) {
-            showError(errorEl, "Invalid session format.");
-            resetForm(buttonText, loader, submitButton);
-            return;
-          }
+        const isoDateUTC = selectedOption ? selectedOption.getAttribute("data-date") || "" : "";
+        const sessionValue = selectedOption ? selectedOption.value : "";
+        if (!isoDateUTC || !sessionValue) {
+          showError(errorEl, "Invalid session data.");
+          resetForm(buttonText, loader, submitButton);
+          return;
+        }
+        let sessionDetails;
+        try {
+          sessionDetails = JSON.parse(sessionValue);
+        } catch (err) {
+          showError(errorEl, "Invalid session format.");
+          resetForm(buttonText, loader, submitButton);
+          return;
         }
 
         const selectedInvest = formData.get("invest_intent") || "";
@@ -988,13 +970,13 @@ try {
         } catch (e) {}
         if (!deviceType) deviceType = detectDeviceFromUA(navigator.userAgent);
         const utmCampaignTop = utmData.utm_campaign || getCookie("utm_campaign");
-        const webinarCalendarUrl = isInstant ? "" : buildGoogleCalendarUrl(isoDateUTC);
+        const webinarCalendarUrl = buildGoogleCalendarUrl(isoDateUTC);
         const webinarId = selectedOption ? selectedOption.getAttribute("data-webinar-id") || "" : "";
         const rtkClickId = getRtkClickId();
         setRtkClickIdField(rtkClickId);
 
         const payload = {
-          session: isInstant ? "instant" : sessionDetails.id,
+          session: sessionDetails.id,
           name: formData.get("full_name"),
           email: formData.get("email"),
           phone_number: (function () {
@@ -1004,9 +986,7 @@ try {
           invest_intent: formData.get("invest_intent"),
           company: formData.get("company"),
           date: isoDateUTC,
-          fullDate: isInstant
-            ? "Watch Now - On Demand"
-            : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+          fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
           utm: utmData,
           gclid: gclid || undefined,
           utm_campaign: utmCampaignTop || undefined,
@@ -1014,19 +994,16 @@ try {
             selectedOption ? selectedOption.getAttribute("data-timezone") : null
           ),
           user_timezone: selectedOption ? selectedOption.getAttribute("data-timezone") : "",
-          webinar_datetime_user_tz: isInstant
-            ? "Watch Now - On Demand"
-            : getLocalDateTimeString(
-                isoDateUTC,
-                selectedOption ? selectedOption.getAttribute("data-timezone") : "America/New_York"
-              ),
+          webinar_datetime_user_tz: getLocalDateTimeString(
+            isoDateUTC,
+            selectedOption ? selectedOption.getAttribute("data-timezone") : "America/New_York"
+          ),
           device_type: deviceType || undefined,
           webinar_test: "webinar-cd",
           webinar_calendar_url: webinarCalendarUrl,
           event_id: generateEventId(),
           fbp: getFbp(),
           fbc: getFbc(),
-          is_instant: isInstant,
           webinar_id: webinarId,
           rtk_click_id: rtkClickId || undefined,
           cmpid: getCookie("cmpid"),
@@ -1065,9 +1042,6 @@ try {
             if (result && result.ghl_contact_id) {
               localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
             }
-            if (result && result.watch_room_url) {
-              localStorage.setItem("watch_room_url", result.watch_room_url);
-            }
 
             const emailStr = typeof payload.email === "string" ? payload.email : "";
             const nameStr = typeof payload.name === "string" ? payload.name : "";
@@ -1088,12 +1062,9 @@ try {
                 title: "Robert Ventures Webinar",
                 date: isoDateUTC,
                 timeZone: sessionDetails.timeZone,
-                fullDate: isInstant
-                  ? "Watch Now - On Demand"
-                  : getFullDateString(isoDateUTC, sessionDetails.timeZone),
+                fullDate: getFullDateString(isoDateUTC, sessionDetails.timeZone),
                 email: emailStr,
                 name: nameStr,
-                isInstant: isInstant,
               })
             );
 
@@ -1110,7 +1081,7 @@ try {
                 phone: phoneStr,
                 ghl_contact_id: result ? result.ghl_contact_id : undefined,
                 invest_intent: payload.invest_intent,
-                session_type: isInstant ? "on_demand" : "live",
+                session_type: "live",
                 registration_page: window.location.pathname,
               });
             }
@@ -1118,7 +1089,7 @@ try {
               window.posthogTrack("webinar_registered", {
                 invest_intent: payload.invest_intent,
                 session_date: isoDateUTC,
-                session_type: isInstant ? "on_demand" : "live",
+                session_type: "live",
                 ghl_contact_id: result ? result.ghl_contact_id : undefined,
                 landing_video_played: hasPlayedFounderVideo,
               });
@@ -1147,7 +1118,7 @@ try {
             if (window.posthogTrack) {
               window.posthogTrack("webinar_registration_failed", {
                 invest_intent: payload.invest_intent,
-                session_type: isInstant ? "on_demand" : "live",
+                session_type: "live",
               });
             }
           });
