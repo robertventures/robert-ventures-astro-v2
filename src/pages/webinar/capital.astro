@@ -1,0 +1,439 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import { ClientRouter } from "astro:transitions";
+
+const pageTitle = "Where's Your Capital | Robert Ventures";
+const pageDescription = "Tell us where your capital is today.";
+
+export const prerender = false;
+
+const options = [
+  { value: "savings", label: "Savings or money market" },
+  { value: "cd", label: "Maturing CD" },
+  { value: "retirement", label: "Retirement account" },
+  { value: "inheritance", label: "Inheritance or large payout" },
+  { value: "mixed", label: "Mix of sources" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={pageTitle}
+      description={pageDescription}
+      rtkCampaignId="697c996793ba48f6ba89582f"
+    />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+    <script is:inline>
+      // History traversals already come with native browser UX on mobile Safari.
+      // Mark them with a custom Astro direction, then skip the view transition
+      // entirely so the page restores immediately with no duplicate slide-in.
+      document.addEventListener("astro:before-preparation", function (event) {
+        if (event.navigationType === "traverse") {
+          event.direction = "traverse";
+        }
+      });
+      document.addEventListener("astro:before-swap", function (event) {
+        if (event.direction === "traverse") {
+          event.viewTransition.skipTransition();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="ga-logo" role="img" aria-label="Robert Ventures"><RvLogo /></div>
+
+    <main class="qf-main">
+      <div class="qf-progress" aria-label="Step 2 of 2">
+        <span class="qf-progress__dot is-done"></span>
+        <span class="qf-progress__dot is-active"></span>
+      </div>
+
+      <header class="qf-header">
+        <h1 class="qf-heading">Where would the money come from?</h1>
+      </header>
+
+      <ul class="qf-options">
+        {
+          options.map((o) => (
+            <li>
+              <button type="button" class="qf-option" data-value={o.value}>
+                {o.label}
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="qf-error" id="qf-error"></p>
+    </main>
+
+    <style is:global>
+      html {
+        scroll-behavior: auto;
+      }
+      body {
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 320ms;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::view-transition-old(root) {
+        animation-name: ga-old-fwd;
+      }
+      ::view-transition-new(root) {
+        animation-name: ga-new-fwd;
+      }
+      html[data-astro-transition="back"]::view-transition-old(root) {
+        animation-name: ga-old-back;
+      }
+      html[data-astro-transition="back"]::view-transition-new(root) {
+        animation-name: ga-new-back;
+      }
+
+      @keyframes ga-new-fwd {
+        from {
+          transform: translateX(100%);
+        }
+      }
+      @keyframes ga-old-fwd {
+        to {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-new-back {
+        from {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-old-back {
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      html[data-astro-transition="traverse"]::view-transition-old(root),
+      html[data-astro-transition="traverse"]::view-transition-new(root) {
+        animation: none;
+      }
+    </style>
+
+    <style>
+      .ga-logo {
+        display: flex;
+        justify-content: center;
+        padding: 1.25rem 1rem;
+      }
+      .ga-logo :global(svg) {
+        display: block;
+        height: 40px;
+        width: auto;
+      }
+      @media only screen and (min-width: 600px) {
+        .ga-logo {
+          padding: 1.5rem 1rem;
+        }
+        .ga-logo :global(svg) {
+          height: 48px;
+        }
+      }
+
+      .qf-main {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1rem 1rem 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      .qf-progress {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .qf-progress__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border-light);
+        background: transparent;
+      }
+      .qf-progress__dot.is-done {
+        background: #1a1a1a;
+        border-color: #1a1a1a;
+      }
+      .qf-progress__dot.is-active {
+        background: var(--green-brand);
+        border-color: var(--green-brand);
+      }
+
+      .qf-header {
+        width: 100%;
+        text-align: center;
+      }
+      .qf-heading {
+        font-family: "Roboto Serif", serif;
+        color: #1a1a1a;
+        font-size: 1.625rem;
+        font-weight: 500;
+        line-height: 125%;
+        margin: 0;
+        text-wrap: balance;
+      }
+
+      .qf-options {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .qf-options.is-submitting {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .qf-option {
+        width: 100%;
+        box-sizing: border-box;
+        background: #ffffff;
+        border: 1px solid var(--border-light);
+        border-radius: 0.75rem;
+        padding: 1rem 1.25rem;
+        font-family: "Roboto", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-heading);
+        cursor: pointer;
+        text-align: center;
+        box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+        transition:
+          border-color 0.15s ease,
+          background-color 0.15s ease,
+          transform 0.1s ease;
+      }
+      .qf-option:active {
+        transform: translateY(1px);
+      }
+      .qf-option.is-selected {
+        border-color: var(--green-brand);
+        background-color: var(--green-tint);
+      }
+      .qf-option:focus {
+        outline: none;
+      }
+      .qf-option:focus-visible {
+        outline: 2px solid var(--green-brand);
+        outline-offset: 2px;
+      }
+      @media (hover: hover) {
+        .qf-option:hover {
+          border-color: var(--green-brand);
+        }
+      }
+
+      .qf-error {
+        display: none;
+        color: #c0392b;
+        font-size: 0.875rem;
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        text-align: center;
+      }
+      .qf-error.is-visible {
+        display: block;
+      }
+
+      @media only screen and (min-width: 600px) {
+        .qf-heading {
+          font-size: 2rem;
+        }
+        .qf-option {
+          font-size: 1.0625rem;
+          padding: 1.25rem 1.5rem;
+        }
+        .qf-main {
+          gap: 2rem;
+          padding-top: 2rem;
+        }
+      }
+      @media only screen and (min-width: 1136px) {
+        .qf-main {
+          max-width: 520px;
+        }
+        .qf-heading {
+          font-size: 2.375rem;
+        }
+      }
+      @media only screen and (min-width: 1920px) {
+        .qf-main {
+          max-width: 560px;
+        }
+        .qf-heading {
+          font-size: 2.625rem;
+        }
+      }
+    </style>
+
+    <script>
+      import { navigate } from "astro:transitions/client";
+      (window as any).rvNavigate = navigate;
+    </script>
+
+    <script is:inline>
+      (function () {
+        try {
+          if (!localStorage.getItem("ghl_contact_id")) {
+            window.location.replace("/webinar");
+            return;
+          }
+        } catch (e) {}
+
+        function isTestMode() {
+          try {
+            return localStorage.getItem("test_mode") === "1";
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function go(url) {
+          if (window.rvNavigate) window.rvNavigate(url);
+          else window.location.href = url;
+        }
+
+        function showError(msg) {
+          var el = document.getElementById("qf-error");
+          if (!el) return;
+          el.textContent = msg;
+          el.classList.add("is-visible");
+        }
+        function hideError() {
+          var el = document.getElementById("qf-error");
+          if (!el) return;
+          el.textContent = "";
+          el.classList.remove("is-visible");
+        }
+
+        function setupOptions() {
+          var list = document.querySelector(".qf-options");
+          var buttons = document.querySelectorAll(".qf-option");
+          var submitted = false;
+
+          buttons.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              if (submitted) return;
+              submitted = true;
+              hideError();
+
+              var value = btn.getAttribute("data-value") || "";
+              buttons.forEach(function (b) {
+                b.classList.remove("is-selected");
+              });
+              btn.classList.add("is-selected");
+              if (list) list.classList.add("is-submitting");
+
+              try {
+                localStorage.setItem("capital_source", value);
+              } catch (e) {}
+
+              if (!isTestMode() && window.posthogTrack) {
+                window.posthogTrack("capital_selected", { capital_source: value });
+              }
+
+              var investIntent = "";
+              var investmentTimeline = "";
+              var ghlId = "";
+              var signUpDate = "";
+              try {
+                investIntent = localStorage.getItem("invest_intent") || "";
+                investmentTimeline = localStorage.getItem("investment_timeline") || "";
+                ghlId = localStorage.getItem("ghl_contact_id") || "";
+                signUpDate = localStorage.getItem("webinar_sign_up_date") || "";
+              } catch (e) {}
+
+              function finish() {
+                if (!isTestMode()) {
+                  if (window.posthogSetPerson) {
+                    window.posthogSetPerson({
+                      invest_intent: investIntent,
+                      capital_source: value,
+                      investment_timeline: investmentTimeline,
+                    });
+                  }
+                  if (window.posthogTrack) {
+                    window.posthogTrack("questions_completed", {
+                      invest_intent: investIntent,
+                      capital_source: value,
+                      investment_timeline: investmentTimeline,
+                    });
+                  }
+                }
+                setTimeout(function () {
+                  go("/introduction");
+                }, 120);
+              }
+
+              if (isTestMode()) {
+                finish();
+                return;
+              }
+
+              var data = new FormData();
+              data.append("capital_source", value);
+              data.append("invest_intent", investIntent);
+              data.append("investment_timeline", investmentTimeline);
+              if (ghlId) data.append("ghl_contact_id", ghlId);
+              if (signUpDate) data.append("webinar_sign_up_date", signUpDate);
+
+              fetch("/api/questions", { method: "POST", body: data })
+                .then(function (res) {
+                  if (!res.ok) throw new Error("Questions submit failed (" + res.status + ")");
+                  return res.json().catch(function () {
+                    return {};
+                  });
+                })
+                .then(function () {
+                  finish();
+                })
+                .catch(function (err) {
+                  console.error("Questions submit error:", err);
+                  submitted = false;
+                  if (list) list.classList.remove("is-submitting");
+                  buttons.forEach(function (b) {
+                    b.classList.remove("is-selected");
+                  });
+                  showError("Something went wrong. Please try again.");
+                });
+            });
+          });
+        }
+
+        function boot() {
+          try {
+            var active = document.activeElement;
+            if (active && active instanceof HTMLElement) active.blur();
+          } catch (e) {}
+          setupOptions();
+        }
+
+        document.addEventListener("astro:page-load", boot);
+      })();
+    </script>
+  </body>
+</html>

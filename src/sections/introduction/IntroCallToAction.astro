@@ -303,16 +303,16 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 
 <style>
   .intro-slide {
-    height: 100svh;
+    min-height: 100svh;
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     overflow: hidden;
     position: relative;
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     margin: 0;
-    padding: 4rem 1.5rem 1.5rem;
+    padding: 4rem 1.5rem 6rem;
     box-sizing: border-box;
   }
 
@@ -648,7 +648,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
   /* Medium: 600px+ */
   @media only screen and (min-width: 600px) {
     .intro-slide {
-      padding: 5rem 2rem 1.5rem;
+      padding: 5rem 2rem 6rem;
     }
 
     .intro-slide__content {

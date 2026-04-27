@@ -5,16 +5,15 @@ export const prerender = false; // Ensure this route is server-rendered
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const investmentTimeline = formData.get("investment_timeline")?.toString();
+  const capitalSource = formData.get("capital_source")?.toString();
+  const investIntent = formData.get("invest_intent")?.toString();
   const ghlContactId = formData.get("ghl_contact_id")?.toString();
   const webinarSignUpDate = formData.get("webinar_sign_up_date")?.toString();
-  const ageBracket = formData.get("age_bracket")?.toString();
 
-  // Validate all required fields up front and return every missing field at once
-  // so the client gets one clear error instead of discovering issues one by one.
   const missing: string[] = [];
   if (!ghlContactId) missing.push("ghl_contact_id");
   if (!investmentTimeline) missing.push("investment_timeline");
-  if (!ageBracket) missing.push("age_bracket");
+  if (!capitalSource) missing.push("capital_source");
 
   if (missing.length > 0) {
     return new Response(JSON.stringify({ error: "Missing required fields", missing }), {
@@ -23,16 +22,13 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // These are the unique field keys from your GoHighLevel system.
   const customFields: Record<string, string> = {
     investment_timeline: investmentTimeline!,
-    age_bracket: ageBracket!,
+    capital_source: capitalSource!,
   };
 
-  // Add webinar sign-up date if available
-  if (webinarSignUpDate) {
-    customFields["webinar_sign_up_date"] = webinarSignUpDate;
-  }
+  if (webinarSignUpDate) customFields["webinar_sign_up_date"] = webinarSignUpDate;
+  if (investIntent) customFields["invest_intent"] = investIntent;
 
   try {
     console.log("Updating GoHighLevel contact with ID:", ghlContactId);
