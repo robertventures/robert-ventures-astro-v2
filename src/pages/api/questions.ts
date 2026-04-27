@@ -12,7 +12,6 @@ export const POST: APIRoute = async ({ request }) => {
 
   const missing: string[] = [];
   if (!ghlContactId) missing.push("ghl_contact_id");
-  if (!investmentTimeline) missing.push("investment_timeline");
   if (!capitalSource) missing.push("capital_source");
 
   if (missing.length > 0) {
@@ -23,10 +22,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const customFields: Record<string, string> = {
-    investment_timeline: investmentTimeline!,
     capital_source: capitalSource!,
   };
 
+  if (investmentTimeline) customFields["investment_timeline"] = investmentTimeline;
   if (webinarSignUpDate) customFields["webinar_sign_up_date"] = webinarSignUpDate;
   if (investIntent) customFields["invest_intent"] = investIntent;
 

@@ -4,6 +4,7 @@ import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import WfLeadCapture from "../sections/webinar/WfLeadCapture.astro";
 import WfHero from "../sections/webinar/WfHero.astro";
 import WfFounderIntro from "../sections/webinar/WfFounderIntro.astro";
+import { ClientRouter } from "astro:transitions";
 
 const pageTitle = "Learn More | Robert Ventures";
 const pageDescription =
@@ -58,6 +59,22 @@ try {
       rel="modulepreload"
       href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
     />
+    <ClientRouter />
+    <script is:inline>
+      // History traversals already come with native browser UX on mobile Safari.
+      // Mark them with a custom Astro direction, then skip the view transition
+      // entirely so the page restores immediately with no duplicate slide-in.
+      document.addEventListener("astro:before-preparation", function (event) {
+        if (event.navigationType === "traverse") {
+          event.direction = "traverse";
+        }
+      });
+      document.addEventListener("astro:before-swap", function (event) {
+        if (event.direction === "traverse") {
+          event.viewTransition.skipTransition();
+        }
+      });
+    </script>
   </head>
   <body>
     {
@@ -72,9 +89,9 @@ try {
     }
 
     <!-- Floating logo, always visible, links home -->
-    <a href="/" class="wf-nav-logo" aria-label="Back to Robert Ventures home">
+    <div class="wf-nav-logo" role="img" aria-label="Robert Ventures">
       <RvLogo />
-    </a>
+    </div>
 
     <!-- Section position indicator: dots + lines on left edge -->
     <nav class="wf-indicator" aria-label="Section navigation">
@@ -95,10 +112,64 @@ try {
 </html>
 
 <style is:global>
+  /* The site-wide `scroll-behavior: smooth` from global.css turns ClientRouter's
+     scroll restoration into a visible animated jump on back-nav. Disable it here
+     so restoration is instant. */
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* View-transition slide animation, matches /webinar/capital
+     so the handoff from the registration page into the question flow stays
+     continuous. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation-name: ga-old-fwd;
+  }
+  ::view-transition-new(root) {
+    animation-name: ga-new-fwd;
+  }
+  html[data-astro-transition="back"]::view-transition-old(root) {
+    animation-name: ga-old-back;
+  }
+  html[data-astro-transition="back"]::view-transition-new(root) {
+    animation-name: ga-new-back;
+  }
+
+  @keyframes ga-new-fwd {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ga-old-fwd {
+    to {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-new-back {
+    from {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-old-back {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  html[data-astro-transition="traverse"]::view-transition-old(root),
+  html[data-astro-transition="traverse"]::view-transition-new(root) {
+    animation: none;
+  }
+
   body {
     background-color: #ffffff;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 
   .wf-form {
@@ -106,102 +177,53 @@ try {
     padding: 0;
   }
 
-  /* Unified vertical rhythm across all sections. Sections collapse to
-     natural content height; only the hero keeps a full-viewport min-height
-     so its content is vertically centered on initial load. */
+  /* Default vertical rhythm for webinar slides. Each section can override
+     these in its own scoped <style> block; Astro's scoping bump means scoped
+     rules win without needing !important. */
   section.wf-slide {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 0 !important;
-    border: none !important;
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
-
-  /* Hero: extra top padding keeps content clear of the floating logo,
-     and extra bottom padding adds breathing room before the next section. */
-  .wf-form > section.wf-slide:first-of-type {
-    padding-top: 7rem !important;
-    padding-bottom: 4rem !important;
-  }
-
-  /* Founder intro: extra top padding for a clearer break from the hero. */
-  .wf-form > section.wf-slide:nth-of-type(2) {
-    padding-top: 5rem !important;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    border: none;
+    padding: 3rem 1.5rem;
   }
 
   @media only screen and (min-width: 600px) {
     section.wf-slide {
-      padding-top: 4rem !important;
-      padding-bottom: 4rem !important;
-      padding-left: 2rem !important;
-      padding-right: 2rem !important;
-    }
-    .wf-form > section.wf-slide:first-of-type {
-      padding-top: 8rem !important;
-      padding-bottom: 6rem !important;
-    }
-    .wf-form > section.wf-slide:nth-of-type(2) {
-      padding-top: 6rem !important;
+      padding: 4rem 2rem;
     }
   }
 
   @media only screen and (min-width: 1136px) {
     section.wf-slide {
-      padding-top: 5rem !important;
-      padding-bottom: 5rem !important;
-    }
-    .wf-form > section.wf-slide:first-of-type {
-      padding-top: 9rem !important;
-      padding-bottom: 7rem !important;
-    }
-    .wf-form > section.wf-slide:nth-of-type(2) {
-      padding-top: 7rem !important;
+      padding: 5rem 2rem;
     }
   }
 
   @media only screen and (min-width: 1920px) {
     section.wf-slide {
-      padding-top: 6rem !important;
-      padding-bottom: 6rem !important;
-    }
-    .wf-form > section.wf-slide:first-of-type {
-      padding-top: 10rem !important;
-      padding-bottom: 8rem !important;
-    }
-    .wf-form > section.wf-slide:nth-of-type(2) {
-      padding-top: 8rem !important;
+      padding: 6rem 2rem;
     }
   }
 </style>
 
 <style>
-  /* Floating logo */
   .wf-nav-logo {
-    position: fixed;
-    top: 1.25rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-  }
-
-  .wf-nav-logo:hover {
-    opacity: 1;
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
   }
 
   .wf-nav-logo :global(svg) {
+    display: block;
     height: 40px;
     width: auto;
   }
 
   @media only screen and (min-width: 600px) {
     .wf-nav-logo {
-      top: 1.5rem;
+      padding: 1.5rem 1rem;
     }
 
     .wf-nav-logo :global(svg) {
@@ -308,7 +330,12 @@ try {
   }
 </style>
 
-<script is:inline>
+<script>
+  import { navigate } from "astro:transitions/client";
+  (window as any).rvNavigate = navigate;
+</script>
+
+<script is:inline data-astro-rerun>
   (function () {
     const animatedSections = {};
     let hasPlayedFounderVideo = false;
@@ -862,6 +889,12 @@ try {
     function setupFormSubmission() {
       const form = document.getElementById("wf-registration-form");
       if (!form) return;
+      // Guard against double-binding the submit listener. With `data-astro-rerun`
+      // this script re-runs on every ClientRouter navigation, and a stale bind
+      // would fire rvNavigate() twice, pushing duplicate /webinar/capital entries
+      // so browser back lands on /webinar/capital instead of /webinar.
+      if (form.dataset.boundSubmit === "1") return;
+      form.dataset.boundSubmit = "1";
 
       let formStartedFired = false;
       form.addEventListener("focusin", function (e) {
@@ -1109,7 +1142,8 @@ try {
               } catch (e) {}
             }
 
-            window.location.href = "/webinar/timing";
+            if (window.rvNavigate) window.rvNavigate("/webinar/capital");
+            else window.location.href = "/webinar/capital";
           })
           .catch(function (err) {
             console.error("Registration error:", err);
@@ -1310,12 +1344,32 @@ try {
       }
     }
 
+    function setupDevSkip() {
+      const btn = document.getElementById("wf-dev-skip");
+      if (!btn) return;
+      if (btn.dataset.boundClick === "1") return;
+      btn.dataset.boundClick = "1";
+      btn.addEventListener("click", function () {
+        try {
+          localStorage.setItem("test_mode", "1");
+          localStorage.setItem("ghl_contact_id", "test_contact_123");
+          localStorage.setItem("userEmail", "test@example.com");
+          localStorage.setItem("full_name", "Test User");
+          localStorage.setItem("phone_number", "5555551234");
+          localStorage.setItem("invest_intent", "10000");
+        } catch (e) {}
+        if (window.rvNavigate) window.rvNavigate("/webinar/capital");
+        else window.location.href = "/webinar/capital";
+      });
+    }
+
     function boot() {
       captureCmpid();
       initializeRtkClickIdCapture();
       setupPhoneFormatting();
       setupContinueButtons();
       setupInvestDropdown();
+      setupDevSkip();
       loadWebinarData();
       setupFormSubmission();
       setupMuxPreloading();

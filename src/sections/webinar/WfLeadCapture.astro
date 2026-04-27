@@ -74,13 +74,21 @@ import usFlag from "../../images/icons/usflag.png";
         <span class="wf-slide__button-text">Get Access</span>
         <span class="wf-slide__loader"></span>
       </button>
+      {
+        import.meta.env.DEV && (
+          <button type="button" id="wf-dev-skip" class="wf-slide__dev-skip">
+            Skip registration (dev)
+          </button>
+        )
+      }
       <p class="wf-slide__notice">You'll be invited to our live webinar this Sunday.</p>
       <div class="wf-slide__trust">
         <span class="wf-slide__trust-item">No Commitment</span>
       </div>
       <p class="wf-slide__consent">
-        By clicking Get Access, you agree to receive communications from Robert Ventures via email
-        and SMS. <strong>Important Risk Information:</strong> Investing involves risk. There is a
+        By submitting this form, you agree to receive recurring automated marketing text messages
+        from Robert Ventures at the number provided. Msg & data rates may apply. Msg frequency
+        varies. Reply STOP to cancel. <strong>Important Risk Information:</strong> Investing involves risk. There is a
         potential that Robert Ventures Holdings LLC (the "Company") may not be able to make the
         scheduled payments of interest or principal on the bonds related to its existing securities
         offering. While the Company believes the assumptions and forward-looking statements
@@ -109,7 +117,7 @@ import usFlag from "../../images/icons/usflag.png";
     position: relative;
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     margin: 0;
-    padding: 5rem 1.5rem 1.5rem;
+    padding: 1rem 1.5rem 1.5rem;
     box-sizing: border-box;
   }
 
@@ -342,6 +350,28 @@ import usFlag from "../../images/icons/usflag.png";
     transform: translateY(1px);
   }
 
+  /* Dev-only skip button, never rendered in production builds. */
+  .wf-slide__dev-skip {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #555555;
+    background: transparent;
+    border: 1px dashed #bbbbbb;
+    border-radius: 8px;
+    padding: 0.625rem 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+    box-sizing: border-box;
+  }
+  .wf-slide__dev-skip:hover {
+    border-color: #555555;
+    color: #1a1a1a;
+  }
+
   .wf-slide__trust {
     display: flex;
     align-items: center;
@@ -378,7 +408,7 @@ import usFlag from "../../images/icons/usflag.png";
   /* Medium: 600px+ */
   @media only screen and (min-width: 600px) {
     .wf-slide {
-      padding: 7rem 2rem 1.5rem;
+      padding: 1.5rem 2rem 2rem;
     }
 
     .wf-slide__content {
@@ -402,26 +432,30 @@ import usFlag from "../../images/icons/usflag.png";
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
     .wf-slide {
-      padding: 8rem 2rem 1.5rem;
+      padding: 4rem 2rem;
     }
 
-    .wf-slide__content {
-      max-width: 520px;
-    }
-
-    .wf-slide__heading {
-      font-size: 3.25rem;
-    }
-  }
-
-  /* Extra Large: 1920px+ */
-  @media only screen and (min-width: 1920px) {
     .wf-slide__content {
       max-width: 560px;
     }
 
     .wf-slide__heading {
-      font-size: 4rem;
+      font-size: 2.5rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .wf-slide {
+      padding: 5rem 2rem;
+    }
+
+    .wf-slide__content {
+      max-width: 600px;
+    }
+
+    .wf-slide__heading {
+      font-size: 3rem;
     }
   }
 </style>

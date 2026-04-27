@@ -10,10 +10,10 @@ export const prerender = false;
 
 const options = [
   { value: "savings", label: "Savings or money market" },
+  { value: "brokerage", label: "Brokerage account" },
   { value: "cd", label: "Maturing CD" },
   { value: "retirement", label: "Retirement account" },
   { value: "inheritance", label: "Inheritance or large payout" },
-  { value: "mixed", label: "Mix of sources" },
 ];
 ---
 
@@ -47,13 +47,9 @@ const options = [
     <div class="ga-logo" role="img" aria-label="Robert Ventures"><RvLogo /></div>
 
     <main class="qf-main">
-      <div class="qf-progress" aria-label="Step 2 of 2">
-        <span class="qf-progress__dot is-done"></span>
-        <span class="qf-progress__dot is-active"></span>
-      </div>
-
       <header class="qf-header">
         <h1 class="qf-heading">Where would the money come from?</h1>
+        <p class="qf-helper">Pick the option that fits best to continue.</p>
       </header>
 
       <ul class="qf-options">
@@ -160,30 +156,12 @@ const options = [
         margin: 0 auto;
       }
 
-      .qf-progress {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-      }
-      .qf-progress__dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        border: 1.5px solid var(--border-light);
-        background: transparent;
-      }
-      .qf-progress__dot.is-done {
-        background: #1a1a1a;
-        border-color: #1a1a1a;
-      }
-      .qf-progress__dot.is-active {
-        background: var(--green-brand);
-        border-color: var(--green-brand);
-      }
-
       .qf-header {
         width: 100%;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
       }
       .qf-heading {
         font-family: "Roboto Serif", serif;
@@ -193,6 +171,13 @@ const options = [
         line-height: 125%;
         margin: 0;
         text-wrap: balance;
+      }
+      .qf-helper {
+        font-family: "Roboto", sans-serif;
+        color: var(--text-body);
+        font-size: 0.9375rem;
+        line-height: 140%;
+        margin: 0;
       }
 
       .qf-options {
@@ -357,12 +342,10 @@ const options = [
               }
 
               var investIntent = "";
-              var investmentTimeline = "";
               var ghlId = "";
               var signUpDate = "";
               try {
                 investIntent = localStorage.getItem("invest_intent") || "";
-                investmentTimeline = localStorage.getItem("investment_timeline") || "";
                 ghlId = localStorage.getItem("ghl_contact_id") || "";
                 signUpDate = localStorage.getItem("webinar_sign_up_date") || "";
               } catch (e) {}
@@ -373,14 +356,12 @@ const options = [
                     window.posthogSetPerson({
                       invest_intent: investIntent,
                       capital_source: value,
-                      investment_timeline: investmentTimeline,
                     });
                   }
                   if (window.posthogTrack) {
                     window.posthogTrack("questions_completed", {
                       invest_intent: investIntent,
                       capital_source: value,
-                      investment_timeline: investmentTimeline,
                     });
                   }
                 }
@@ -397,7 +378,6 @@ const options = [
               var data = new FormData();
               data.append("capital_source", value);
               data.append("invest_intent", investIntent);
-              data.append("investment_timeline", investmentTimeline);
               if (ghlId) data.append("ghl_contact_id", ghlId);
               if (signUpDate) data.append("webinar_sign_up_date", signUpDate);
 

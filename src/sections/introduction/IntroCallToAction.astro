@@ -303,7 +303,6 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 
 <style>
   .intro-slide {
-    min-height: 100svh;
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -311,9 +310,11 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     overflow: hidden;
     position: relative;
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
-    margin: 0;
-    padding: 4rem 1.5rem 6rem;
     box-sizing: border-box;
+    padding-bottom: 6rem;
+    /* Kill global.css `section { margin-bottom: 1.5rem }` so there's no
+       white strip below the page. */
+    margin-bottom: 0;
   }
 
   /* Staircase SVG — background animation (matches WfHero) */
@@ -414,6 +415,10 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     transition: opacity 0.6s ease-in-out;
     width: 100%;
     box-sizing: border-box;
+    /* Reserve space for the tallest possible card (3-line quote +
+       read-more + footer + paddings) so layout doesn't jump as
+       testimonials cycle. */
+    min-height: 10rem;
   }
 
   .cta-review-card.visible {
@@ -648,7 +653,7 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
   /* Medium: 600px+ */
   @media only screen and (min-width: 600px) {
     .intro-slide {
-      padding: 5rem 2rem 6rem;
+      padding-bottom: 7rem;
     }
 
     .intro-slide__content {
@@ -689,6 +694,10 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 
   /* Large: 1136px+ */
   @media only screen and (min-width: 1136px) {
+    .intro-slide {
+      padding-bottom: 8rem;
+    }
+
     .intro-slide__heading {
       font-size: 3.25rem;
     }
@@ -700,10 +709,18 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     .cta-quote {
       font-size: 1.0625rem;
     }
+
+    .cta-review-card {
+      min-height: 11rem;
+    }
   }
 
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
+    .intro-slide {
+      padding-bottom: 9rem;
+    }
+
     .intro-slide__heading {
       font-size: 3.75rem;
     }
