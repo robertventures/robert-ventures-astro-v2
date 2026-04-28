@@ -93,10 +93,21 @@ const pageDescription =
      no longer set padding/height/margin on .intro-slide itself, so this
      block wins by plain specificity, no !important needed. */
   section.intro-slide {
+    /* Zero out the global `section { margin-bottom: 1.5rem }` from
+       global.css so adjacent intro slides with the same background read
+       as one continuous block (no white body gap bleeding through). */
+    margin-bottom: 0;
     padding-top: 2rem;
     padding-bottom: 2rem;
     padding-left: 2rem;
     padding-right: 1.5rem;
+  }
+
+  /* Modifier: extra breathing room on specific slides. Bumps top + bottom
+     padding by ~50% over the base values at every breakpoint. */
+  section.intro-slide--spacious {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 
   /* First section sits below the logo block, so just a small lift. */
@@ -121,6 +132,10 @@ const pageDescription =
       padding-left: 2.5rem;
       padding-right: 2rem;
     }
+    section.intro-slide--spacious {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
     .intro-scroll > section.intro-slide:first-child {
       padding-top: 4rem;
     }
@@ -131,6 +146,10 @@ const pageDescription =
       padding-top: 4rem;
       padding-bottom: 4rem;
     }
+    section.intro-slide--spacious {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
     .intro-scroll > section.intro-slide:first-child {
       padding-top: 5rem;
     }
@@ -140,6 +159,10 @@ const pageDescription =
     section.intro-slide {
       padding-top: 5rem;
       padding-bottom: 5rem;
+    }
+    section.intro-slide--spacious {
+      padding-top: 7.5rem;
+      padding-bottom: 7.5rem;
     }
     .intro-scroll > section.intro-slide:first-child {
       padding-top: 6rem;
@@ -354,7 +377,7 @@ const pageDescription =
             }
           });
         },
-        { threshold: 0.15 }
+        { threshold: 0, rootMargin: "0px 0px 5% 0px" }
       );
 
       sections.forEach(function (section) {
