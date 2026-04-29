@@ -1,0 +1,181 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../../components/BaseHead.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import IntroBookingCalendar from "../../sections/introduction/IntroBookingCalendar.astro";
+
+const pageTitle = "Book a Call | Robert Ventures";
+const pageDescription =
+  "Pick a time for a quick 10-minute call with our team.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="intro-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <main class="book-call">
+      <div class="book-call__content">
+        <h1 class="book-call__heading">Pick a time that works for you.</h1>
+        <p class="book-call__subtitle">
+          A 10-minute call with our team to answer your questions and see if we're a fit.
+        </p>
+        <IntroBookingCalendar />
+      </div>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    background-color: #ffffff;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* View-transition slide animation, matches /introduction → /introduction/book-call
+     so the handoff feels like progressing forward in the funnel. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation-name: ga-old-fwd;
+  }
+  ::view-transition-new(root) {
+    animation-name: ga-new-fwd;
+  }
+  html[data-astro-transition="back"]::view-transition-old(root) {
+    animation-name: ga-old-back;
+  }
+  html[data-astro-transition="back"]::view-transition-new(root) {
+    animation-name: ga-new-back;
+  }
+
+  @keyframes ga-new-fwd {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ga-old-fwd {
+    to {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-new-back {
+    from {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-old-back {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  html[data-astro-transition="traverse"]::view-transition-old(root),
+  html[data-astro-transition="traverse"]::view-transition-new(root) {
+    animation: none;
+  }
+</style>
+
+<style>
+  .intro-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+  }
+
+  .intro-nav-logo :global(svg) {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  .book-call {
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    box-sizing: border-box;
+  }
+
+  .book-call__content {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .book-call__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .book-call__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: #555555;
+    text-align: center;
+    margin: 0 0 1rem;
+    line-height: 150%;
+    text-wrap: balance;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+
+    .intro-nav-logo :global(svg) {
+      height: 48px;
+    }
+
+    .book-call {
+      padding: 3rem 2rem 5rem;
+    }
+
+    .book-call__heading {
+      font-size: 2.25rem;
+    }
+
+    .book-call__subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .book-call {
+      padding: 4rem 2rem 6rem;
+    }
+
+    .book-call__heading {
+      font-size: 2.75rem;
+    }
+  }
+</style>
+
+<script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
