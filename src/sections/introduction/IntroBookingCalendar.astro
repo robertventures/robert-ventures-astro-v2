@@ -829,6 +829,16 @@
             timezone: state.timezone,
           });
         } catch (e) {}
+
+        try {
+          localStorage.setItem(
+            "booked_call_slot",
+            JSON.stringify({ slot: state.selectedSlot, timezone: state.timezone })
+          );
+        } catch (e) {}
+
+        if (window.rvNavigate) window.rvNavigate("/webinar/confirmation");
+        else window.location.href = "/webinar/confirmation";
       } catch (err) {
         errorEl.textContent = "Network error. Please try again.";
         errorEl.hidden = false;

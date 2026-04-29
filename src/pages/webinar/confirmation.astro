@@ -1,0 +1,764 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import { ClientRouter } from "astro:transitions";
+
+const pageTitle = "You're All Set | Robert Ventures";
+const pageDescription =
+  "Your call is booked. Check your email for the live webinar confirmation and the on-demand link.";
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={pageTitle}
+      description={pageDescription}
+      rtkCampaignId="697c996793ba48f6ba89582f"
+    />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+    <script is:inline>
+      document.addEventListener("astro:before-preparation", function (event) {
+        if (event.navigationType === "traverse") {
+          event.direction = "traverse";
+        }
+      });
+      document.addEventListener("astro:before-swap", function (event) {
+        if (event.direction === "traverse") {
+          event.viewTransition.skipTransition();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="wc-logo" role="img" aria-label="Robert Ventures"><RvLogo /></div>
+
+    <main class="wc-main">
+      <section class="wc-slide">
+        <div class="wc-slide__content">
+          <h1 class="wc-slide__heading">Your call is booked.</h1>
+          <p class="wc-slide__body">
+            We'll call you at the time you picked. Until then, everything you need is in your
+            email.
+          </p>
+
+          <div class="wc-slide__countdown" id="wc-countdown" hidden>
+            <div class="wc-slide__countdown-tiles">
+              <div class="wc-slide__countdown-tile">
+                <span class="wc-slide__countdown-num" data-days>00</span>
+                <span class="wc-slide__countdown-label">Days</span>
+              </div>
+              <span class="wc-slide__countdown-sep" aria-hidden="true">·</span>
+              <div class="wc-slide__countdown-tile">
+                <span class="wc-slide__countdown-num" data-hours>00</span>
+                <span class="wc-slide__countdown-label">Hours</span>
+              </div>
+              <span class="wc-slide__countdown-sep" aria-hidden="true">·</span>
+              <div class="wc-slide__countdown-tile">
+                <span class="wc-slide__countdown-num" data-minutes>00</span>
+                <span class="wc-slide__countdown-label">Minutes</span>
+              </div>
+            </div>
+            <p class="wc-slide__countdown-caption">until your call</p>
+          </div>
+
+          <section class="wc-slide__head-start">
+            <p class="wc-slide__head-start-eyebrow">Want a head start?</p>
+            <h2 class="wc-slide__head-start-heading">
+              Watch the webinar on-demand right now.
+            </h2>
+            <p class="wc-slide__head-start-body">Here's what you'll walk away with:</p>
+            <ul class="wc-slide__head-start-list">
+              <li>How investors are earning 8-10% APY, paid monthly.</li>
+              <li>Why our bonds are replacing CDs and savings accounts.</li>
+              <li>What makes our SEC-qualified bonds different.</li>
+            </ul>
+            <button
+              type="button"
+              class="wc-slide__cta"
+              id="wc-open-email-btn"
+            >
+              <span class="wc-slide__cta-text">Open my email</span>
+            </button>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <style is:global>
+      html {
+        scroll-behavior: auto;
+      }
+      body {
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 320ms;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::view-transition-old(root) {
+        animation-name: ga-old-fwd;
+      }
+      ::view-transition-new(root) {
+        animation-name: ga-new-fwd;
+      }
+      html[data-astro-transition="back"]::view-transition-old(root) {
+        animation-name: ga-old-back;
+      }
+      html[data-astro-transition="back"]::view-transition-new(root) {
+        animation-name: ga-new-back;
+      }
+
+      @keyframes ga-new-fwd {
+        from {
+          transform: translateX(100%);
+        }
+      }
+      @keyframes ga-old-fwd {
+        to {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-new-back {
+        from {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-old-back {
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      html[data-astro-transition="traverse"]::view-transition-old(root),
+      html[data-astro-transition="traverse"]::view-transition-new(root) {
+        animation: none;
+      }
+    </style>
+
+    <style>
+      .wc-logo {
+        display: flex;
+        justify-content: center;
+        padding: 1.25rem 1rem;
+      }
+      .wc-logo :global(svg) {
+        display: block;
+        height: 40px;
+        width: auto;
+      }
+      @media only screen and (min-width: 600px) {
+        .wc-logo {
+          padding: 1.5rem 1rem;
+        }
+        .wc-logo :global(svg) {
+          height: 48px;
+        }
+      }
+
+      .wc-main {
+        margin: 0;
+        padding: 0;
+      }
+
+      .wc-slide {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: #ffffff;
+        box-sizing: border-box;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      .wc-slide__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+        max-width: 480px;
+        opacity: 0;
+      }
+
+      .wc-slide__heading {
+        font-family: "Roboto Serif", serif;
+        color: #1a1a1a;
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 120%;
+        margin: 0;
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .wc-slide__body {
+        font-family: "Roboto", sans-serif;
+        color: #555555;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 150%;
+        margin: 0;
+        text-align: center;
+      }
+
+      .wc-slide__heading + .wc-slide__body {
+        margin-top: -0.25rem;
+      }
+
+      .wc-slide__countdown {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0;
+        padding: 0.25rem 0 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .wc-slide__countdown[hidden] {
+        display: none;
+      }
+
+      .wc-slide__countdown-tiles {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .wc-slide__countdown-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 48px;
+      }
+
+      .wc-slide__countdown-num {
+        font-family: "Roboto Serif", serif;
+        font-size: 1.625rem;
+        font-weight: 500;
+        color: #1a1a1a;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .wc-slide__countdown-label {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.625rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #888888;
+        margin-top: 0.3125rem;
+      }
+
+      .wc-slide__countdown-sep {
+        font-family: "Roboto Serif", serif;
+        font-size: 1.625rem;
+        line-height: 1;
+        color: #67b78f;
+        margin-top: 0;
+      }
+
+      .wc-slide__countdown-caption {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.75rem;
+        color: #888888;
+        margin: 0;
+        letter-spacing: 0.02em;
+      }
+
+      .wc-slide__divider {
+        width: 100%;
+        height: 1px;
+        background: rgba(0, 0, 0, 0.08);
+        margin: 0.5rem 0;
+      }
+
+      .wc-slide__head-start {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.875rem;
+        text-align: center;
+        background: linear-gradient(to bottom, rgba(235, 245, 239, 0.85), rgba(235, 245, 239, 0.35));
+        border: 1px solid rgba(103, 183, 143, 0.35);
+        border-radius: 14px;
+        padding: 1.5rem 1.25rem;
+        box-sizing: border-box;
+        margin-top: 0.5rem;
+      }
+
+      .wc-slide__head-start-eyebrow {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #67b78f;
+        margin: 0;
+      }
+
+      .wc-slide__head-start-heading {
+        font-family: "Roboto Serif", serif;
+        color: #1a1a1a;
+        font-size: 1.375rem;
+        font-weight: 500;
+        line-height: 125%;
+        margin: 0;
+        text-wrap: balance;
+      }
+
+      .wc-slide__head-start-body {
+        font-family: "Roboto", sans-serif;
+        color: #555555;
+        font-size: 0.9375rem;
+        line-height: 150%;
+        margin: 0;
+        max-width: 360px;
+      }
+
+      .wc-slide__head-start-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: left;
+      }
+
+      .wc-slide__head-start-list li {
+        font-family: "Roboto", sans-serif;
+        color: #1a1a1a;
+        font-size: 0.9375rem;
+        line-height: 140%;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .wc-slide__head-start-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.4rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #67b78f;
+        border-radius: 50%;
+      }
+
+      .wc-slide__cta--secondary {
+        background: transparent;
+        color: #152429;
+        border: 1.5px solid #152429;
+        box-shadow: none;
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+      }
+
+      .wc-slide__cta--secondary:hover {
+        opacity: 1;
+        background: #152429;
+        color: #ffffff;
+        box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+      }
+
+      .wc-slide__benefits-label {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #888888;
+        margin: 0.5rem 0 -0.5rem;
+        text-align: center;
+      }
+
+      .wc-slide__benefits {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .wc-slide__benefit {
+        background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+        border-left: 3px solid #67b78f;
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .wc-slide__benefit-title {
+        font-family: "Roboto Serif", serif;
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #1a1a1a;
+        line-height: 130%;
+      }
+
+      .wc-slide__benefit-desc {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.8125rem;
+        color: #555555;
+        line-height: 140%;
+      }
+
+      .wc-slide__cta {
+        font-family: "Roboto", sans-serif;
+        font-size: 1.0625rem;
+        font-weight: 500;
+        color: #ffffff;
+        background: #152429;
+        border: none;
+        border-radius: 8px;
+        padding: 1.125rem 3rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        margin-top: 0.25rem;
+        box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+      }
+
+      .wc-slide__cta:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
+      }
+
+      .wc-slide__cta:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
+      }
+
+      .wc-slide__close-note {
+        font-family: "Roboto", sans-serif;
+        color: #888888;
+        font-size: 0.875rem;
+        line-height: 140%;
+        margin: 1rem 0 0;
+        text-align: center;
+      }
+
+      @media only screen and (min-width: 600px) {
+        .wc-slide {
+          padding: 3rem 2rem 4rem;
+        }
+        .wc-slide__content {
+          gap: 1.5rem;
+          max-width: 520px;
+        }
+        .wc-slide__heading {
+          font-size: 2.75rem;
+        }
+        .wc-slide__body {
+          font-size: 1.125rem;
+        }
+        .wc-slide__benefits {
+          gap: 1rem;
+        }
+        .wc-slide__benefit {
+          padding: 1rem 1.25rem;
+        }
+        .wc-slide__benefit-title {
+          font-size: 1.25rem;
+        }
+        .wc-slide__benefit-desc {
+          font-size: 0.9375rem;
+        }
+        .wc-slide__cta {
+          font-size: 1.1875rem;
+          padding: 1.25rem 3.5rem;
+        }
+        .wc-slide__cta--secondary {
+          font-size: 1.0625rem;
+          padding: 1rem 2.5rem;
+        }
+        .wc-slide__countdown {
+          padding: 0.5rem 0 0.75rem;
+        }
+        .wc-slide__countdown-num {
+          font-size: 2rem;
+        }
+        .wc-slide__countdown-sep {
+          font-size: 2rem;
+        }
+        .wc-slide__countdown-tile {
+          min-width: 60px;
+        }
+        .wc-slide__countdown-tiles {
+          gap: 0.625rem;
+        }
+        .wc-slide__countdown-caption {
+          font-size: 0.8125rem;
+        }
+        .wc-slide__head-start {
+          padding: 2rem 1.5rem;
+          gap: 1rem;
+        }
+        .wc-slide__head-start-heading {
+          font-size: 1.625rem;
+        }
+        .wc-slide__head-start-body {
+          font-size: 1rem;
+        }
+        .wc-slide__head-start-list li {
+          font-size: 1rem;
+        }
+        .wc-slide__close-note {
+          font-size: 0.9375rem;
+          margin-top: 1.5rem;
+        }
+      }
+
+      @media only screen and (min-width: 1136px) {
+        .wc-slide {
+          padding: 4rem 2rem 5rem;
+        }
+        .wc-slide__content {
+          max-width: 560px;
+        }
+        .wc-slide__heading {
+          font-size: 3.25rem;
+        }
+        .wc-slide__body {
+          font-size: 1.25rem;
+        }
+        .wc-slide__benefit-title {
+          font-size: 1.375rem;
+        }
+        .wc-slide__benefit-desc {
+          font-size: 1rem;
+        }
+      }
+
+      @media only screen and (min-width: 1920px) {
+        .wc-slide {
+          padding: 5rem 2rem 6rem;
+        }
+        .wc-slide__content {
+          max-width: 600px;
+        }
+        .wc-slide__heading {
+          font-size: 3.75rem;
+        }
+        .wc-slide__body {
+          font-size: 1.375rem;
+        }
+        .wc-slide__benefit-title {
+          font-size: 1.5rem;
+        }
+        .wc-slide__benefit-desc {
+          font-size: 1.0625rem;
+        }
+      }
+    </style>
+
+    <script is:inline data-astro-rerun>
+      (function () {
+        try {
+          if (!localStorage.getItem("ghl_contact_id")) {
+            window.location.replace("/webinar");
+            return;
+          }
+        } catch (e) {}
+
+        // Map known consumer email domains to their webmail inbox URL + label.
+        // Falls back to mailto: for unknown (corporate) domains so the user's
+        // default mail client opens.
+        var EMAIL_PROVIDERS = {
+          "gmail.com": { name: "Gmail", url: "https://mail.google.com/mail/u/0/#inbox" },
+          "googlemail.com": { name: "Gmail", url: "https://mail.google.com/mail/u/0/#inbox" },
+          "yahoo.com": { name: "Yahoo Mail", url: "https://mail.yahoo.com/" },
+          "ymail.com": { name: "Yahoo Mail", url: "https://mail.yahoo.com/" },
+          "outlook.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "hotmail.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "live.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "msn.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "icloud.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "me.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "mac.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "aol.com": { name: "AOL Mail", url: "https://mail.aol.com/" },
+          "proton.me": { name: "ProtonMail", url: "https://mail.proton.me/u/0/inbox" },
+          "protonmail.com": { name: "ProtonMail", url: "https://mail.proton.me/u/0/inbox" },
+        };
+
+        function getProviderInfo() {
+          var email = "";
+          try {
+            email = (localStorage.getItem("userEmail") || "").trim().toLowerCase();
+          } catch (e) {}
+          var domain = (email.split("@")[1] || "").trim();
+          return { email: email, info: EMAIL_PROVIDERS[domain] || null };
+        }
+
+        function getBookedSlotMs() {
+          try {
+            var raw = localStorage.getItem("booked_call_slot");
+            if (!raw) return null;
+            var parsed = JSON.parse(raw);
+            if (!parsed || !parsed.slot) return null;
+            var ms = new Date(parsed.slot).getTime();
+            if (isNaN(ms)) return null;
+            return ms;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function pad2(n) {
+          n = String(n);
+          return n.length < 2 ? "0" + n : n;
+        }
+
+        function isTestMode() {
+          try {
+            return localStorage.getItem("test_mode") === "1";
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function setCountdownNumbers(container, days, hours, minutes) {
+          var daysEl = container.querySelector("[data-days]");
+          var hoursEl = container.querySelector("[data-hours]");
+          var minutesEl = container.querySelector("[data-minutes]");
+          if (daysEl) daysEl.textContent = pad2(days);
+          if (hoursEl) hoursEl.textContent = pad2(hours);
+          if (minutesEl) minutesEl.textContent = pad2(minutes);
+        }
+
+        function renderCountdown() {
+          var container = document.getElementById("wc-countdown");
+          if (!container) return false;
+          var slotMs = getBookedSlotMs();
+          if (!slotMs) {
+            // Dev preview: show 00 · 00 · 00 so the layout is visible
+            // when there's no real booking yet.
+            if (isTestMode()) {
+              setCountdownNumbers(container, 0, 0, 0);
+              container.hidden = false;
+              return true;
+            }
+            container.hidden = true;
+            return false;
+          }
+          var diff = slotMs - Date.now();
+          if (diff <= 0) {
+            container.hidden = true;
+            return false;
+          }
+          var totalMinutes = Math.floor(diff / 60000);
+          var days = Math.floor(totalMinutes / (60 * 24));
+          var hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+          var minutes = totalMinutes % 60;
+
+          setCountdownNumbers(container, days, hours, minutes);
+          container.hidden = false;
+          return true;
+        }
+
+        var countdownInterval = null;
+        function setupCountdown() {
+          if (!renderCountdown()) return;
+          if (countdownInterval) return;
+          countdownInterval = setInterval(renderCountdown, 30000);
+        }
+
+        function setupOpenEmail() {
+          var btn = document.getElementById("wc-open-email-btn");
+          if (!btn) return;
+          if (btn.dataset.boundClick === "1") return;
+          btn.dataset.boundClick = "1";
+
+          var resolved = getProviderInfo();
+          if (resolved.info) {
+            var labelEl = btn.querySelector(".wc-slide__cta-text");
+            if (labelEl) labelEl.textContent = "Open " + resolved.info.name;
+          }
+
+          btn.addEventListener("click", function () {
+            if (resolved.info) {
+              window.open(resolved.info.url, "_blank", "noopener,noreferrer");
+              return;
+            }
+            // Unknown email provider (corporate/custom domain, or no
+            // userEmail during dev-skip). Pick the best inbox-opening URL
+            // by platform. mailto: is avoided here because iOS interprets
+            // it as "compose new message" instead of "open inbox".
+            var ua = navigator.userAgent || "";
+            if (/iPad|iPhone|iPod/.test(ua)) {
+              // iOS: opens the Mail app's all-inboxes view.
+              window.location.href = "message://";
+            } else if (/Android/i.test(ua)) {
+              // Android: most leads are on Gmail; webmail handles redirect
+              // to Gmail app via Universal Links if installed.
+              window.open("https://mail.google.com/", "_blank", "noopener,noreferrer");
+            } else {
+              // Desktop: default mail client. This still composes on most
+              // systems, but desktop users can navigate to their inbox.
+              window.location.href = "mailto:";
+            }
+          });
+        }
+
+        function runFadeIn() {
+          var content = document.querySelector(".wc-slide__content");
+          if (!content) return;
+          if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+            window.addEventListener(
+              "gsapLoaded",
+              function () {
+                runFadeIn();
+              },
+              { once: true }
+            );
+            return;
+          }
+          var gsap = window.gsap;
+          gsap.fromTo(
+            content,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
+          );
+        }
+
+        function boot() {
+          setupCountdown();
+          setupOpenEmail();
+          runFadeIn();
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", boot);
+        } else {
+          boot();
+        }
+      })();
+    </script>
+  </body>
+</html>
