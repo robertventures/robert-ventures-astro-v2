@@ -46,6 +46,9 @@
                   fill="#ffffff"></path>
               </svg>
             </span>
+            <span class="wf-slide__custom-play-label">
+              Your video is playing. Click to unmute.
+            </span>
           </button>
         </div>
         <div class="wf-slide__photo-caption">
@@ -216,6 +219,71 @@
 
   .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-icon--unmute {
     display: block;
+  }
+
+  /* Unmute mode: rectangular pill with semi-transparent dark bg + label.
+     Replaces the circular play button entirely. Rings are hidden, the
+     inner circle becomes a transparent icon container, and a text label
+     appears next to the speaker icon. */
+  .wf-slide__custom-play-label {
+    display: none;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode {
+    width: auto;
+    height: auto;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    animation: wf-pill-pulse 2.6s ease-in-out infinite;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-ring {
+    display: none;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-inner {
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    animation: none;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode:hover .wf-slide__custom-play-inner {
+    background: transparent;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-icon--unmute {
+    width: 22px;
+    height: 22px;
+    margin: 0;
+  }
+
+  .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-label {
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #ffffff;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+  }
+
+  @keyframes wf-pill-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.78;
+    }
   }
 
   .wf-slide__custom-play-ring {
@@ -462,6 +530,26 @@
     .wf-slide__custom-play-icon {
       width: 44px;
       height: 44px;
+    }
+
+    .wf-slide__custom-play.is-unmute-mode {
+      width: auto;
+      height: auto;
+      padding: 0.75rem 1.25rem 0.75rem 1rem;
+    }
+
+    .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-icon--unmute {
+      width: 24px;
+      height: 24px;
+    }
+
+    .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-inner {
+      width: 24px;
+      height: 24px;
+    }
+
+    .wf-slide__custom-play.is-unmute-mode .wf-slide__custom-play-label {
+      font-size: 0.9375rem;
     }
   }
 
