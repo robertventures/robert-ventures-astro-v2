@@ -45,26 +45,6 @@ export const prerender = false;
             email.
           </p>
 
-          <div class="wc-slide__countdown" id="wc-countdown" hidden>
-            <div class="wc-slide__countdown-tiles">
-              <div class="wc-slide__countdown-tile">
-                <span class="wc-slide__countdown-num" data-days>00</span>
-                <span class="wc-slide__countdown-label">Days</span>
-              </div>
-              <span class="wc-slide__countdown-sep" aria-hidden="true">·</span>
-              <div class="wc-slide__countdown-tile">
-                <span class="wc-slide__countdown-num" data-hours>00</span>
-                <span class="wc-slide__countdown-label">Hours</span>
-              </div>
-              <span class="wc-slide__countdown-sep" aria-hidden="true">·</span>
-              <div class="wc-slide__countdown-tile">
-                <span class="wc-slide__countdown-num" data-minutes>00</span>
-                <span class="wc-slide__countdown-label">Minutes</span>
-              </div>
-            </div>
-            <p class="wc-slide__countdown-caption">until your call</p>
-          </div>
-
           <section class="wc-slide__head-start">
             <p class="wc-slide__head-start-eyebrow">Want a head start?</p>
             <h2 class="wc-slide__head-start-heading">
@@ -214,70 +194,6 @@ export const prerender = false;
 
       .wc-slide__heading + .wc-slide__body {
         margin-top: -0.25rem;
-      }
-
-      .wc-slide__countdown {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.375rem;
-        margin: 0;
-        padding: 0.25rem 0 0.5rem;
-        box-sizing: border-box;
-      }
-
-      .wc-slide__countdown[hidden] {
-        display: none;
-      }
-
-      .wc-slide__countdown-tiles {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      .wc-slide__countdown-tile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 48px;
-      }
-
-      .wc-slide__countdown-num {
-        font-family: "Roboto Serif", serif;
-        font-size: 1.625rem;
-        font-weight: 500;
-        color: #1a1a1a;
-        line-height: 1;
-        font-variant-numeric: tabular-nums;
-      }
-
-      .wc-slide__countdown-label {
-        font-family: "Roboto", sans-serif;
-        font-size: 0.625rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: #888888;
-        margin-top: 0.3125rem;
-      }
-
-      .wc-slide__countdown-sep {
-        font-family: "Roboto Serif", serif;
-        font-size: 1.625rem;
-        line-height: 1;
-        color: #67b78f;
-        margin-top: 0;
-      }
-
-      .wc-slide__countdown-caption {
-        font-family: "Roboto", sans-serif;
-        font-size: 0.75rem;
-        color: #888888;
-        margin: 0;
-        letter-spacing: 0.02em;
       }
 
       .wc-slide__divider {
@@ -498,24 +414,6 @@ export const prerender = false;
           font-size: 1.0625rem;
           padding: 1rem 2.5rem;
         }
-        .wc-slide__countdown {
-          padding: 0.5rem 0 0.75rem;
-        }
-        .wc-slide__countdown-num {
-          font-size: 2rem;
-        }
-        .wc-slide__countdown-sep {
-          font-size: 2rem;
-        }
-        .wc-slide__countdown-tile {
-          min-width: 60px;
-        }
-        .wc-slide__countdown-tiles {
-          gap: 0.625rem;
-        }
-        .wc-slide__countdown-caption {
-          font-size: 0.8125rem;
-        }
         .wc-slide__head-start {
           padding: 2rem 1.5rem;
           gap: 1rem;
@@ -616,79 +514,6 @@ export const prerender = false;
           return { email: email, info: EMAIL_PROVIDERS[domain] || null };
         }
 
-        function getBookedSlotMs() {
-          try {
-            var raw = localStorage.getItem("booked_call_slot");
-            if (!raw) return null;
-            var parsed = JSON.parse(raw);
-            if (!parsed || !parsed.slot) return null;
-            var ms = new Date(parsed.slot).getTime();
-            if (isNaN(ms)) return null;
-            return ms;
-          } catch (e) {
-            return null;
-          }
-        }
-
-        function pad2(n) {
-          n = String(n);
-          return n.length < 2 ? "0" + n : n;
-        }
-
-        function isTestMode() {
-          try {
-            return localStorage.getItem("test_mode") === "1";
-          } catch (e) {
-            return false;
-          }
-        }
-
-        function setCountdownNumbers(container, days, hours, minutes) {
-          var daysEl = container.querySelector("[data-days]");
-          var hoursEl = container.querySelector("[data-hours]");
-          var minutesEl = container.querySelector("[data-minutes]");
-          if (daysEl) daysEl.textContent = pad2(days);
-          if (hoursEl) hoursEl.textContent = pad2(hours);
-          if (minutesEl) minutesEl.textContent = pad2(minutes);
-        }
-
-        function renderCountdown() {
-          var container = document.getElementById("wc-countdown");
-          if (!container) return false;
-          var slotMs = getBookedSlotMs();
-          if (!slotMs) {
-            // Dev preview: show 00 · 00 · 00 so the layout is visible
-            // when there's no real booking yet.
-            if (isTestMode()) {
-              setCountdownNumbers(container, 0, 0, 0);
-              container.hidden = false;
-              return true;
-            }
-            container.hidden = true;
-            return false;
-          }
-          var diff = slotMs - Date.now();
-          if (diff <= 0) {
-            container.hidden = true;
-            return false;
-          }
-          var totalMinutes = Math.floor(diff / 60000);
-          var days = Math.floor(totalMinutes / (60 * 24));
-          var hours = Math.floor((totalMinutes % (60 * 24)) / 60);
-          var minutes = totalMinutes % 60;
-
-          setCountdownNumbers(container, days, hours, minutes);
-          container.hidden = false;
-          return true;
-        }
-
-        var countdownInterval = null;
-        function setupCountdown() {
-          if (!renderCountdown()) return;
-          if (countdownInterval) return;
-          countdownInterval = setInterval(renderCountdown, 30000);
-        }
-
         function setupOpenEmail() {
           var btn = document.getElementById("wc-open-email-btn");
           if (!btn) return;
@@ -748,7 +573,6 @@ export const prerender = false;
         }
 
         function boot() {
-          setupCountdown();
           setupOpenEmail();
           runFadeIn();
         }
