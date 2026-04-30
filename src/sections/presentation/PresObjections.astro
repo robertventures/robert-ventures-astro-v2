@@ -1,0 +1,200 @@
+---
+import PresDualCTA from "./PresDualCTA.astro";
+
+const objections = [
+  {
+    title: "Is my money safe?",
+    body: `If you are asking this, you have probably been burned, or watched someone you love get burned. FDIC only covers bank deposits, not stocks, bonds, mutual funds, or REITs that most people already own. What we offer is a contract built on real assets. 25 years and 200 deals in, every payment has been made on time. The risk is not zero, no investment is. The structure (real land, no leverage, founder-run) is built to make it as low as fixed-rate yield allows.`,
+  },
+  {
+    title: "Is 10% really real?",
+    body: `Healthy skepticism. Most products that promise this number are hiding something: leverage, a fund fee that quietly eats your yield, or a strategy that needs a bull market to work. Ours does not. Coastal land we already own, digital assets we hold and do not trade, and zero middlemen between us and you. The 10% is what is left after we run the math honestly.`,
+  },
+  {
+    title: "Can I trust the people behind it?",
+    body: `The strongest answer we have is the track record. 15 years of partnerships. $10M raised. Every offering completed. Every investor paid in full. And one person whose name is on it. Joe Robert picks up. You can read what other investors say in their own words above, or get on a 10-minute call and ask him directly.`,
+  },
+  {
+    title: "What if I need my money before the term ends?",
+    body: `The most honest concern, and the answer is: pick the right structure for your life. Choose monthly payouts and the income flows in every month while your principal earns. Choose the 1-year option if 3 years feels long. The lock-in is when your capital unlocks, not when interest stops. We will walk through the right fit for you on the call.`,
+  },
+];
+---
+
+<section class="pres-obj">
+  <div class="pres-obj__container">
+    <div class="pres-obj__intro">
+      <p class="pres-obj__eyebrow">The four worries we hear most</p>
+      <h2 class="pres-obj__heading">Four things people sit with before they invest.</h2>
+      <p class="pres-obj__subhead">
+        If you are asking these questions, you are doing this right. Here is how we think about
+        each one.
+      </p>
+    </div>
+
+    <ul class="pres-obj__list">
+      {
+        objections.map((o, i) => (
+          <li class="pres-obj__item">
+            <span class="pres-obj__num">0{i + 1}</span>
+            <div class="pres-obj__item-text">
+              <h3 class="pres-obj__item-title">{o.title}</h3>
+              <p class="pres-obj__item-body">{o.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="pres-obj__cta">
+      <p class="pres-obj__cta-label">Have a worry that is not on this list?</p>
+      <PresDualCTA primary="call" location="objections" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-obj {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-obj__container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pres-obj__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 640px;
+  }
+
+  .pres-obj__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .pres-obj__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 115%;
+    margin: 0;
+  }
+
+  .pres-obj__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 165%;
+    margin: 0;
+  }
+
+  .pres-obj__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .pres-obj__item {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-obj__num {
+    font-family: "Roboto Serif", serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-brand);
+    line-height: 100%;
+    letter-spacing: 0.08em;
+  }
+
+  .pres-obj__item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-obj__item-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-obj__item-body {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-body);
+    line-height: 170%;
+    margin: 0;
+  }
+
+  .pres-obj__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pres-obj__cta-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-heading);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-obj__container {
+      padding: 96px 32px;
+      gap: 48px;
+    }
+
+    .pres-obj__heading {
+      font-size: 44px;
+    }
+
+    .pres-obj__item {
+      padding: 32px;
+    }
+
+    .pres-obj__item-title {
+      font-size: 26px;
+    }
+
+    .pres-obj__item-body {
+      font-size: 17px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-obj__container {
+      padding: 120px 48px;
+    }
+  }
+</style>

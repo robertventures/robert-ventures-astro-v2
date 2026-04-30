@@ -1,0 +1,145 @@
+---
+import { Image } from "astro:assets";
+import outerBanks from "../../assets/outer-banks/outer-banks-1.jpg";
+---
+
+<section class="pres-hero">
+  <div class="pres-hero__container">
+    <div class="pres-hero__content">
+      <h1 class="pres-hero__heading">
+        You have heard the numbers.<br />Now comes the decision.
+      </h1>
+      <p class="pres-hero__subhead">
+        A fixed 8 to 10% on a contract built on real estate and digital assets. The math is simple.
+        What is harder is trusting it. This page is for that part.
+      </p>
+    </div>
+    <div class="pres-hero__media">
+      <Image
+        src={outerBanks}
+        alt="Outer Banks coastal property"
+        widths={[600, 1000, 1400]}
+        sizes="(min-width: 1136px) 520px, (min-width: 600px) 70vw, 90vw"
+        format="webp"
+        quality={80}
+        loading="eager"
+        class="pres-hero__image"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-hero {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pres-hero__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 64px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .pres-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .pres-hero__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .pres-hero__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 115%;
+    margin: 0;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-hero__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 160%;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  .pres-hero__media {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .pres-hero__image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-hero__container {
+      padding: 80px 32px;
+    }
+
+    .pres-hero__heading {
+      font-size: 48px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-hero__container {
+      flex-direction: row;
+      align-items: center;
+      gap: 64px;
+      padding: 112px 48px;
+    }
+
+    .pres-hero__content {
+      flex: 1;
+      max-width: none;
+    }
+
+    .pres-hero__media {
+      flex: 1;
+      max-width: 540px;
+    }
+
+    .pres-hero__heading {
+      font-size: 56px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-hero__container {
+      max-width: 1440px;
+      padding: 128px 96px;
+    }
+
+    .pres-hero__heading {
+      font-size: 64px;
+    }
+  }
+</style>

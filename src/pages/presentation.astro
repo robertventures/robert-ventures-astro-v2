@@ -1,0 +1,195 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import FooterNew from "../components/FooterNew.astro";
+import PresHero from "../sections/presentation/PresHero.astro";
+import PresRiskOfWaiting from "../sections/presentation/PresRiskOfWaiting.astro";
+import PresWhatYouOwn from "../sections/presentation/PresWhatYouOwn.astro";
+import PresHowTheRateWorks from "../sections/presentation/PresHowTheRateWorks.astro";
+import PresFounder from "../sections/presentation/PresFounder.astro";
+import PresWhatItLooksLike from "../sections/presentation/PresWhatItLooksLike.astro";
+import Calculator from "../sections/Calculator.astro";
+import ReviewsV3 from "../sections/ReviewsV3.astro";
+import PresObjections from "../sections/presentation/PresObjections.astro";
+import FAQ from "../sections/FAQ.astro";
+import PresClosing from "../sections/presentation/PresClosing.astro";
+import PresFounderNote from "../sections/presentation/PresFounderNote.astro";
+
+const pageTitle = "Presentation | Robert Ventures";
+const pageDescription =
+  "A closer look at the fixed 8 to 10% offering for investors who have already spoken with us.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
+    <link rel="preconnect" href="https://image.mux.com" crossorigin />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+      is:inline></script>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <PresHero />
+      <PresRiskOfWaiting />
+      <PresWhatYouOwn />
+      <PresHowTheRateWorks />
+      <PresFounder />
+      <PresWhatItLooksLike />
+      <Calculator />
+      <ReviewsV3 />
+      <PresObjections />
+      <FAQ />
+      <PresClosing />
+      <PresFounderNote />
+    </main>
+    <FooterNew />
+  </body>
+</html>
+
+<style is:global>
+  /* Zero out the global section margin-bottom on this page so the long-scroll
+     narrative reads as continuous bands of color, no white gaps between blocks. */
+  main section {
+    margin-bottom: 0;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // Founder video: muted autoplay when section approaches view, with a
+    // one-shot overlay nudging the user to unmute. After engagement, Mux's
+    // native UI handles pause/play/replay.
+    function setupFounderVideo() {
+      const player = document.getElementById("pres-mux-player");
+      const overlay = document.getElementById("pres-mux-overlay");
+      if (!player) return;
+
+      let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
+      let isAutoplayPlay = false;
+      let engaged = false;
+
+      function showOverlayUnmuteMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active");
+        overlay.classList.remove("is-play-mode");
+        overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+      }
+
+      function showOverlayPlayMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active", "is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play");
+      }
+
+      function dismissOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove("is-active");
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        isAutoplayPlay = true;
+        const promise = player.play();
+        if (promise && typeof promise.then === "function") {
+          promise
+            .then(function () {
+              autoplayState = "playing";
+              if (!engaged) showOverlayUnmuteMode();
+            })
+            .catch(function () {
+              isAutoplayPlay = false;
+              autoplayState = "failed";
+              if (!engaged) showOverlayPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          if (!engaged) showOverlayUnmuteMode();
+        }
+      }
+
+      function engageFromOverlay(e) {
+        if (!overlay || !overlay.classList.contains("is-active")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const isPlayMode = overlay.classList.contains("is-play-mode");
+        try {
+          player.muted = false;
+        } catch (err) {}
+        if (isPlayMode) {
+          const result = player.play();
+          if (result && typeof result.catch === "function") result.catch(function () {});
+        }
+        dismissOverlay();
+      }
+
+      if (overlay) {
+        overlay.addEventListener("click", engageFromOverlay);
+        overlay.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
+        });
+      }
+
+      player.addEventListener("play", function () {
+        const wasAutoplay = isAutoplayPlay;
+        isAutoplayPlay = false;
+        if (!wasAutoplay) {
+          engaged = true;
+          dismissOverlay();
+        }
+      });
+
+      player.addEventListener("volumechange", function () {
+        if (engaged) return;
+        if (player.muted) return;
+        engaged = true;
+        dismissOverlay();
+      });
+
+      if ("IntersectionObserver" in window) {
+        const videoIo = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (autoplayState === "playing" && player.paused && !engaged) {
+                  isAutoplayPlay = true;
+                  const result = player.play();
+                  if (result && typeof result.catch === "function") {
+                    result.catch(function () {
+                      isAutoplayPlay = false;
+                    });
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
+            });
+          },
+          { threshold: 0, rootMargin: "0px 0px 40% 0px" }
+        );
+        videoIo.observe(player);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupFounderVideo);
+    } else {
+      setupFounderVideo();
+    }
+  })();
+</script>

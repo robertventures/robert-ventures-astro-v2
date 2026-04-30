@@ -1232,29 +1232,36 @@ try {
     function setupMuxAnalytics() {
       const player = document.getElementById("wf-mux-player");
       const caption = document.querySelector(".wf-slide__photo-caption");
-      const customPlayBtn = document.getElementById("wf-custom-play-btn");
+      const overlay = document.getElementById("wf-mux-overlay");
       if (!player) return;
 
-      // Engagement model:
-      //   - Video starts muted-autoplay when section enters view (where supported).
-      //   - "Engagement" = user unmuted (autoplay path) OR user clicked play (fallback path).
-      //   - Either feeds the same hasPlayedFounderVideo flag, which becomes the
-      //     landing_video signal sent to GHL on registration.
-      let autoplayState = "pending"; // "pending" | "playing" | "failed"
+      // One-shot UX nudge model:
+      //   - Section in view: try muted autoplay.
+      //   - Autoplay succeeds: show unmute overlay. Click anywhere to unmute.
+      //   - Autoplay rejected: show play overlay. Click anywhere to play (with sound).
+      //   - After engagement, overlay vanishes. Mux's native UI handles
+      //     pause/play/replay from then on.
+      // Engagement (= "landing_video: Yes" sent to GHL) fires on either path.
+      let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
       let isAutoplayPlay = false;
-      let unmuteFired = false;
+      let engaged = false;
 
-      function showButtonInPlayMode() {
-        if (!customPlayBtn) return;
-        customPlayBtn.classList.remove("is-pending", "is-unmute-mode");
-        customPlayBtn.setAttribute("aria-label", "Play video");
+      function showOverlayUnmuteMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active");
+        overlay.classList.remove("is-play-mode");
+        overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
       }
 
-      function showButtonInUnmuteMode() {
-        if (!customPlayBtn) return;
-        customPlayBtn.classList.remove("is-pending");
-        customPlayBtn.classList.add("is-unmute-mode");
-        customPlayBtn.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+      function showOverlayPlayMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active", "is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play");
+      }
+
+      function dismissOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove("is-active");
       }
 
       function attemptAutoplay() {
@@ -1269,34 +1276,39 @@ try {
           promise
             .then(function () {
               autoplayState = "playing";
-              showButtonInUnmuteMode();
+              if (!engaged) showOverlayUnmuteMode();
             })
             .catch(function () {
               isAutoplayPlay = false;
               autoplayState = "failed";
-              showButtonInPlayMode();
+              if (!engaged) showOverlayPlayMode();
             });
         } else {
           autoplayState = "playing";
-          showButtonInUnmuteMode();
+          if (!engaged) showOverlayUnmuteMode();
         }
       }
 
-      // Click: unmute if autoplay succeeded, otherwise kick off playback.
-      if (customPlayBtn) {
-        customPlayBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (autoplayState === "playing") {
-            try {
-              player.muted = false;
-            } catch (err) {}
-          } else {
-            const result = player.play();
-            if (result && typeof result.catch === "function") {
-              result.catch(function () {});
-            }
-          }
+      function engageFromOverlay(e) {
+        if (!overlay || !overlay.classList.contains("is-active")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const isPlayMode = overlay.classList.contains("is-play-mode");
+        try {
+          player.muted = false;
+        } catch (err) {}
+        if (isPlayMode) {
+          const result = player.play();
+          if (result && typeof result.catch === "function") result.catch(function () {});
+        }
+        // volumechange will fire and mark engaged. Dismiss now for snappy UX.
+        dismissOverlay();
+      }
+
+      if (overlay) {
+        overlay.addEventListener("click", engageFromOverlay);
+        overlay.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
         });
       }
 
@@ -1312,10 +1324,10 @@ try {
 
         if (caption) caption.classList.add("is-hidden");
 
-        // Only count user-initiated play as engagement. Autoplay does not.
         if (!wasAutoplay) {
+          engaged = true;
           hasPlayedFounderVideo = true;
-          if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
+          dismissOverlay();
         }
 
         if (window.posthogTrack) {
@@ -1329,13 +1341,12 @@ try {
         }
       });
 
-      // Unmute is the engagement signal in the autoplay path.
       player.addEventListener("volumechange", function () {
-        if (unmuteFired) return;
+        if (engaged) return;
         if (player.muted) return;
-        unmuteFired = true;
+        engaged = true;
         hasPlayedFounderVideo = true;
-        if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
+        dismissOverlay();
         if (window.posthogTrack) {
           window.posthogTrack("video_unmuted", {
             video_id: "wf-intro-joe-robert",

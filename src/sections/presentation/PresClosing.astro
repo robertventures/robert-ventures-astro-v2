@@ -1,0 +1,224 @@
+---
+
+---
+
+<section class="pres-close">
+  <div class="pres-close__container">
+    <div class="pres-close__intro">
+      <p class="pres-close__eyebrow">Two ways forward</p>
+      <h2 class="pres-close__heading">Two ways to take the next step.</h2>
+      <p class="pres-close__subhead">No urgency. No pressure. Pick the one that fits where you are.</p>
+    </div>
+
+    <div class="pres-close__paths">
+      <article class="pres-close__path">
+        <span class="pres-close__path-label">Still have questions</span>
+        <h3 class="pres-close__path-title">Book a 10-minute call.</h3>
+        <p class="pres-close__path-body">
+          We answer everything. No script. Most calls end with a clear yes or a clear no, and
+          either is fine.
+        </p>
+        <a
+          class="pres-close__path-cta pres-close__path-cta--ghost"
+          href="/introduction/book-call"
+          data-track-cta="book_call"
+          data-track-location="closing"
+        >
+          Book a 10-minute call
+        </a>
+      </article>
+
+      <article class="pres-close__path pres-close__path--featured">
+        <span class="pres-close__path-label">Ready to start</span>
+        <h3 class="pres-close__path-title">Create your account.</h3>
+        <p class="pres-close__path-body">
+          About 5 minutes. Pick your amount, your term, monthly payouts or compounding. Your rate
+          locks the moment you invest.
+        </p>
+        <a
+          class="pres-close__path-cta pres-close__path-cta--solid"
+          href="https://invest.robertventures.com/"
+          data-track-cta="create_account"
+          data-track-location="closing"
+        >
+          Create your account
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-close {
+    background: var(--dark-bg);
+    color: var(--dark-text-heading);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-close__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pres-close__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    align-items: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .pres-close__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .pres-close__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--dark-text-heading);
+    line-height: 115%;
+    margin: 0;
+  }
+
+  .pres-close__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  .pres-close__paths {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pres-close__path {
+    background: var(--dark-card-fill);
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pres-close__path--featured {
+    background: rgba(103, 183, 143, 0.12);
+    border-color: var(--green-brand);
+  }
+
+  .pres-close__path-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+  }
+
+  .pres-close__path-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--dark-text-heading);
+    line-height: 125%;
+    margin: 0;
+  }
+
+  .pres-close__path-body {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 165%;
+    margin: 0;
+    flex: 1;
+  }
+
+  .pres-close__path-cta {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: "Roboto", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 14px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+    margin-top: 8px;
+  }
+
+  .pres-close__path-cta--solid {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+  }
+
+  .pres-close__path-cta--solid:hover {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+  }
+
+  .pres-close__path-cta--ghost {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: var(--dark-text-heading);
+  }
+
+  .pres-close__path-cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: var(--dark-text-heading);
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-close__container {
+      padding: 112px 32px;
+      gap: 56px;
+    }
+
+    .pres-close__heading {
+      font-size: 44px;
+    }
+
+    .pres-close__paths {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .pres-close__path {
+      padding: 40px 32px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-close__container {
+      padding: 128px 48px;
+    }
+  }
+</style>

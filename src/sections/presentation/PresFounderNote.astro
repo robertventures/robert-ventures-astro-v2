@@ -1,0 +1,96 @@
+---
+
+---
+
+<section class="pres-note">
+  <div class="pres-note__container">
+    <p class="pres-note__eyebrow">A note from the founder</p>
+    <blockquote class="pres-note__quote">
+      You made it to the end of the page, which means you are taking this seriously. So am I. For
+      25 years, my name has been on every deal I have done. It is on this one. If you have one
+      more question, the call goes to me or someone on my team I trust completely. Whatever you
+      decide, decide it on real information.
+    </blockquote>
+    <div class="pres-note__sig">
+      <span class="pres-note__sig-name">Joe Robert</span>
+      <span class="pres-note__sig-role">Manager and Founder, Robert Ventures</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-note {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .pres-note__container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .pres-note__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .pres-note__quote {
+    font-family: "Roboto Serif", serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-heading);
+    line-height: 155%;
+    margin: 0;
+    padding: 0 0 0 20px;
+    border-left: 3px solid var(--green-brand);
+    font-style: italic;
+  }
+
+  .pres-note__sig {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 20px;
+  }
+
+  .pres-note__sig-name {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+  }
+
+  .pres-note__sig-role {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    color: var(--text-body);
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-note__container {
+      padding: 96px 32px;
+    }
+
+    .pres-note__quote {
+      font-size: 26px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-note__container {
+      padding: 112px 48px;
+    }
+  }
+</style>

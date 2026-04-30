@@ -1,0 +1,235 @@
+---
+import PresDualCTA from "./PresDualCTA.astro";
+---
+
+<section class="pres-life">
+  <div class="pres-life__container">
+    <div class="pres-life__intro">
+      <p class="pres-life__eyebrow">What this looks like in your life</p>
+      <h2 class="pres-life__heading">What $100,000 actually does here.</h2>
+      <p class="pres-life__subhead">
+        Pick monthly payouts to live on. Or compound it and watch it work. Same contract either
+        way.
+      </p>
+    </div>
+
+    <div class="pres-life__paths">
+      <div class="pres-life__path">
+        <span class="pres-life__path-label">Monthly income path</span>
+        <div class="pres-life__path-amount">
+          <span class="pres-life__path-amount-value">$833</span>
+          <span class="pres-life__path-amount-unit">deposited every month</span>
+        </div>
+        <ul class="pres-life__path-details">
+          <li>$100,000 invested at 10%</li>
+          <li>Monthly payouts for the full term</li>
+          <li>No surprises. No market checks.</li>
+        </ul>
+      </div>
+
+      <div class="pres-life__path pres-life__path--featured">
+        <span class="pres-life__path-label">Compound path</span>
+        <div class="pres-life__path-amount">
+          <span class="pres-life__path-amount-value">$221,964</span>
+          <span class="pres-life__path-amount-unit">after 8 years</span>
+        </div>
+        <ul class="pres-life__path-details">
+          <li>$100,000 at 10%, compounding</li>
+          <li>$134,392 after 3 years</li>
+          <li>The interest just earns interest.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="pres-life__disclaimer">For illustrative purposes only.</p>
+
+    <div class="pres-life__cta">
+      <p class="pres-life__cta-label">Run your own numbers below, or start with what you have today.</p>
+      <PresDualCTA primary="account" location="what_it_looks_like" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-life {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-life__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-life__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 640px;
+  }
+
+  .pres-life__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .pres-life__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 115%;
+    margin: 0;
+  }
+
+  .pres-life__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 165%;
+    margin: 0;
+  }
+
+  .pres-life__paths {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pres-life__path {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pres-life__path--featured {
+    background: var(--green-tint);
+    border-color: var(--green-brand);
+  }
+
+  .pres-life__path-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+  }
+
+  .pres-life__path-amount {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-life__path-amount-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 100%;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-life__path-amount-unit {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 140%;
+  }
+
+  .pres-life__path-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pres-life__path-details li {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 150%;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .pres-life__path-details li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green-brand);
+  }
+
+  .pres-life__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .pres-life__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .pres-life__cta-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-heading);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-life__container {
+      padding: 96px 32px;
+      gap: 40px;
+    }
+
+    .pres-life__heading {
+      font-size: 44px;
+    }
+
+    .pres-life__paths {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .pres-life__path-amount-value {
+      font-size: 56px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-life__container {
+      padding: 120px 48px;
+    }
+  }
+</style>

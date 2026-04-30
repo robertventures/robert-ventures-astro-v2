@@ -1,0 +1,128 @@
+---
+interface Props {
+  variant?: "stacked" | "inline";
+  primary?: "account" | "call";
+  location?: string;
+}
+
+const { variant = "inline", primary = "account", location = "presentation" } = Astro.props;
+
+const accountLink = "https://invest.robertventures.com/";
+const callLink = "/introduction/book-call";
+---
+
+<div class={`pres-dual-cta pres-dual-cta--${variant}`}>
+  {
+    primary === "account" ? (
+      <>
+        <a
+          class="pres-dual-cta__primary"
+          href={accountLink}
+          data-track-cta="create_account"
+          data-track-location={location}
+        >
+          Create your account
+        </a>
+        <a
+          class="pres-dual-cta__secondary"
+          href={callLink}
+          data-track-cta="book_call"
+          data-track-location={location}
+        >
+          Book a 10-minute call
+        </a>
+      </>
+    ) : (
+      <>
+        <a
+          class="pres-dual-cta__primary"
+          href={callLink}
+          data-track-cta="book_call"
+          data-track-location={location}
+        >
+          Book a 10-minute call
+        </a>
+        <a
+          class="pres-dual-cta__secondary"
+          href={accountLink}
+          data-track-cta="create_account"
+          data-track-location={location}
+        >
+          Create your account
+        </a>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .pres-dual-cta {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .pres-dual-cta--stacked {
+    flex-direction: column;
+  }
+
+  .pres-dual-cta--inline {
+    flex-direction: column;
+  }
+
+  .pres-dual-cta a {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: "Roboto", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 14px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .pres-dual-cta__primary {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+  }
+
+  .pres-dual-cta__primary:hover,
+  .pres-dual-cta__primary:active {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+    color: #ffffff;
+  }
+
+  .pres-dual-cta__secondary {
+    background-color: transparent;
+    border: 1px solid var(--text-heading);
+    color: var(--text-heading);
+  }
+
+  .pres-dual-cta__secondary:hover,
+  .pres-dual-cta__secondary:active {
+    background-color: var(--text-heading);
+    color: #ffffff;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-dual-cta--inline {
+      flex-direction: row;
+    }
+
+    .pres-dual-cta a {
+      flex: 1;
+    }
+  }
+</style>
