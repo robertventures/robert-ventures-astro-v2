@@ -16,6 +16,20 @@
             max-resolution="1080p"
             rendition-order="desc"
             default-show-captions></mux-player>
+          <button
+            type="button"
+            id="wf-custom-play-btn"
+            class="wf-slide__custom-play"
+            aria-label="Play video"
+          >
+            <span class="wf-slide__custom-play-ring"></span>
+            <span class="wf-slide__custom-play-ring wf-slide__custom-play-ring--delayed"></span>
+            <span class="wf-slide__custom-play-inner">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+              </svg>
+            </span>
+          </button>
         </div>
         <div class="wf-slide__photo-caption">
           <span class="wf-slide__photo-name">Joe Robert</span>
@@ -112,6 +126,104 @@
     display: block;
     --media-object-fit: cover;
     --media-object-position: center;
+    /* Hide Mux's default center play button. Our custom button replaces it. */
+    --center-play-button: none;
+  }
+
+  /* Custom oversized play button, absolutely centered over the Mux player.
+     Built to draw attention so users actually click play, instead of the
+     video looking like a static photo. Hidden after first play. */
+  .wf-slide__custom-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 88px;
+    height: 88px;
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: opacity 0.35s ease;
+  }
+
+  .wf-slide__custom-play:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+  }
+
+  .wf-slide__custom-play.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .wf-slide__custom-play-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #67b78f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    animation: wf-play-breath 2.4s ease-in-out infinite;
+  }
+
+  .wf-slide__custom-play:hover .wf-slide__custom-play-inner {
+    background: #5aa37e;
+  }
+
+  .wf-slide__custom-play-inner svg {
+    width: 36px;
+    height: 36px;
+    margin-left: 4px; /* optical centering of triangle */
+  }
+
+  .wf-slide__custom-play-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 4px solid #67b78f;
+    pointer-events: none;
+    animation: wf-play-ring 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .wf-slide__custom-play-ring--delayed {
+    animation-delay: 1.1s;
+  }
+
+  @keyframes wf-play-breath {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes wf-play-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wf-slide__custom-play-inner,
+    .wf-slide__custom-play-ring {
+      animation: none;
+    }
   }
 
   .wf-slide__photo-caption {
@@ -307,6 +419,16 @@
 
     .wf-slide__stat-label {
       font-size: 0.9375rem;
+    }
+
+    .wf-slide__custom-play {
+      width: 104px;
+      height: 104px;
+    }
+
+    .wf-slide__custom-play-inner svg {
+      width: 44px;
+      height: 44px;
     }
   }
 

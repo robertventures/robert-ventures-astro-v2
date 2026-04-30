@@ -1230,7 +1230,21 @@ try {
     function setupMuxAnalytics() {
       const player = document.getElementById("wf-mux-player");
       const caption = document.querySelector(".wf-slide__photo-caption");
+      const customPlayBtn = document.getElementById("wf-custom-play-btn");
       if (!player) return;
+
+      // Custom oversized play button kicks off playback, then hides itself.
+      // After first play, Mux's default bottom controls take over.
+      if (customPlayBtn) {
+        customPlayBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const result = player.play();
+          if (result && typeof result.catch === "function") {
+            result.catch(function () {});
+          }
+        });
+      }
 
       let lastReportedProgress = 0;
       let totalWatchTime = 0;
@@ -1241,6 +1255,7 @@ try {
         playCount++;
         hasPlayedFounderVideo = true;
         if (caption) caption.classList.add("is-hidden");
+        if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
 
         if (window.posthogTrack) {
           window.posthogTrack("video_play", {
