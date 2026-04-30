@@ -1194,7 +1194,9 @@ try {
         { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
       );
 
-      // Animation IO: fires entry animation once, when section is ~15% visible
+      // Animation IO: fires entry animation as soon as the section starts
+      // entering the viewport (rootMargin extends the bottom edge by 5%),
+      // so the next slide doesn't feel empty while the user is scrolling in.
       const animIo = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
@@ -1204,7 +1206,7 @@ try {
             }
           });
         },
-        { threshold: 0.15 }
+        { threshold: 0, rootMargin: "0px 0px 5% 0px" }
       );
 
       sections.forEach(function (section) {
@@ -1233,15 +1235,67 @@ try {
       const customPlayBtn = document.getElementById("wf-custom-play-btn");
       if (!player) return;
 
-      // Custom oversized play button kicks off playback, then hides itself.
-      // After first play, Mux's default bottom controls take over.
+      // Engagement model:
+      //   - Video starts muted-autoplay when section enters view (where supported).
+      //   - "Engagement" = user unmuted (autoplay path) OR user clicked play (fallback path).
+      //   - Either feeds the same hasPlayedFounderVideo flag, which becomes the
+      //     landing_video signal sent to GHL on registration.
+      let autoplayState = "pending"; // "pending" | "playing" | "failed"
+      let isAutoplayPlay = false;
+      let unmuteFired = false;
+
+      function showButtonInPlayMode() {
+        if (!customPlayBtn) return;
+        customPlayBtn.classList.remove("is-pending", "is-unmute-mode");
+        customPlayBtn.setAttribute("aria-label", "Play video");
+      }
+
+      function showButtonInUnmuteMode() {
+        if (!customPlayBtn) return;
+        customPlayBtn.classList.remove("is-pending");
+        customPlayBtn.classList.add("is-unmute-mode");
+        customPlayBtn.setAttribute("aria-label", "Tap to unmute");
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        isAutoplayPlay = true;
+        const promise = player.play();
+        if (promise && typeof promise.then === "function") {
+          promise
+            .then(function () {
+              autoplayState = "playing";
+              showButtonInUnmuteMode();
+            })
+            .catch(function () {
+              isAutoplayPlay = false;
+              autoplayState = "failed";
+              showButtonInPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          showButtonInUnmuteMode();
+        }
+      }
+
+      // Click: unmute if autoplay succeeded, otherwise kick off playback.
       if (customPlayBtn) {
         customPlayBtn.addEventListener("click", function (e) {
           e.preventDefault();
           e.stopPropagation();
-          const result = player.play();
-          if (result && typeof result.catch === "function") {
-            result.catch(function () {});
+          if (autoplayState === "playing") {
+            try {
+              player.muted = false;
+            } catch (err) {}
+          } else {
+            const result = player.play();
+            if (result && typeof result.catch === "function") {
+              result.catch(function () {});
+            }
           }
         });
       }
@@ -1253,16 +1307,40 @@ try {
 
       player.addEventListener("play", function () {
         playCount++;
-        hasPlayedFounderVideo = true;
+        const wasAutoplay = isAutoplayPlay;
+        isAutoplayPlay = false;
+
         if (caption) caption.classList.add("is-hidden");
-        if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
+
+        // Only count user-initiated play as engagement. Autoplay does not.
+        if (!wasAutoplay) {
+          hasPlayedFounderVideo = true;
+          if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
+        }
 
         if (window.posthogTrack) {
           window.posthogTrack("video_play", {
             video_id: "wf-intro-joe-robert",
             play_count: playCount,
             is_first_play: playCount === 1,
+            is_autoplay: wasAutoplay,
             current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      });
+
+      // Unmute is the engagement signal in the autoplay path.
+      player.addEventListener("volumechange", function () {
+        if (unmuteFired) return;
+        if (player.muted) return;
+        unmuteFired = true;
+        hasPlayedFounderVideo = true;
+        if (customPlayBtn) customPlayBtn.classList.add("is-hidden");
+        if (window.posthogTrack) {
+          window.posthogTrack("video_unmuted", {
+            video_id: "wf-intro-joe-robert",
+            current_time: Math.round(player.currentTime || 0),
+            autoplay_succeeded: autoplayState === "playing",
           });
         }
       });
@@ -1331,15 +1409,37 @@ try {
         }
       });
 
-      // Pause the video when it scrolls out of view
+      // Trigger muted autoplay while the section is still approaching, so
+      // the video buffers during the user's scroll and is already playing
+      // by the time they actually see the slide. The bottom rootMargin
+      // extends the trigger zone ~40% of viewport-height below the visible
+      // area. Pause when section leaves the viewport.
       if ("IntersectionObserver" in window) {
         const videoIo = new IntersectionObserver(
           function (entries) {
             entries.forEach(function (entry) {
-              if (!entry.isIntersecting && !player.paused) player.pause();
+              if (entry.isIntersecting) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (
+                  autoplayState === "playing" &&
+                  player.paused &&
+                  !hasPlayedFounderVideo
+                ) {
+                  isAutoplayPlay = true;
+                  const result = player.play();
+                  if (result && typeof result.catch === "function") {
+                    result.catch(function () {
+                      isAutoplayPlay = false;
+                    });
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
             });
           },
-          { threshold: 0 }
+          { threshold: 0, rootMargin: "0px 0px 40% 0px" }
         );
         videoIo.observe(player);
       }
