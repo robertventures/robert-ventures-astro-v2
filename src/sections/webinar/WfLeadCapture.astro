@@ -81,7 +81,9 @@ import usFlag from "../../images/icons/usflag.png";
           </button>
         )
       }
-      <p class="wf-slide__notice">You'll be invited to our live webinar this Sunday.</p>
+      <p class="wf-slide__notice" data-webinar-notice>
+        You'll be invited to our live webinar this Sunday.
+      </p>
       <div class="wf-slide__trust">
         <span class="wf-slide__trust-item">No Commitment</span>
       </div>
@@ -459,3 +461,12 @@ import usFlag from "../../images/icons/usflag.png";
     }
   }
 </style>
+
+<script>
+  if (new Date().getDay() === 0) {
+    const notice = document.querySelector("[data-webinar-notice]")
+    if (notice) {
+      notice.textContent = "You'll be invited to today's live webinar."
+    }
+  }
+</script>
