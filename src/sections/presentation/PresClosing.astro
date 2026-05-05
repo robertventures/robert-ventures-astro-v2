@@ -5,45 +5,59 @@
 <section class="pres-close">
   <div class="pres-close__container">
     <div class="pres-close__intro">
-      <p class="pres-close__eyebrow">Two ways forward</p>
-      <h2 class="pres-close__heading">Two ways to take the next step.</h2>
-      <p class="pres-close__subhead">No urgency. No pressure. Pick the one that fits where you are.</p>
+      <p class="pres-close__eyebrow">Two roads from here</p>
+      <h2 class="pres-close__heading">
+        Ten years from now, your money is in one of two places.
+      </h2>
+      <p class="pres-close__subhead">
+        Same starting point. Two very different endings.
+      </p>
     </div>
 
-    <div class="pres-close__paths">
-      <article class="pres-close__path">
-        <span class="pres-close__path-label">Still have questions</span>
-        <h3 class="pres-close__path-title">Book a 10-minute call.</h3>
-        <p class="pres-close__path-body">
-          We answer everything. No script. Most calls end with a clear yes or a clear no, and
-          either is fine.
+    <div class="pres-close__roads">
+      <article class="pres-close__road">
+        <span class="pres-close__road-label">Road 1 &middot; Stay where you are</span>
+        <p class="pres-close__road-amount">~$149,083</p>
+        <p class="pres-close__road-body">
+          $100,000 in a 4% savings account, 10 years later. Familiar. Simple. Quietly losing
+          ground to inflation.
         </p>
-        <a
-          class="pres-close__path-cta pres-close__path-cta--ghost"
-          href="/introduction/book-call"
-          data-track-cta="book_call"
-          data-track-location="closing"
-        >
-          Book a 10-minute call
-        </a>
       </article>
 
-      <article class="pres-close__path pres-close__path--featured">
-        <span class="pres-close__path-label">Ready to start</span>
-        <h3 class="pres-close__path-title">Create your account.</h3>
-        <p class="pres-close__path-body">
-          About 5 minutes. Pick your amount, your term, monthly payouts or compounding. Your rate
-          locks the moment you invest.
+      <article class="pres-close__road pres-close__road--featured">
+        <span class="pres-close__road-label">Road 2 &middot; Compound with us</span>
+        <p class="pres-close__road-amount">$270,700</p>
+        <p class="pres-close__road-body">
+          $100,000 at 10%, compounded over 10 years. Same ten years. Your rate locks the moment
+          you invest.
         </p>
+      </article>
+    </div>
+
+    <p class="pres-close__disclaimer">
+      Illustrative only. Past performance is not a promise of future results.
+    </p>
+
+    <div class="pres-close__cta">
+      <p class="pres-close__cta-label">Pick the next step that fits where you are.</p>
+      <div class="pres-close__cta-actions">
         <a
-          class="pres-close__path-cta pres-close__path-cta--solid"
+          class="pres-close__cta-btn pres-close__cta-btn--solid"
           href="https://invest.robertventures.com/"
           data-track-cta="create_account"
           data-track-location="closing"
         >
           Create your account
         </a>
-      </article>
+        <a
+          class="pres-close__cta-btn pres-close__cta-btn--ghost"
+          href="/presentation/book-call"
+          data-track-cta="book_call"
+          data-track-location="closing"
+        >
+          Book a 10-minute call
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -62,17 +76,17 @@
     padding: 80px 20px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 32px;
   }
 
   .pres-close__intro {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    text-align: center;
     align-items: center;
-    max-width: 640px;
+    gap: 1.25rem;
+    max-width: 600px;
     margin: 0 auto;
+    width: 100%;
   }
 
   .pres-close__eyebrow {
@@ -84,75 +98,120 @@
     letter-spacing: 0.08em;
     margin: 0;
     line-height: 130%;
+    text-align: center;
   }
 
   .pres-close__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 500;
     color: var(--dark-text-heading);
-    line-height: 115%;
+    line-height: 120%;
+    text-align: center;
     margin: 0;
   }
 
   .pres-close__subhead {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.7);
-    line-height: 160%;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
   }
 
-  .pres-close__paths {
+  .pres-close__heading + .pres-close__subhead {
+    margin-top: -0.5rem;
+  }
+
+  .pres-close__roads {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
-  .pres-close__path {
+  .pres-close__road {
     background: var(--dark-card-fill);
     border: 1px solid var(--dark-border);
     border-radius: 12px;
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
 
-  .pres-close__path--featured {
+  .pres-close__road--featured {
     background: rgba(103, 183, 143, 0.12);
     border-color: var(--green-brand);
   }
 
-  .pres-close__path-label {
+  .pres-close__road-label {
     font-family: "Roboto", sans-serif;
     font-size: 13px;
     font-weight: 600;
-    color: var(--green-brand);
+    color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     line-height: 130%;
   }
 
-  .pres-close__path-title {
+  .pres-close__road--featured .pres-close__road-label {
+    color: var(--green-brand);
+  }
+
+  .pres-close__road-amount {
     font-family: "Roboto Serif", serif;
-    font-size: 28px;
+    font-size: 40px;
     font-weight: 500;
     color: var(--dark-text-heading);
-    line-height: 125%;
+    line-height: 100%;
     margin: 0;
+    font-variant-numeric: lining-nums;
   }
 
-  .pres-close__path-body {
+  .pres-close__road-body {
     font-family: "Roboto", sans-serif;
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.78);
     line-height: 165%;
     margin: 0;
-    flex: 1;
   }
 
-  .pres-close__path-cta {
+  .pres-close__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    text-align: center;
+  }
+
+  .pres-close__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--dark-border);
+  }
+
+  .pres-close__cta-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--dark-text-heading);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .pres-close__cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .pres-close__cta-btn {
     text-decoration: none;
     text-align: center;
     border-radius: 8px;
@@ -170,27 +229,26 @@
       background-color 0.2s ease,
       border-color 0.2s ease,
       color 0.2s ease;
-    margin-top: 8px;
   }
 
-  .pres-close__path-cta--solid {
+  .pres-close__cta-btn--solid {
     background-color: var(--green-brand);
     border: 1px solid var(--green-brand);
     color: #ffffff;
   }
 
-  .pres-close__path-cta--solid:hover {
+  .pres-close__cta-btn--solid:hover {
     background-color: var(--green-hover);
     border-color: var(--green-hover);
   }
 
-  .pres-close__path-cta--ghost {
+  .pres-close__cta-btn--ghost {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.4);
     color: var(--dark-text-heading);
   }
 
-  .pres-close__path-cta--ghost:hover {
+  .pres-close__cta-btn--ghost:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.7);
     color: var(--dark-text-heading);
@@ -199,26 +257,52 @@
   @media only screen and (min-width: 600px) {
     .pres-close__container {
       padding: 112px 32px;
-      gap: 56px;
+      gap: 48px;
+    }
+
+    .pres-close__intro {
+      gap: 1.5rem;
     }
 
     .pres-close__heading {
-      font-size: 44px;
+      font-size: 2.75rem;
     }
 
-    .pres-close__paths {
+    .pres-close__roads {
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
 
-    .pres-close__path {
+    .pres-close__road {
       padding: 40px 32px;
+    }
+
+    .pres-close__road-amount {
+      font-size: 48px;
+    }
+
+    .pres-close__cta-actions {
+      flex-direction: row;
+    }
+
+    .pres-close__cta-btn {
+      flex: 1;
     }
   }
 
   @media only screen and (min-width: 1136px) {
     .pres-close__container {
       padding: 128px 48px;
+    }
+
+    .pres-close__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-close__heading {
+      font-size: 3.75rem;
     }
   }
 </style>

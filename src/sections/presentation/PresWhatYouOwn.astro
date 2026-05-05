@@ -1,5 +1,17 @@
 ---
+import { Image } from "astro:assets";
 import PresDualCTA from "./PresDualCTA.astro";
+import obx2 from "../../assets/outer-banks/outer-banks-2.jpg";
+import obx3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import obx4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import obx5 from "../../assets/outer-banks/outer-banks-5.jpg";
+
+const obxPhotos = [
+  { src: obx2, alt: "Outer Banks coastal home built by Robert Ventures" },
+  { src: obx3, alt: "Outer Banks oceanfront property" },
+  { src: obx4, alt: "Outer Banks beach house exterior" },
+  { src: obx5, alt: "Outer Banks coastal land site" },
+];
 ---
 
 <section class="pres-own">
@@ -24,7 +36,7 @@ import PresDualCTA from "./PresDualCTA.astro";
           </p>
         </div>
       </li>
-      <li class="pres-own__item">
+      <li class="pres-own__item pres-own__item--media">
         <span class="pres-own__num">2</span>
         <div class="pres-own__item-text">
           <h3 class="pres-own__item-title">Coastal land in the Outer Banks.</h3>
@@ -32,6 +44,23 @@ import PresDualCTA from "./PresDualCTA.astro";
             88% of Dare County is federally protected. Land we already own and build on. Real
             collateral. Photos of every site.
           </p>
+          <div class="pres-own__photos" aria-label="Outer Banks property photos">
+            {
+              obxPhotos.map((p) => (
+                <div class="pres-own__photo">
+                  <Image
+                    src={p.src}
+                    alt={p.alt}
+                    widths={[320, 480, 720]}
+                    sizes="(min-width: 600px) 200px, 45vw"
+                    format="webp"
+                    quality={75}
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            }
+          </div>
         </div>
       </li>
       <li class="pres-own__item">
@@ -76,7 +105,11 @@ import PresDualCTA from "./PresDualCTA.astro";
   .pres-own__intro {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .pres-own__eyebrow {
@@ -88,23 +121,30 @@ import PresDualCTA from "./PresDualCTA.astro";
     letter-spacing: 0.08em;
     margin: 0;
     line-height: 130%;
+    text-align: center;
   }
 
   .pres-own__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 500;
-    color: var(--text-heading);
-    line-height: 115%;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
     margin: 0;
   }
 
   .pres-own__body {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 165%;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
+  }
+
+  .pres-own__heading + .pres-own__body {
+    margin-top: -0.5rem;
   }
 
   .pres-own__list {
@@ -165,6 +205,34 @@ import PresDualCTA from "./PresDualCTA.astro";
     margin: 0;
   }
 
+  .pres-own__photos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .pres-own__photo {
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--bg-secondary);
+  }
+
+  .pres-own__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-own__photos {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+  }
+
   .pres-own__close {
     font-family: "Roboto Serif", serif;
     font-size: 20px;
@@ -198,8 +266,12 @@ import PresDualCTA from "./PresDualCTA.astro";
       gap: 48px;
     }
 
+    .pres-own__intro {
+      gap: 1.5rem;
+    }
+
     .pres-own__heading {
-      font-size: 44px;
+      font-size: 2.75rem;
     }
 
     .pres-own__item-title {
@@ -210,6 +282,16 @@ import PresDualCTA from "./PresDualCTA.astro";
   @media only screen and (min-width: 1136px) {
     .pres-own__container {
       padding: 120px 48px;
+    }
+
+    .pres-own__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-own__heading {
+      font-size: 3.75rem;
     }
   }
 </style>

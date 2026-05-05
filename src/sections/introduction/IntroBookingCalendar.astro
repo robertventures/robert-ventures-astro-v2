@@ -1,9 +1,11 @@
 ---
 // Self-contained booking calendar.
 // Renders the multi-state booking UI (loading, picking-day, picking-time,
-// confirming, booked). Consumes /api/booking-slots and /api/book-appointment.
-// Identity comes from `ghl_contact_id` in localStorage (set during /webinar
-// registration); a fallback dev contact is used if absent.
+// collecting-info, confirming, booked). Consumes /api/booking-slots and
+// /api/book-appointment. Identity is resolved in three tiers: ghl_contact_id
+// in localStorage, then full_name+userEmail+phone_number from a prior webinar
+// registration, then an inline form rendered between time selection and
+// confirmation for cold visitors.
 ---
 
 <p class="booking__note">
@@ -38,6 +40,57 @@
     </button>
     <p class="booking__label" data-booking-day-label></p>
     <div class="booking__times" data-booking-times></div>
+  </div>
+
+  <!-- Collecting info (cold visitors only) -->
+  <div class="booking__panel" data-panel="collecting-info">
+    <button type="button" class="booking__back-inline" data-booking-info-back>
+      <span class="booking__back-arrow" aria-hidden="true"></span>
+      Pick a different time
+    </button>
+    <p class="booking__label">Tell us where to call you</p>
+    <p class="booking__muted" data-booking-info-summary></p>
+    <div class="booking__fields">
+      <input
+        type="text"
+        name="full_name"
+        placeholder="Full Name"
+        autocomplete="name"
+        class="booking__input"
+        data-booking-info-name
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        autocomplete="email"
+        class="booking__input"
+        data-booking-info-email
+      />
+      <input
+        type="tel"
+        name="phone_number"
+        placeholder="(555) 555-5555"
+        maxlength="14"
+        inputmode="numeric"
+        autocomplete="tel-national"
+        class="booking__input"
+        data-booking-info-phone
+      />
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        class="booking__honeypot"
+        aria-hidden="true"
+        data-booking-info-honeypot
+      />
+    </div>
+    <p class="booking__error" data-booking-info-error hidden></p>
+    <button type="button" class="booking__confirm" data-booking-info-continue>
+      Continue
+    </button>
   </div>
 
   <!-- Confirming -->
@@ -118,9 +171,48 @@
   .booking[data-state="loading"] [data-panel="loading"],
   .booking[data-state="picking-day"] [data-panel="picking-day"],
   .booking[data-state="picking-time"] [data-panel="picking-time"],
+  .booking[data-state="collecting-info"] [data-panel="collecting-info"],
   .booking[data-state="confirming"] [data-panel="confirming"],
   .booking[data-state="booked"] [data-panel="booked"] {
     display: flex;
+  }
+
+  .booking__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .booking__input {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding: 0.875rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #1a1a1a;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .booking__input:focus {
+    outline: none;
+    border-color: #152429;
+  }
+
+  .booking__input::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+
+  .booking__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .booking__header {
@@ -426,6 +518,15 @@
     var toDaysBtn = root.querySelector("[data-booking-to-days]");
     var toTimeBtn = root.querySelector("[data-booking-to-time]");
 
+    var infoSummaryEl = root.querySelector("[data-booking-info-summary]");
+    var infoNameEl = root.querySelector("[data-booking-info-name]");
+    var infoEmailEl = root.querySelector("[data-booking-info-email]");
+    var infoPhoneEl = root.querySelector("[data-booking-info-phone]");
+    var infoHoneypotEl = root.querySelector("[data-booking-info-honeypot]");
+    var infoErrorEl = root.querySelector("[data-booking-info-error]");
+    var infoBackBtn = root.querySelector("[data-booking-info-back]");
+    var infoContinueBtn = root.querySelector("[data-booking-info-continue]");
+
     // Default fallback is Eastern (America/New_York) whenever no explicit
     // timezone is available, so slot times always have a sensible frame.
     function detectTimezone() {
@@ -450,18 +551,43 @@
       selectedSlot: null,
       timezone: detectTimezone(),
       hasLoaded: false,
+      knownIdentity: null,
+      pendingContactInfo: null,
     };
 
     function setState(s) {
       root.setAttribute("data-state", s);
     }
 
-    function getContactId() {
+    function readLs(key) {
       try {
-        return localStorage.getItem("ghl_contact_id");
+        var v = localStorage.getItem(key);
+        return v ? v.trim() : "";
       } catch (e) {
-        return null;
+        return "";
       }
+    }
+
+    // Resolve identity in three tiers:
+    //   1. ghl_contact_id (set during /webinar registration)
+    //   2. full_name + userEmail + phone_number all present in localStorage
+    //      (also set on registration; covers cases where ghl_contact_id was
+    //      lost but the rest survived)
+    //   3. null — caller renders the inline form
+    function getKnownIdentity() {
+      var contactId = readLs("ghl_contact_id");
+      if (contactId) return { kind: "id", contactId: contactId };
+
+      var name = readLs("full_name");
+      var email = readLs("userEmail");
+      var phone = readLs("phone_number");
+      if (name && email && phone) {
+        return {
+          kind: "info",
+          contactInfo: { name: name, email: email, phone: phone },
+        };
+      }
+      return null;
     }
 
     // Returns "YYYY-MM-DD" for a given Date in the user's timezone.
@@ -686,7 +812,7 @@
           btn.textContent = formatTime(iso);
           btn.addEventListener("click", function () {
             state.selectedSlot = iso;
-            summaryEl.textContent =
+            var slotSummary =
               relativeDayLabel(date) +
               ", " +
               formatDayNumber(date) +
@@ -695,9 +821,28 @@
               " (" +
               formatTzAbbrev() +
               ")";
+            summaryEl.textContent = slotSummary;
             errorEl.hidden = true;
             errorEl.textContent = "";
-            setState("confirming");
+
+            // Route based on identity. Re-check on every click in case the
+            // user filled the info form on a previous attempt and we want to
+            // skip it the second time.
+            state.knownIdentity = getKnownIdentity();
+            if (state.knownIdentity) {
+              setState("confirming");
+            } else {
+              if (infoSummaryEl) {
+                infoSummaryEl.textContent =
+                  "We'll call you about " + slotSummary + ".";
+              }
+              if (infoErrorEl) {
+                infoErrorEl.hidden = true;
+                infoErrorEl.textContent = "";
+              }
+              prefillInfoForm();
+              setState("collecting-info");
+            }
           });
           grid.appendChild(btn);
         });
@@ -744,19 +889,22 @@
       }
     }
 
-    // TEMPORARY: Fallback identity used when the visitor didn't go through
-    // /webinar registration (e.g. dev testing, incognito, cleared
-    // storage). The server upserts this into GHL so the booking still lands
-    // against a real contact.
-    var FALLBACK_CONTACT = {
-      name: "E Tester",
-      email: "e.test@rv.com",
-      phone: "5555555555",
-    };
-
     async function confirmBooking() {
       if (!state.selectedSlot) return;
-      var contactId = getContactId();
+
+      // Identity must be known by this point. If somehow not, drop back to
+      // the info form rather than booking against a stale identity.
+      var identity = state.knownIdentity;
+      if (!identity && state.pendingContactInfo) {
+        identity = { kind: "info", contactInfo: state.pendingContactInfo };
+      }
+      if (!identity) {
+        identity = getKnownIdentity();
+      }
+      if (!identity) {
+        setState("collecting-info");
+        return;
+      }
 
       confirmBtn.disabled = true;
       errorEl.hidden = true;
@@ -766,10 +914,10 @@
         selectedSlot: state.selectedSlot,
         timezone: state.timezone,
       };
-      if (contactId) {
-        payload.ghl_contact_id = contactId;
+      if (identity.kind === "id") {
+        payload.ghl_contact_id = identity.contactId;
       } else {
-        payload.contactInfo = FALLBACK_CONTACT;
+        payload.contactInfo = identity.contactInfo;
       }
 
       try {
@@ -837,6 +985,19 @@
           );
         } catch (e) {}
 
+        // If we just booked anonymously, persist the info so the visitor is
+        // recognized on a return visit and skips the form.
+        if (identity.kind === "info") {
+          try {
+            localStorage.setItem("full_name", identity.contactInfo.name);
+            localStorage.setItem("userEmail", identity.contactInfo.email);
+            localStorage.setItem(
+              "phone_number",
+              identity.contactInfo.phone.replace(/\D/g, "").replace(/^1/, "")
+            );
+          } catch (e) {}
+        }
+
         if (window.rvNavigate) window.rvNavigate("/webinar/confirmation");
         else window.location.href = "/webinar/confirmation";
       } catch (err) {
@@ -845,6 +1006,113 @@
         confirmBtn.disabled = false;
       }
     }
+
+    // Phone formatting mirrors /webinar's input mask: parens around the area
+    // code, dash before the line number, capped at 10 digits, paste-aware.
+    function formatPhoneDigits(digits) {
+      digits = digits.replace(/\D/g, "").slice(0, 10);
+      if (!digits) return "";
+      if (digits.length <= 3) return "(" + digits;
+      if (digits.length <= 6) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+      return (
+        "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6)
+      );
+    }
+
+    function setupInfoPhoneFormatting() {
+      if (!infoPhoneEl) return;
+      infoPhoneEl.addEventListener("input", function (e) {
+        e.target.value = formatPhoneDigits(e.target.value);
+      });
+      infoPhoneEl.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      infoPhoneEl.addEventListener("paste", function (e) {
+        e.preventDefault();
+        var clip = e.clipboardData || window.clipboardData;
+        var pasted = clip ? clip.getData("text") : "";
+        e.target.value = formatPhoneDigits(pasted);
+      });
+    }
+
+    function prefillInfoForm() {
+      if (state.pendingContactInfo) {
+        if (infoNameEl) infoNameEl.value = state.pendingContactInfo.name || "";
+        if (infoEmailEl) infoEmailEl.value = state.pendingContactInfo.email || "";
+        if (infoPhoneEl) {
+          infoPhoneEl.value = formatPhoneDigits(state.pendingContactInfo.phone || "");
+        }
+      }
+    }
+
+    function showInfoError(msg, focusEl) {
+      if (infoErrorEl) {
+        infoErrorEl.textContent = msg;
+        infoErrorEl.hidden = false;
+      }
+      if (focusEl) {
+        try {
+          focusEl.focus({ preventScroll: true });
+        } catch (e) {
+          focusEl.focus();
+        }
+      }
+    }
+
+    function hideInfoError() {
+      if (!infoErrorEl) return;
+      infoErrorEl.hidden = true;
+      infoErrorEl.textContent = "";
+    }
+
+    function handleInfoContinue() {
+      // Honeypot — silently swallow bot submissions so they cannot reach
+      // the booking endpoint.
+      if (infoHoneypotEl && infoHoneypotEl.value && infoHoneypotEl.value.trim() !== "") {
+        return;
+      }
+
+      var name = (infoNameEl && infoNameEl.value.trim()) || "";
+      var email = (infoEmailEl && infoEmailEl.value.trim()) || "";
+      var phoneDigits = infoPhoneEl ? infoPhoneEl.value.replace(/\D/g, "") : "";
+
+      hideInfoError();
+
+      if (!name || name.indexOf("@") !== -1) {
+        showInfoError("Please enter your full name.", infoNameEl);
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showInfoError("Please enter a valid email address.", infoEmailEl);
+        return;
+      }
+      if (phoneDigits.length !== 10) {
+        showInfoError("Please enter a valid 10-digit phone number.", infoPhoneEl);
+        return;
+      }
+
+      state.pendingContactInfo = {
+        name: name,
+        email: email,
+        phone: phoneDigits,
+      };
+      state.knownIdentity = { kind: "info", contactInfo: state.pendingContactInfo };
+
+      summaryEl.textContent =
+        relativeDayLabel(state.selectedDate) +
+        ", " +
+        formatDayNumber(state.selectedDate) +
+        " at " +
+        formatTime(state.selectedSlot) +
+        " (" +
+        formatTzAbbrev() +
+        ")";
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+      setState("confirming");
+    }
+
+    setupInfoPhoneFormatting();
 
     // Wire events
     toDaysBtn.addEventListener("click", function () {
@@ -859,6 +1127,21 @@
         setState("picking-day");
       }
     });
+
+    if (infoBackBtn) {
+      infoBackBtn.addEventListener("click", function () {
+        if (state.selectedDate) {
+          renderTimes(state.selectedDate);
+          setState("picking-time");
+        } else {
+          setState("picking-day");
+        }
+      });
+    }
+
+    if (infoContinueBtn) {
+      infoContinueBtn.addEventListener("click", handleInfoContinue);
+    }
 
     confirmBtn.addEventListener("click", confirmBooking);
 

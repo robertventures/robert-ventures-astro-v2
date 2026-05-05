@@ -134,6 +134,11 @@
     display: block;
     --media-object-fit: cover;
     --media-object-position: center;
+    --time-range: none;
+  }
+
+  .intro-slide__video-container mux-player[mediaisfullscreen] {
+    --time-range: initial;
   }
 
   /* One-shot UX nudge that covers the video while it's muted. Click anywhere

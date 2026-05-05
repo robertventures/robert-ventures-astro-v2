@@ -1,0 +1,125 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Photo {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  id: string;
+  photos: Photo[];
+  ariaLabel?: string;
+  interval?: number;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  id,
+  photos,
+  ariaLabel = "Image slideshow",
+  interval = 3000,
+  widths = [600, 1000, 1400],
+  sizes = "(min-width: 1920px) 900px, (min-width: 1136px) 800px, (min-width: 600px) 700px, 90vw",
+  class: className,
+} = Astro.props;
+---
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css"
+/>
+
+<div class:list={["image-slider splide", className]} id={id} aria-label={ariaLabel}>
+  <div class="splide__track">
+    <ul class="splide__list">
+      {
+        photos.map((photo, index) => (
+          <li class="splide__slide">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={widths}
+              sizes={sizes}
+              format="webp"
+              quality={75}
+              loading={index === 0 ? "eager" : "lazy"}
+              class="image-slider__photo"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .image-slider {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .image-slider__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+</style>
+
+<script is:inline define:vars={{ sliderId: id, sliderInterval: interval }}>
+  (function () {
+    function initSlider() {
+      if (typeof window.Splide === "undefined") return;
+      var el = document.getElementById(sliderId);
+      if (!el || el.dataset.splideMounted === "true") return;
+      el.dataset.splideMounted = "true";
+      new window.Splide("#" + sliderId, {
+        type: "fade",
+        rewind: true,
+        autoplay: true,
+        interval: sliderInterval,
+        speed: 1000,
+        pauseOnHover: false,
+        arrows: false,
+        pagination: false,
+      }).mount();
+    }
+
+    function loadSplide() {
+      if (typeof window.Splide !== "undefined") {
+        initSlider();
+        return;
+      }
+      var existing = document.querySelector('script[data-splide-cdn="true"]');
+      if (existing) {
+        if (existing.dataset.loaded === "true") {
+          initSlider();
+        } else {
+          existing.addEventListener("load", initSlider);
+        }
+        return;
+      }
+      var script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
+      script.dataset.splideCdn = "true";
+      script.onload = function () {
+        script.dataset.loaded = "true";
+        initSlider();
+      };
+      document.head.appendChild(script);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadSplide);
+    } else {
+      loadSplide();
+    }
+  })();
+</script>

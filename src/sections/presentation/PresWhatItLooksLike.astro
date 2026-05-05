@@ -6,10 +6,10 @@ import PresDualCTA from "./PresDualCTA.astro";
   <div class="pres-life__container">
     <div class="pres-life__intro">
       <p class="pres-life__eyebrow">What this looks like in your life</p>
-      <h2 class="pres-life__heading">What $100,000 actually does here.</h2>
+      <h2 class="pres-life__heading">Two ways to take that 10%.</h2>
       <p class="pres-life__subhead">
         Pick monthly payouts to live on. Or compound it and watch it work. Same contract either
-        way.
+        way. Same $100,000 example.
       </p>
     </div>
 
@@ -30,12 +30,12 @@ import PresDualCTA from "./PresDualCTA.astro";
       <div class="pres-life__path pres-life__path--featured">
         <span class="pres-life__path-label">Compound path</span>
         <div class="pres-life__path-amount">
-          <span class="pres-life__path-amount-value">$221,964</span>
-          <span class="pres-life__path-amount-unit">after 8 years</span>
+          <span class="pres-life__path-amount-value">$270,700</span>
+          <span class="pres-life__path-amount-unit">after 10 years</span>
         </div>
         <ul class="pres-life__path-details">
           <li>$100,000 at 10%, compounding</li>
-          <li>$134,392 after 3 years</li>
+          <li>$134,818 after 3 years</li>
           <li>The interest just earns interest.</li>
         </ul>
       </div>
@@ -44,7 +44,7 @@ import PresDualCTA from "./PresDualCTA.astro";
     <p class="pres-life__disclaimer">For illustrative purposes only.</p>
 
     <div class="pres-life__cta">
-      <p class="pres-life__cta-label">Run your own numbers below, or start with what you have today.</p>
+      <p class="pres-life__cta-label">Start with whatever feels right today.</p>
       <PresDualCTA primary="account" location="what_it_looks_like" />
     </div>
   </div>
@@ -69,8 +69,11 @@ import PresDualCTA from "./PresDualCTA.astro";
   .pres-life__intro {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 640px;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .pres-life__eyebrow {
@@ -82,23 +85,30 @@ import PresDualCTA from "./PresDualCTA.astro";
     letter-spacing: 0.08em;
     margin: 0;
     line-height: 130%;
+    text-align: center;
   }
 
   .pres-life__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 500;
-    color: var(--text-heading);
-    line-height: 115%;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
     margin: 0;
   }
 
   .pres-life__subhead {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 165%;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
+  }
+
+  .pres-life__heading + .pres-life__subhead {
+    margin-top: -0.5rem;
   }
 
   .pres-life__paths {
@@ -213,8 +223,12 @@ import PresDualCTA from "./PresDualCTA.astro";
       gap: 40px;
     }
 
+    .pres-life__intro {
+      gap: 1.5rem;
+    }
+
     .pres-life__heading {
-      font-size: 44px;
+      font-size: 2.75rem;
     }
 
     .pres-life__paths {
@@ -230,6 +244,16 @@ import PresDualCTA from "./PresDualCTA.astro";
   @media only screen and (min-width: 1136px) {
     .pres-life__container {
       padding: 120px 48px;
+    }
+
+    .pres-life__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-life__heading {
+      font-size: 3.75rem;
     }
   }
 </style>

@@ -1,0 +1,401 @@
+---
+import ImageSlider from "../../components/ImageSlider.astro";
+import outerBanks1 from "../../assets/outer-banks/outer-banks-1.jpg";
+import outerBanks2 from "../../assets/outer-banks/outer-banks-2.jpg";
+import outerBanks3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import outerBanks4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import outerBanks5 from "../../assets/outer-banks/outer-banks-5.jpg";
+import outerBanks6 from "../../assets/outer-banks/outer-banks-6.jpg";
+import outerBanks7 from "../../assets/outer-banks/outer-banks-7.jpg";
+
+const photos = [
+  { src: outerBanks1, alt: "Outer Banks property photo 1" },
+  { src: outerBanks2, alt: "Outer Banks property photo 2" },
+  { src: outerBanks3, alt: "Outer Banks property photo 3" },
+  { src: outerBanks4, alt: "Outer Banks property photo 4" },
+  { src: outerBanks5, alt: "Outer Banks property photo 5" },
+  { src: outerBanks6, alt: "Outer Banks property photo 6" },
+  { src: outerBanks7, alt: "Outer Banks property photo 7" },
+];
+
+const stats = [
+  { val: "5M+", label: "Annual visitors to the region", src: "OBX Chamber, 2024" },
+  { val: "$2.1B", label: "Tourism-driven regional spending", src: "OBX Chamber, 2024" },
+  { val: "$620K", label: "Dare County median price, +16.2% YoY", src: "OBAR MLS, Nov 2025" },
+  { val: "~100%", label: "10-year property-price appreciation", src: "OBAR 10-yr series" },
+];
+
+const buildEcon = [
+  { n: "<$100K", l: "Lot cost" },
+  { n: "~$350K", l: "Build cost" },
+  { n: "~$575K", l: "Sale price" },
+  { n: "~10 mo", l: "Cycle time" },
+];
+
+const sales = [
+  { addr: "Sportsman Dr, Frisco, NC", price: "$580,000" },
+  { addr: "Cobia Way, Avon, NC", price: "$549,000" },
+  { addr: "Rampart St, Salvo, NC", price: "$579,000" },
+  { addr: "Shoals Ct, Avon, NC (lot)", price: "$85,000" },
+];
+---
+
+<section class="pres-obx">
+  <div class="pres-obx__container">
+    <div class="pres-obx__intro">
+      <p class="pres-obx__eyebrow">The Outer Banks market</p>
+      <h2 class="pres-obx__heading">
+        A barrier-island market with <em>real scarcity and real receipts.</em>
+      </h2>
+      <p class="pres-obx__body">
+        The Outer Banks is a 200-mile chain of barrier islands in North Carolina. Federal parks,
+        CAMA setbacks, and septic rules hard-cap buildable inventory. Demand keeps coming. More
+        than 5 million visitors a year, $2.1B in tourism spending in 2024, and a 10-year
+        appreciation trend that has roughly doubled values.
+      </p>
+    </div>
+
+    <div class="pres-obx__slideshow-wrap">
+      <ImageSlider
+        id="obx-slideshow"
+        photos={photos}
+        ariaLabel="Outer Banks property photos"
+      />
+    </div>
+
+    <ul class="pres-obx__stats" aria-label="Outer Banks market statistics">
+      {
+        stats.map((s) => (
+          <li class="pres-obx__stat">
+            <span class="pres-obx__stat-val">{s.val}</span>
+            <span class="pres-obx__stat-label">{s.label}</span>
+            <span class="pres-obx__stat-src">{s.src}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="pres-obx__econ">
+      <h3 class="pres-obx__econ-title">Our build economics, in plain numbers.</h3>
+      <p class="pres-obx__econ-body">
+        We buy underpriced lots, build to the comp, and sell into a supply-constrained market.
+        Typical project, averaged.
+      </p>
+      <ul class="pres-obx__econ-row" aria-label="Build economics breakdown">
+        {
+          buildEcon.map((b) => (
+            <li class="pres-obx__econ-cell">
+              <span class="pres-obx__econ-n">{b.n}</span>
+              <span class="pres-obx__econ-l">{b.l}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="pres-obx__pipeline">
+        Two properties listed for sale today. We build a couple at a time, sell, then start the
+        next. Representative recent sales in the broader market:
+      </p>
+      <ul class="pres-obx__sales" aria-label="Representative recent sales">
+        {
+          sales.map((s) => (
+            <li class="pres-obx__sale">
+              <span class="pres-obx__sale-addr">{s.addr}</span>
+              <span class="pres-obx__sale-price">{s.price}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="pres-obx__disclaimer">
+        Representative sales from the broader Outer Banks market, not necessarily Robert Ventures
+        transactions.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-obx {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-obx__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pres-obx__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-obx__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-obx__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-obx__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-obx__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-obx__heading + .pres-obx__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-obx__slideshow-wrap {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .pres-obx__stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .pres-obx__stat {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pres-obx__stat-val {
+    font-family: "Roboto Serif", serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 110%;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-obx__stat-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 150%;
+  }
+
+  .pres-obx__stat-src {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .pres-obx__econ {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pres-obx__econ-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-obx__econ-body {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  .pres-obx__econ-row {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .pres-obx__econ-cell {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-obx__econ-n {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-obx__econ-l {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pres-obx__pipeline {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 165%;
+    margin: 0;
+  }
+
+  .pres-obx__pipeline strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-obx__sales {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .pres-obx__sale {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+  }
+
+  .pres-obx__sale-addr {
+    font-family: "Roboto", sans-serif;
+    color: var(--text-body);
+  }
+
+  .pres-obx__sale-price {
+    font-family: "Roboto Serif", serif;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-obx__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-obx__container {
+      padding: 4rem 2rem;
+      gap: 48px;
+    }
+
+    .pres-obx__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-obx__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-obx__stats {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .pres-obx__stat-val {
+      font-size: 30px;
+    }
+
+    .pres-obx__econ {
+      padding: 32px;
+    }
+
+    .pres-obx__econ-row {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .pres-obx__sales {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-obx__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-obx__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-obx__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

@@ -1,30 +1,67 @@
 ---
-import { Image } from "astro:assets";
-import outerBanks from "../../assets/outer-banks/outer-banks-1.jpg";
+
 ---
 
 <section class="pres-hero">
   <div class="pres-hero__container">
     <div class="pres-hero__content">
-      <h1 class="pres-hero__heading">
-        You have heard the numbers.<br />Now comes the decision.
-      </h1>
+      <h1 class="pres-hero__heading">A fixed 8 to 10%, for up to ten years.</h1>
       <p class="pres-hero__subhead">
-        A fixed 8 to 10% on a contract built on real estate and digital assets. The math is simple.
-        What is harder is trusting it. This page is for that part.
+        One contract built on coastal real estate and digital assets. No fund layer. No middlemen.
       </p>
     </div>
     <div class="pres-hero__media">
-      <Image
-        src={outerBanks}
-        alt="Outer Banks coastal property"
-        widths={[600, 1000, 1400]}
-        sizes="(min-width: 1136px) 520px, (min-width: 600px) 70vw, 90vw"
-        format="webp"
-        quality={80}
-        loading="eager"
-        class="pres-hero__image"
-      />
+      <div class="pres-hero__video-wrapper">
+        <div class="pres-hero__video-container">
+          <mux-player
+            id="pres-mux-player"
+            playback-id="zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00"
+            env-key="hr9aevib299lcvfdoip01jd60"
+            preload="metadata"
+            stream-type="on-demand"
+            max-resolution="1080p"
+            rendition-order="desc"
+            poster="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=214&height=121&time=5"
+            placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
+            muted
+            playsinline
+            default-show-captions
+          ></mux-player>
+          <div class="pres-hero__mux-overlay" id="pres-mux-overlay" role="button" tabindex="0">
+            <div class="pres-hero__mux-overlay-pill">
+              <svg
+                class="pres-hero__mux-overlay-icon pres-hero__mux-overlay-icon--unmute"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                  fill="#ffffff"></path>
+              </svg>
+              <svg
+                class="pres-hero__mux-overlay-icon pres-hero__mux-overlay-icon--play"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+              </svg>
+              <span class="pres-hero__mux-overlay-text pres-hero__mux-overlay-text--unmute">
+                Your video is playing. Click to unmute.
+              </span>
+              <span class="pres-hero__mux-overlay-text pres-hero__mux-overlay-text--play">
+                Click to play
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="pres-hero__caption">
+        <span class="pres-hero__caption-name">Joe Robert</span>
+        <span class="pres-hero__caption-sep" aria-hidden="true">&middot;</span>
+        <span class="pres-hero__caption-role">Manager &amp; Founder</span>
+      </p>
     </div>
   </div>
 </section>
@@ -34,112 +71,261 @@ import outerBanks from "../../assets/outer-banks/outer-banks-1.jpg";
     background: var(--bg-primary);
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid var(--border-light);
   }
 
   .pres-hero__container {
     max-width: 1136px;
     margin: 0 auto;
-    padding: 64px 20px;
+    padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 2rem;
     align-items: center;
   }
 
   .pres-hero__content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 1.25rem;
     width: 100%;
     max-width: 560px;
   }
 
-  .pres-hero__eyebrow {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
-    line-height: 130%;
-  }
-
   .pres-hero__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 40px;
+    font-size: 2.5rem;
     font-weight: 500;
-    color: var(--text-heading);
+    color: #1a1a1a;
     line-height: 115%;
+    text-align: center;
     margin: 0;
     font-variant-numeric: lining-nums;
   }
 
   .pres-hero__subhead {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 160%;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
-    margin-bottom: 8px;
+  }
+
+  .pres-hero__heading + .pres-hero__subhead {
+    margin-top: -0.5rem;
   }
 
   .pres-hero__media {
     width: 100%;
     max-width: 560px;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-hero__video-wrapper {
+    position: relative;
+    width: 100%;
     overflow: hidden;
+    border-radius: 12px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   }
 
-  .pres-hero__image {
+  .pres-hero__video-container {
+    position: relative;
     width: 100%;
-    height: auto;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #152429;
+  }
+
+  .pres-hero__video-container :global(mux-player) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+    --time-range: none;
+  }
+
+  .pres-hero__video-container :global(mux-player[mediaisfullscreen]) {
+    --time-range: initial;
+  }
+
+  .pres-hero__mux-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  .pres-hero__mux-overlay.is-active {
+    display: flex;
+  }
+
+  .pres-hero__mux-overlay:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .pres-hero__mux-overlay-pill {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    animation: pres-hero-mux-pill-glow 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .pres-hero__mux-overlay-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .pres-hero__mux-overlay-icon--play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  .pres-hero__mux-overlay-text--play {
+    display: none;
+  }
+
+  .pres-hero__mux-overlay.is-play-mode .pres-hero__mux-overlay-icon--unmute,
+  .pres-hero__mux-overlay.is-play-mode .pres-hero__mux-overlay-text--unmute {
+    display: none;
+  }
+
+  .pres-hero__mux-overlay.is-play-mode .pres-hero__mux-overlay-icon--play,
+  .pres-hero__mux-overlay.is-play-mode .pres-hero__mux-overlay-text--play {
+    display: inline-block;
+  }
+
+  @keyframes pres-hero-mux-pill-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pres-hero__mux-overlay-pill {
+      animation: none;
+    }
+  }
+
+  .pres-hero__caption {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pres-hero__caption-name {
+    font-family: "Roboto Serif", serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-hero__caption-sep {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 130%;
+  }
+
+  .pres-hero__caption-role {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 130%;
+  }
+
+  @media (min-width: 600px) {
+    .pres-hero__mux-overlay-pill {
+      padding: 0.75rem 1.25rem 0.75rem 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .pres-hero__mux-overlay-icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   @media only screen and (min-width: 600px) {
     .pres-hero__container {
-      padding: 80px 32px;
+      padding: 3rem 2rem;
+    }
+
+    .pres-hero__content {
+      gap: 1.5rem;
     }
 
     .pres-hero__heading {
-      font-size: 48px;
+      font-size: 3.5rem;
     }
   }
 
   @media only screen and (min-width: 1024px) {
     .pres-hero__container {
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       gap: 64px;
-      padding: 112px 48px;
+      padding: 4rem 3rem;
     }
 
     .pres-hero__content {
       flex: 1;
       max-width: none;
+      position: sticky;
+      top: 32px;
     }
 
     .pres-hero__media {
       flex: 1;
       max-width: 540px;
     }
+  }
 
+  @media only screen and (min-width: 1136px) {
     .pres-hero__heading {
-      font-size: 56px;
+      font-size: 4.25rem;
     }
   }
 
   @media only screen and (min-width: 1920px) {
     .pres-hero__container {
       max-width: 1440px;
-      padding: 128px 96px;
+      padding: 5rem 6rem;
     }
 
     .pres-hero__heading {
-      font-size: 64px;
+      font-size: 5rem;
     }
   }
 </style>

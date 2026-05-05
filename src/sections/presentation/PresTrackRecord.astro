@@ -1,0 +1,192 @@
+---
+const stats = [
+  { n: "$150M+", l: "AUM across the platform, 25-year history" },
+  { n: "200+", l: "Properties invested in or developed" },
+  { n: "1,500+", l: "Mortgages managed" },
+  { n: "40+", l: "Technology investments" },
+  { n: "$1.23M", l: "Raised in this offering to date" },
+  { n: "76", l: "Investors, hand-onboarded" },
+  { n: "100%", l: "On-time distributions to date" },
+  { n: "27%", l: "Investor reinvestment rate" },
+];
+---
+
+<section class="pres-track">
+  <div class="pres-track__container">
+    <div class="pres-track__intro">
+      <p class="pres-track__eyebrow">Track record</p>
+      <h2 class="pres-track__heading">25 years of operating, <em>and no missed payments.</em></h2>
+      <p class="pres-track__body">
+        Robert Ventures is not a new firm writing new checks. It is the current vehicle of a team
+        that has been building, lending, and investing for 25 years. The numbers below are
+        cumulative across entities. The operating detail for this offering is on the invest page.
+      </p>
+    </div>
+
+    <ul class="pres-track__grid" aria-label="Track record statistics">
+      {
+        stats.map((s) => (
+          <li class="pres-track__stat">
+            <span class="pres-track__stat-n">{s.n}</span>
+            <span class="pres-track__stat-l">{s.l}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="pres-track__disclaimer">
+      Figures are current as of 2026 and subject to change. Past performance is not an indicator of
+      future results.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pres-track {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-track__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-track__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-track__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-track__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-track__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-track__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-track__heading + .pres-track__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-track__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .pres-track__stat {
+    background: var(--bg-primary);
+    border: 1px solid rgba(43, 107, 71, 0.16);
+    border-radius: 10px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-track__stat-n {
+    font-family: "Roboto Serif", serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-variant-numeric: lining-nums;
+    line-height: 110%;
+  }
+
+  .pres-track__stat-l {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 150%;
+  }
+
+  .pres-track__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-track__container {
+      padding: 4rem 2rem;
+      gap: 40px;
+    }
+
+    .pres-track__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-track__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-track__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .pres-track__stat-n {
+      font-size: 28px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-track__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-track__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-track__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

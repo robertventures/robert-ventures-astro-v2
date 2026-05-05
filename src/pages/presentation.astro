@@ -1,19 +1,22 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import FooterNew from "../components/FooterNew.astro";
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import PresHero from "../sections/presentation/PresHero.astro";
-import PresRiskOfWaiting from "../sections/presentation/PresRiskOfWaiting.astro";
+import PresCostOfWaiting from "../sections/presentation/PresCostOfWaiting.astro";
 import PresWhatYouOwn from "../sections/presentation/PresWhatYouOwn.astro";
+import PresOuterBanks from "../sections/presentation/PresOuterBanks.astro";
+import PresBitcoinReserve from "../sections/presentation/PresBitcoinReserve.astro";
 import PresHowTheRateWorks from "../sections/presentation/PresHowTheRateWorks.astro";
-import PresFounder from "../sections/presentation/PresFounder.astro";
+import PresBondOptions from "../sections/presentation/PresBondOptions.astro";
 import PresWhatItLooksLike from "../sections/presentation/PresWhatItLooksLike.astro";
-import Calculator from "../sections/Calculator.astro";
+import PresTrackRecord from "../sections/presentation/PresTrackRecord.astro";
+import PresFounderNote from "../sections/presentation/PresFounderNote.astro";
 import ReviewsV3 from "../sections/ReviewsV3.astro";
 import PresObjections from "../sections/presentation/PresObjections.astro";
+import PresRiskAcknowledgment from "../sections/presentation/PresRiskAcknowledgment.astro";
+import PresRollover from "../sections/presentation/PresRollover.astro";
 import FAQ from "../sections/FAQ.astro";
 import PresClosing from "../sections/presentation/PresClosing.astro";
-import PresFounderNote from "../sections/presentation/PresFounderNote.astro";
 
 const pageTitle = "Presentation | Robert Ventures";
 const pageDescription =
@@ -37,22 +40,89 @@ const pageDescription =
       is:inline></script>
   </head>
   <body>
-    <Header />
+    <div class="pres-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <nav class="slide-indicator" aria-label="Section navigation">
+      <button class="slide-indicator__dot is-active" data-section="0" aria-label="Go to section 1"
+      ></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="1" aria-label="Go to section 2"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="2" aria-label="Go to section 3"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="3" aria-label="Go to section 4"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="4" aria-label="Go to section 5"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="5" aria-label="Go to section 6"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="6" aria-label="Go to section 7"></button>
+    </nav>
+
     <main>
       <PresHero />
-      <PresRiskOfWaiting />
-      <PresWhatYouOwn />
+      <PresOuterBanks />
+      <PresBitcoinReserve />
+      <!-- <PresWhatYouOwn /> -->
       <PresHowTheRateWorks />
-      <PresFounder />
-      <PresWhatItLooksLike />
-      <Calculator />
+      <PresTrackRecord />
       <ReviewsV3 />
-      <PresObjections />
-      <FAQ />
-      <PresClosing />
-      <PresFounderNote />
+      <PresCostOfWaiting />
+      <!-- <PresBondOptions /> -->
+      <!-- <PresWhatItLooksLike /> -->
+      <!-- <PresFounderNote /> -->
+      <!-- <PresObjections /> -->
+      <!-- <PresRiskAcknowledgment /> -->
+      <!-- <PresRollover /> -->
+      <!-- <FAQ /> -->
+      <!-- <PresClosing /> -->
     </main>
-    <FooterNew />
+
+    <footer class="pres-disclaimer">
+      <div class="pres-disclaimer__inner">
+        <p class="pres-disclaimer__body">
+          Important Risk Information: Investing involves risk. There is a potential that Robert
+          Ventures Holdings LLC (the "Company") may not be able to make the scheduled payments of
+          interest or principal on the bonds related to its existing securities offering. While
+          the Company believes the assumptions and forward-looking statements contained throughout
+          this website are reasonable, the Company cannot guarantee future results, performance,
+          or achievements. Anticipated returns, expense estimates, and investor payments discussed
+          throughout this website are based on the Company's assumptions and beliefs and are not
+          reflective of past operations of the Company. <a
+            href="https://l.robertventures.com/OfferingCircular"
+            data-track-cta="offering_circular"
+            data-track-location="presentation_disclaimer"
+            >Robert Ventures Holdings LLC Preliminary Offering Circular</a
+          >
+        </p>
+        <p class="pres-disclaimer__copy">
+          © {new Date().getFullYear()} Robert Ventures LLC. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <div class="pres-stickycta" role="region" aria-label="Next steps">
+      <div class="pres-stickycta__inner">
+        <a
+          class="pres-stickycta__btn pres-stickycta__btn--primary"
+          href="https://invest.robertventures.com/"
+          data-track-cta="create_account"
+          data-track-location="sticky_bar"
+        >
+          Create your account
+        </a>
+        <a
+          class="pres-stickycta__btn pres-stickycta__btn--ghost"
+          href="/presentation/book-call"
+          data-track-cta="book_call"
+          data-track-location="sticky_bar"
+        >
+          Book a 10-minute call
+        </a>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -61,6 +131,310 @@ const pageDescription =
      narrative reads as continuous bands of color, no white gaps between blocks. */
   main section {
     margin-bottom: 0;
+  }
+
+  /* Reserve room at the bottom so the sticky CTA bar never sits on top of the
+     final piece of content or the disclaimer. Matches the bar height + a bit
+     of breathing room at each breakpoint. */
+  body {
+    padding-bottom: 96px;
+  }
+
+  @media only screen and (min-width: 600px) {
+    body {
+      padding-bottom: 88px;
+    }
+  }
+</style>
+
+<style>
+  .pres-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+  }
+
+  .pres-nav-logo :global(svg) {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+
+    .pres-nav-logo :global(svg) {
+      height: 48px;
+    }
+  }
+
+  .pres-disclaimer {
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-light);
+    padding: 24px 1.5rem 32px;
+  }
+
+  .pres-disclaimer__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pres-disclaimer__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  .pres-disclaimer__body a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .pres-disclaimer__body a:hover {
+    color: var(--text-body);
+  }
+
+  .pres-disclaimer__copy {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 100%;
+    margin: 0;
+  }
+
+  .pres-stickycta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: linear-gradient(
+      to top,
+      #ffffff 0%,
+      #ffffff 55%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    padding: 32px 1rem calc(14px + env(safe-area-inset-bottom));
+    pointer-events: none;
+  }
+
+  .pres-stickycta__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  .pres-stickycta__btn {
+    flex: 1;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 12px 12px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .pres-stickycta__btn--primary {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    animation: stickycta-pulse-primary 2.6s ease-in-out infinite;
+  }
+
+  .pres-stickycta__btn--primary:hover,
+  .pres-stickycta__btn--primary:active {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+    color: #ffffff;
+  }
+
+  .pres-stickycta__btn--ghost {
+    background-color: transparent;
+    border: 1px solid var(--text-heading);
+    color: var(--text-heading);
+    animation: stickycta-pulse-ghost 2.6s ease-in-out infinite;
+  }
+
+  .pres-stickycta__btn--ghost:hover,
+  .pres-stickycta__btn--ghost:active {
+    background-color: var(--text-heading);
+    color: #ffffff;
+  }
+
+  @keyframes stickycta-pulse-primary {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @keyframes stickycta-pulse-ghost {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.22);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(26, 26, 26, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pres-stickycta__btn--primary,
+    .pres-stickycta__btn--ghost {
+      animation: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-disclaimer {
+      padding: 32px 2rem 40px;
+    }
+
+    .pres-disclaimer__body,
+    .pres-disclaimer__copy {
+      font-size: 13px;
+    }
+
+    .pres-stickycta {
+      padding: 40px 2rem calc(16px + env(safe-area-inset-bottom));
+    }
+
+    .pres-stickycta__inner {
+      gap: 12px;
+    }
+
+    .pres-stickycta__btn {
+      font-size: 16px;
+      padding: 14px 20px;
+    }
+  }
+</style>
+
+<style>
+  /* Section position indicator (fixed to left edge), mirrors /introduction */
+  .slide-indicator {
+    position: fixed;
+    left: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .slide-indicator__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid #1a1a1a;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .slide-indicator__dot:hover {
+    background: rgba(26, 26, 26, 0.3);
+  }
+
+  .slide-indicator__line {
+    width: 1.5px;
+    height: 24px;
+    background: rgba(26, 26, 26, 0.25);
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+
+  .slide-indicator__dot.is-passed {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  .slide-indicator__line.is-passed {
+    background: #1a1a1a;
+  }
+
+  .slide-indicator__dot.is-active {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(26, 26, 26, 0);
+    }
+  }
+
+  @media only screen and (max-width: 479px) {
+    .slide-indicator {
+      left: 0.2rem;
+    }
+
+    .slide-indicator__dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .slide-indicator__line {
+      height: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .slide-indicator {
+      left: 0.3rem;
+    }
+
+    .slide-indicator__dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .slide-indicator__line {
+      height: 28px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-disclaimer {
+      padding: 40px 2rem 56px;
+    }
   }
 </style>
 
@@ -186,10 +560,63 @@ const pageDescription =
       }
     }
 
+    // Section indicator: highlight the dot for the section currently crossing
+    // the viewport midline; clicking a dot smooth-scrolls to that section.
+    function setupSectionIndicator() {
+      var sections = Array.prototype.slice.call(document.querySelectorAll("main > section"));
+      if (sections.length === 0) return;
+
+      sections.forEach(function (section, i) {
+        section.setAttribute("data-section-index", String(i));
+      });
+
+      function updateIndicator(activeIndex) {
+        var dots = document.querySelectorAll(".slide-indicator__dot");
+        var lines = document.querySelectorAll(".slide-indicator__line");
+        dots.forEach(function (dot, i) {
+          dot.classList.remove("is-active", "is-passed");
+          if (i < activeIndex) dot.classList.add("is-passed");
+          if (i === activeIndex) dot.classList.add("is-active");
+        });
+        lines.forEach(function (line, i) {
+          line.classList.remove("is-passed");
+          if (i < activeIndex) line.classList.add("is-passed");
+        });
+      }
+
+      document.querySelectorAll(".slide-indicator__dot").forEach(function (dot) {
+        dot.addEventListener("click", function () {
+          var idx = parseInt(dot.getAttribute("data-section"), 10);
+          var target = sections[idx];
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      if (!("IntersectionObserver" in window)) return;
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
+              updateIndicator(idx);
+            }
+          });
+        },
+        { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
+      );
+      sections.forEach(function (section) {
+        io.observe(section);
+      });
+    }
+
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", setupFounderVideo);
+      document.addEventListener("DOMContentLoaded", function () {
+        setupFounderVideo();
+        setupSectionIndicator();
+      });
     } else {
       setupFounderVideo();
+      setupSectionIndicator();
     }
   })();
 </script>

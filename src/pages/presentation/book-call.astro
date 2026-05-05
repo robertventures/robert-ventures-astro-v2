@@ -1,0 +1,247 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../../components/BaseHead.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import IntroBookingCalendar from "../../sections/introduction/IntroBookingCalendar.astro";
+
+const pageTitle = "Book a Call | Robert Ventures";
+const pageDescription =
+  "Pick a time for a quick 10-minute call with our team.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="pres-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <main class="book-call">
+      <div class="book-call__content">
+        <h1 class="book-call__heading">Ready to talk it through?</h1>
+        <p class="book-call__subtitle">
+          Pick a time and a member of our team will call you for a quick 10-minute
+          conversation. Bring your questions.
+        </p>
+        <IntroBookingCalendar />
+        {
+          import.meta.env.DEV && (
+            <button type="button" id="book-call-dev-skip" class="book-call__dev-skip">
+              Skip booking (dev)
+            </button>
+          )
+        }
+      </div>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    background-color: #ffffff;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation-name: ga-old-fwd;
+  }
+  ::view-transition-new(root) {
+    animation-name: ga-new-fwd;
+  }
+  html[data-astro-transition="back"]::view-transition-old(root) {
+    animation-name: ga-old-back;
+  }
+  html[data-astro-transition="back"]::view-transition-new(root) {
+    animation-name: ga-new-back;
+  }
+
+  @keyframes ga-new-fwd {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ga-old-fwd {
+    to {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-new-back {
+    from {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-old-back {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  html[data-astro-transition="traverse"]::view-transition-old(root),
+  html[data-astro-transition="traverse"]::view-transition-new(root) {
+    animation: none;
+  }
+</style>
+
+<style>
+  .pres-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+  }
+
+  .pres-nav-logo :global(svg) {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  .book-call {
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    box-sizing: border-box;
+  }
+
+  .book-call__content {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .book-call__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .book-call__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: #555555;
+    text-align: center;
+    margin: 0 0 1rem;
+    line-height: 150%;
+    text-wrap: balance;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+
+    .pres-nav-logo :global(svg) {
+      height: 48px;
+    }
+
+    .book-call {
+      padding: 3rem 2rem 5rem;
+    }
+
+    .book-call__heading {
+      font-size: 2.25rem;
+    }
+
+    .book-call__subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .book-call {
+      padding: 4rem 2rem 6rem;
+    }
+
+    .book-call__heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  .book-call__dev-skip {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #555555;
+    background: transparent;
+    border: 1px dashed #bbbbbb;
+    border-radius: 8px;
+    padding: 0.625rem 1rem;
+    width: 100%;
+    max-width: 520px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+  }
+  .book-call__dev-skip:hover {
+    border-color: #555555;
+    color: #1a1a1a;
+  }
+</style>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+  (window as any).rvNavigate = navigate;
+</script>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    function setupDevSkip() {
+      var btn = document.getElementById("book-call-dev-skip");
+      if (!btn) return;
+      if (btn.dataset.boundClick === "1") return;
+      btn.dataset.boundClick = "1";
+      btn.addEventListener("click", function () {
+        try {
+          if (!localStorage.getItem("ghl_contact_id")) {
+            localStorage.setItem("test_mode", "1");
+            localStorage.setItem("ghl_contact_id", "test_contact_123");
+          }
+          var fakeSlot = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+          localStorage.setItem(
+            "booked_call_slot",
+            JSON.stringify({ slot: fakeSlot, timezone: "America/New_York" })
+          );
+        } catch (e) {}
+        if (window.rvNavigate) window.rvNavigate("/webinar/confirmation");
+        else window.location.href = "/webinar/confirmation";
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupDevSkip);
+    } else {
+      setupDevSkip();
+    }
+  })();
+</script>
+
+<script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>

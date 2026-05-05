@@ -72,8 +72,11 @@ const objections = [
   .pres-obj__intro {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    max-width: 640px;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .pres-obj__eyebrow {
@@ -85,23 +88,30 @@ const objections = [
     letter-spacing: 0.08em;
     margin: 0;
     line-height: 130%;
+    text-align: center;
   }
 
   .pres-obj__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 500;
-    color: var(--text-heading);
-    line-height: 115%;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
     margin: 0;
   }
 
   .pres-obj__subhead {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 165%;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
+  }
+
+  .pres-obj__heading + .pres-obj__subhead {
+    margin-top: -0.5rem;
   }
 
   .pres-obj__list {
@@ -175,8 +185,12 @@ const objections = [
       gap: 48px;
     }
 
+    .pres-obj__intro {
+      gap: 1.5rem;
+    }
+
     .pres-obj__heading {
-      font-size: 44px;
+      font-size: 2.75rem;
     }
 
     .pres-obj__item {
@@ -195,6 +209,16 @@ const objections = [
   @media only screen and (min-width: 1136px) {
     .pres-obj__container {
       padding: 120px 48px;
+    }
+
+    .pres-obj__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-obj__heading {
+      font-size: 3.75rem;
     }
   }
 </style>

@@ -1,0 +1,294 @@
+---
+const bars = [
+  { label: "Savings", rate: "4%", value: "~$14,908", heightPct: 29 },
+  { label: "5-yr CD", rate: "4.5%", value: "~$15,530", heightPct: 32 },
+  { label: "Private credit", rate: "8%", value: "~$22,196", heightPct: 71 },
+  {
+    label: "Robert Ventures",
+    rate: "10%",
+    value: "~$27,070",
+    heightPct: 100,
+    featured: true,
+  },
+];
+---
+
+<section class="pres-cost">
+  <div class="pres-cost__container">
+    <div class="pres-cost__intro">
+      <h2 class="pres-cost__heading">
+        Safe money isn't safe if it's <em>quietly losing to inflation.</em>
+      </h2>
+      <p class="pres-cost__subhead">Same $10,000. Same ten years. Four endings.</p>
+    </div>
+
+    <ul class="pres-cost__chart" aria-label="Comparison of 10-year outcomes for $10,000">
+      {
+        bars.map((b) => (
+          <li class={`pres-cost__row${b.featured ? " pres-cost__row--featured" : ""}`}>
+            <div
+              class="pres-cost__row-fill"
+              style={`width: ${b.heightPct}%;`}
+              aria-hidden="true"
+            />
+            <div class="pres-cost__row-content">
+              <div class="pres-cost__row-meta">
+                <span class="pres-cost__row-label">{b.label}</span>
+                <span class="pres-cost__row-rate">{b.rate} &middot; 10 yrs</span>
+              </div>
+              <span class="pres-cost__row-value">{b.value}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="pres-cost__close">
+      <p class="pres-cost__close-lead">
+        In any single year, the difference looks small. Over ten, it's the difference between
+        treading water and nearly tripling your money. The longer you wait in cash, the more of
+        that gap you give up.
+      </p>
+      <p class="pres-cost__close-bridge">
+        Compounding starts the day you invest, not the day you decide.
+      </p>
+    </div>
+
+    <p class="pres-cost__disclaimer">
+      Illustrative only. Figures compound monthly over 10 years on the principal shown, against a
+      4% savings benchmark. Not a projection of future results.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pres-cost {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-cost__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-cost__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .pres-cost__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-cost__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-cost__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: var(--text-body);
+    text-align: center;
+    line-height: 150%;
+    margin: 0;
+  }
+
+  .pres-cost__heading + .pres-cost__subhead {
+    margin-top: -0.5rem;
+  }
+
+  .pres-cost__chart {
+    list-style: none;
+    padding: 14px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+  }
+
+  .pres-cost__row {
+    position: relative;
+    display: block;
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .pres-cost__row-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--green-tint);
+    border-radius: 8px;
+    z-index: -1;
+  }
+
+  .pres-cost__row--featured .pres-cost__row-fill {
+    background: linear-gradient(to right, var(--green-brand), var(--green-hover));
+  }
+
+  .pres-cost__row-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pres-cost__row-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .pres-cost__row-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-cost__row--featured .pres-cost__row-label {
+    color: #ffffff;
+  }
+
+  .pres-cost__row-rate {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pres-cost__row--featured .pres-cost__row-rate {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .pres-cost__row-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-heading);
+    line-height: 110%;
+    font-variant-numeric: lining-nums tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .pres-cost__row--featured .pres-cost__row-value {
+    color: #ffffff;
+  }
+
+  .pres-cost__close {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 540px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-cost__close-lead {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    color: var(--text-heading);
+    line-height: 155%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-cost__close-bridge {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    font-style: italic;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-cost__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 160%;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-cost__container {
+      padding: 4rem 2rem;
+      gap: 40px;
+    }
+
+    .pres-cost__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-cost__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-cost__chart {
+      padding: 18px;
+      gap: 8px;
+    }
+
+    .pres-cost__row {
+      padding: 18px 22px;
+    }
+
+    .pres-cost__row-label {
+      font-size: 15px;
+    }
+
+    .pres-cost__row-value {
+      font-size: 24px;
+    }
+
+    .pres-cost__close-lead {
+      font-size: 20px;
+    }
+
+    .pres-cost__close-bridge {
+      font-size: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-cost__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-cost__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-cost__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

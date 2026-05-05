@@ -1,0 +1,346 @@
+---
+import PresDualCTA from "./PresDualCTA.astro";
+
+const tiers = [
+  {
+    term: "1-year lock-up",
+    rate: "8.0%",
+    growth: "~$22,196",
+    fit: "Investors who want flexibility after year one",
+    highlight: false,
+  },
+  {
+    term: "3-year lock-up",
+    rate: "10.0%",
+    growth: "~$27,070",
+    fit: "Compounders locking in the highest rate",
+    highlight: true,
+  },
+];
+
+const stack = [
+  { label: "Fixed rate, compounded monthly over 10 years", value: "Locked at signing" },
+  { label: "Monthly statements and distribution flexibility", value: "Included" },
+  { label: "Annual CPA-audited financials", value: "Included" },
+  { label: "Semi-annual SEC disclosures, Reg A Tier 2", value: "Included" },
+  { label: "Founder-level access via investor-relations team", value: "Included" },
+  { label: "Direct exposure to OBX development and a BTC reserve", value: "Included" },
+];
+---
+
+<section class="pres-bond">
+  <div class="pres-bond__container">
+    <div class="pres-bond__intro">
+      <p class="pres-bond__eyebrow">One bond, two commitment levels</p>
+      <h2 class="pres-bond__heading">Choose your lock-up. <em>Start earning immediately.</em></h2>
+      <p class="pres-bond__body">
+        Every bond matures at <strong>10 years</strong>. You choose your minimum commitment period.
+        After that, you continue to earn monthly up to maturity. A longer lock-up earns a higher
+        rate. Minimum investment is <strong>$1,000</strong>. All rates are nominal annual,
+        compounded monthly.
+      </p>
+    </div>
+
+    <div class="pres-bond__table-wrap" role="region" aria-label="Bond commitment options">
+      <table class="pres-bond__table">
+        <thead>
+          <tr>
+            <th scope="col">Commitment</th>
+            <th scope="col">Rate</th>
+            <th scope="col">$10K at 10-yr maturity</th>
+            <th scope="col">Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            tiers.map((t) => (
+              <tr class={t.highlight ? "is-highlight" : ""}>
+                <td class="pres-bond__term">{t.term}</td>
+                <td class="pres-bond__rate">{t.rate}</td>
+                <td class="pres-bond__growth">{t.growth}</td>
+                <td class="pres-bond__fit">{t.fit}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="pres-bond__note">
+      After your lock-up period ends, your bond continues paying monthly at the same rate through
+      the 10-year maturity. Rates subject to the final Offering Circular.
+    </p>
+
+    <div class="pres-bond__stack">
+      <h3 class="pres-bond__stack-title">What you get for a $1,000 minimum</h3>
+      <ul class="pres-bond__stack-list">
+        {
+          stack.map((row) => (
+            <li class="pres-bond__stack-row">
+              <span class="pres-bond__stack-label">{row.label}</span>
+              <span class="pres-bond__stack-value">{row.value}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="pres-bond__cta">
+      <p class="pres-bond__cta-label">Ready to pick a term?</p>
+      <PresDualCTA primary="account" location="bond_options" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-bond {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-bond__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-bond__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-bond__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-bond__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-bond__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-bond__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-bond__heading + .pres-bond__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-bond__body strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-bond__table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    background: var(--bg-primary);
+  }
+
+  .pres-bond__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .pres-bond__table th,
+  .pres-bond__table td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pres-bond__table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .pres-bond__table th {
+    background: var(--bg-secondary);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .pres-bond__table td {
+    color: var(--text-body);
+  }
+
+  .pres-bond__term {
+    font-family: "Roboto Serif", serif;
+    font-weight: 700;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-bond__rate {
+    color: var(--green-dark);
+    font-weight: 600;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-bond__growth {
+    font-family: "Roboto Serif", serif;
+    font-weight: 600;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-bond__table tr.is-highlight td {
+    background: var(--green-tint);
+  }
+
+  .pres-bond__table tr.is-highlight .pres-bond__term {
+    color: var(--green-dark);
+  }
+
+  .pres-bond__note {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  .pres-bond__stack {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pres-bond__stack-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-bond__stack-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pres-bond__stack-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border-light);
+    font-size: 14.5px;
+    color: var(--text-body);
+    align-items: baseline;
+  }
+
+  .pres-bond__stack-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .pres-bond__stack-label {
+    font-family: "Roboto", sans-serif;
+  }
+
+  .pres-bond__stack-value {
+    font-family: "Roboto Serif", serif;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-bond__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pres-bond__cta-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-heading);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-bond__container {
+      padding: 96px 32px;
+      gap: 40px;
+    }
+
+    .pres-bond__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-bond__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-bond__stack {
+      padding: 32px;
+    }
+
+    .pres-bond__stack-title {
+      font-size: 24px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-bond__container {
+      padding: 120px 48px;
+    }
+
+    .pres-bond__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-bond__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

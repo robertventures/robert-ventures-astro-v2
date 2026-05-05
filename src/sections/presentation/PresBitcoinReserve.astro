@@ -1,0 +1,299 @@
+---
+const adoption = [
+  { val: "60%", label: "of the top U.S. banks offer Bitcoin services" },
+  { val: "90%", label: "of Barron's top 50 RIAs allocate to Bitcoin" },
+  { val: "2,000+", label: "advisory firms hold Bitcoin ETFs" },
+  { val: "~$28B", label: "U.S. Strategic Bitcoin Reserve, 2025 executive order" },
+];
+
+const custody = [
+  { n: "$250M", l: "Insurance coverage" },
+  { n: "1,500+", l: "Institutional clients" },
+  { n: "2013", l: "Operating since" },
+  { n: "Federally", l: "Chartered trust" },
+];
+---
+
+<section class="pres-btc">
+  <div class="pres-btc__container">
+    <div class="pres-btc__intro">
+      <p class="pres-btc__eyebrow">The digital reserve</p>
+      <h2 class="pres-btc__heading">Why we also <em>stack Bitcoin.</em></h2>
+      <p class="pres-btc__body">
+        Bitcoin is the only digital asset with a fixed <strong>21 million unit hard cap</strong>
+        written into the protocol. It is the scarcest monetary asset humans have ever built, and
+        the institutions that spent a decade calling it "internet magic money" are now custodians,
+        ETF issuers, and strategic holders.
+      </p>
+      <p class="pres-btc__body pres-btc__body--italic">
+        Our digital reserve is anchored by Bitcoin, with Ethereum held as a small secondary
+        allocation.
+      </p>
+    </div>
+
+    <div class="pres-btc__grid">
+      <article class="pres-btc__card">
+        <h3 class="pres-btc__card-title">What we do with it</h3>
+        <p class="pres-btc__card-body">
+          We accumulate a small allocation of Bitcoin alongside our real estate operations as a
+          long-term reserve. It is <strong>not traded</strong>. Your bond return is <strong>not
+          indexed to Bitcoin price</strong>. It is a contractual rate, paid from company cash flows.
+        </p>
+        <ul class="pres-btc__list">
+          <li><strong>5.39 BTC</strong> in reserve, audited Aug 27, 2025.</li>
+          <li>Held at <strong>BitGo Bank &amp; Trust</strong>, a federally chartered qualified custodian.</li>
+          <li>Balance-sheet hedge against fiat debasement.</li>
+        </ul>
+      </article>
+
+      <article class="pres-btc__card">
+        <h3 class="pres-btc__card-title">Who else is now in</h3>
+        <p class="pres-btc__card-body">
+          In the last three years the institutional picture flipped. The same firms that declared
+          Bitcoin "uninvestable" now custody it, quote it, and in many cases own it.
+        </p>
+        <ul class="pres-btc__list">
+          {adoption.map((a) => <li><strong>{a.val}</strong> {a.label}.</li>)}
+        </ul>
+      </article>
+    </div>
+
+    <ul class="pres-btc__custody" aria-label="BitGo custody facts">
+      {
+        custody.map((c) => (
+          <li class="pres-btc__custody-cell">
+            <span class="pres-btc__custody-n">{c.n}</span>
+            <span class="pres-btc__custody-l">{c.l}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .pres-btc {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-btc__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pres-btc__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-btc__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-btc__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-btc__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-btc__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-btc__heading + .pres-btc__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-btc__body strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-btc__body--italic {
+    font-style: italic;
+    font-size: 16px;
+  }
+
+  .pres-btc__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pres-btc__card {
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid var(--green-brand);
+    border-radius: 0 8px 8px 0;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-btc__card-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-btc__card-body {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 165%;
+    margin: 0;
+  }
+
+  .pres-btc__card-body strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-btc__list {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pres-btc__list li {
+    font-family: "Roboto", sans-serif;
+    font-size: 14.5px;
+    color: var(--text-body);
+    line-height: 160%;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .pres-btc__list li::before {
+    content: "•";
+    color: var(--green-brand);
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .pres-btc__list strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-btc__custody {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .pres-btc__custody-cell {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 16px 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-btc__custody-n {
+    font-family: "Roboto Serif", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-btc__custody-l {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-btc__container {
+      padding: 4rem 2rem;
+      gap: 48px;
+    }
+
+    .pres-btc__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-btc__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-btc__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pres-btc__card {
+      padding: 28px;
+    }
+
+    .pres-btc__custody {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-btc__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-btc__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-btc__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

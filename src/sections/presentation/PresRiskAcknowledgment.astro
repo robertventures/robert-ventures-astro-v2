@@ -1,0 +1,298 @@
+---
+const risks = [
+  {
+    title: "Real-estate risk.",
+    body: "OBX conditions can soften. Timelines can slip. Sales can come in below underwriting.",
+  },
+  {
+    title: "Bitcoin volatility.",
+    body: "BTC can draw down 50% or more in a cycle. Our allocation is sized as a long-term reserve, not a trade.",
+  },
+  {
+    title: "Credit risk.",
+    body: "Bonds are unsecured. Repayment depends on the company's ability to pay.",
+  },
+  {
+    title: "Liquidity risk.",
+    body: "Bonds are generally held to maturity. Early redemption is limited and subject to company discretion and the Offering Circular.",
+  },
+  {
+    title: "Concentration risk.",
+    body: "The strategy is concentrated in one geography (OBX) and one digital asset (BTC).",
+  },
+  {
+    title: "Regulatory risk.",
+    body: "Changes in Reg A, real-estate, or digital-asset regulation could affect the offering.",
+  },
+];
+
+const mitigations = [
+  {
+    title: "Founder capital sits below bonds.",
+    body: "$750K of personal capital from the founder is subordinate. Losses hit the founder before bondholders.",
+  },
+  {
+    title: "Annual CPA audit.",
+    body: "Plus semi-annual SEC reporting under Reg A Tier 2.",
+  },
+  {
+    title: "Federally chartered Bitcoin custody.",
+    body: "BitGo Bank & Trust holds the digital reserve. We do not self-custody.",
+  },
+  {
+    title: "24-property active pipeline.",
+    body: "Diversified across Dare County, not a single build.",
+  },
+  {
+    title: "No founder salary from this offering.",
+    body: "Reduces cash burn and aligns incentives with bondholders.",
+  },
+  {
+    title: "100% on-time distributions to date.",
+    body: "Past performance does not predict future results.",
+  },
+];
+---
+
+<section class="pres-risk">
+  <div class="pres-risk__container">
+    <div class="pres-risk__intro">
+      <p class="pres-risk__eyebrow">Before you invest</p>
+      <h2 class="pres-risk__heading">
+        We would rather you <em>not invest</em> than invest without reading this.
+      </h2>
+      <p class="pres-risk__body">
+        These are bonds. They are <strong>unsecured general obligations</strong> of Robert Ventures
+        Holdings LLC. They are not bank deposits. They are <strong>not FDIC insured</strong>. They
+        are not backed by any government agency. The SEC qualified this offering under Regulation A
+        Tier 2. That is a disclosure review, not an endorsement.
+      </p>
+    </div>
+
+    <div class="pres-risk__grid">
+      <article class="pres-risk__panel">
+        <h3 class="pres-risk__panel-title">Key risks we want you to see plainly</h3>
+        <ul class="pres-risk__list">
+          {
+            risks.map((r) => (
+              <li class="pres-risk__item">
+                <span class="pres-risk__bullet" aria-hidden="true">•</span>
+                <span class="pres-risk__item-text">
+                  <strong>{r.title}</strong> {r.body}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <article class="pres-risk__panel">
+        <h3 class="pres-risk__panel-title">What we do to reduce those risks (not eliminate them)</h3>
+        <ul class="pres-risk__list">
+          {
+            mitigations.map((m) => (
+              <li class="pres-risk__item">
+                <span class="pres-risk__bullet" aria-hidden="true">•</span>
+                <span class="pres-risk__item-text">
+                  <strong>{m.title}</strong> {m.body}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+    </div>
+
+    <p class="pres-risk__close">
+      Read the <a href="https://robertventures.com/offering-circular">Offering Circular</a>,
+      especially the Risk Factors section, before you invest. If any of the above would cause you
+      meaningful hardship if it happened, this is not the right investment for you.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pres-risk {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-risk__container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-risk__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-risk__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-risk__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-risk__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-risk__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-risk__heading + .pres-risk__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-risk__body strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-risk__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pres-risk__panel {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--green-brand);
+    border-radius: 0 8px 8px 0;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pres-risk__panel-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 135%;
+    margin: 0;
+  }
+
+  .pres-risk__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-risk__item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14.5px;
+    color: var(--text-body);
+    line-height: 160%;
+  }
+
+  .pres-risk__bullet {
+    color: var(--green-brand);
+    font-weight: 700;
+    line-height: 160%;
+  }
+
+  .pres-risk__item-text strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .pres-risk__close {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-body);
+    line-height: 170%;
+    margin: 0;
+    max-width: 70ch;
+  }
+
+  .pres-risk__close a {
+    color: var(--green-dark);
+    text-decoration: underline;
+  }
+
+  .pres-risk__close a:hover {
+    color: var(--green-hover);
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-risk__container {
+      padding: 96px 32px;
+      gap: 40px;
+    }
+
+    .pres-risk__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-risk__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-risk__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pres-risk__panel {
+      padding: 28px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-risk__container {
+      padding: 120px 48px;
+    }
+
+    .pres-risk__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-risk__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

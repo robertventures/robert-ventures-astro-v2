@@ -55,7 +55,7 @@
   .pres-rate__container {
     max-width: 1024px;
     margin: 0 auto;
-    padding: 72px 20px;
+    padding: 3rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -64,8 +64,11 @@
   .pres-rate__intro {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 640px;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .pres-rate__eyebrow {
@@ -77,23 +80,30 @@
     letter-spacing: 0.08em;
     margin: 0;
     line-height: 130%;
+    text-align: center;
   }
 
   .pres-rate__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 500;
-    color: var(--text-heading);
-    line-height: 115%;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
     margin: 0;
   }
 
   .pres-rate__subhead {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 160%;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
     margin: 0;
+  }
+
+  .pres-rate__heading + .pres-rate__subhead {
+    margin-top: -0.5rem;
   }
 
   .pres-rate__reasons {
@@ -144,12 +154,16 @@
 
   @media only screen and (min-width: 600px) {
     .pres-rate__container {
-      padding: 96px 32px;
+      padding: 4rem 2rem;
       gap: 48px;
     }
 
+    .pres-rate__intro {
+      gap: 1.5rem;
+    }
+
     .pres-rate__heading {
-      font-size: 44px;
+      font-size: 2.75rem;
     }
 
     .pres-rate__reasons {
@@ -163,7 +177,17 @@
 
   @media only screen and (min-width: 1136px) {
     .pres-rate__container {
-      padding: 120px 48px;
+      padding: 5rem 2rem;
+    }
+
+    .pres-rate__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-rate__heading {
+      font-size: 3.75rem;
     }
   }
 </style>

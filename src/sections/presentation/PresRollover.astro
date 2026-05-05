@@ -1,0 +1,228 @@
+---
+import PresDualCTA from "./PresDualCTA.astro";
+
+const steps = [
+  {
+    title: "Open or use a self-directed IRA",
+    body: "If you do not have one already, we walk you through custodians who handle this. Most accounts open in 1 to 3 days.",
+  },
+  {
+    title: "Initiate the rollover",
+    body: "You sign a transfer form. Funds move directly from your old custodian to the new account. No distributions, no 1099, no taxable event.",
+  },
+  {
+    title: "Subscribe and compound",
+    body: "Once funds land, your IRA invests in the bond. Interest grows tax-deferred in a traditional IRA, or tax-free in a Roth.",
+  },
+];
+---
+
+<section class="pres-rollover">
+  <div class="pres-rollover__container">
+    <div class="pres-rollover__intro">
+      <p class="pres-rollover__eyebrow">Funding from an IRA or old 401(k)</p>
+      <h2 class="pres-rollover__heading">
+        Move retirement money in without triggering a tax bill.
+      </h2>
+      <p class="pres-rollover__subhead">
+        A common way our investors fund: rolling over an old 401(k) or moving an existing IRA. The
+        process is straightforward, and our team handles the paperwork with your custodian.
+      </p>
+    </div>
+
+    <ol class="pres-rollover__steps">
+      {
+        steps.map((step, i) => (
+          <li class="pres-rollover__step">
+            <span class="pres-rollover__step-num">0{i + 1}</span>
+            <h3 class="pres-rollover__step-title">{step.title}</h3>
+            <p class="pres-rollover__step-body">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="pres-rollover__disclaimer">
+      This is general information, not tax advice. Rules vary by account type and custodian. Talk
+      to your CPA before you move funds.
+    </p>
+
+    <div class="pres-rollover__cta">
+      <p class="pres-rollover__cta-label">
+        Most of our investors fund this way. We will walk you through it.
+      </p>
+      <PresDualCTA primary="call" location="rollover" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-rollover {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-rollover__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 72px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-rollover__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-rollover__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-rollover__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-rollover__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-rollover__heading + .pres-rollover__subhead {
+    margin-top: -0.5rem;
+  }
+
+  .pres-rollover__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pres-rollover__step {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-rollover__step-num {
+    font-family: "Roboto Serif", serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-brand);
+    line-height: 100%;
+    letter-spacing: 0.08em;
+  }
+
+  .pres-rollover__step-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-rollover__step-body {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-body);
+    line-height: 165%;
+    margin: 0;
+  }
+
+  .pres-rollover__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .pres-rollover__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pres-rollover__cta-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: var(--text-heading);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-rollover__container {
+      padding: 96px 32px;
+      gap: 40px;
+    }
+
+    .pres-rollover__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-rollover__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-rollover__steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .pres-rollover__step-title {
+      font-size: 22px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-rollover__container {
+      padding: 120px 48px;
+    }
+
+    .pres-rollover__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-rollover__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>
