@@ -1,0 +1,1521 @@
+---
+type ExploreQ = {
+  id: string;
+  topic: string;
+  question: string;
+  answer: string;
+  followUps: string[];
+};
+
+const QUESTIONS: ExploreQ[] = [
+  {
+    id: "how_pay_10_percent",
+    topic: "Returns",
+    question: "How do you pay 10%?",
+    answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we generate long-term growth from Bitcoin and Ethereum on the digital side. We don't use leverage.
+
+Operating efficiently lets us build only when timing and demand are right. If conditions cool, we can shift capital into digital assets instead of being forced to deploy it like large funds are.`,
+    followUps: ["is_10_percent_real", "outer_banks", "digital_assets"],
+  },
+  {
+    id: "is_my_money_safe",
+    topic: "Risk",
+    question: "Is my money safe?",
+    answer: `If you're asking this, you've probably been burned, or watched someone you love get burned. FDIC only covers bank deposits, not stocks, bonds, mutual funds, or REITs that most people already own.
+
+What we offer is a contract built on real assets. 25 years and 200 deals in, every payment has been made on time. The risk isn't zero, no investment is. The structure (real land, no leverage, founder-run) is built to make it as low as fixed-rate yield allows.`,
+    followUps: ["track_record", "can_i_trust_team", "early_withdrawal"],
+  },
+  {
+    id: "is_10_percent_real",
+    topic: "Returns",
+    question: "Is 10% really real?",
+    answer: `Healthy skepticism. Most products that promise this number are hiding something: leverage, a fund fee that quietly eats your yield, or a strategy that needs a bull market to work.
+
+Ours doesn't. Coastal land we already own, digital assets we hold and don't trade, and zero middlemen between us and you. The 10% is what's left after we run the math honestly.`,
+    followUps: ["how_pay_10_percent", "fees", "outer_banks"],
+  },
+  {
+    id: "can_i_trust_team",
+    topic: "About Robert Ventures",
+    question: "Can I trust the people behind it?",
+    answer: `The strongest answer we have is the track record. 25 years of partnerships. $10M raised. Every offering completed. Every investor paid in full. And one person whose name is on it.
+
+Joe Robert picks up. You can get on a 10-minute call and ask him directly.`,
+    followUps: ["track_record", "experience", "how_to_start"],
+  },
+  {
+    id: "early_withdrawal",
+    topic: "How it works",
+    question: "What if I need my money before the term ends?",
+    answer: `The most honest concern, and the answer is: pick the right structure for your life. Choose monthly payouts and the income flows in every month while your principal earns. Choose the 1-year option if 3 years feels long.
+
+The lock-in is when your capital unlocks, not when interest stops. We'll walk through the right fit for you on a call.`,
+    followUps: ["how_to_start", "fees", "taxes"],
+  },
+  {
+    id: "fees",
+    topic: "How it works",
+    question: "Are there any fees?",
+    answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments.
+
+This structure ensures returns are sent directly to you and reflects our commitment to transparency and to aligning our interests with yours.`,
+    followUps: ["taxes", "how_pay_10_percent", "how_to_start"],
+  },
+  {
+    id: "taxes",
+    topic: "How it works",
+    question: "How are my investments taxed?",
+    answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment.
+
+You'll receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
+    followUps: ["fees", "early_withdrawal", "how_to_start"],
+  },
+  {
+    id: "experience",
+    topic: "About Robert Ventures",
+    question: "How experienced is Robert Ventures?",
+    answer: `This offering is relatively new (launched to the public in October 2024 after a year of SEC qualification), but it's built on 25 years of experience.
+
+Across that span, Joe Robert has secured over $10M from 60 private investors through partnerships including Silver Bay Capital. He has managed more than 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full. Now operating under Robert Ventures, he works directly with investors: full transparency, no middlemen, and potentially better yields.`,
+    followUps: ["track_record", "can_i_trust_team", "outer_banks"],
+  },
+  {
+    id: "digital_assets",
+    topic: "What you own",
+    question: "Why are digital assets part of your treasury?",
+    answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the largest globally.
+
+We don't trade. We hold those assets in our treasuries the way large institutions do. They've been the best-performing assets of the past decade and complement the stability of our real estate.`,
+    followUps: ["outer_banks", "how_pay_10_percent", "is_my_money_safe"],
+  },
+  {
+    id: "outer_banks",
+    topic: "What you own",
+    question: "What's the deal with the Outer Banks?",
+    answer: `The Outer Banks is a 200-mile chain of barrier islands in North Carolina. Federal parks, CAMA setbacks, and septic rules hard-cap buildable inventory.
+
+Demand keeps coming: more than 5 million visitors a year, $2.1B in tourism spending in 2024, and a 10-year appreciation trend that has roughly doubled values. Dare County's median price is $620K, up 16.2% YoY.`,
+    followUps: ["how_pay_10_percent", "digital_assets", "track_record"],
+  },
+  {
+    id: "track_record",
+    topic: "About Robert Ventures",
+    question: "What's the track record?",
+    answer: `Robert Ventures isn't a new firm writing new checks. It's the current vehicle of a team Joe Robert has been building, operating, and investing alongside for 25 years.
+
+$150M+ AUM across the platform. 200+ properties invested in or developed. 100% on-time distributions to date. 27% investor reinvestment rate. Past performance isn't an indicator of future results.`,
+    followUps: ["experience", "can_i_trust_team", "is_my_money_safe"],
+  },
+  {
+    id: "how_to_start",
+    topic: "Get started",
+    question: "How do I get started?",
+    answer: `Two paths, both quick.
+
+Create your account if you're ready to self-serve: pick your bond term and amount, link your funding source, and Robert Ventures walks you through the rest. Or book a 10-minute call if you'd rather talk through the right fit with the team first.
+
+Pick whichever feels right.`,
+    followUps: ["early_withdrawal", "fees", "can_i_trust_team"],
+  },
+];
+
+const STARTERS = ["how_pay_10_percent", "is_my_money_safe", "how_to_start"];
+const NEXT_STEPS_AFTER = 4;
+const ACCOUNT_HREF = "https://invest.robertventures.com/";
+const ACCOUNT_LABEL = "Create your account";
+const CALL_HREF = "/presentation/book-call";
+const CALL_LABEL = "Book a 10-minute call";
+
+const questionsJson = JSON.stringify(QUESTIONS);
+const startersJson = JSON.stringify(STARTERS);
+---
+
+<section class="explore" aria-label="Explore your questions">
+  <div class="explore__inner">
+    <header class="explore__intro">
+      <p class="explore__eyebrow">Explore</p>
+      <h1 class="explore__title">A guide to Robert&nbsp;Ventures, <em>in your own order.</em></h1>
+
+      <div class="explore-video">
+        <div class="explore-video__container">
+          <mux-player
+            id="explore-mux-player"
+            playback-id="zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00"
+            env-key="hr9aevib299lcvfdoip01jd60"
+            preload="metadata"
+            stream-type="on-demand"
+            max-resolution="1080p"
+            rendition-order="desc"
+            poster="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=214&height=121&time=5"
+            placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
+            muted
+            playsinline
+            default-show-captions
+          ></mux-player>
+          <div class="explore-video__overlay" id="explore-mux-overlay" role="button" tabindex="0">
+            <div class="explore-video__overlay-pill">
+              <svg
+                class="explore-video__overlay-icon explore-video__overlay-icon--unmute"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                  fill="#ffffff"></path>
+              </svg>
+              <svg
+                class="explore-video__overlay-icon explore-video__overlay-icon--play"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+              </svg>
+              <span class="explore-video__overlay-text explore-video__overlay-text--unmute">
+                Your video is playing. Click to unmute.
+              </span>
+              <span class="explore-video__overlay-text explore-video__overlay-text--play">
+                Click to play
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="explore__lede">
+        Tap any question. Each answer suggests where to go next. Stop whenever it's clear.
+      </p>
+    </header>
+
+    <div
+      class="explore__transcript"
+      id="explore-transcript"
+      role="log"
+      aria-live="polite"
+      aria-label="Conversation"
+      data-questions={questionsJson}
+      data-starters={startersJson}
+      data-next-steps-after={String(NEXT_STEPS_AFTER)}
+      data-account-href={ACCOUNT_HREF}
+      data-account-label={ACCOUNT_LABEL}
+      data-call-href={CALL_HREF}
+      data-call-label={CALL_LABEL}
+    >
+    </div>
+  </div>
+
+  <div class="explore-stickycta" role="region" aria-label="Next steps" data-cta-bar>
+    <div class="explore-stickycta__inner">
+      <a
+        class="explore-stickycta__btn explore-stickycta__btn--primary"
+        href={ACCOUNT_HREF}
+        data-explore-cta
+        data-track-cta="create_account"
+        data-track-location="explore_sticky"
+      >
+        {ACCOUNT_LABEL}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* All selectors are namespaced under .explore so they don't leak.
+     Global is required because the transcript is built with createElement
+     and Astro's scoped attributes are not added to dynamic elements. */
+
+  .explore {
+    --ink: #0f1419;
+    --ink-soft: #3a4148;
+    --ink-mute: #6b7178;
+    --ink-faint: #b6bbc1;
+    --paper: #fafaf7;
+    --paper-2: #ffffff;
+    --rule: rgba(15, 20, 25, 0.08);
+    --rule-strong: rgba(15, 20, 25, 0.14);
+    --accent: var(--green-brand, #67b78f);
+    --accent-deep: var(--green-dark, #2b6b47);
+    --accent-tint: rgba(103, 183, 143, 0.08);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    background: var(--paper);
+    min-height: 70vh;
+    padding-bottom: 24px;
+    color: var(--ink);
+    font-feature-settings: "kern", "liga", "ss01";
+    font-variant-numeric: lining-nums;
+  }
+
+  .explore__inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 24px 24px;
+  }
+
+  .explore__intro {
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .explore__eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 18px;
+  }
+
+  .explore__title {
+    font-family: var(--font-heading);
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+
+  .explore__title em {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+
+  .explore__lede {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 520px;
+  }
+
+  /* === Editorial intro video (mirrors IntroFounderVideo) === */
+
+  .explore-video {
+    width: 100%;
+    max-width: 480px;
+    margin: 28px auto 28px;
+  }
+
+  .explore-video__container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #152429;
+    border-radius: 12px;
+  }
+
+  .explore-video__container mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+    --time-range: none;
+  }
+
+  .explore-video__container mux-player[mediaisfullscreen] {
+    --time-range: initial;
+  }
+
+  .explore-video__overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  .explore-video__overlay.is-active {
+    display: flex;
+  }
+
+  .explore-video__overlay:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .explore-video__overlay-pill {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    animation: explore-mux-pill-glow 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .explore-video__overlay-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .explore-video__overlay-icon--play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  .explore-video__overlay-text--play {
+    display: none;
+  }
+
+  .explore-video__overlay.is-play-mode .explore-video__overlay-icon--unmute,
+  .explore-video__overlay.is-play-mode .explore-video__overlay-text--unmute {
+    display: none;
+  }
+
+  .explore-video__overlay.is-play-mode .explore-video__overlay-icon--play,
+  .explore-video__overlay.is-play-mode .explore-video__overlay-text--play {
+    display: inline-block;
+  }
+
+  @keyframes explore-mux-pill-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .explore-video__overlay-pill {
+      animation: none;
+    }
+  }
+
+  @media (min-width: 600px) {
+    .explore-video {
+      max-width: 520px;
+      margin: 36px auto 36px;
+    }
+    .explore-video__overlay-pill {
+      padding: 0.75rem 1.25rem 0.75rem 1rem;
+      font-size: 0.9375rem;
+    }
+    .explore-video__overlay-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .explore__transcript {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* === Exchange (one Q&A unit) === */
+
+  .explore .exchange {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: 80px;
+  }
+
+  .explore .exchange:first-child {
+    border-top: none;
+    padding-top: 8px;
+  }
+
+  .explore .exchange--starter {
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
+
+  .explore .exchange--starter .options {
+    margin-top: 0;
+  }
+
+  .explore .exchange__q {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    margin: 0 0 24px;
+    font-family: var(--font-heading);
+    font-size: clamp(22px, 3.4vw, 28px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .explore .exchange__q-mark {
+    flex-shrink: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-deep);
+    font-size: 0.78em;
+    letter-spacing: 0;
+    line-height: 1;
+    transform: translateY(0.06em);
+  }
+
+  .explore .exchange__a {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .explore .exchange__a p {
+    margin: 0;
+  }
+
+  .explore .exchange__a p + p {
+    margin-top: 14px;
+  }
+
+  /* Inline CTA block under a high-intent answer (e.g. "How do I get started?") */
+  .explore .exchange__cta {
+    margin-top: 28px;
+    scroll-margin-top: 80px;
+  }
+
+  /* === Options list (command-palette rows) === */
+
+  .explore .options {
+    margin-top: 32px;
+  }
+
+  .explore .options__label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 4px;
+  }
+
+  .explore .options__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .explore .option {
+    display: block;
+    width: 100%;
+  }
+
+  .explore .option__btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    width: 100%;
+    text-align: left;
+    padding: 18px 4px 18px 0;
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition:
+      color 180ms var(--ease-out),
+      padding-left 220ms var(--ease-out);
+  }
+
+  .explore .option:last-child .option__btn {
+    border-bottom: none;
+  }
+
+  .explore .option__btn:hover {
+    color: var(--accent-deep);
+    padding-left: 6px;
+  }
+
+  .explore .option__btn:focus-visible {
+    outline: none;
+    color: var(--accent-deep);
+    padding-left: 6px;
+  }
+
+  .explore .option__btn:focus-visible::before {
+    content: "";
+    position: absolute;
+  }
+
+  .explore .option__arrow {
+    flex-shrink: 0;
+    color: var(--ink-faint);
+    font-size: 18px;
+    line-height: 1;
+    transition:
+      transform 220ms var(--ease-out),
+      color 180ms var(--ease-out);
+  }
+
+  .explore .option__btn:hover .option__arrow,
+  .explore .option__btn:focus-visible .option__arrow {
+    color: var(--accent);
+    transform: translateX(6px);
+  }
+
+  .explore .options__browse {
+    margin-top: 18px;
+  }
+
+  .explore .options__browse-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 180ms var(--ease-out);
+  }
+
+  .explore .options__browse-btn:hover {
+    color: var(--accent-deep);
+  }
+
+  .explore .options__browse-btn::after {
+    content: "→";
+    transition: transform 220ms var(--ease-out);
+  }
+
+  .explore .options__browse-btn:hover::after {
+    transform: translateX(4px);
+  }
+
+  /* === Inline next-steps (quiet companion, never interrupts) === */
+
+  .explore .next-steps {
+    margin-top: 28px;
+    padding: 24px 22px 22px;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    scroll-margin-top: 80px;
+  }
+
+  .explore .next-steps__label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 16px;
+  }
+
+  .explore .next-steps__hint {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin: 16px 0 0;
+    line-height: 1.5;
+  }
+
+  /* === Canonical dual-CTA (matches PresDualCTA design system) === */
+
+  .explore-dual-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .explore-dual-cta a {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 14px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .explore-dual-cta__primary {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+  }
+
+  .explore-dual-cta__primary:hover,
+  .explore-dual-cta__primary:active {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+    color: #ffffff;
+  }
+
+  .explore-dual-cta__secondary {
+    background-color: transparent;
+    border: 1px solid var(--text-heading);
+    color: var(--text-heading);
+  }
+
+  .explore-dual-cta__secondary:hover,
+  .explore-dual-cta__secondary:active {
+    background-color: var(--text-heading);
+    color: #ffffff;
+  }
+
+  /* Single-CTA variant: keep the button at a sensible width, centered */
+
+  .explore-dual-cta--single {
+    align-items: center;
+  }
+
+  .explore-dual-cta--single a {
+    width: 100%;
+    max-width: 340px;
+  }
+
+  @media (min-width: 600px) {
+    .explore-dual-cta {
+      flex-direction: row;
+    }
+    .explore-dual-cta a {
+      flex: 1;
+    }
+  }
+
+  /* === Browse-all: "new thread" treatment === */
+
+  .explore .browse {
+    padding: 64px 0 8px;
+    margin-top: 24px;
+    border-top: 1px solid var(--rule-strong);
+    scroll-margin-top: 80px;
+    position: relative;
+  }
+
+  .explore .browse__chapter {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    padding: 0 14px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+
+  .explore .browse__intro {
+    text-align: center;
+    margin: 0 auto 48px;
+    max-width: 480px;
+  }
+
+  .explore .browse__title {
+    font-family: var(--font-heading);
+    font-size: clamp(26px, 4vw, 34px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  .explore .browse__lede {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .explore .browse__group + .browse__group {
+    margin-top: 44px;
+  }
+
+  .explore .browse__group-title {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 4px;
+  }
+
+  /* === Sticky CTA bar (matches PresStickyCTA: white fade + dual CTA) === */
+
+  .explore-stickycta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: linear-gradient(
+      to top,
+      #ffffff 0%,
+      #ffffff 55%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    padding: 32px 1rem calc(14px + env(safe-area-inset-bottom));
+    pointer-events: none;
+    transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out);
+  }
+
+  .explore-stickycta[data-hidden="true"] {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+
+  .explore-stickycta__inner {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  .explore-stickycta__btn {
+    flex: 1;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 12px 12px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .explore-stickycta__btn--primary {
+    background-color: var(--green-brand);
+    border: 1px solid var(--green-brand);
+    color: #ffffff;
+    animation: explore-stickycta-pulse-primary 2.6s ease-in-out infinite;
+  }
+
+  .explore-stickycta__btn--primary:hover,
+  .explore-stickycta__btn--primary:active {
+    background-color: var(--green-hover);
+    border-color: var(--green-hover);
+    color: #ffffff;
+  }
+
+  .explore-stickycta__btn--ghost {
+    background-color: transparent;
+    border: 1px solid var(--text-heading);
+    color: var(--text-heading);
+    animation: explore-stickycta-pulse-ghost 2.6s ease-in-out infinite;
+  }
+
+  .explore-stickycta__btn--ghost:hover,
+  .explore-stickycta__btn--ghost:active {
+    background-color: var(--text-heading);
+    color: #ffffff;
+  }
+
+  @keyframes explore-stickycta-pulse-primary {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @keyframes explore-stickycta-pulse-ghost {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.22);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(26, 26, 26, 0);
+    }
+  }
+
+  @media (min-width: 600px) {
+    .explore-stickycta {
+      padding: 40px 2rem calc(16px + env(safe-area-inset-bottom));
+    }
+    .explore-stickycta__inner {
+      gap: 12px;
+    }
+    .explore-stickycta__btn {
+      font-size: 16px;
+      padding: 14px 20px;
+    }
+  }
+
+  /* === Motion === */
+
+  .explore .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: explore-reveal 480ms var(--ease-out) forwards;
+  }
+
+  .explore .reveal[data-delay="1"] {
+    animation-delay: 80ms;
+  }
+  .explore .reveal[data-delay="2"] {
+    animation-delay: 180ms;
+  }
+  .explore .reveal[data-delay="3"] {
+    animation-delay: 280ms;
+  }
+
+  @keyframes explore-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .explore .reveal,
+    .explore .reveal[data-delay] {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .explore .option__btn,
+    .explore .option__arrow,
+    .explore-stickycta,
+    .explore-stickycta__btn--primary,
+    .explore-stickycta__btn--ghost {
+      transition: none;
+      animation: none;
+    }
+  }
+
+  /* === Responsive === */
+
+  @media (min-width: 600px) {
+    .explore__inner {
+      padding: 44px 32px 32px;
+    }
+    .explore__intro {
+      margin-bottom: 36px;
+    }
+    .explore .exchange {
+      padding: 56px 0;
+    }
+    .explore .exchange__a {
+      font-size: 18px;
+    }
+    .explore .option__btn {
+      font-size: 18px;
+      padding: 22px 4px 22px 0;
+    }
+  }
+
+  @media (min-width: 1136px) {
+    .explore__inner {
+      padding-top: 64px;
+    }
+  }
+</style>
+
+<script>
+  type ExploreQ = {
+    id: string;
+    topic: string;
+    question: string;
+    answer: string;
+    followUps: string[];
+  };
+
+  function gaTrack(eventName: string, eventData: Record<string, unknown> = {}) {
+    const dl = (window as unknown as { dataLayer?: Array<Record<string, unknown>> }).dataLayer;
+    if (dl) dl.push({ event: eventName, ...eventData });
+  }
+  function phTrack(eventName: string, eventData: Record<string, unknown> = {}) {
+    const ph = (window as unknown as {
+      posthogTrack?: (n: string, p?: Record<string, unknown>) => void;
+    }).posthogTrack;
+    if (typeof ph === "function") ph(eventName, eventData);
+  }
+  function phSetPerson(props: Record<string, unknown>) {
+    const ph = (window as unknown as { posthogSetPerson?: (p: Record<string, unknown>) => void })
+      .posthogSetPerson;
+    if (typeof ph === "function") ph(props);
+  }
+
+  function escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function paragraphsHtml(text: string): string {
+    return text
+      .trim()
+      .split(/\n{2,}/)
+      .map((p) => `<p>${escapeHtml(p.trim()).replace(/\n/g, "<br />")}</p>`)
+      .join("");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const transcript = document.getElementById("explore-transcript");
+    const ctaBar = document.querySelector("[data-cta-bar]") as HTMLElement | null;
+    if (!transcript) return;
+
+    const QUESTIONS: ExploreQ[] = JSON.parse(transcript.dataset.questions || "[]");
+    const STARTERS: string[] = JSON.parse(transcript.dataset.starters || "[]");
+    const NEXT_STEPS_AFTER = Number(transcript.dataset.nextStepsAfter || "4");
+    const ACCOUNT_HREF = transcript.dataset.accountHref || "https://invest.robertventures.com/";
+    const ACCOUNT_LABEL = transcript.dataset.accountLabel || "Create your account";
+    const CALL_HREF = transcript.dataset.callHref || "/presentation/book-call";
+    const CALL_LABEL = transcript.dataset.callLabel || "Book a 10-minute call";
+
+    const byId = new Map<string, ExploreQ>(QUESTIONS.map((q) => [q.id, q]));
+
+    const state = {
+      asked: new Set<string>(),
+      count: 0,
+      started: false,
+      currentOptionsEl: null as HTMLElement | null,
+    };
+
+    function append(node: HTMLElement, opts: { scroll?: boolean; focus?: boolean } = {}) {
+      const { scroll = true, focus = false } = opts;
+      transcript!.appendChild(node);
+      requestAnimationFrame(() => {
+        if (scroll) node.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (focus) {
+          const firstBtn = node.querySelector(
+            "button.option__btn"
+          ) as HTMLButtonElement | null;
+          if (firstBtn) firstBtn.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    function buildNextSteps(): HTMLElement {
+      const aside = document.createElement("aside");
+      aside.className = "next-steps";
+      aside.innerHTML = `
+        <p class="next-steps__label">When you're ready</p>
+        <div class="explore-dual-cta explore-dual-cta--single">
+          <a
+            class="explore-dual-cta__primary"
+            href="${escapeHtml(ACCOUNT_HREF)}"
+            data-explore-cta
+            data-track-cta="create_account"
+            data-track-location="explore_inline"
+          >${escapeHtml(ACCOUNT_LABEL)}</a>
+        </div>
+        <p class="next-steps__hint">Or keep exploring. The questions above are still open.</p>
+      `;
+      return aside;
+    }
+
+    function buildOptionsList(
+      ids: string[],
+      label: string,
+      source: string,
+      includeBrowse: boolean = true
+    ): HTMLElement {
+      const wrap = document.createElement("div");
+      wrap.className = "options reveal";
+      wrap.setAttribute("data-delay", "3");
+
+      const lbl = document.createElement("p");
+      lbl.className = "options__label";
+      lbl.textContent = label;
+      wrap.appendChild(lbl);
+
+      const list = document.createElement("ul");
+      list.className = "options__list";
+
+      ids.forEach((id) => {
+        const q = byId.get(id);
+        if (!q) return;
+        const li = document.createElement("li");
+        li.className = "option";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option__btn";
+        btn.dataset.questionId = id;
+        btn.dataset.source = source;
+        btn.innerHTML = `<span class="option__label">${escapeHtml(q.question)}</span><span class="option__arrow" aria-hidden="true">→</span>`;
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+
+      wrap.appendChild(list);
+
+      if (state.count >= NEXT_STEPS_AFTER) {
+        wrap.appendChild(buildNextSteps());
+      }
+
+      if (includeBrowse) {
+        const browseWrap = document.createElement("div");
+        browseWrap.className = "options__browse";
+        const browseBtn = document.createElement("button");
+        browseBtn.type = "button";
+        browseBtn.className = "options__browse-btn";
+        browseBtn.dataset.action = "browse-all";
+        browseBtn.textContent = "Or browse all topics";
+        browseWrap.appendChild(browseBtn);
+        wrap.appendChild(browseWrap);
+      }
+
+      return wrap;
+    }
+
+    function renderStarter() {
+      const exchange = document.createElement("div");
+      exchange.className = "exchange exchange--starter";
+      const opts = buildOptionsList(STARTERS, "Where would you like to start?", "starter", true);
+      exchange.appendChild(opts);
+      state.currentOptionsEl = opts;
+      // No scroll, no focus on initial render — let the user read the intro first.
+      append(exchange, { scroll: false, focus: false });
+    }
+
+    function clearOldOptions() {
+      // Remove the previous options block so the chain stays clean.
+      // (We keep all answered Q&A, only the now-stale option list disappears.)
+      if (state.currentOptionsEl && state.currentOptionsEl.parentElement) {
+        state.currentOptionsEl.parentElement.removeChild(state.currentOptionsEl);
+        state.currentOptionsEl = null;
+      }
+    }
+
+    function renderExchange(q: ExploreQ) {
+      const exchange = document.createElement("article");
+      exchange.className = "exchange";
+      exchange.setAttribute("data-question-id", q.id);
+
+      const qHeading = document.createElement("h2");
+      qHeading.className = "exchange__q reveal";
+      qHeading.setAttribute("data-delay", "1");
+      qHeading.innerHTML = `<span class="exchange__q-mark" aria-hidden="true">Q.</span><span>${escapeHtml(q.question)}</span>`;
+      exchange.appendChild(qHeading);
+
+      const answer = document.createElement("div");
+      answer.className = "exchange__a reveal";
+      answer.setAttribute("data-delay", "2");
+      answer.innerHTML = paragraphsHtml(q.answer);
+      exchange.appendChild(answer);
+
+      // Clear-intent answer: surface both CTAs inline so the user can act
+      // immediately without scrolling or hunting through follow-ups.
+      if (q.id === "how_to_start") {
+        const ctaWrap = document.createElement("div");
+        ctaWrap.className = "exchange__cta reveal";
+        ctaWrap.setAttribute("data-delay", "3");
+        ctaWrap.innerHTML = `
+          <div class="explore-dual-cta">
+            <a
+              class="explore-dual-cta__primary"
+              href="${escapeHtml(ACCOUNT_HREF)}"
+              data-explore-cta
+              data-track-cta="create_account"
+              data-track-location="explore_get_started"
+            >${escapeHtml(ACCOUNT_LABEL)}</a>
+            <a
+              class="explore-dual-cta__secondary"
+              href="${escapeHtml(CALL_HREF)}"
+              data-explore-cta
+              data-track-cta="book_call"
+              data-track-location="explore_get_started"
+            >${escapeHtml(CALL_LABEL)}</a>
+          </div>
+        `;
+        exchange.appendChild(ctaWrap);
+      }
+
+      const followUps = q.followUps.filter((fid) => !state.asked.has(fid));
+      let opts: HTMLElement;
+      if (followUps.length > 0) {
+        opts = buildOptionsList(followUps, "People also ask", "followup", true);
+      } else {
+        opts = buildOptionsList(
+          QUESTIONS.filter((qq) => !state.asked.has(qq.id))
+            .slice(0, 3)
+            .map((qq) => qq.id),
+          "More you can explore",
+          "followup",
+          true
+        );
+      }
+      exchange.appendChild(opts);
+      state.currentOptionsEl = opts;
+
+      append(exchange, { scroll: true, focus: true });
+    }
+
+    function renderBrowseAll() {
+      clearOldOptions();
+      const remaining = QUESTIONS.filter((q) => !state.asked.has(q.id));
+
+      if (remaining.length === 0) {
+        const aside = buildNextSteps();
+        aside.classList.add("reveal");
+        transcript!.appendChild(aside);
+        state.currentOptionsEl = aside;
+        requestAnimationFrame(() => {
+          aside.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        return;
+      }
+
+      const browse = document.createElement("section");
+      browse.className = "browse reveal";
+      browse.setAttribute("data-delay", "1");
+      browse.setAttribute("aria-label", "Start a new thread");
+
+      const chapter = document.createElement("span");
+      chapter.className = "browse__chapter";
+      chapter.textContent = "New thread";
+      browse.appendChild(chapter);
+
+      const intro = document.createElement("div");
+      intro.className = "browse__intro";
+      intro.innerHTML = `
+        <h2 class="browse__title">Start a new thread.</h2>
+        <p class="browse__lede">Pick anywhere. The conversation continues from there.</p>
+      `;
+      browse.appendChild(intro);
+
+      const grouped = new Map<string, ExploreQ[]>();
+      remaining.forEach((q) => {
+        const arr = grouped.get(q.topic) || [];
+        arr.push(q);
+        grouped.set(q.topic, arr);
+      });
+
+      grouped.forEach((items, topic) => {
+        const group = document.createElement("div");
+        group.className = "browse__group";
+
+        const gt = document.createElement("p");
+        gt.className = "browse__group-title";
+        gt.textContent = topic;
+        group.appendChild(gt);
+
+        const list = document.createElement("ul");
+        list.className = "options__list";
+        items.forEach((q) => {
+          const li = document.createElement("li");
+          li.className = "option";
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "option__btn";
+          btn.dataset.questionId = q.id;
+          btn.dataset.source = "browse_all";
+          btn.innerHTML = `<span class="option__label">${escapeHtml(q.question)}</span><span class="option__arrow" aria-hidden="true">→</span>`;
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+        group.appendChild(list);
+        browse.appendChild(group);
+      });
+
+      if (state.count >= NEXT_STEPS_AFTER) {
+        browse.appendChild(buildNextSteps());
+      }
+
+      transcript!.appendChild(browse);
+      state.currentOptionsEl = browse;
+      requestAnimationFrame(() => {
+        browse.scrollIntoView({ behavior: "smooth", block: "start" });
+        const firstBtn = browse.querySelector("button.option__btn") as HTMLButtonElement | null;
+        if (firstBtn) firstBtn.focus({ preventScroll: true });
+      });
+    }
+
+    function selectQuestion(id: string, source: string) {
+      const q = byId.get(id);
+      if (!q) return;
+
+      if (!state.started) {
+        state.started = true;
+        gaTrack("explore_started");
+        phTrack("explore_started");
+      }
+
+      clearOldOptions();
+      state.asked.add(id);
+      state.count += 1;
+
+      renderExchange(q);
+
+      gaTrack("explore_question_selected", {
+        question_id: id,
+        source,
+        position_in_session: state.count,
+      });
+      phTrack("explore_question_selected", {
+        question_id: id,
+        topic: q.topic,
+        source,
+        position_in_session: state.count,
+      });
+      phSetPerson({ explore_last_topic: q.topic, explore_last_question: id });
+    }
+
+    transcript.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const browseBtn = target.closest('button[data-action="browse-all"]') as HTMLButtonElement | null;
+      if (browseBtn) {
+        renderBrowseAll();
+        return;
+      }
+      const btn = target.closest("button.option__btn") as HTMLButtonElement | null;
+      if (!btn || !transcript.contains(btn)) return;
+      const id = btn.dataset.questionId;
+      const source = btn.dataset.source || "unknown";
+      if (id) selectQuestion(id, source);
+    });
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const link = target.closest("[data-explore-cta]") as HTMLElement | null;
+      if (!link) return;
+      const location = link.dataset.trackLocation || "unknown";
+      const ctaType = link.dataset.trackCta || "unknown";
+      gaTrack("explore_cta_clicked", { location, cta_type: ctaType });
+      phTrack("explore_cta_clicked", {
+        location,
+        cta_type: ctaType,
+        questions_viewed: state.count,
+      });
+    });
+
+    // Slide the sticky CTA bar out of view while an inline next-steps panel
+    // is on screen, so the two CTA surfaces don't compete with each other.
+    if (ctaBar && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.target.classList.contains("next-steps")) {
+              ctaBar.dataset.hidden = entry.isIntersecting ? "true" : "false";
+            }
+          });
+        },
+        { rootMargin: "0px 0px -30% 0px", threshold: 0.1 }
+      );
+      const observed = new WeakSet<Element>();
+      const mo = new MutationObserver(() => {
+        document.querySelectorAll(".explore .next-steps").forEach((el) => {
+          if (!observed.has(el)) {
+            io.observe(el);
+            observed.add(el);
+          }
+        });
+      });
+      mo.observe(transcript, { childList: true, subtree: true });
+    }
+
+    let summarySent = false;
+    function sendSummary() {
+      if (summarySent || state.count === 0) return;
+      summarySent = true;
+      const topics = new Set<string>();
+      state.asked.forEach((id) => {
+        const q = byId.get(id);
+        if (q) topics.add(q.topic);
+      });
+      const payload = {
+        questions_viewed: state.count,
+        topics_touched: Array.from(topics),
+      };
+      gaTrack("explore_session_summary", payload);
+      phTrack("explore_session_summary", payload);
+    }
+    window.addEventListener("pagehide", sendSummary);
+    window.addEventListener("beforeunload", sendSummary);
+
+    renderStarter();
+    setupExploreVideo();
+  });
+
+  // Mirrors IntroFounderVideo: muted autoplay when the player is in view, with
+  // a one-shot unmute pill. After engagement, Mux's native UI takes over.
+  function setupExploreVideo() {
+    const player = document.getElementById("explore-mux-player") as HTMLMediaElement | null;
+    const overlay = document.getElementById("explore-mux-overlay");
+    if (!player) return;
+
+    let autoplayState: "pending" | "trying" | "playing" | "failed" = "pending";
+    let isAutoplayPlay = false;
+    let engaged = false;
+
+    function showOverlayUnmuteMode() {
+      if (!overlay) return;
+      overlay.classList.add("is-active");
+      overlay.classList.remove("is-play-mode");
+      overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+    }
+    function showOverlayPlayMode() {
+      if (!overlay) return;
+      overlay.classList.add("is-active", "is-play-mode");
+      overlay.setAttribute("aria-label", "Click to play");
+    }
+    function dismissOverlay() {
+      if (!overlay) return;
+      overlay.classList.remove("is-active");
+    }
+
+    function attemptAutoplay() {
+      if (autoplayState !== "pending") return;
+      autoplayState = "trying";
+      try {
+        player!.muted = true;
+      } catch (e) {}
+      isAutoplayPlay = true;
+      const promise = player!.play();
+      if (promise && typeof promise.then === "function") {
+        promise
+          .then(() => {
+            autoplayState = "playing";
+            if (!engaged) showOverlayUnmuteMode();
+          })
+          .catch(() => {
+            isAutoplayPlay = false;
+            autoplayState = "failed";
+            if (!engaged) showOverlayPlayMode();
+          });
+      } else {
+        autoplayState = "playing";
+        if (!engaged) showOverlayUnmuteMode();
+      }
+    }
+
+    function engageFromOverlay(e: Event) {
+      if (!overlay || !overlay.classList.contains("is-active")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const isPlayMode = overlay.classList.contains("is-play-mode");
+      try {
+        player!.muted = false;
+      } catch (err) {}
+      if (isPlayMode) {
+        const result = player!.play();
+        if (result && typeof result.catch === "function") result.catch(() => {});
+      }
+      dismissOverlay();
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", engageFromOverlay);
+      overlay.addEventListener("keydown", (e) => {
+        const ke = e as KeyboardEvent;
+        if (ke.key === "Enter" || ke.key === " ") engageFromOverlay(e);
+      });
+    }
+
+    player.addEventListener("play", () => {
+      const wasAutoplay = isAutoplayPlay;
+      isAutoplayPlay = false;
+      if (!wasAutoplay) {
+        engaged = true;
+        dismissOverlay();
+      }
+    });
+
+    player.addEventListener("volumechange", () => {
+      if (engaged) return;
+      if (player.muted) return;
+      engaged = true;
+      dismissOverlay();
+    });
+
+    if ("IntersectionObserver" in window) {
+      const videoIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (autoplayState === "pending") {
+                attemptAutoplay();
+              } else if (autoplayState === "playing" && player.paused && !engaged) {
+                isAutoplayPlay = true;
+                const result = player.play();
+                if (result && typeof result.catch === "function") {
+                  result.catch(() => {
+                    isAutoplayPlay = false;
+                  });
+                }
+              }
+            } else if (!player.paused) {
+              player.pause();
+            }
+          });
+        },
+        { threshold: 0, rootMargin: "0px 0px 40% 0px" }
+      );
+      videoIo.observe(player);
+    }
+  }
+</script>

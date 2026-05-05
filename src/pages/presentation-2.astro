@@ -1,0 +1,149 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
+import PresentationChat from "../sections/PresentationChat.astro";
+
+const pageTitle = "Presentation | Robert Ventures";
+const pageDescription =
+  "A closer look at the fixed 8 to 10% offering. Pick a question, get a straight answer, then keep exploring.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
+    <link rel="preconnect" href="https://image.mux.com" crossorigin />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+      is:inline></script>
+    <style>
+      body {
+        background-color: var(--bg-secondary);
+        padding-bottom: 96px;
+      }
+      @media only screen and (min-width: 600px) {
+        body {
+          padding-bottom: 88px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="explore-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <main>
+      <PresentationChat />
+    </main>
+
+    <footer class="explore-disclaimer">
+      <div class="explore-disclaimer__inner">
+        <p class="explore-disclaimer__body">
+          Important Risk Information: Investing involves risk. There is a potential that Robert
+          Ventures Holdings LLC (the "Company") may not be able to make the scheduled payments of
+          interest or principal on the bonds related to its existing securities offering. While the
+          Company believes the assumptions and forward-looking statements contained throughout this
+          website are reasonable, the Company cannot guarantee future results, performance, or
+          achievements. Anticipated returns, expense estimates, and investor payments discussed
+          throughout this website are based on the Company's assumptions and beliefs and are not
+          reflective of past operations of the Company. <a
+            href="https://l.robertventures.com/OfferingCircular"
+            data-track-cta="offering_circular"
+            data-track-location="presentation_2_disclaimer"
+            >Robert Ventures Holdings LLC Preliminary Offering Circular</a
+          >
+        </p>
+        <p class="explore-disclaimer__copy">
+          © {new Date().getFullYear()} Robert Ventures LLC. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .explore-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    background: var(--bg-secondary);
+  }
+
+  .explore-nav-logo :global(svg) {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .explore-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+    .explore-nav-logo :global(svg) {
+      height: 48px;
+    }
+  }
+
+  .explore-disclaimer {
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-light);
+    padding: 24px 1.5rem 32px;
+  }
+
+  .explore-disclaimer__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .explore-disclaimer__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 160%;
+    margin: 0;
+  }
+
+  .explore-disclaimer__body a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .explore-disclaimer__body a:hover {
+    color: var(--text-body);
+  }
+
+  .explore-disclaimer__copy {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 100%;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .explore-disclaimer {
+      padding: 32px 2rem 40px;
+    }
+    .explore-disclaimer__body,
+    .explore-disclaimer__copy {
+      font-size: 13px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .explore-disclaimer {
+      padding: 40px 2rem 56px;
+    }
+  }
+</style>
