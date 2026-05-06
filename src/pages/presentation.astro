@@ -10,6 +10,7 @@ import PresHowTheRateWorks from "../sections/presentation/PresHowTheRateWorks.as
 import PresBondOptions from "../sections/presentation/PresBondOptions.astro";
 import PresWhatItLooksLike from "../sections/presentation/PresWhatItLooksLike.astro";
 import PresTrackRecord from "../sections/presentation/PresTrackRecord.astro";
+import PresFounder from "../sections/presentation/PresFounder.astro";
 import PresFounderNote from "../sections/presentation/PresFounderNote.astro";
 import ReviewsV3 from "../sections/ReviewsV3.astro";
 import PresObjections from "../sections/presentation/PresObjections.astro";
@@ -59,6 +60,10 @@ const pageDescription =
       <button class="slide-indicator__dot" data-section="5" aria-label="Go to section 6"></button>
       <div class="slide-indicator__line"></div>
       <button class="slide-indicator__dot" data-section="6" aria-label="Go to section 7"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="7" aria-label="Go to section 8"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="8" aria-label="Go to section 9"></button>
     </nav>
 
     <main>
@@ -67,9 +72,10 @@ const pageDescription =
       <PresBitcoinReserve />
       <!-- <PresWhatYouOwn /> -->
       <PresHowTheRateWorks />
+      <PresFounder />
       <PresTrackRecord />
       <ReviewsV3 />
-      <PresCostOfWaiting />
+      <!-- <PresCostOfWaiting /> -->
       <!-- <PresBondOptions /> -->
       <!-- <PresWhatItLooksLike /> -->
       <!-- <PresFounderNote /> -->
@@ -85,10 +91,10 @@ const pageDescription =
         <p class="pres-disclaimer__body">
           Important Risk Information: Investing involves risk. There is a potential that Robert
           Ventures Holdings LLC (the "Company") may not be able to make the scheduled payments of
-          interest or principal on the bonds related to its existing securities offering. While
-          the Company believes the assumptions and forward-looking statements contained throughout
-          this website are reasonable, the Company cannot guarantee future results, performance,
-          or achievements. Anticipated returns, expense estimates, and investor payments discussed
+          interest or principal on the bonds related to its existing securities offering. While the
+          Company believes the assumptions and forward-looking statements contained throughout this
+          website are reasonable, the Company cannot guarantee future results, performance, or
+          achievements. Anticipated returns, expense estimates, and investor payments discussed
           throughout this website are based on the Company's assumptions and beliefs and are not
           reflective of past operations of the Company. <a
             href="https://l.robertventures.com/OfferingCircular"
@@ -215,12 +221,7 @@ const pageDescription =
     right: 0;
     bottom: 0;
     z-index: 50;
-    background: linear-gradient(
-      to top,
-      #ffffff 0%,
-      #ffffff 55%,
-      rgba(255, 255, 255, 0) 100%
-    );
+    background: linear-gradient(to top, #ffffff 0%, #ffffff 55%, rgba(255, 255, 255, 0) 100%);
     padding: 32px 1rem calc(14px + env(safe-area-inset-bottom));
     pointer-events: none;
   }

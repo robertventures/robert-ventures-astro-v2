@@ -6,12 +6,6 @@ const adoption = [
   { val: "~$28B", label: "U.S. Strategic Bitcoin Reserve, 2025 executive order" },
 ];
 
-const custody = [
-  { n: "$250M", l: "Insurance coverage" },
-  { n: "1,500+", l: "Institutional clients" },
-  { n: "2013", l: "Operating since" },
-  { n: "Federally", l: "Chartered trust" },
-];
 ---
 
 <section class="pres-btc">
@@ -26,8 +20,7 @@ const custody = [
         ETF issuers, and strategic holders.
       </p>
       <p class="pres-btc__body pres-btc__body--italic">
-        Our digital reserve is anchored by Bitcoin, with Ethereum held as a small secondary
-        allocation.
+        Our digital reserve is anchored by Bitcoin, with Ethereum held as a secondary allocation.
       </p>
     </div>
 
@@ -35,13 +28,13 @@ const custody = [
       <article class="pres-btc__card">
         <h3 class="pres-btc__card-title">What we do with it</h3>
         <p class="pres-btc__card-body">
-          We accumulate a small allocation of Bitcoin alongside our real estate operations as a
-          long-term reserve. It is <strong>not traded</strong>. Your bond return is <strong>not
-          indexed to Bitcoin price</strong>. It is a contractual rate, paid from company cash flows.
+          We accumulate Bitcoin alongside our real estate operations as a long-term reserve. It is
+          <strong>not traded</strong>. Your bond return is <strong>not indexed to Bitcoin
+          price</strong>. It is a contractual rate, paid from company cash flows.
         </p>
         <ul class="pres-btc__list">
-          <li><strong>5.39 BTC</strong> in reserve, audited Aug 27, 2025.</li>
-          <li>Held at <strong>BitGo Bank &amp; Trust</strong>, a federally chartered qualified custodian.</li>
+          <li>Reserve <strong>audited and disclosed</strong> in our semi-annual SEC reporting.</li>
+          <li>Held at <strong>BitGo Bank &amp; Trust</strong>, a federally chartered qualified custodian with <strong>$250M of insurance coverage</strong>.</li>
           <li>Balance-sheet hedge against fiat debasement.</li>
         </ul>
       </article>
@@ -58,16 +51,6 @@ const custody = [
       </article>
     </div>
 
-    <ul class="pres-btc__custody" aria-label="BitGo custody facts">
-      {
-        custody.map((c) => (
-          <li class="pres-btc__custody-cell">
-            <span class="pres-btc__custody-n">{c.n}</span>
-            <span class="pres-btc__custody-l">{c.l}</span>
-          </li>
-        ))
-      }
-    </ul>
   </div>
 </section>
 
@@ -216,42 +199,6 @@ const custody = [
     font-weight: 600;
   }
 
-  .pres-btc__custody {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .pres-btc__custody-cell {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-    padding: 16px 14px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .pres-btc__custody-n {
-    font-family: "Roboto Serif", serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--green-dark);
-    font-variant-numeric: lining-nums;
-  }
-
-  .pres-btc__custody-l {
-    font-family: "Roboto", sans-serif;
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
   @media only screen and (min-width: 600px) {
     .pres-btc__container {
       padding: 4rem 2rem;
@@ -273,11 +220,6 @@ const custody = [
 
     .pres-btc__card {
       padding: 28px;
-    }
-
-    .pres-btc__custody {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
     }
   }
 

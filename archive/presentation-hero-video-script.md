@@ -35,15 +35,13 @@ If any of those move, update the page first, then re-cut the line.
 
 > The second asset is our digital reserve. Bitcoin, with a small Ethereum allocation. Bitcoin is the only digital asset with a fixed twenty-one million unit cap written into the protocol. The scarcest monetary asset humans have ever built.
 >
-> Two things matter here. We hold it, we do not trade it. Five point three nine Bitcoin in reserve, audited August twenty-seventh, twenty twenty-five, custodied at BitGo, a federally chartered qualified custodian.
+> Two things matter here. We hold it, we do not trade it. The reserve is custodied at BitGo, a federally chartered qualified custodian, and audited and disclosed in our semi-annual SEC reporting.
 >
 > And your contract is not indexed to Bitcoin price. Your eight to ten percent is paid from company cash flows. The reserve is a hedge against fiat debasement. It is not the engine.
 
 ### 4. Why the rate works (~35s)
 
 > So how do we actually pay this. Four pillars. Scarce coastal land, where prices rise faster than supply. No fund layer between us and you, so no manager fee siphons your yield. No leverage on the digital side, no margin call risk. And we are founder-run, not committee-run.
->
-> Take any one of those away, the math stops working. Stack them, and eight to ten percent is the floor, not the ceiling.
 
 ### 5. Track record (~35s)
 
