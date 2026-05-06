@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import WfLeadCapture from "../sections/webinar/WfLeadCapture.astro";
 import WfHero from "../sections/webinar/WfHero.astro";
@@ -107,6 +108,7 @@ try {
       <WfHero />
       <WfFounderIntro />
       <WfLeadCapture />
+      <DisclaimerBlock trackLocation="webinar_disclaimer" withSmsConsent={true} />
     </form>
   </body>
 </html>

@@ -170,7 +170,7 @@ const STARTERS = ["the_offering", "how_rate_works", "how_to_start"];
 const NEXT_STEPS_AFTER = 2;
 const ACCOUNT_HREF = "https://invest.robertventures.com/";
 const ACCOUNT_LABEL = "Create your account";
-const CALL_HREF = "/presentation/book-call";
+const CALL_HREF = "/offer/book-call";
 const CALL_LABEL = "Book a 10-minute call";
 
 const questionsJson = JSON.stringify(QUESTIONS);
@@ -1099,7 +1099,7 @@ const startersJson = JSON.stringify(STARTERS);
     const NEXT_STEPS_AFTER = Number(transcript.dataset.nextStepsAfter || "4");
     const ACCOUNT_HREF = transcript.dataset.accountHref || "https://invest.robertventures.com/";
     const ACCOUNT_LABEL = transcript.dataset.accountLabel || "Create your account";
-    const CALL_HREF = transcript.dataset.callHref || "/presentation/book-call";
+    const CALL_HREF = transcript.dataset.callHref || "/offer/book-call";
     const CALL_LABEL = transcript.dataset.callLabel || "Book a 10-minute call";
 
     const byId = new Map<string, ExploreQ>(QUESTIONS.map((q) => [q.id, q]));

@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import BaseHead from "../../components/BaseHead.astro";
+import DisclaimerBlock from "../../components/DisclaimerBlock.astro";
 import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
 import IntroBookingCalendar from "../../sections/introduction/IntroBookingCalendar.astro";
 
@@ -38,6 +39,8 @@ const pageDescription =
         }
       </div>
     </main>
+
+    <DisclaimerBlock trackLocation="offer_book_call_disclaimer" />
   </body>
 </html>
 

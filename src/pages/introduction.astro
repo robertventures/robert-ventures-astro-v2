@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
+import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import IntroCompoundingGrowth from "../sections/introduction/IntroCompoundingGrowth.astro";
 import IntroValueProposition from "../sections/introduction/IntroValueProposition.astro";
@@ -73,6 +74,8 @@ const pageDescription =
       <IntroFounderVideo />
       <IntroCallToAction />
     </main>
+
+    <DisclaimerBlock trackLocation="introduction_disclaimer" />
 
     <script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
   </body>
