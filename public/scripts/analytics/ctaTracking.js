@@ -19,6 +19,8 @@
             '/reviews': 'reviews',
             '/calendar': 'calendar',
             '/webinar': 'webinar',
+            '/offer': 'offer',
+            '/offer/book-call': 'offer_book_call',
             '/questions': 'questions',
             '/webinar-thank-you': 'webinar_thank_you',
             '/webinar-follow-up': 'webinar_follow_up',

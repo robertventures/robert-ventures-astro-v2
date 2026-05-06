@@ -505,6 +505,13 @@
         if (player.muted) return;
         engaged = true;
         dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_unmuted", {
+            video_id: "offer-founder",
+            current_time: Math.round(player.currentTime || 0),
+            autoplay_succeeded: autoplayState === "playing",
+          });
+        }
       });
 
       if ("IntersectionObserver" in window) {
