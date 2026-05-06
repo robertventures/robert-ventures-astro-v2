@@ -120,6 +120,15 @@ const pageDescription =
     margin-bottom: 0;
   }
 
+  /* Flip ReviewsV3 to a white band on this page only, so the offer-page
+     narrative alternates white/grey cleanly. Cards become grey for contrast. */
+  main > section:has(.reviews-v3-container) {
+    background: var(--bg-primary);
+  }
+  main > section:has(.reviews-v3-container) .review-card {
+    background: var(--bg-secondary);
+  }
+
   /* Reserve room at the bottom so the sticky CTA bar never sits on top of the
      final piece of content or the disclaimer. Matches the bar height + a bit
      of breathing room at each breakpoint. */
