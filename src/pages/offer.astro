@@ -3,7 +3,6 @@ import BaseHead from "../components/BaseHead.astro";
 import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import PresHeroV2 from "../sections/presentation/PresHeroV2.astro";
-import PresVideoChapters from "../sections/presentation/PresVideoChapters.astro";
 import PresTermsSnapshot from "../sections/presentation/PresTermsSnapshot.astro";
 import PresWhatHappensNext from "../sections/presentation/PresWhatHappensNext.astro";
 import PresScarcityBridge from "../sections/presentation/PresScarcityBridge.astro";
@@ -17,7 +16,7 @@ import PresReviewBeforeInvest from "../sections/presentation/PresReviewBeforeInv
 import PresFaq from "../sections/presentation/PresFaq.astro";
 import PresClosingCta from "../sections/presentation/PresClosingCta.astro";
 
-const pageTitle = "Presentation v2 | Robert Ventures";
+const pageTitle = "Presentation | Robert Ventures";
 const pageDescription =
   "A closer look at the fixed 8 to 10% offering for investors who have already spoken with us.";
 ---
@@ -45,7 +44,6 @@ const pageDescription =
 
     <main>
       <PresHeroV2 />
-      <!-- <PresVideoChapters /> -->
       <PresScarcityBridge />
       <PresTermsSnapshot />
       <PresOuterBanks />
@@ -60,7 +58,7 @@ const pageDescription =
       <PresClosingCta />
     </main>
 
-    <DisclaimerBlock trackLocation="offer_v2_disclaimer" />
+    <DisclaimerBlock trackLocation="offer_disclaimer" />
 
     <div class="pres-stickycta" role="region" aria-label="Next steps">
       <div class="pres-stickycta__inner">
@@ -337,7 +335,7 @@ const pageDescription =
         dismissOverlay();
         if (window.posthogTrack) {
           window.posthogTrack("video_unmuted", {
-            video_id: "offer_v2_hero",
+            video_id: "offer_hero",
             current_time: Math.round(player.currentTime || 0),
             autoplay_succeeded: autoplayState === "playing",
           });
