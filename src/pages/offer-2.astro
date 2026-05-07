@@ -2,15 +2,22 @@
 import BaseHead from "../components/BaseHead.astro";
 import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
-import PresHero from "../sections/presentation/PresHero.astro";
+import PresHeroV2 from "../sections/presentation/PresHeroV2.astro";
+import PresVideoChapters from "../sections/presentation/PresVideoChapters.astro";
+import PresTermsSnapshot from "../sections/presentation/PresTermsSnapshot.astro";
+import PresWhatHappensNext from "../sections/presentation/PresWhatHappensNext.astro";
+import PresScarcityBridge from "../sections/presentation/PresScarcityBridge.astro";
 import PresOuterBanks from "../sections/presentation/PresOuterBanks.astro";
 import PresBitcoinReserve from "../sections/presentation/PresBitcoinReserve.astro";
 import PresHowTheRateWorks from "../sections/presentation/PresHowTheRateWorks.astro";
-import PresTrackRecord from "../sections/presentation/PresTrackRecord.astro";
 import PresFounder from "../sections/presentation/PresFounder.astro";
+import PresTrackRecordV2 from "../sections/presentation/PresTrackRecordV2.astro";
 import ReviewsV3 from "../sections/ReviewsV3.astro";
+import PresReviewBeforeInvest from "../sections/presentation/PresReviewBeforeInvest.astro";
+import PresFaq from "../sections/presentation/PresFaq.astro";
+import PresClosingCta from "../sections/presentation/PresClosingCta.astro";
 
-const pageTitle = "Presentation | Robert Ventures";
+const pageTitle = "Presentation v2 | Robert Ventures";
 const pageDescription =
   "A closer look at the fixed 8 to 10% offering for investors who have already spoken with us.";
 ---
@@ -36,35 +43,24 @@ const pageDescription =
       <RvLogo />
     </div>
 
-    <nav class="slide-indicator" aria-label="Section navigation">
-      <button class="slide-indicator__dot is-active" data-section="0" aria-label="Go to section 1"
-      ></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="1" aria-label="Go to section 2"></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="2" aria-label="Go to section 3"></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="3" aria-label="Go to section 4"></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="4" aria-label="Go to section 5"></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="5" aria-label="Go to section 6"></button>
-      <div class="slide-indicator__line"></div>
-      <button class="slide-indicator__dot" data-section="6" aria-label="Go to section 7"></button>
-    </nav>
-
     <main>
-      <PresHero />
+      <PresHeroV2 />
+      <!-- <PresVideoChapters /> -->
+      <PresScarcityBridge />
+      <PresTermsSnapshot />
       <PresOuterBanks />
       <PresBitcoinReserve />
       <PresHowTheRateWorks />
       <PresFounder />
-      <PresTrackRecord />
+      <PresTrackRecordV2 />
       <ReviewsV3 />
+      <PresWhatHappensNext />
+      <PresReviewBeforeInvest />
+      <PresFaq />
+      <PresClosingCta />
     </main>
 
-    <DisclaimerBlock trackLocation="offer_disclaimer" />
-
+    <DisclaimerBlock trackLocation="offer_v2_disclaimer" />
 
     <div class="pres-stickycta" role="region" aria-label="Next steps">
       <div class="pres-stickycta__inner">
@@ -90,14 +86,12 @@ const pageDescription =
 </html>
 
 <style is:global>
-  /* Zero out the global section margin-bottom on this page so the long-scroll
-     narrative reads as continuous bands of color, no white gaps between blocks. */
+  /* Continuous narrative band, no margins between sections */
   main section {
     margin-bottom: 0;
   }
 
-  /* Flip ReviewsV3 to a white band on this page only, so the offer-page
-     narrative alternates white/grey cleanly. Cards become grey for contrast. */
+  /* Reviews flips to white on this page so the alternation stays clean */
   main > section:has(.reviews-v3-container) {
     background: var(--bg-primary);
   }
@@ -105,9 +99,6 @@ const pageDescription =
     background: var(--bg-secondary);
   }
 
-  /* Reserve room at the bottom so the sticky CTA bar never sits on top of the
-     final piece of content or the disclaimer. Matches the bar height + a bit
-     of breathing room at each breakpoint. */
   body {
     padding-bottom: 96px;
   }
@@ -254,116 +245,14 @@ const pageDescription =
   }
 </style>
 
-<style>
-  /* Section position indicator (fixed to left edge), mirrors /introduction */
-  .slide-indicator {
-    position: fixed;
-    left: 0.25rem;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  .slide-indicator__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1.5px solid #1a1a1a;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-    position: relative;
-    flex-shrink: 0;
-    transition:
-      background 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-
-  .slide-indicator__dot:hover {
-    background: rgba(26, 26, 26, 0.3);
-  }
-
-  .slide-indicator__line {
-    width: 1.5px;
-    height: 24px;
-    background: rgba(26, 26, 26, 0.25);
-    flex-shrink: 0;
-    transition: background 0.3s ease;
-  }
-
-  .slide-indicator__dot.is-passed {
-    background: #1a1a1a;
-    border-color: #1a1a1a;
-  }
-
-  .slide-indicator__line.is-passed {
-    background: #1a1a1a;
-  }
-
-  .slide-indicator__dot.is-active {
-    background: #1a1a1a;
-    border-color: #1a1a1a;
-    animation: dot-pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes dot-pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.6);
-    }
-    50% {
-      box-shadow: 0 0 0 6px rgba(26, 26, 26, 0);
-    }
-  }
-
-  @media only screen and (max-width: 479px) {
-    .slide-indicator {
-      left: 0.2rem;
-    }
-
-    .slide-indicator__dot {
-      width: 8px;
-      height: 8px;
-    }
-
-    .slide-indicator__line {
-      height: 16px;
-    }
-  }
-
-  @media only screen and (min-width: 600px) {
-    .slide-indicator {
-      left: 0.3rem;
-    }
-
-    .slide-indicator__dot {
-      width: 12px;
-      height: 12px;
-    }
-
-    .slide-indicator__line {
-      height: 28px;
-    }
-  }
-
-</style>
-
 <script is:inline>
   (function () {
-    // Founder video: muted autoplay when section approaches view, with a
-    // one-shot overlay nudging the user to unmute. After engagement, Mux's
-    // native UI handles pause/play/replay.
-    function setupFounderVideo() {
+    function setupHeroVideo() {
       const player = document.getElementById("pres-mux-player");
       const overlay = document.getElementById("pres-mux-overlay");
       if (!player) return;
 
-      let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
+      let autoplayState = "pending";
       let isAutoplayPlay = false;
       let engaged = false;
 
@@ -448,7 +337,7 @@ const pageDescription =
         dismissOverlay();
         if (window.posthogTrack) {
           window.posthogTrack("video_unmuted", {
-            video_id: "offer-hero",
+            video_id: "offer_v2_hero",
             current_time: Math.round(player.currentTime || 0),
             autoplay_succeeded: autoplayState === "playing",
           });
@@ -482,63 +371,10 @@ const pageDescription =
       }
     }
 
-    // Section indicator: highlight the dot for the section currently crossing
-    // the viewport midline; clicking a dot smooth-scrolls to that section.
-    function setupSectionIndicator() {
-      var sections = Array.prototype.slice.call(document.querySelectorAll("main > section"));
-      if (sections.length === 0) return;
-
-      sections.forEach(function (section, i) {
-        section.setAttribute("data-section-index", String(i));
-      });
-
-      function updateIndicator(activeIndex) {
-        var dots = document.querySelectorAll(".slide-indicator__dot");
-        var lines = document.querySelectorAll(".slide-indicator__line");
-        dots.forEach(function (dot, i) {
-          dot.classList.remove("is-active", "is-passed");
-          if (i < activeIndex) dot.classList.add("is-passed");
-          if (i === activeIndex) dot.classList.add("is-active");
-        });
-        lines.forEach(function (line, i) {
-          line.classList.remove("is-passed");
-          if (i < activeIndex) line.classList.add("is-passed");
-        });
-      }
-
-      document.querySelectorAll(".slide-indicator__dot").forEach(function (dot) {
-        dot.addEventListener("click", function () {
-          var idx = parseInt(dot.getAttribute("data-section"), 10);
-          var target = sections[idx];
-          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      });
-
-      if (!("IntersectionObserver" in window)) return;
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              var idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
-              updateIndicator(idx);
-            }
-          });
-        },
-        { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
-      );
-      sections.forEach(function (section) {
-        io.observe(section);
-      });
-    }
-
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", function () {
-        setupFounderVideo();
-        setupSectionIndicator();
-      });
+      document.addEventListener("DOMContentLoaded", setupHeroVideo);
     } else {
-      setupFounderVideo();
-      setupSectionIndicator();
+      setupHeroVideo();
     }
   })();
 </script>

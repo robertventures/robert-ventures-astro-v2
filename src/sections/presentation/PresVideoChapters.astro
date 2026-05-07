@@ -1,0 +1,192 @@
+---
+const chapters = [
+  { n: "01", t: "Bond terms", d: "Fixed 8% and 10% options, lock-up, and payouts." },
+  { n: "02", t: "The Outer Banks build strategy", d: "Why scarce coastal land, and how the projects are funded." },
+  { n: "03", t: "The Bitcoin reserve", d: "Why we hold, how we custody, and why we do not trade." },
+  { n: "04", t: "How the rate works", d: "The math: no fund layer, no management fees, founder-run." },
+  { n: "05", t: "Track record and risks", d: "What is real, what is risk, and what is disclosed." },
+  { n: "06", t: "How to invest", d: "Creating your account, signing the bond, and funding it." },
+];
+---
+
+<section class="pres-chapters">
+  <div class="pres-chapters__container">
+    <div class="pres-chapters__intro">
+      <p class="pres-chapters__eyebrow">What is in the presentation</p>
+      <h2 class="pres-chapters__heading">A 15-minute walkthrough of the offering.</h2>
+      <p class="pres-chapters__body">
+        Joe Robert covers everything an investor would want to confirm before funding: terms,
+        strategy, structure, and risks. If you prefer to scan, the chapters below mirror what is on
+        this page.
+      </p>
+    </div>
+
+    <ol class="pres-chapters__list" aria-label="Video chapters">
+      {
+        chapters.map((c) => (
+          <li class="pres-chapters__item">
+            <span class="pres-chapters__num">{c.n}</span>
+            <div class="pres-chapters__text">
+              <span class="pres-chapters__title">{c.t}</span>
+              <span class="pres-chapters__desc">{c.d}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pres-chapters {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-chapters__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pres-chapters__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-chapters__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-chapters__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-chapters__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-chapters__heading + .pres-chapters__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-chapters__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    counter-reset: chapter;
+  }
+
+  .pres-chapters__item {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--green-brand);
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .pres-chapters__num {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 130%;
+    flex-shrink: 0;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-chapters__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-chapters__title {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-chapters__desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 150%;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-chapters__container {
+      padding: 4rem 2rem;
+      gap: 40px;
+    }
+
+    .pres-chapters__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-chapters__heading {
+      font-size: 2.5rem;
+    }
+
+    .pres-chapters__list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-chapters__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-chapters__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-chapters__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-chapters__heading {
+      font-size: 3rem;
+    }
+  }
+</style>

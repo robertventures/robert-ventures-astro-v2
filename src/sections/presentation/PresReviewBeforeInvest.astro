@@ -1,0 +1,240 @@
+---
+
+---
+
+<section class="pres-review">
+  <div class="pres-review__container">
+    <div class="pres-review__intro">
+      <p class="pres-review__eyebrow">Diligence before you fund</p>
+      <h2 class="pres-review__heading">Review the documents <em>before you invest.</em></h2>
+      <p class="pres-review__body">
+        You do not need to create an account to read the core offering documents. Start with the
+        SEC-filed Offering Circular, review the bond agreement, or book a 10-minute call and a real
+        person will walk through them with you.
+      </p>
+    </div>
+
+    <ul class="pres-review__list" aria-label="Offering documents">
+      <li class="pres-review__item">
+        <a
+          class="pres-review__link"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          data-track-cta="offering_circular"
+          data-track-location="review_block"
+        >
+          <span class="pres-review__link-title">Offering Circular</span>
+          <span class="pres-review__link-desc">
+            The SEC-filed offering details: risk factors, financials, use of proceeds, and bond
+            terms.
+          </span>
+        </a>
+      </li>
+      <li class="pres-review__item">
+        <a
+          class="pres-review__link"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          data-track-cta="sample_bond_agreement"
+          data-track-location="review_block"
+        >
+          <span class="pres-review__link-title">Sample Bond Agreement</span>
+          <span class="pres-review__link-desc">
+            The contract terms investors sign inside InvestorDesk before funding.
+          </span>
+        </a>
+      </li>
+      <li class="pres-review__item">
+        <a
+          class="pres-review__link pres-review__link--accent"
+          href="/offer/book-call"
+          data-track-cta="book_call"
+          data-track-location="review_block"
+        >
+          <span class="pres-review__link-title">Book a 10-minute call</span>
+          <span class="pres-review__link-desc">
+            Ask the team to walk through the documents with you before you create an account.
+          </span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="pres-review__footnote">
+      InvestorDesk is where you create your account, sign, and fund. This page and the documents
+      above are how you review the offering first.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pres-review {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-review__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .pres-review__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-review__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-review__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-review__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-review__body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-review__heading + .pres-review__body {
+    margin-top: -0.5rem;
+  }
+
+  .pres-review__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pres-review__item {
+    display: flex;
+  }
+
+  .pres-review__link {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--green-brand);
+    border-radius: 8px;
+    padding: 18px 22px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .pres-review__link:hover {
+    border-left-color: var(--green-dark);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .pres-review__link--accent {
+    background: var(--green-tint);
+    border-left-color: var(--green-dark);
+  }
+
+  .pres-review__link-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-review__link-desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 150%;
+  }
+
+  .pres-review__footnote {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 160%;
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-review__container {
+      padding: 4rem 2rem;
+      gap: 36px;
+    }
+
+    .pres-review__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-review__heading {
+      font-size: 2.5rem;
+    }
+
+    .pres-review__list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-review__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-review__heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-review__heading {
+      font-size: 3rem;
+    }
+  }
+</style>

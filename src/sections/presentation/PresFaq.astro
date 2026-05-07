@@ -1,0 +1,338 @@
+---
+import Opener from "../../images/icons/caretdown.svg";
+
+const formatAnswer = (raw: string) => {
+  if (!raw) return "";
+  const normalized = String(raw).trim().replace(/\r\n/g, "\n");
+  const paragraphs = normalized.split(/\n{2,}/);
+  return paragraphs.map((p) => `<p>${p.trim().replace(/\n/g, "<br />")}</p>`).join("");
+};
+
+const faqs = [
+  {
+    question: "Can I lose money?",
+    slug: "can_i_lose_money",
+    answer: `Yes. Robert Ventures bonds involve risk, including possible loss of principal. They are not bank deposits and are not FDIC-insured. The Offering Circular outlines the specific risk factors. The structure is designed to manage that risk through tangible real estate, a Bitcoin reserve held without leverage, and no fund-layer fees, but risk cannot be eliminated.`,
+  },
+  {
+    question: "What does SEC-qualified actually mean?",
+    slug: "sec_qualified",
+    answer: `Robert Ventures filed an offering under SEC Regulation A, Tier 2, and the SEC qualified it. That means the SEC reviewed the offering disclosures and allowed the offering to proceed. It is not an endorsement, an approval of the merits, or insurance. It is a public, on-record filing that anyone can read.`,
+  },
+  {
+    question: "Are these bonds secured by the properties?",
+    slug: "secured_by_properties",
+    answer: `No. The bonds are unsecured general obligations of Robert Ventures Holdings LLC. They are not collateralized by specific properties. Capital from the offering funds the operating strategy: Outer Banks real estate development and Bitcoin accumulation. The full security and risk language is in the Offering Circular.`,
+  },
+  {
+    question: "What happens after the lock-up?",
+    slug: "after_lockup",
+    answer: `After the initial 1-year or 3-year term, the bond continues to earn interest month-to-month at the same rate. You can request redemption at any time after the lock-up by giving 90 days' written notice. There is no penalty.`,
+  },
+  {
+    question: "How do monthly payments work?",
+    slug: "monthly_payments",
+    answer: `If you choose monthly distributions, interest is paid by ACH on a regular monthly schedule directly to your bank account. If you choose compounding, interest is added to your principal each month and compounds for the rest of the term. IRA investors compound through the term.`,
+  },
+  {
+    question: "What role does Bitcoin play?",
+    slug: "bitcoin_role",
+    answer: `Bitcoin is held as a long-term reserve asset, not traded. We do not use leverage on the digital side, so there is no margin call risk. The reserve sits alongside the Outer Banks real estate operating business, and a portion of net proceeds accumulates Bitcoin at the protocol level.`,
+  },
+  {
+    question: "What happens after I create my InvestorDesk account?",
+    slug: "after_account_creation",
+    answer: `Creating an account is free and reversible. Inside InvestorDesk you choose your bond term (1-year or 3-year), choose monthly distributions or compounding, enter your investment amount, sign the bond agreement, and fund by ACH, wire, credit card, or IRA process. You can stop at any step before signing.`,
+  },
+  {
+    question: "When should I book a call instead of funding now?",
+    slug: "when_book_call",
+    answer: `Book a call if you want to walk through the Offering Circular with someone, if you have questions about IRA setup, ACH or wire mechanics, or if you want a real person to confirm the structure before you commit. Most calls take ten minutes.`,
+  },
+];
+---
+
+<section class="pres-faq">
+  <div class="pres-faq__container">
+    <div class="pres-faq__intro">
+      <p class="pres-faq__eyebrow">Before you click invest</p>
+      <h2 class="pres-faq__heading">The questions investors ask <em>most often.</em></h2>
+    </div>
+
+    <div class="pres-faq__list">
+      {
+        faqs.map((faq, index) => (
+          <div class="pres-faq__item">
+            <button
+              class="pres-faq__btn"
+              type="button"
+              aria-expanded="false"
+              aria-controls={`pres-faq-panel-${index}`}
+              id={`pres-faq-button-${index}`}
+              data-faq-slug={faq.slug}
+            >
+              <span class="pres-faq__btn-text">{faq.question}</span>
+              <Opener class="pres-faq__btn-icon" />
+            </button>
+            <div
+              class="pres-faq__panel"
+              id={`pres-faq-panel-${index}`}
+              role="region"
+              aria-labelledby={`pres-faq-button-${index}`}
+            >
+              <div class="pres-faq__panel-inner" set:html={formatAnswer(faq.answer)} />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-faq {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-faq__container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .pres-faq__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .pres-faq__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .pres-faq__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-faq__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pres-faq__item {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+  }
+
+  .pres-faq__btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 140%;
+  }
+
+  .pres-faq__btn-text {
+    flex: 1;
+  }
+
+  .pres-faq__btn-icon {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .pres-faq__btn.is-active .pres-faq__btn-icon {
+    transform: rotate(180deg);
+  }
+
+  .pres-faq__panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .pres-faq__panel-inner {
+    padding: 0 18px 16px 18px;
+  }
+
+  .pres-faq__panel-inner :global(p) {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 165%;
+  }
+
+  .pres-faq__panel-inner :global(p + p) {
+    margin-top: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pres-faq__panel {
+      transition: none;
+    }
+
+    .pres-faq__btn-icon {
+      transition: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-faq__container {
+      padding: 4rem 2rem;
+      gap: 36px;
+    }
+
+    .pres-faq__intro {
+      gap: 1.5rem;
+    }
+
+    .pres-faq__heading {
+      font-size: 2.5rem;
+    }
+
+    .pres-faq__btn {
+      font-size: 17px;
+      padding: 18px 22px;
+    }
+
+    .pres-faq__panel-inner {
+      padding: 0 22px 18px 22px;
+    }
+
+    .pres-faq__panel-inner :global(p) {
+      font-size: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-faq__container {
+      padding: 5rem 2rem;
+    }
+
+    .pres-faq__heading {
+      font-size: 2.75rem;
+    }
+  }
+</style>
+
+<script>
+  function triggerEvent(eventName: string, eventData: Record<string, string> = {}) {
+    if ((window as any).dataLayer) {
+      (window as any).dataLayer.push({
+        event: eventName,
+        ...eventData,
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const list = document.querySelector(".pres-faq__list");
+    if (!list) return;
+
+    const allPanels = list.querySelectorAll(".pres-faq__panel");
+    allPanels.forEach((panel) => {
+      (panel as HTMLElement).style.maxHeight = "0";
+    });
+
+    list.addEventListener("transitionend", function (event) {
+      const panel = event.target as HTMLElement;
+      if (!panel.classList.contains("pres-faq__panel")) return;
+      if (panel.classList.contains("is-open")) {
+        panel.style.maxHeight = "none";
+      }
+    });
+
+    list.addEventListener("click", function (event) {
+      const target = event.target;
+      const button = target instanceof Element ? target.closest("button.pres-faq__btn") : null;
+      if (!button || !list.contains(button)) return;
+
+      const clickedPanel = button.nextElementSibling as HTMLElement | null;
+      if (!clickedPanel) return;
+
+      const isCurrentlyOpen = button.classList.contains("is-active");
+      const allButtons = list.querySelectorAll("button.pres-faq__btn");
+      const allPanels = list.querySelectorAll(".pres-faq__panel");
+
+      allButtons.forEach((btn) => {
+        if (btn !== button) {
+          btn.classList.remove("is-active");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      allPanels.forEach((panel) => {
+        if (panel !== clickedPanel) {
+          const el = panel as HTMLElement;
+          if (panel.classList.contains("is-open")) {
+            el.style.maxHeight = el.scrollHeight + "px";
+            el.offsetHeight;
+            el.style.maxHeight = "0";
+            panel.classList.remove("is-open");
+          }
+        }
+      });
+
+      if (isCurrentlyOpen) {
+        button.classList.remove("is-active");
+        button.setAttribute("aria-expanded", "false");
+        clickedPanel.style.maxHeight = clickedPanel.scrollHeight + "px";
+        clickedPanel.offsetHeight;
+        clickedPanel.style.maxHeight = "0";
+        clickedPanel.classList.remove("is-open");
+      } else {
+        button.classList.add("is-active");
+        button.setAttribute("aria-expanded", "true");
+        clickedPanel.classList.add("is-open");
+        clickedPanel.style.maxHeight = clickedPanel.scrollHeight + "px";
+
+        const faqSlug = (button as HTMLElement).dataset.faqSlug || "unknown";
+        triggerEvent("faq_clicked", {
+          faq_question: faqSlug,
+          faq_location: "offer_v2",
+        });
+      }
+    });
+  });
+</script>
