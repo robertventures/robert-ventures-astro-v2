@@ -1,5 +1,34 @@
 ---
-
+const documents = [
+  {
+    title: "Offering Circular",
+    type: "PDF attachment",
+    href: "https://l.robertventures.com/OfferingCircular",
+    slug: "offering_circular",
+    icon: "pdf",
+  },
+  {
+    title: "Sample Bond Agreement",
+    type: "PDF attachment",
+    href: "/documents/sample-bond-agreement.pdf",
+    slug: "sample_bond_agreement",
+    icon: "pdf",
+  },
+  {
+    title: "Delaware Initial Filing",
+    type: "PDF attachment",
+    href: "/documents/delaware-initial-filing.pdf",
+    slug: "delaware_initial_filing",
+    icon: "pdf",
+  },
+  {
+    title: "Full history of SEC filings",
+    type: "View on SEC.gov",
+    href: "https://www.sec.gov/edgar/browse/?CIK=1991519",
+    slug: "sec_filings_history",
+    icon: "external",
+  },
+];
 ---
 
 <section class="pres-review">
@@ -8,63 +37,93 @@
       <p class="pres-review__eyebrow">Diligence before you fund</p>
       <h2 class="pres-review__heading">Review the documents <em>before you invest.</em></h2>
       <p class="pres-review__body">
-        You do not need to create an account to read the core offering documents. Start with the
-        SEC-filed Offering Circular, review the bond agreement, or book a 10-minute call and a real
-        person will walk through them with you.
+        You do not need to create an account to read the core offering documents. Everything is on
+        the public record.
       </p>
     </div>
 
     <ul class="pres-review__list" aria-label="Offering documents">
-      <li class="pres-review__item">
-        <a
-          class="pres-review__link"
-          href="#"
-          target="_blank"
-          rel="noopener"
-          data-track-cta="offering_circular"
-          data-track-location="review_block"
-        >
-          <span class="pres-review__link-title">Offering Circular</span>
-          <span class="pres-review__link-desc">
-            The SEC-filed offering details: risk factors, financials, use of proceeds, and bond
-            terms.
-          </span>
-        </a>
-      </li>
-      <li class="pres-review__item">
-        <a
-          class="pres-review__link"
-          href="#"
-          target="_blank"
-          rel="noopener"
-          data-track-cta="sample_bond_agreement"
-          data-track-location="review_block"
-        >
-          <span class="pres-review__link-title">Sample Bond Agreement</span>
-          <span class="pres-review__link-desc">
-            The contract terms investors sign inside InvestorDesk before funding.
-          </span>
-        </a>
-      </li>
-      <li class="pres-review__item">
-        <a
-          class="pres-review__link pres-review__link--accent"
-          href="/offer/book-call"
-          data-track-cta="book_call"
-          data-track-location="review_block"
-        >
-          <span class="pres-review__link-title">Book a 10-minute call</span>
-          <span class="pres-review__link-desc">
-            Ask the team to walk through the documents with you before you create an account.
-          </span>
-        </a>
-      </li>
+      {
+        documents.map((doc) => (
+          <li class="pres-review__item">
+            <a
+              class="pres-review__link"
+              href={doc.href}
+              target="_blank"
+              rel="noopener"
+              data-track-cta={doc.slug}
+              data-track-location="review_block"
+            >
+              <span class={`pres-review__icon pres-review__icon--${doc.icon}`} aria-hidden="true">
+                {doc.icon === "pdf" ? (
+                  <svg
+                    width="20"
+                    height="24"
+                    viewBox="0 0 20 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 0C0.895 0 0 0.895 0 2V22C0 23.105 0.895 24 2 24H18C19.105 24 20 23.105 20 22V7L13 0H2Z"
+                      fill="#F5F5F5"
+                      stroke="#D9D9D9"
+                      stroke-width="0.5"
+                    />
+                    <path d="M13 0V7H20L13 0Z" fill="#E8E8E8" />
+                    <rect x="2" y="11" width="16" height="9" rx="1.5" fill="#E63946" />
+                    <text
+                      x="10"
+                      y="17.6"
+                      text-anchor="middle"
+                      font-family="Roboto, sans-serif"
+                      font-size="5"
+                      font-weight="700"
+                      fill="#ffffff"
+                    >
+                      PDF
+                    </text>
+                  </svg>
+                ) : (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14 3H21V10"
+                      stroke="#1a1a1a"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M21 3L10 14"
+                      stroke="#1a1a1a"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M19 13V19C19 20.105 18.105 21 17 21H5C3.895 21 3 20.105 3 19V7C3 5.895 3.895 5 5 5H11"
+                      stroke="#1a1a1a"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                )}
+              </span>
+              <span class="pres-review__text">
+                <span class="pres-review__link-title">{doc.title}</span>
+                <span class="pres-review__link-desc">{doc.type}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
-
-    <p class="pres-review__footnote">
-      InvestorDesk is where you create your account, sign, and fund. This page and the documents
-      above are how you review the offering first.
-    </p>
   </div>
 </section>
 
@@ -123,7 +182,7 @@
 
   .pres-review__body {
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    font-size: 1.125rem;
     color: #555555;
     line-height: 150%;
     text-align: center;
@@ -138,9 +197,13 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
+    max-width: 640px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .pres-review__item {
@@ -150,13 +213,12 @@
   .pres-review__link {
     background: var(--bg-primary);
     border: 1px solid var(--border-light);
-    border-left: 3px solid var(--green-brand);
-    border-radius: 8px;
-    padding: 18px 22px;
+    border-radius: 12px;
+    padding: 16px 18px;
     text-decoration: none;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    gap: 14px;
     flex: 1;
     transition:
       border-color 0.2s ease,
@@ -165,20 +227,33 @@
   }
 
   .pres-review__link:hover {
-    border-left-color: var(--green-dark);
+    border-color: var(--green-brand);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transform: translateY(-1px);
   }
 
-  .pres-review__link--accent {
-    background: var(--green-tint);
-    border-left-color: var(--green-dark);
+  .pres-review__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pres-review__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
   }
 
   .pres-review__link-title {
-    font-family: "Roboto Serif", serif;
-    font-size: 18px;
-    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--text-heading);
     line-height: 130%;
   }
@@ -186,20 +261,8 @@
   .pres-review__link-desc {
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    color: var(--text-body);
-    line-height: 150%;
-  }
-
-  .pres-review__footnote {
-    font-family: "Roboto", sans-serif;
-    font-size: 13px;
     color: var(--text-muted);
-    line-height: 160%;
-    text-align: center;
-    margin: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    line-height: 140%;
   }
 
   @media only screen and (min-width: 600px) {
@@ -216,9 +279,12 @@
       font-size: 2.5rem;
     }
 
-    .pres-review__list {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+    .pres-review__link {
+      padding: 18px 22px;
+    }
+
+    .pres-review__link-title {
+      font-size: 17px;
     }
   }
 

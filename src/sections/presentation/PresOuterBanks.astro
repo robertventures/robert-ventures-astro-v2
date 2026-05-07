@@ -36,7 +36,6 @@ const sales = [
   { addr: "Sportsman Dr, Frisco, NC", price: "$580,000" },
   { addr: "Cobia Way, Avon, NC", price: "$549,000" },
   { addr: "Rampart St, Salvo, NC", price: "$579,000" },
-  { addr: "Shoals Ct, Avon, NC (lot)", price: "$85,000" },
 ];
 ---
 
@@ -49,18 +48,14 @@ const sales = [
       </h2>
       <p class="pres-obx__body">
         The Outer Banks is a 200-mile chain of barrier islands in North Carolina. Federal parks,
-        CAMA setbacks, and septic rules hard-cap buildable inventory. Demand keeps coming. More
-        than 5 million visitors a year, $2.1B in tourism spending in 2024, and a 10-year
-        appreciation trend that has roughly doubled values.
+        CAMA setbacks, and septic rules hard-cap buildable inventory. Demand keeps coming. More than
+        5 million visitors a year, $2.1B in tourism spending in 2024, and a 10-year appreciation
+        trend that has roughly doubled values.
       </p>
     </div>
 
     <div class="pres-obx__slideshow-wrap">
-      <ImageSlider
-        id="obx-slideshow"
-        photos={photos}
-        ariaLabel="Outer Banks property photos"
-      />
+      <ImageSlider id="obx-slideshow" photos={photos} ariaLabel="Outer Banks property photos" />
     </div>
 
     <ul class="pres-obx__stats" aria-label="Outer Banks market statistics">
@@ -92,8 +87,7 @@ const sales = [
         }
       </ul>
       <p class="pres-obx__pipeline">
-        Two properties listed for sale today. We build a couple at a time, sell, then start the
-        next. Representative recent sales in the broader market:
+        We build a couple at a time, sell, then start the next. Company sales of recent projects:
       </p>
       <ul class="pres-obx__sales" aria-label="Representative recent sales">
         {
@@ -105,10 +99,6 @@ const sales = [
           ))
         }
       </ul>
-      <p class="pres-obx__disclaimer">
-        Representative sales from the broader Outer Banks market, not necessarily Robert Ventures
-        transactions.
-      </p>
     </div>
   </div>
 </section>
@@ -168,7 +158,7 @@ const sales = [
 
   .pres-obx__body {
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    font-size: 1.125rem;
     color: #555555;
     line-height: 150%;
     text-align: center;
@@ -215,14 +205,14 @@ const sales = [
 
   .pres-obx__stat-label {
     font-family: "Roboto", sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 150%;
   }
 
   .pres-obx__stat-src {
     font-family: "Roboto", sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -250,7 +240,7 @@ const sales = [
 
   .pres-obx__econ-body {
     font-family: "Roboto", sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 160%;
     margin: 0;
@@ -286,7 +276,7 @@ const sales = [
 
   .pres-obx__econ-l {
     font-family: "Roboto", sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -294,7 +284,7 @@ const sales = [
 
   .pres-obx__pipeline {
     font-family: "Roboto", sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 165%;
     margin: 0;
@@ -322,7 +312,7 @@ const sales = [
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .pres-obx__sale-addr {
@@ -339,7 +329,7 @@ const sales = [
 
   .pres-obx__disclaimer {
     font-family: "Roboto", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
     line-height: 160%;
     margin: 0;

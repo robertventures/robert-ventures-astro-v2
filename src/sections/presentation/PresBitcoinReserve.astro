@@ -5,7 +5,6 @@ const adoption = [
   { val: "2,000+", label: "advisory firms hold Bitcoin ETFs" },
   { val: "~$28B", label: "U.S. Strategic Bitcoin Reserve, 2025 executive order" },
 ];
-
 ---
 
 <section class="pres-btc">
@@ -14,10 +13,8 @@ const adoption = [
       <p class="pres-btc__eyebrow">The digital reserve</p>
       <h2 class="pres-btc__heading">Why we also <em>stack Bitcoin.</em></h2>
       <p class="pres-btc__body">
-        Bitcoin is the only digital asset with a fixed <strong>21 million unit hard cap</strong>
-        written into the protocol. It is the scarcest monetary asset humans have ever built, and
-        the institutions that spent a decade calling it "internet magic money" are now custodians,
-        ETF issuers, and strategic holders.
+        Bitcoin is the only digital asset with a fixed <strong>21 million unit hard cap</strong>. As
+        the world moves further online, scarce digital assets only grow more valuable.
       </p>
       <p class="pres-btc__body pres-btc__body--italic">
         Our digital reserve is anchored by Bitcoin, with Ethereum held as a secondary allocation.
@@ -29,12 +26,16 @@ const adoption = [
         <h3 class="pres-btc__card-title">What we do with it</h3>
         <p class="pres-btc__card-body">
           We accumulate Bitcoin alongside our real estate operations as a long-term reserve. It is
-          <strong>not traded</strong>. Your bond return is <strong>not indexed to Bitcoin
-          price</strong>. It is a contractual rate, paid from company cash flows.
+          <strong>not traded</strong>. Your bond return is <strong
+            >not indexed to Bitcoin price</strong
+          >. It is a contractual rate, paid from company cash flows.
         </p>
         <ul class="pres-btc__list">
-          <li>Reserve <strong>audited and disclosed</strong> in our semi-annual SEC reporting.</li>
-          <li>Held at <strong>BitGo Bank &amp; Trust</strong>, a federally chartered qualified custodian with <strong>$250M of insurance coverage</strong>.</li>
+          <li>Reserve <strong>audited and disclosed</strong> in our annual SEC reporting.</li>
+          <li>
+            Held at <strong>BitGo Bank &amp; Trust</strong>, a federally chartered qualified
+            custodian with <strong>$250M of insurance coverage</strong>.
+          </li>
           <li>Balance-sheet hedge against fiat debasement.</li>
         </ul>
       </article>
@@ -46,11 +47,16 @@ const adoption = [
           Bitcoin "uninvestable" now custody it, quote it, and in many cases own it.
         </p>
         <ul class="pres-btc__list">
-          {adoption.map((a) => <li><strong>{a.val}</strong> {a.label}.</li>)}
+          {
+            adoption.map((a) => (
+              <li>
+                <strong>{a.val}</strong> {a.label}.
+              </li>
+            ))
+          }
         </ul>
       </article>
     </div>
-
   </div>
 </section>
 
@@ -109,7 +115,7 @@ const adoption = [
 
   .pres-btc__body {
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    font-size: 1.125rem;
     color: #555555;
     line-height: 150%;
     text-align: center;
@@ -127,7 +133,7 @@ const adoption = [
 
   .pres-btc__body--italic {
     font-style: italic;
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .pres-btc__grid {
@@ -157,7 +163,7 @@ const adoption = [
 
   .pres-btc__card-body {
     font-family: "Roboto", sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 165%;
     margin: 0;
@@ -179,7 +185,7 @@ const adoption = [
 
   .pres-btc__list li {
     font-family: "Roboto", sans-serif;
-    font-size: 14.5px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 160%;
     padding-left: 16px;

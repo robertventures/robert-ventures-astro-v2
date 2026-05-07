@@ -10,44 +10,38 @@ const formatAnswer = (raw: string) => {
 
 const faqs = [
   {
-    question: "Can I lose money?",
-    slug: "can_i_lose_money",
-    answer: `Yes. Robert Ventures bonds involve risk, including possible loss of principal. They are not bank deposits and are not FDIC-insured. The Offering Circular outlines the specific risk factors. The structure is designed to manage that risk through tangible real estate, a Bitcoin reserve held without leverage, and no fund-layer fees, but risk cannot be eliminated.`,
+    question: "Is it FDIC-insured? What's the real risk?",
+    slug: "fdic_insured",
+    answer: `FDIC insurance only applies to bank deposits, such as savings accounts, not to most investments people already own, including stocks, bonds, mutual funds, and REITs.<br/>
+        Like any investment, there's risk. We mitigate this risk through diversification in real estate and blue-chip digital assets. Additionally, our CEO, Joe Robert, has over 25 years of experience, has raised over $10 million in past offerings, and has never missed a payment. One in four investors reinvest within ~40 days, typically with four times their initial amount.`,
   },
   {
-    question: "What does SEC-qualified actually mean?",
-    slug: "sec_qualified",
-    answer: `Robert Ventures filed an offering under SEC Regulation A, Tier 2, and the SEC qualified it. That means the SEC reviewed the offering disclosures and allowed the offering to proceed. It is not an endorsement, an approval of the merits, or insurance. It is a public, on-record filing that anyone can read.`,
+    question: "How can we realistically pay 10% in this market?",
+    slug: "how_pay_10_percent",
+    answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we also generate long-term growth from investments in Bitcoin and Ethereum. Both sectors have delivered double-digit returns over time, and we don't rely on leverage.<br/>
+        The 10% rate is achievable because we operate efficiently, investing only when the timing and demand are right. We build on lots as the market demands it, and if conditions cool, we can shift capital into digital assets instead of being forced to deploy it like significant funds.`,
   },
   {
-    question: "Are these bonds secured by the properties?",
-    slug: "secured_by_properties",
-    answer: `No. The bonds are unsecured general obligations of Robert Ventures Holdings LLC. They are not collateralized by specific properties. Capital from the offering funds the operating strategy: Outer Banks real estate development and Bitcoin accumulation. The full security and risk language is in the Offering Circular.`,
+    question: "Are there any fees?",
+    slug: "fees",
+    answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
   },
   {
-    question: "What happens after the lock-up?",
-    slug: "after_lockup",
-    answer: `After the initial 1-year or 3-year term, the bond continues to earn interest month-to-month at the same rate. You can request redemption at any time after the lock-up by giving 90 days' written notice. There is no penalty.`,
+    question: "How are my investments taxed?",
+    slug: "taxes",
+    answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
   },
   {
-    question: "How do monthly payments work?",
-    slug: "monthly_payments",
-    answer: `If you choose monthly distributions, interest is paid by ACH on a regular monthly schedule directly to your bank account. If you choose compounding, interest is added to your principal each month and compounds for the rest of the term. IRA investors compound through the term.`,
+    question: "How experienced is Robert Ventures?",
+    slug: "experience",
+    answer: `Although this offering is relatively new, having been launched to the public in October 2024 after a year of SEC qualification, it's backed by extensive experience. Over the last 25 years, our manager, Joe Robert, has secured over $10 million from 60 private investors through various partnerships, including Silver Bay Capital. During that time, he has managed 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full.<br/>
+        Now operating under Robert Ventures, he works directly with investors, offering full transparency, eliminating middlemen, and potentially achieving better yields.`,
   },
   {
-    question: "What role does Bitcoin play?",
-    slug: "bitcoin_role",
-    answer: `Bitcoin is held as a long-term reserve asset, not traded. We do not use leverage on the digital side, so there is no margin call risk. The reserve sits alongside the Outer Banks real estate operating business, and a portion of net proceeds accumulates Bitcoin at the protocol level.`,
-  },
-  {
-    question: "What happens after I create my InvestorDesk account?",
-    slug: "after_account_creation",
-    answer: `Creating an account is free and reversible. Inside InvestorDesk you choose your bond term (1-year or 3-year), choose monthly distributions or compounding, enter your investment amount, sign the bond agreement, and fund by ACH, wire, credit card, or IRA process. You can stop at any step before signing.`,
-  },
-  {
-    question: "When should I book a call instead of funding now?",
-    slug: "when_book_call",
-    answer: `Book a call if you want to walk through the Offering Circular with someone, if you have questions about IRA setup, ACH or wire mechanics, or if you want a real person to confirm the structure before you commit. Most calls take ten minutes.`,
+    question: "Why digital assets are part of our treasuries?",
+    slug: "digital_assets",
+    answer: `We only hold Bitcoin and Ethereum, the top two digital assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
+        They've been the best-performing assets of the past decade and complement the stability of our real estate. We're preparing ourselves for a digital economy.`,
   },
 ];
 ---
@@ -166,7 +160,7 @@ const faqs = [
     justify-content: space-between;
     gap: 12px;
     font-family: "Roboto", sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     color: var(--text-heading);
     line-height: 140%;
@@ -198,7 +192,7 @@ const faqs = [
   .pres-faq__panel-inner :global(p) {
     margin: 0;
     font-family: "Roboto", sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: var(--text-body);
     line-height: 165%;
   }
@@ -232,7 +226,7 @@ const faqs = [
     }
 
     .pres-faq__btn {
-      font-size: 17px;
+      font-size: 19px;
       padding: 18px 22px;
     }
 
@@ -241,7 +235,7 @@ const faqs = [
     }
 
     .pres-faq__panel-inner :global(p) {
-      font-size: 16px;
+      font-size: 18px;
     }
   }
 
