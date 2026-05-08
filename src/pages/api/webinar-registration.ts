@@ -438,7 +438,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
           ...(geoRegionName ? { state: geoRegionName } : {}),
           ...(geoCity ? { city: geoCity } : {}),
           ...(geoZip ? { postalCode: geoZip } : {}),
-          tags: ["Webinar_Page"],
           customField,
         };
 
