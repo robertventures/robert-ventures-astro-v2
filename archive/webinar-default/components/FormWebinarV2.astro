@@ -2,7 +2,6 @@
 import Image from "astro/components/Image.astro";
 import Opener from "../images/icons/opener.svg";
 import usFlag from "../images/icons/usflag.png";
-
 ---
 
 <div class="form">
@@ -347,7 +346,11 @@ import usFlag from "../images/icons/usflag.png";
     },
 
     // Trigger analytics events
-    triggerEvent: (eventName: string, clarityEventName: string, eventData: Record<string, string> = {}) => {
+    triggerEvent: (
+      eventName: string,
+      clarityEventName: string,
+      eventData: Record<string, string> = {}
+    ) => {
       if ((window as any).dataLayer) {
         (window as any).dataLayer.push({
           event: eventName,
@@ -1181,7 +1184,9 @@ import usFlag from "../images/icons/usflag.png";
           localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
           console.log("✅ GHL Contact ID saved:", result.ghl_contact_id);
         } else {
-          console.warn("⚠️ Registration succeeded but ghl_contact_id is missing from response — GHL API may have failed");
+          console.warn(
+            "⚠️ Registration succeeded but ghl_contact_id is missing from response — GHL API may have failed"
+          );
         }
 
         // Save watch room URL for on-demand sessions so the questions page can redirect there
@@ -1279,7 +1284,11 @@ import usFlag from "../images/icons/usflag.png";
     });
   }
 
-  function resetFormState(buttonText: HTMLElement, loader: HTMLElement, submitButton: HTMLButtonElement) {
+  function resetFormState(
+    buttonText: HTMLElement,
+    loader: HTMLElement,
+    submitButton: HTMLButtonElement
+  ) {
     buttonText.style.display = "";
     loader.style.display = "none";
     submitButton.disabled = false;

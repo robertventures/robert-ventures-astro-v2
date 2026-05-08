@@ -9,8 +9,8 @@
 ---
 
 <p class="booking__note">
-  A member of our team will call you at the time you select. Please only reserve a slot
-  you can commit to.
+  A member of our team will call you at the time you select. Please only reserve a slot you can
+  commit to.
 </p>
 
 <div class="booking" data-booking-root data-state="loading">
@@ -88,18 +88,14 @@
       />
     </div>
     <p class="booking__error" data-booking-info-error hidden></p>
-    <button type="button" class="booking__confirm" data-booking-info-continue>
-      Continue
-    </button>
+    <button type="button" class="booking__confirm" data-booking-info-continue> Continue </button>
   </div>
 
   <!-- Confirming -->
   <div class="booking__panel" data-panel="confirming">
     <p class="booking__label">Confirm your call</p>
     <div class="booking__summary" data-booking-summary></div>
-    <button type="button" class="booking__confirm" data-booking-confirm>
-      Confirm booking
-    </button>
+    <button type="button" class="booking__confirm" data-booking-confirm> Confirm booking </button>
     <button type="button" class="booking__back-inline" data-booking-to-time>
       Pick a different time
     </button>
@@ -109,7 +105,16 @@
   <!-- Booked / thank you -->
   <div class="booking__panel" data-panel="booked">
     <div class="booking__check" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <svg
+        viewBox="0 0 24 24"
+        width="32"
+        height="32"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg
+      >
     </div>
     <p class="booking__label booking__label--center">You're booked</p>
     <p class="booking__summary" data-booking-booked-summary></p>
@@ -598,7 +603,9 @@
         month: "2-digit",
         day: "2-digit",
       }).formatToParts(d);
-      var y = "", m = "", dd = "";
+      var y = "",
+        m = "",
+        dd = "";
       for (var i = 0; i < parts.length; i++) {
         if (parts[i].type === "year") y = parts[i].value;
         if (parts[i].type === "month") m = parts[i].value;
@@ -611,7 +618,9 @@
     function weekdayIndex(dateKey) {
       var parts = dateKey.split("-");
       // Noon UTC avoids DST edge-cases when converting to the user's tz
-      var d = new Date(Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0));
+      var d = new Date(
+        Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0)
+      );
       var wd = new Intl.DateTimeFormat("en-US", {
         timeZone: state.timezone,
         weekday: "short",
@@ -833,8 +842,7 @@
               setState("confirming");
             } else {
               if (infoSummaryEl) {
-                infoSummaryEl.textContent =
-                  "We'll call you about " + slotSummary + ".";
+                infoSummaryEl.textContent = "We'll call you about " + slotSummary + ".";
               }
               if (infoErrorEl) {
                 infoErrorEl.hidden = true;
@@ -862,10 +870,9 @@
       setState("loading");
       updateTzLabel();
       try {
-        var res = await fetch(
-          "/api/booking-slots?timezone=" + encodeURIComponent(state.timezone),
-          { headers: { Accept: "application/json" } }
-        );
+        var res = await fetch("/api/booking-slots?timezone=" + encodeURIComponent(state.timezone), {
+          headers: { Accept: "application/json" },
+        });
         if (!res.ok) throw new Error("HTTP " + res.status);
         var data = await res.json();
 
@@ -932,8 +939,7 @@
         } catch (e) {}
 
         if (res.status === 409) {
-          errorEl.textContent =
-            "That slot was just taken. Please pick another time.";
+          errorEl.textContent = "That slot was just taken. Please pick another time.";
           errorEl.hidden = false;
           confirmBtn.disabled = false;
           // Re-fetch slots so the stale one disappears
@@ -941,8 +947,7 @@
           return;
         }
         if (!res.ok) {
-          errorEl.textContent =
-            (data && data.error) || "Something went wrong. Please try again.";
+          errorEl.textContent = (data && data.error) || "Something went wrong. Please try again.";
           errorEl.hidden = false;
           confirmBtn.disabled = false;
           return;
@@ -1014,9 +1019,7 @@
       if (!digits) return "";
       if (digits.length <= 3) return "(" + digits;
       if (digits.length <= 6) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
-      return (
-        "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6)
-      );
+      return "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
     }
 
     function setupInfoPhoneFormatting() {

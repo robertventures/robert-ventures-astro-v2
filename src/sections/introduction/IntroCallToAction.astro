@@ -587,140 +587,140 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 <script is:inline data-astro-rerun>
   (function () {
     function init() {
-    var stage = document.getElementById("cta-social-proof-stage");
-    if (!stage) return;
+      var stage = document.getElementById("cta-social-proof-stage");
+      if (!stage) return;
 
-    var reviewsData = [];
-    try {
-      reviewsData = JSON.parse(stage.getAttribute("data-reviews") || "[]");
-    } catch (e) {
-      return;
-    }
-    if (reviewsData.length === 0) return;
-
-    function shuffle(arr) {
-      var shuffled = arr.slice();
-      for (var i = shuffled.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = shuffled[i];
-        shuffled[i] = shuffled[j];
-        shuffled[j] = tmp;
+      var reviewsData = [];
+      try {
+        reviewsData = JSON.parse(stage.getAttribute("data-reviews") || "[]");
+      } catch (e) {
+        return;
       }
-      return shuffled;
-    }
+      if (reviewsData.length === 0) return;
 
-    var card = stage.querySelector(".cta-review-card");
-    var shuffledReviews = shuffle(reviewsData);
-    var reviewIndex = 0;
-
-    function getNextReview() {
-      var review = shuffledReviews[reviewIndex];
-      reviewIndex = (reviewIndex + 1) % shuffledReviews.length;
-      if (reviewIndex === 0) shuffledReviews = shuffle(reviewsData);
-      return review;
-    }
-
-    function populateCard(review) {
-      var quoteEl = card.querySelector(".cta-quote");
-      var nameEl = card.querySelector(".cta-name");
-      var dateEl = card.querySelector(".cta-date");
-
-      quoteEl.textContent = review.text;
-      quoteEl.classList.remove("expanded");
-      nameEl.textContent = review.name;
-      dateEl.textContent = review.date || "";
-
-      var readMoreEl = card.querySelector(".cta-read-more");
-      if (readMoreEl) {
-        readMoreEl.textContent = "Read more";
-        requestAnimationFrame(function () {
-          if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
-            readMoreEl.style.display = "none";
-          } else {
-            readMoreEl.style.display = "";
-          }
-        });
+      function shuffle(arr) {
+        var shuffled = arr.slice();
+        for (var i = shuffled.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = shuffled[i];
+          shuffled[i] = shuffled[j];
+          shuffled[j] = tmp;
+        }
+        return shuffled;
       }
-    }
 
-    function cycleCard() {
-      card.classList.remove("visible");
-      setTimeout(function () {
-        populateCard(getNextReview());
-        setTimeout(function () {
-          card.classList.add("visible");
-        }, 50);
-      }, 600);
-    }
+      var card = stage.querySelector(".cta-review-card");
+      var shuffledReviews = shuffle(reviewsData);
+      var reviewIndex = 0;
 
-    var timers = [];
-    var isRunning = false;
-    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function getNextReview() {
+        var review = shuffledReviews[reviewIndex];
+        reviewIndex = (reviewIndex + 1) % shuffledReviews.length;
+        if (reviewIndex === 0) shuffledReviews = shuffle(reviewsData);
+        return review;
+      }
 
-    function startCycling() {
-      if (isRunning) return;
-      isRunning = true;
-
-      populateCard(getNextReview());
-      card.classList.add("visible");
-
-      if (prefersReducedMotion) return;
-
-      var cardTimer = setTimeout(function () {
-        cycleCard();
-        var cardInterval = setInterval(cycleCard, 15000);
-        timers.push(cardInterval);
-      }, 15000);
-      timers.push(cardTimer);
-    }
-
-    function stopCycling() {
-      isRunning = false;
-      timers.forEach(function (t) {
-        clearTimeout(t);
-        clearInterval(t);
-      });
-      timers = [];
-    }
-
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            startCycling();
-          } else {
-            stopCycling();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(stage);
-
-    var readMoreBtn = card.querySelector(".cta-read-more");
-    if (readMoreBtn) {
-      readMoreBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+      function populateCard(review) {
         var quoteEl = card.querySelector(".cta-quote");
-        var isExpanded = quoteEl.classList.contains("expanded");
-        if (isExpanded) {
-          quoteEl.classList.remove("expanded");
-          readMoreBtn.textContent = "Read more";
-        } else {
-          quoteEl.classList.add("expanded");
-          readMoreBtn.textContent = "Read less";
+        var nameEl = card.querySelector(".cta-name");
+        var dateEl = card.querySelector(".cta-date");
+
+        quoteEl.textContent = review.text;
+        quoteEl.classList.remove("expanded");
+        nameEl.textContent = review.name;
+        dateEl.textContent = review.date || "";
+
+        var readMoreEl = card.querySelector(".cta-read-more");
+        if (readMoreEl) {
+          readMoreEl.textContent = "Read more";
+          requestAnimationFrame(function () {
+            if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
+              readMoreEl.style.display = "none";
+            } else {
+              readMoreEl.style.display = "";
+            }
+          });
+        }
+      }
+
+      function cycleCard() {
+        card.classList.remove("visible");
+        setTimeout(function () {
+          populateCard(getNextReview());
+          setTimeout(function () {
+            card.classList.add("visible");
+          }, 50);
+        }, 600);
+      }
+
+      var timers = [];
+      var isRunning = false;
+      var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function startCycling() {
+        if (isRunning) return;
+        isRunning = true;
+
+        populateCard(getNextReview());
+        card.classList.add("visible");
+
+        if (prefersReducedMotion) return;
+
+        var cardTimer = setTimeout(function () {
+          cycleCard();
+          var cardInterval = setInterval(cycleCard, 15000);
+          timers.push(cardInterval);
+        }, 15000);
+        timers.push(cardTimer);
+      }
+
+      function stopCycling() {
+        isRunning = false;
+        timers.forEach(function (t) {
+          clearTimeout(t);
+          clearInterval(t);
+        });
+        timers = [];
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              startCycling();
+            } else {
+              stopCycling();
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      observer.observe(stage);
+
+      var readMoreBtn = card.querySelector(".cta-read-more");
+      if (readMoreBtn) {
+        readMoreBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          var quoteEl = card.querySelector(".cta-quote");
+          var isExpanded = quoteEl.classList.contains("expanded");
+          if (isExpanded) {
+            quoteEl.classList.remove("expanded");
+            readMoreBtn.textContent = "Read more";
+          } else {
+            quoteEl.classList.add("expanded");
+            readMoreBtn.textContent = "Read less";
+          }
+        });
+      }
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          stopCycling();
+        } else if (stage.getBoundingClientRect().top < window.innerHeight) {
+          startCycling();
         }
       });
-    }
-
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) {
-        stopCycling();
-      } else if (stage.getBoundingClientRect().top < window.innerHeight) {
-        startCycling();
-      }
-    });
     }
 
     if (document.readyState === "loading") {

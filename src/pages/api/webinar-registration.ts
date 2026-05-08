@@ -215,7 +215,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // it's likely a bot — unless it's a US-based IP (probably a VPN user).
     // Return fake success so bots don't know they were detected.
     if (isHostingIp && geoCountryCode !== "US") {
-      console.log(`🤖 Data center IP detected (${ipForGeo}, country: ${geoCountryCode}) — rejecting bot submission`);
+      console.log(
+        `🤖 Data center IP detected (${ipForGeo}, country: ${geoCountryCode}) — rejecting bot submission`
+      );
       return new Response(JSON.stringify({ message: "Registration successful" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },

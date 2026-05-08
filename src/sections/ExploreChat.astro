@@ -151,8 +151,7 @@ const startersJson = JSON.stringify(STARTERS);
             placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
             muted
             playsinline
-            default-show-captions
-          ></mux-player>
+            default-show-captions></mux-player>
           <div class="explore-video__overlay" id="explore-mux-overlay" role="button" tabindex="0">
             <div class="explore-video__overlay-pill">
               <svg
@@ -801,15 +800,12 @@ const startersJson = JSON.stringify(STARTERS);
     right: 0;
     bottom: 0;
     z-index: 50;
-    background: linear-gradient(
-      to top,
-      #ffffff 0%,
-      #ffffff 55%,
-      rgba(255, 255, 255, 0) 100%
-    );
+    background: linear-gradient(to top, #ffffff 0%, #ffffff 55%, rgba(255, 255, 255, 0) 100%);
     padding: 32px 1rem calc(14px + env(safe-area-inset-bottom));
     pointer-events: none;
-    transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out);
+    transition:
+      opacity 280ms var(--ease-out),
+      transform 280ms var(--ease-out);
   }
 
   .explore-stickycta[data-hidden="true"] {
@@ -993,9 +989,11 @@ const startersJson = JSON.stringify(STARTERS);
     if (dl) dl.push({ event: eventName, ...eventData });
   }
   function phTrack(eventName: string, eventData: Record<string, unknown> = {}) {
-    const ph = (window as unknown as {
-      posthogTrack?: (n: string, p?: Record<string, unknown>) => void;
-    }).posthogTrack;
+    const ph = (
+      window as unknown as {
+        posthogTrack?: (n: string, p?: Record<string, unknown>) => void;
+      }
+    ).posthogTrack;
     if (typeof ph === "function") ph(eventName, eventData);
   }
   function phSetPerson(props: Record<string, unknown>) {
@@ -1049,9 +1047,7 @@ const startersJson = JSON.stringify(STARTERS);
       requestAnimationFrame(() => {
         if (scroll) node.scrollIntoView({ behavior: "smooth", block: "start" });
         if (focus) {
-          const firstBtn = node.querySelector(
-            "button.option__btn"
-          ) as HTMLButtonElement | null;
+          const firstBtn = node.querySelector("button.option__btn") as HTMLButtonElement | null;
           if (firstBtn) firstBtn.focus({ preventScroll: true });
         }
       });
@@ -1326,7 +1322,9 @@ const startersJson = JSON.stringify(STARTERS);
     transcript.addEventListener("click", (e) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const browseBtn = target.closest('button[data-action="browse-all"]') as HTMLButtonElement | null;
+      const browseBtn = target.closest(
+        'button[data-action="browse-all"]'
+      ) as HTMLButtonElement | null;
       if (browseBtn) {
         renderBrowseAll();
         return;

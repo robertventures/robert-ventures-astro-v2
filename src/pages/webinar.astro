@@ -1435,11 +1435,7 @@ try {
               if (entry.isIntersecting) {
                 if (autoplayState === "pending") {
                   attemptAutoplay();
-                } else if (
-                  autoplayState === "playing" &&
-                  player.paused &&
-                  !hasPlayedFounderVideo
-                ) {
+                } else if (autoplayState === "playing" && player.paused && !hasPlayedFounderVideo) {
                   isAutoplayPlay = true;
                   const result = player.play();
                   if (result && typeof result.catch === "function") {

@@ -59,16 +59,16 @@ If any of those move, update the page first, then re-cut the line.
 
 ## Pacing reference
 
-| # | Beat | Approx duration | Words |
-| --- | --- | --- | --- |
-| 1 | Hook + intro + bridge | ~22s | ~60 |
-| 2 | Outer Banks land | ~25s | ~70 |
-| 3 | Digital reserve | ~18s | ~50 |
-| 4 | Why the rate works | ~18s | ~50 |
-| 5 | Track record | ~18s | ~50 |
-| 6 | Cost of waiting | ~18s | ~50 |
-| 7 | Close | ~25s | ~65 |
-| | **Total** | **~2:30** | **~405** |
+| #   | Beat                  | Approx duration | Words    |
+| --- | --------------------- | --------------- | -------- |
+| 1   | Hook + intro + bridge | ~22s            | ~60      |
+| 2   | Outer Banks land      | ~25s            | ~70      |
+| 3   | Digital reserve       | ~18s            | ~50      |
+| 4   | Why the rate works    | ~18s            | ~50      |
+| 5   | Track record          | ~18s            | ~50      |
+| 6   | Cost of waiting       | ~18s            | ~50      |
+| 7   | Close                 | ~25s            | ~65      |
+|     | **Total**             | **~2:30**       | **~405** |
 
 ## House style guardrails
 

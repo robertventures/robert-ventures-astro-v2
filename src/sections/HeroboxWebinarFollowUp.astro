@@ -974,8 +974,7 @@
         const data = await response.json();
 
         if (!response.ok) {
-          const isAccountExists =
-            data.errorCode === "ACCOUNT_EXISTS" || response.status === 409;
+          const isAccountExists = data.errorCode === "ACCOUNT_EXISTS" || response.status === 409;
 
           // POSTHOG: signup_failed — API returned an error
           if ((window as any).posthogTrack) {
