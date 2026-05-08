@@ -16,7 +16,7 @@ import PresReviewBeforeInvest from "../sections/presentation/PresReviewBeforeInv
 import PresFaq from "../sections/presentation/PresFaq.astro";
 import PresClosingCta from "../sections/presentation/PresClosingCta.astro";
 
-const pageTitle = "Presentation | Robert Ventures";
+const pageTitle = "Presentation v2 | Robert Ventures";
 const pageDescription =
   "A closer look at the fixed 8 to 10% offering for investors who have already spoken with us.";
 ---
@@ -45,9 +45,9 @@ const pageDescription =
     <main>
       <PresHeroV2 />
       <PresScarcityBridge />
+      <PresTermsSnapshot />
       <PresOuterBanks />
       <PresBitcoinReserve />
-      <PresTermsSnapshot />
       <PresHowTheRateWorks />
       <PresFounder />
       <PresTrackRecordV2 />
@@ -58,7 +58,7 @@ const pageDescription =
       <PresClosingCta />
     </main>
 
-    <DisclaimerBlock trackLocation="offer_disclaimer" />
+    <DisclaimerBlock trackLocation="offer_v2_disclaimer" />
 
     <div class="pres-stickycta" role="region" aria-label="Next steps">
       <div class="pres-stickycta__inner">
@@ -335,7 +335,7 @@ const pageDescription =
         dismissOverlay();
         if (window.posthogTrack) {
           window.posthogTrack("video_unmuted", {
-            video_id: "offer_hero",
+            video_id: "offer_v2_hero",
             current_time: Math.round(player.currentTime || 0),
             autoplay_succeeded: autoplayState === "playing",
           });
