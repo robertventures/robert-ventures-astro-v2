@@ -1014,8 +1014,13 @@
 
     // Phone formatting mirrors /webinar's input mask: parens around the area
     // code, dash before the line number, capped at 10 digits, paste-aware.
-    function formatPhoneDigits(digits) {
-      digits = digits.replace(/\D/g, "").slice(0, 10);
+    // Strips a leading "1" country code that browser autofill commonly
+    // prepends. No US area code starts with 1, so a leading 1 in 11 digits
+    // is always country code, never part of the number.
+    function formatPhoneDigits(value) {
+      let digits = (value || "").replace(/\D/g, "");
+      if (digits.length === 11 && digits[0] === "1") digits = digits.slice(1);
+      digits = digits.slice(0, 10);
       if (!digits) return "";
       if (digits.length <= 3) return "(" + digits;
       if (digits.length <= 6) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
