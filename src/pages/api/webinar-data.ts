@@ -16,7 +16,7 @@
  *  request   from platform    data            to frontend
  *
  * Usage:
- * - Called by HeroboxWebinarThank.astro for confirmation displays
+ * - Called by webinar.astro to populate the session date/time dropdown
  * - Frontend caches response briefly to reduce API calls
  *
  * Environment Variables Required:

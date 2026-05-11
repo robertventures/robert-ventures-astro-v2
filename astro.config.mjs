@@ -19,13 +19,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      exclude: [
-        "/questions",
-        "/webinar-follow-up",
-        "/webinar-thank-you",
-        "/call-thank-you",
-        "/404",
-      ],
+      exclude: ["/webinar-follow-up", "/call-thank-you", "/404"],
     }),
     tunnel(),
   ],

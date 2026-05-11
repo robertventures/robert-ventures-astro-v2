@@ -1256,6 +1256,22 @@ try {
         overlay.classList.remove("is-active");
       }
 
+      // The video autoplays muted. The only interaction worth tracking is the
+      // user clicking the video (which unmutes it, or restarts it unmuted if it
+      // already ended). We treat that single interaction as the "video_play".
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        hasPlayedFounderVideo = true;
+        dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "wf-intro-joe-robert",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
       function attemptAutoplay() {
         if (autoplayState !== "pending") return;
         autoplayState = "trying";
@@ -1304,112 +1320,28 @@ try {
         });
       }
 
-      let lastReportedProgress = 0;
-      let totalWatchTime = 0;
-      let lastTimeUpdate = 0;
-      let playCount = 0;
-
       player.addEventListener("play", function () {
-        playCount++;
         const wasAutoplay = isAutoplayPlay;
         isAutoplayPlay = false;
-
         if (caption) caption.classList.add("is-hidden");
-
-        if (!wasAutoplay) {
-          engaged = true;
-          hasPlayedFounderVideo = true;
-          dismissOverlay();
-        }
-
-        if (window.posthogTrack) {
-          window.posthogTrack("video_play", {
-            video_id: "wf-intro-joe-robert",
-            play_count: playCount,
-            is_first_play: playCount === 1,
-            is_autoplay: wasAutoplay,
-            current_time: Math.round(player.currentTime || 0),
-          });
-        }
+        // A non-autoplay play means the user clicked the (paused/ended) video.
+        if (!wasAutoplay) markEngaged();
       });
 
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
-        engaged = true;
-        hasPlayedFounderVideo = true;
-        dismissOverlay();
-        if (window.posthogTrack) {
-          window.posthogTrack("video_unmuted", {
-            video_id: "wf-intro-joe-robert",
-            current_time: Math.round(player.currentTime || 0),
-            autoplay_succeeded: autoplayState === "playing",
-          });
-        }
+        // User unmuted the muted-autoplay video by clicking it.
+        markEngaged();
       });
 
       player.addEventListener("pause", function () {
         if (player.ended) return;
-
         if (caption) caption.classList.remove("is-hidden");
-
-        if (window.posthogTrack) {
-          window.posthogTrack("video_pause", {
-            video_id: "wf-intro-joe-robert",
-            current_time: Math.round(player.currentTime || 0),
-            duration: Math.round(player.duration || 0),
-            percent_watched: player.duration
-              ? Math.round((player.currentTime / player.duration) * 100)
-              : 0,
-            total_watch_time: Math.round(totalWatchTime),
-          });
-        }
       });
 
       player.addEventListener("ended", function () {
         if (caption) caption.classList.remove("is-hidden");
-
-        if (window.posthogTrack) {
-          window.posthogTrack("video_completed", {
-            video_id: "wf-intro-joe-robert",
-            duration: Math.round(player.duration || 0),
-            total_watch_time: Math.round(totalWatchTime),
-          });
-        }
-      });
-
-      player.addEventListener("timeupdate", function () {
-        const now = Date.now();
-        if (lastTimeUpdate && now - lastTimeUpdate < 2000) {
-          totalWatchTime += (now - lastTimeUpdate) / 1000;
-        }
-        lastTimeUpdate = now;
-
-        if (!player.duration) return;
-        const pct = Math.round((player.currentTime / player.duration) * 100);
-        const milestones = [25, 50, 75, 100];
-        for (let i = 0; i < milestones.length; i++) {
-          if (pct >= milestones[i] && lastReportedProgress < milestones[i]) {
-            lastReportedProgress = milestones[i];
-            if (window.posthogTrack) {
-              window.posthogTrack("video_progress", {
-                video_id: "wf-intro-joe-robert",
-                milestone: milestones[i],
-                current_time: Math.round(player.currentTime),
-                duration: Math.round(player.duration),
-                total_watch_time: Math.round(totalWatchTime),
-              });
-            }
-          }
-        }
-      });
-
-      player.addEventListener("error", function () {
-        if (window.posthogTrack) {
-          window.posthogTrack("video_error", {
-            video_id: "wf-intro-joe-robert",
-          });
-        }
       });
 
       // Trigger muted autoplay while the section is still approaching, so

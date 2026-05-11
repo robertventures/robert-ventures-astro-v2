@@ -357,19 +357,10 @@ const options = [
               } catch (e) {}
 
               function finish() {
-                if (!isTestMode()) {
-                  if (window.posthogSetPerson) {
-                    window.posthogSetPerson({
-                      invest_intent: investIntent,
-                      capital_source: value,
-                    });
-                  }
-                  if (window.posthogTrack) {
-                    window.posthogTrack("questions_completed", {
-                      invest_intent: investIntent,
-                      capital_source: value,
-                    });
-                  }
+                // invest_intent is already set on the person at webinar
+                // registration; only capital_source is new on this page.
+                if (!isTestMode() && window.posthogSetPerson) {
+                  window.posthogSetPerson({ capital_source: value });
                 }
                 setTimeout(function () {
                   go("/introduction");

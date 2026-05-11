@@ -447,6 +447,21 @@
         overlay.classList.remove("is-active");
       }
 
+      // Video autoplays muted. The interaction worth tracking is the user
+      // clicking the video (unmutes it, or restarts it unmuted if ended).
+      // We treat that single interaction as the "video_play".
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "offer-founder",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
       function attemptAutoplay() {
         if (autoplayState !== "pending") return;
         autoplayState = "trying";
@@ -497,24 +512,13 @@
       player.addEventListener("play", function () {
         const wasAutoplay = isAutoplayPlay;
         isAutoplayPlay = false;
-        if (!wasAutoplay) {
-          engaged = true;
-          dismissOverlay();
-        }
+        if (!wasAutoplay) markEngaged();
       });
 
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
-        engaged = true;
-        dismissOverlay();
-        if (window.posthogTrack) {
-          window.posthogTrack("video_unmuted", {
-            video_id: "offer-founder",
-            current_time: Math.round(player.currentTime || 0),
-            autoplay_succeeded: autoplayState === "playing",
-          });
-        }
+        markEngaged();
       });
 
       if ("IntersectionObserver" in window) {
