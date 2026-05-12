@@ -4,8 +4,21 @@
 //
 // Exposes three globals:
 //   window.posthogTrack(eventName, properties)   — capture any event
-//   window.posthogIdentify(distinctId, props)    — identify a user (call after registration)
-//   window.posthogSetPerson(properties)          — update person properties without re-identifying
+//   window.posthogSetPerson(properties)          — set person properties on the
+//                                                  current (anonymous) profile,
+//                                                  without identifying. Use this
+//                                                  for email/name/etc. on the
+//                                                  marketing site.
+//   window.posthogIdentify(distinctId, props)    — identify a user by a REAL stable
+//                                                  user id (e.g. a portal user.id).
+//                                                  NOT used by the marketing site
+//                                                  today: we don't have a stable id
+//                                                  here, and identifying by email
+//                                                  would collide with the investor
+//                                                  portal's identify(user.id) and
+//                                                  sever the pre-signup journey.
+//                                                  Webinar registrants get email/name
+//                                                  via posthogSetPerson instead.
 
 (function () {
     'use strict';
@@ -33,6 +46,10 @@
         console.log('PostHog event:', eventName, enriched);
     }
 
+    // Only for a REAL stable user id (e.g. an investor-portal user.id). Do not call
+    // this with an email or any browser-scoped value — see the header comment.
+    // Currently unused on the marketing site; kept so the portal-style pattern is
+    // available if a stable id ever exists here.
     function posthogIdentify(distinctId, userProperties) {
         if (!isReady()) {
             console.warn('PostHog not ready. Identify skipped for:', distinctId);

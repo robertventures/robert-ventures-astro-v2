@@ -1020,13 +1020,16 @@
         // Success! Redirect to confirmation page with email and user_id
         const userId = data.user?.id || data.pendingUserId || data.id;
 
-        // POSTHOG: signup_completed + identify user by email
+        // POSTHOG: signup_completed + attach email/phone as person properties.
+        // We do NOT identify(email) here — the real stable user id only exists
+        // once the investor portal creates the account, and its identify(user.id)
+        // merges this anonymous pre-signup journey into the real profile.
         if ((window as any).posthogTrack) {
           (window as any).posthogTrack("signup_completed", { email_domain: emailDomain });
           signupTracked = true;
         }
-        if ((window as any).posthogIdentify) {
-          (window as any).posthogIdentify(email, {
+        if ((window as any).posthogSetPerson) {
+          (window as any).posthogSetPerson({
             email: email,
             phone: normalizedPhone,
           });

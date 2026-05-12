@@ -1104,8 +1104,12 @@ try {
               })
             );
 
-            if (window.posthogIdentify) {
-              window.posthogIdentify(emailStr, {
+            // Attach registrant details as person properties on the anonymous
+            // PostHog profile. We deliberately do NOT identify(email) here: the
+            // real stable user id only exists once they sign up on the investor
+            // portal, which calls identify(user.id) and merges this journey in.
+            if (window.posthogSetPerson) {
+              window.posthogSetPerson({
                 name: nameStr,
                 email: emailStr,
                 phone: phoneStr,
