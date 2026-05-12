@@ -472,6 +472,21 @@ const pageDescription =
         overlay.classList.remove("is-active");
       }
 
+      // The video autoplays muted. The interaction worth tracking is the user
+      // clicking the video (which unmutes it, or restarts it unmuted if it
+      // already ended). We treat that single interaction as the "video_play".
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "intro-founder",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
       function attemptAutoplay() {
         if (autoplayState !== "pending") return;
         autoplayState = "trying";
@@ -523,17 +538,15 @@ const pageDescription =
         const wasAutoplay = isAutoplayPlay;
         isAutoplayPlay = false;
         if (caption) caption.classList.add("is-hidden");
-        if (!wasAutoplay) {
-          engaged = true;
-          dismissOverlay();
-        }
+        // A non-autoplay play means the user clicked the (paused/ended) video.
+        if (!wasAutoplay) markEngaged();
       });
 
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
-        engaged = true;
-        dismissOverlay();
+        // User unmuted the muted-autoplay video by clicking it.
+        markEngaged();
       });
 
       if ("IntersectionObserver" in window) {
