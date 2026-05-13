@@ -1,0 +1,597 @@
+---
+/**
+ * Beat 1 — Hero ("You've had the call. Here's the deal.")
+ * Forked from src/sections/presentation/PresHeroV2.astro.
+ * Leads with the deal + the displacement problem + the dual-mode hook in one screen,
+ * with Joe's video underneath. In-hero CTAs are hidden on mobile (<600px); the page's
+ * sticky bar carries them there so the hero fits above the fold.
+ */
+import ComplianceMicroline from "../../components/ComplianceMicroline.astro";
+import PresV2Cta from "../../components/presentation-v2/PresV2Cta.astro";
+
+const terms = [
+  "8% APY · 1-year minimum",
+  "10% APY · 3-year minimum",
+  "$1,000 minimum, no cap",
+  "IRA-eligible",
+  "Monthly payout or compound",
+];
+
+const proof = ["Live since 2024", "100% on-time distributions", "~$1.23M from ~76 investors"];
+---
+
+<section class="pres-v2-hero">
+  <div class="pres-v2-hero__container">
+    <div class="pres-v2-hero__content">
+      <p class="pres-v2-hero__precall">
+        You've had the conversation. This is the part where you decide what your cash does next.
+      </p>
+      <h1 class="pres-v2-hero__heading">
+        Your cash is sitting still.<br />This bond puts it to work, your way.
+      </h1>
+      <p class="pres-v2-hero__subhead">
+        A fixed 8 to 10%, built on Outer Banks real estate and a Bitcoin reserve. On every bond, you
+        choose: a deposit in your bank every month, or let the interest compound and grow.
+      </p>
+
+      <ul class="pres-v2-hero__strip pres-v2-hero__strip--terms" aria-label="The terms, in a line">
+        {terms.map((t) => <li>{t}</li>)}
+      </ul>
+
+      <ul
+        class="pres-v2-hero__strip pres-v2-hero__strip--proof"
+        aria-label="Where the offering stands"
+      >
+        {proof.map((p) => <li>{p}</li>)}
+      </ul>
+
+      <div class="pres-v2-hero__cta">
+        <PresV2Cta
+          location="hero"
+          primaryLabel="Open your free account"
+          ghostAsTextLink={true}
+        />
+      </div>
+    </div>
+
+    <div class="pres-v2-hero__media">
+      <div class="pres-v2-hero__video-wrapper">
+        <div class="pres-v2-hero__video-container">
+          <mux-player
+            id="pres-v2-mux-player"
+            playback-id="2kydH8elhtjcMNOw5vFG01trfl01JFLA52ou7ZD8eQ2zI"
+            env-key="hr9aevib299lcvfdoip01jd60"
+            preload="metadata"
+            stream-type="on-demand"
+            max-resolution="1080p"
+            rendition-order="desc"
+            poster="https://image.mux.com/2kydH8elhtjcMNOw5vFG01trfl01JFLA52ou7ZD8eQ2zI/thumbnail.png?width=800&height=450&time=5"
+            placeholder="https://image.mux.com/2kydH8elhtjcMNOw5vFG01trfl01JFLA52ou7ZD8eQ2zI/thumbnail.webp?time=5&width=16"
+            muted
+            playsinline
+            default-show-captions></mux-player>
+          <div
+            class="pres-v2-hero__mux-overlay"
+            id="pres-v2-mux-overlay"
+            role="button"
+            tabindex="0"
+            aria-label="Your video is playing. Click to unmute."
+          >
+            <div class="pres-v2-hero__mux-overlay-pill">
+              <svg
+                class="pres-v2-hero__mux-overlay-icon pres-v2-hero__mux-overlay-icon--unmute"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                  fill="#ffffff"></path>
+              </svg>
+              <svg
+                class="pres-v2-hero__mux-overlay-icon pres-v2-hero__mux-overlay-icon--play"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+              </svg>
+              <span class="pres-v2-hero__mux-overlay-text pres-v2-hero__mux-overlay-text--unmute">
+                Your video is playing. Click to unmute.
+              </span>
+              <span class="pres-v2-hero__mux-overlay-text pres-v2-hero__mux-overlay-text--play">
+                Click to play
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="pres-v2-hero__caption">
+        <span class="pres-v2-hero__caption-name">Joe Robert</span>
+        <span class="pres-v2-hero__caption-sep" aria-hidden="true">&middot;</span>
+        <span class="pres-v2-hero__caption-role">Manager &amp; Founder</span>
+      </p>
+      <ComplianceMicroline lines={["sec", "not-fdic", "risk"]} class="pres-v2-hero__microline" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-v2-hero {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-v2-hero__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    align-items: center;
+  }
+
+  .pres-v2-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .pres-v2-hero__precall {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .pres-v2-hero__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 118%;
+    text-align: center;
+    margin: 0;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-v2-hero__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 150%;
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  .pres-v2-hero__strip {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px 10px;
+    max-width: 640px;
+  }
+
+  .pres-v2-hero__strip li {
+    font-family: "Roboto", sans-serif;
+    line-height: 1.5;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .pres-v2-hero__strip li:not(:first-child)::before {
+    content: "\00b7";
+    margin-right: 10px;
+    color: var(--text-muted);
+  }
+
+  .pres-v2-hero__strip--terms {
+    margin-top: 0.25rem;
+  }
+
+  .pres-v2-hero__strip--terms li {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-heading);
+  }
+
+  .pres-v2-hero__strip--proof li {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+  }
+
+  .pres-v2-hero__cta {
+    margin-top: 0.75rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* On phones the sticky CTA bar already shows both actions; the hero won't fit
+     headline + subhead + strips + video + microline + buttons above the fold. */
+  @media only screen and (max-width: 599px) {
+    .pres-v2-hero__cta {
+      display: none;
+    }
+  }
+
+  .pres-v2-hero__media {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pres-v2-hero__video-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 24px 48px rgba(0, 0, 0, 0.08);
+  }
+
+  .pres-v2-hero__video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #152429;
+  }
+
+  .pres-v2-hero__video-container :global(mux-player) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+    --time-range: none;
+  }
+
+  .pres-v2-hero__video-container :global(mux-player[mediaisfullscreen]) {
+    --time-range: initial;
+  }
+
+  .pres-v2-hero__mux-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  .pres-v2-hero__mux-overlay.is-active {
+    display: flex;
+  }
+
+  .pres-v2-hero__mux-overlay:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .pres-v2-hero__mux-overlay-pill {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    animation: pres-v2-hero-mux-pill-glow 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .pres-v2-hero__mux-overlay-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .pres-v2-hero__mux-overlay-icon--play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  .pres-v2-hero__mux-overlay-text--play {
+    display: none;
+  }
+
+  .pres-v2-hero__mux-overlay.is-play-mode .pres-v2-hero__mux-overlay-icon--unmute,
+  .pres-v2-hero__mux-overlay.is-play-mode .pres-v2-hero__mux-overlay-text--unmute {
+    display: none;
+  }
+
+  .pres-v2-hero__mux-overlay.is-play-mode .pres-v2-hero__mux-overlay-icon--play,
+  .pres-v2-hero__mux-overlay.is-play-mode .pres-v2-hero__mux-overlay-text--play {
+    display: inline-block;
+  }
+
+  @keyframes pres-v2-hero-mux-pill-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pres-v2-hero__mux-overlay-pill {
+      animation: none;
+    }
+  }
+
+  .pres-v2-hero__caption {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pres-v2-hero__caption-name {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-v2-hero__caption-sep {
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 130%;
+  }
+
+  .pres-v2-hero__caption-role {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 130%;
+  }
+
+  .pres-v2-hero__microline {
+    margin-top: 2px;
+    max-width: 560px;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-v2-hero__container {
+      padding: 2.5rem 2rem 3rem;
+      gap: 2.25rem;
+    }
+
+    .pres-v2-hero__content {
+      gap: 1.25rem;
+      max-width: 800px;
+    }
+
+    .pres-v2-hero__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-v2-hero__subhead {
+      font-size: 1.125rem;
+    }
+
+    .pres-v2-hero__strip--terms li {
+      font-size: 0.9375rem;
+    }
+
+    .pres-v2-hero__strip--proof li {
+      font-size: 0.875rem;
+    }
+
+    .pres-v2-hero__media {
+      max-width: 800px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-v2-hero__container {
+      padding: 3.5rem 2rem 4rem;
+      gap: 2.75rem;
+    }
+
+    .pres-v2-hero__content {
+      max-width: 900px;
+    }
+
+    .pres-v2-hero__heading {
+      font-size: 3.5rem;
+      line-height: 112%;
+      letter-spacing: -0.01em;
+    }
+
+    .pres-v2-hero__subhead {
+      max-width: 660px;
+    }
+
+    .pres-v2-hero__media {
+      max-width: 840px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-v2-hero__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-v2-hero__container {
+      max-width: 1440px;
+      padding: 5rem 6rem;
+    }
+
+    .pres-v2-hero__heading {
+      font-size: 4.25rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function setupHeroVideo() {
+      const player = document.getElementById("pres-v2-mux-player");
+      const overlay = document.getElementById("pres-v2-mux-overlay");
+      if (!player) return;
+
+      let autoplayState = "pending";
+      let isAutoplayPlay = false;
+      let engaged = false;
+
+      function showOverlayUnmuteMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active");
+        overlay.classList.remove("is-play-mode");
+        overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+      }
+
+      function showOverlayPlayMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active", "is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play");
+      }
+
+      function dismissOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove("is-active");
+      }
+
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "offer_v2_hero",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        isAutoplayPlay = true;
+        const promise = player.play();
+        if (promise && typeof promise.then === "function") {
+          promise
+            .then(function () {
+              autoplayState = "playing";
+              if (!engaged) showOverlayUnmuteMode();
+            })
+            .catch(function () {
+              isAutoplayPlay = false;
+              autoplayState = "failed";
+              if (!engaged) showOverlayPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          if (!engaged) showOverlayUnmuteMode();
+        }
+      }
+
+      function engageFromOverlay(e) {
+        if (!overlay || !overlay.classList.contains("is-active")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const isPlayMode = overlay.classList.contains("is-play-mode");
+        try {
+          player.muted = false;
+        } catch (err) {}
+        if (isPlayMode) {
+          const result = player.play();
+          if (result && typeof result.catch === "function") result.catch(function () {});
+        }
+        dismissOverlay();
+      }
+
+      if (overlay) {
+        overlay.addEventListener("click", engageFromOverlay);
+        overlay.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
+        });
+      }
+
+      player.addEventListener("play", function () {
+        const wasAutoplay = isAutoplayPlay;
+        isAutoplayPlay = false;
+        if (!wasAutoplay) markEngaged();
+      });
+
+      player.addEventListener("volumechange", function () {
+        if (engaged) return;
+        if (player.muted) return;
+        markEngaged();
+      });
+
+      if ("IntersectionObserver" in window) {
+        const videoIo = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (autoplayState === "playing" && player.paused && !engaged) {
+                  isAutoplayPlay = true;
+                  const result = player.play();
+                  if (result && typeof result.catch === "function") {
+                    result.catch(function () {
+                      isAutoplayPlay = false;
+                    });
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
+            });
+          },
+          { threshold: 0, rootMargin: "0px 0px 40% 0px" }
+        );
+        videoIo.observe(player);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupHeroVideo);
+    } else {
+      setupHeroVideo();
+    }
+  })();
+</script>

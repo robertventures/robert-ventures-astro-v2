@@ -1,0 +1,189 @@
+---
+/**
+ * Three bars, same scale: a typical savings account, an example CD, and this bond at 10%
+ * compounding, over a fixed example ($50,000 over 3 years). The bond bar is the green one; the
+ * others are muted. The assumed rate rides in each label so the caveats travel with the data.
+ * Static and illustrative; all rates are constants here so a reviewer can tune or blank them.
+ * If compliance won't allow naming competitor rates, drop the savings/CD rows and keep the bond bar.
+ */
+const AMOUNT = 50000;
+const YEARS = 3;
+
+const usd = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(Math.round(n));
+
+// Savings / CD: simple interest taken as income. Bond: monthly compounding over the term.
+const savingsGain = AMOUNT * 0.004 * YEARS;
+const cdGain = AMOUNT * 0.04 * YEARS;
+const bondGain = AMOUNT * Math.pow(1 + 0.1 / 12, YEARS * 12) - AMOUNT;
+
+const bars = [
+  {
+    label: "A typical savings account",
+    rate: "~0.4% example",
+    gain: savingsGain,
+    kind: "muted" as const,
+  },
+  {
+    label: "A 3-year CD",
+    rate: "~4% example",
+    gain: cdGain,
+    kind: "muted" as const,
+  },
+  {
+    label: "This bond, compounding",
+    rate: "10% by contract",
+    gain: bondGain,
+    kind: "bond" as const,
+  },
+];
+
+const max = Math.max(savingsGain, cdGain, bondGain, 1);
+const ariaLabel = `Over three years on ${usd(AMOUNT)}, a typical savings account at about 0.4% earns roughly ${usd(savingsGain)}, a three-year CD at about 4% roughly ${usd(cdGain)}, and this bond at 10% compounding roughly ${usd(bondGain)}.`;
+---
+
+<figure class="presv2-cmp" role="img" aria-label={ariaLabel}>
+  <p class="presv2-cmp__title">Over 3 years, on a {usd(AMOUNT)} balance &mdash; what each earns:</p>
+  <ul class="presv2-cmp__bars">
+    {
+      bars.map((b) => (
+        <li class:list={["presv2-cmp__row", `is-${b.kind}`]}>
+          <span class="presv2-cmp__label">
+            {b.label} <span class="presv2-cmp__rate">({b.rate})</span>
+          </span>
+          <span class="presv2-cmp__track">
+            <span
+              class="presv2-cmp__bar"
+              style={`width: ${Math.max((b.gain / max) * 100, 2)}%`}
+            />
+            <span class="presv2-cmp__val">+{usd(b.gain)}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="presv2-cmp__foot">
+    Comparison rates are illustrative national averages, not offers, and change over time. CDs and
+    savings accounts are FDIC-insured; this bond is not. Your actual rate may differ.
+  </p>
+</figure>
+
+<style>
+  .presv2-cmp {
+    margin: 0;
+    width: 100%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .presv2-cmp__title {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .presv2-cmp__bars {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .presv2-cmp__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .presv2-cmp__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 1.4;
+  }
+
+  .presv2-cmp__rate {
+    color: var(--text-muted);
+  }
+
+  .presv2-cmp__track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 22px;
+  }
+
+  .presv2-cmp__bar {
+    display: block;
+    height: 16px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .is-muted .presv2-cmp__bar {
+    background: #b8c0c8;
+  }
+
+  .is-bond .presv2-cmp__bar {
+    background: var(--green-dark);
+  }
+
+  .presv2-cmp__val {
+    font-family: "Roboto Serif", serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+  }
+
+  .is-bond .presv2-cmp__val {
+    color: var(--green-dark);
+    font-size: 1.0625rem;
+  }
+
+  .is-bond .presv2-cmp__label {
+    color: var(--text-heading);
+    font-weight: 500;
+  }
+
+  .presv2-cmp__foot {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .presv2-cmp__row {
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .presv2-cmp__label {
+      flex: 0 0 38%;
+      font-size: 0.9375rem;
+    }
+
+    .presv2-cmp__track {
+      flex: 1;
+    }
+  }
+</style>

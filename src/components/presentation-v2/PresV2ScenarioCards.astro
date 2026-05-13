@@ -1,0 +1,178 @@
+---
+/**
+ * Three pre-computed "what it does on a real balance" cards, fixed at the 10% / 3-year bond.
+ * Converts skimmers with zero interaction; the full "run your own number" calculator sits below.
+ * Monthly income = balance * 0.10 / 12. 3-year compounding total = balance * (1 + 0.10/12)^36.
+ */
+const APY = 0.1;
+const TERM_MONTHS = 36;
+
+const balances = [10000, 50000, 100000];
+
+const usd = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(n);
+
+const cards = balances.map((b) => ({
+  balance: b,
+  monthly: usd(Math.round((b * APY) / 12)),
+  compound3yr: usd(Math.round(b * Math.pow(1 + APY / 12, TERM_MONTHS))),
+}));
+---
+
+<div class="presv2-scenarios">
+  <p class="presv2-scenarios__intro">If you put in&hellip;</p>
+  <ul class="presv2-scenarios__list">
+    {
+      cards.map((c) => (
+        <li class="presv2-scenarios__card">
+          <span class="presv2-scenarios__balance">{usd(c.balance)}</span>
+          <dl class="presv2-scenarios__paths">
+            <div class="presv2-scenarios__path">
+              <dt>Monthly income</dt>
+              <dd>
+                ~{c.monthly}
+                <span>/mo to your bank</span>
+              </dd>
+            </div>
+            <div class="presv2-scenarios__path">
+              <dt>Or compound for 3 years</dt>
+              <dd>
+                ~{c.compound3yr}
+                <span>at the end of the term</span>
+              </dd>
+            </div>
+          </dl>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="presv2-scenarios__note">
+    Illustrative, at the 10% bond. The bond can run to 10 years if you let it. Your rate and term
+    are set when you fund.
+  </p>
+</div>
+
+<style>
+  .presv2-scenarios {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .presv2-scenarios__intro {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    margin: 0;
+    text-align: center;
+  }
+
+  .presv2-scenarios__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .presv2-scenarios__card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .presv2-scenarios__balance {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    line-height: 1.1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .presv2-scenarios__paths {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+
+  .presv2-scenarios__path {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid var(--border-light);
+    padding-top: 10px;
+  }
+
+  .presv2-scenarios__path dt {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-body);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .presv2-scenarios__path dd {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    line-height: 1.15;
+    margin: 0;
+    font-variant-numeric: lining-nums;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .presv2-scenarios__path dd span {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-body);
+  }
+
+  .presv2-scenarios__note {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .presv2-scenarios__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .presv2-scenarios__card {
+      gap: 16px;
+    }
+
+    .presv2-scenarios__paths {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .presv2-scenarios__balance {
+      font-size: 1.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+/**
+ * The shared inline call-to-action block for the offer-v2 page.
+ * Replaces the dead PresDualCTA. Primary fill uses --green-dark (AA contrast on white).
+ * Renders an optional "free to start" reassurance microline below the primary.
+ *
+ * At high-intent placements (hero, mechanic, post-calculator) pass ghostAsTextLink
+ * so "Book a 10-minute call" reads as a quiet escape hatch, not a co-equal button.
+ */
+import ComplianceMicroline from "../ComplianceMicroline.astro";
+
+interface Props {
+  /** Goes to data-track-location on both CTAs. */
+  location: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  primaryTrackCta?: string;
+  showGhost?: boolean;
+  ghostLabel?: string;
+  ghostHref?: string;
+  ghostTrackCta?: string;
+  /** Render the ghost as a small underlined text link instead of a co-equal button. */
+  ghostAsTextLink?: boolean;
+  /** Render the "free to start" microline under the primary. */
+  microline?: boolean;
+  align?: "center" | "left";
+  class?: string;
+}
+
+const {
+  location,
+  primaryLabel = "Create your account",
+  primaryHref = "https://invest.robertventures.com/",
+  primaryTrackCta = "create_account",
+  showGhost = true,
+  ghostLabel = "Book a 10-minute call",
+  ghostHref = "/offer/book-call",
+  ghostTrackCta = "book_call",
+  ghostAsTextLink = false,
+  microline = true,
+  align = "center",
+  class: className,
+} = Astro.props as Props;
+---
+
+<div class:list={["presv2-cta", `is-${align}`, className]}>
+  <div class="presv2-cta__buttons">
+    <a
+      class="presv2-cta__primary"
+      href={primaryHref}
+      data-track-cta={primaryTrackCta}
+      data-track-location={location}
+    >
+      {primaryLabel}
+    </a>
+    {
+      showGhost && !ghostAsTextLink && (
+        <a
+          class="presv2-cta__ghost"
+          href={ghostHref}
+          data-track-cta={ghostTrackCta}
+          data-track-location={location}
+        >
+          {ghostLabel}
+        </a>
+      )
+    }
+  </div>
+
+  {
+    showGhost && ghostAsTextLink && (
+      <a
+        class="presv2-cta__textlink"
+        href={ghostHref}
+        data-track-cta={ghostTrackCta}
+        data-track-location={location}
+      >
+        {ghostLabel}
+      </a>
+    )
+  }
+
+  {microline && <ComplianceMicroline variant="free-to-start" align={align} />}
+</div>
+
+<style>
+  .presv2-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .presv2-cta.is-center {
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .presv2-cta.is-left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .presv2-cta__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .presv2-cta__primary,
+  .presv2-cta__ghost {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    font-family: "Roboto", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 100%;
+    padding: 14px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .presv2-cta__primary {
+    background-color: var(--green-dark);
+    border: 1px solid var(--green-dark);
+    color: #ffffff;
+  }
+
+  .presv2-cta__primary:hover,
+  .presv2-cta__primary:active {
+    /* Darker than --green-dark so white text keeps AA contrast on hover too. */
+    background-color: #22573a;
+    border-color: #22573a;
+    color: #ffffff;
+  }
+
+  .presv2-cta__ghost {
+    background-color: transparent;
+    border: 1px solid var(--text-heading);
+    color: var(--text-heading);
+  }
+
+  .presv2-cta__ghost:hover,
+  .presv2-cta__ghost:active {
+    background-color: var(--text-heading);
+    color: #ffffff;
+  }
+
+  .presv2-cta__textlink {
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    line-height: 1.4;
+  }
+
+  .presv2-cta__textlink:hover {
+    color: #22573a;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .presv2-cta {
+      max-width: 520px;
+    }
+
+    .presv2-cta__buttons {
+      flex-direction: row;
+    }
+
+    .presv2-cta__buttons > .presv2-cta__primary,
+    .presv2-cta__buttons > .presv2-cta__ghost {
+      flex: 1;
+    }
+  }
+</style>

@@ -1,0 +1,391 @@
+---
+/**
+ * Beat 6 — "Joe, this offering's record, real investors, the documents."
+ * Stacks the proof: Joe (still photo + Joe-scoped stats + the "why my name is on it" callout),
+ * then this offering's record since 2024, a light "the team" reassurance, and the after-proof CTA.
+ * ReviewsV3 is rendered right after this component in offer-v2.astro (with the white-bg override).
+ *
+ * The page runs ONE Mux video (the hero). Here we use a still frame of Joe, not a second player.
+ */
+import PresV2Cta from "../../components/presentation-v2/PresV2Cta.astro";
+
+const joeStats = [
+  { val: "25+", label: "Years of real-estate experience" },
+  { val: "100%", label: "Payments record" },
+  { val: "$10M+", label: "Raised from private investors" },
+  { val: "200+", label: "Properties sold" },
+];
+
+const offeringStats = [
+  { val: "$1.23M", label: "Raised in this offering so far" },
+  { val: "76", label: "Investors, hand-onboarded" },
+  { val: "100%", label: "On-time distributions, no missed payments" },
+  { val: "27%", label: "Of investors reinvest" },
+];
+
+// A still frame from Joe's founder video, used as his portrait here.
+const joePhoto =
+  "https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=720&height=480&fit_mode=crop&time=5";
+---
+
+<section class="pres-v2-proof">
+  <div class="pres-v2-proof__container">
+    <div class="pres-v2-proof__intro">
+      <p class="pres-v2-proof__eyebrow">Who's behind it</p>
+      <h2 class="pres-v2-proof__heading">One name on <em>every deal.</em></h2>
+    </div>
+
+    <div class="pres-v2-proof__founder">
+      <img
+        class="pres-v2-proof__photo"
+        src={joePhoto}
+        width="720"
+        height="480"
+        loading="lazy"
+        decoding="async"
+        alt="Joe Robert, Manager and Founder of Robert Ventures"
+      />
+      <p class="pres-v2-proof__caption">
+        <span class="pres-v2-proof__caption-name">Joe Robert</span>
+        <span class="pres-v2-proof__caption-sep" aria-hidden="true">&middot;</span>
+        <span class="pres-v2-proof__caption-role">Manager &amp; Founder</span>
+      </p>
+      <p class="pres-v2-proof__founder-line">
+        Joe Robert has spent about 25 years in real estate. Around 200 properties sold. More than $10
+        million raised from roughly 60 private investors over his career. Every offering completed.
+        Every payment made.
+      </p>
+    </div>
+
+    <ul class="pres-v2-proof__stats" aria-label="Joe Robert's career, in brief">
+      {
+        joeStats.map((s) => (
+          <li class="pres-v2-proof__stat">
+            <span class="pres-v2-proof__stat-val">{s.val}</span>
+            <span class="pres-v2-proof__stat-label">{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="pres-v2-proof__align">
+      <p class="pres-v2-proof__align-eyebrow">Why my name is on the offering</p>
+      <p class="pres-v2-proof__align-body">
+        For about 25 years, my name has been on every deal I've done. Robert Ventures is the company
+        I founded and lead, and it has a team built to support investors at every step. I'm
+        personally accountable for every offering we put in front of you. The capital we raise funds
+        the projects I underwrite. The record is mine to defend.
+      </p>
+    </div>
+
+    <div class="pres-v2-proof__offering">
+      <p class="pres-v2-proof__offering-label">Since this offering opened in 2024</p>
+      <ul class="pres-v2-proof__stats pres-v2-proof__stats--offering" aria-label="This offering, since 2024">
+        {
+          offeringStats.map((s) => (
+            <li class="pres-v2-proof__stat">
+              <span class="pres-v2-proof__stat-val">{s.val}</span>
+              <span class="pres-v2-proof__stat-label">{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="pres-v2-proof__offering-foot">
+        Figures are current and subject to change. Past performance is not an indicator of future
+        results.
+      </p>
+    </div>
+
+    <p class="pres-v2-proof__team">
+      Robert Ventures isn't a one-person shop. There's a team that onboards every investor by hand
+      and answers when you call. Joe leads it.
+    </p>
+    <p class="pres-v2-proof__docs-ref">
+      Want the paperwork? The Offering Circular, the sample bond agreement, and the SEC filings are
+      linked above.
+    </p>
+
+    <div class="pres-v2-proof__cta">
+      <PresV2Cta location="proof" primaryLabel="Open your free account" ghostAsTextLink={true} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-v2-proof {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .pres-v2-proof__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .pres-v2-proof__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .pres-v2-proof__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-v2-proof__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 118%;
+    margin: 0;
+  }
+
+  .pres-v2-proof__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-v2-proof__founder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .pres-v2-proof__photo {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 16px 36px rgba(0, 0, 0, 0.08);
+  }
+
+  .pres-v2-proof__caption {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pres-v2-proof__caption-name {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .pres-v2-proof__caption-sep {
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+
+  .pres-v2-proof__caption-role {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 130%;
+  }
+
+  .pres-v2-proof__founder-line {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .pres-v2-proof__stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 880px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .pres-v2-proof__stat {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 16px 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pres-v2-proof__stat-val {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    line-height: 1.1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-v2-proof__stat-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.35;
+  }
+
+  .pres-v2-proof__align {
+    width: 100%;
+    max-width: 880px;
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid var(--green-brand);
+    border-radius: 4px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pres-v2-proof__align-eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-v2-proof__align-body {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.0625rem;
+    color: var(--text-heading);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .pres-v2-proof__offering {
+    width: 100%;
+    max-width: 880px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pres-v2-proof__offering-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+    text-align: center;
+  }
+
+  .pres-v2-proof__offering-foot {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+
+  .pres-v2-proof__team,
+  .pres-v2-proof__docs-ref {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    text-align: center;
+    margin: 0;
+    max-width: 620px;
+  }
+
+  .pres-v2-proof__docs-ref {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .pres-v2-proof__cta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-v2-proof__container {
+      padding: 4.5rem 2rem;
+      gap: 2rem;
+    }
+
+    .pres-v2-proof__heading {
+      font-size: 2.5rem;
+    }
+
+    .pres-v2-proof__founder-line {
+      font-size: 1.125rem;
+    }
+
+    .pres-v2-proof__stats {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .pres-v2-proof__stat-val {
+      font-size: 1.75rem;
+    }
+
+    .pres-v2-proof__align-body {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-v2-proof__container {
+      padding: 5.5rem 2rem;
+    }
+
+    .pres-v2-proof__heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-v2-proof__heading {
+      font-size: 3rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-v2-proof__container {
+      max-width: 1440px;
+      padding: 6.5rem 6rem;
+    }
+  }
+</style>

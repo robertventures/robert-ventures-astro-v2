@@ -1,0 +1,140 @@
+---
+/**
+ * The "one bond, then a choice" fork — the page's signature image.
+ * An HTML node + two HTML leaf labels (real, accessible text), connected by a small inline-SVG
+ * fork that draws itself in when the diagram scrolls into view (CSS transition keyed on .is-in-view,
+ * which the page's reveal script adds; reduced-motion users see the final drawn state).
+ * The leaves stay side by side at every width; the SVG scales with the container.
+ */
+---
+
+<div
+  class="presv2-fork"
+  data-reveal
+  role="img"
+  aria-label="One bond, then a choice: get paid every month, or compound and grow."
+>
+  <span class="presv2-fork__node">One bond, $1,000 minimum</span>
+  <svg class="presv2-fork__lines" viewBox="0 0 240 56" aria-hidden="true" focusable="false">
+    <path class="presv2-fork__line presv2-fork__line--left" d="M120 2 L120 22 Q120 40 36 54" />
+    <path class="presv2-fork__line presv2-fork__line--right" d="M120 2 L120 22 Q120 40 204 54" />
+    <circle class="presv2-fork__dot presv2-fork__dot--left" cx="36" cy="54" r="3" />
+    <circle class="presv2-fork__dot presv2-fork__dot--right" cx="204" cy="54" r="3" />
+  </svg>
+  <div class="presv2-fork__leaves">
+    <span class="presv2-fork__leaf">Get paid every month</span>
+    <span class="presv2-fork__leaf">Compound &amp; grow</span>
+  </div>
+</div>
+
+<style>
+  .presv2-fork {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .presv2-fork__node {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    background: var(--green-tint);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-variant-numeric: lining-nums;
+  }
+
+  .presv2-fork__lines {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: -2px 0;
+  }
+
+  .presv2-fork__line {
+    fill: none;
+    stroke: var(--green-dark);
+    stroke-width: 2;
+    stroke-linecap: round;
+    /* Generous, larger than the path length, so dashoffset hides the whole stroke. */
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    transition: stroke-dashoffset 0.7s ease;
+  }
+
+  .presv2-fork__line--right {
+    transition-delay: 0.12s;
+  }
+
+  .presv2-fork__dot {
+    fill: var(--green-dark);
+    opacity: 0;
+    transition: opacity 0.25s ease 0.6s;
+  }
+
+  .presv2-fork__dot--right {
+    transition-delay: 0.72s;
+  }
+
+  .presv2-fork.is-in-view .presv2-fork__line {
+    stroke-dashoffset: 0;
+  }
+
+  .presv2-fork.is-in-view .presv2-fork__dot {
+    opacity: 1;
+  }
+
+  .presv2-fork__leaves {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .presv2-fork__leaf {
+    flex: 1;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    background: var(--bg-primary);
+    border: 1px solid var(--green-brand);
+    border-radius: 999px;
+    padding: 7px 6px;
+    line-height: 1.2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .presv2-fork__line {
+      transition: none;
+      stroke-dashoffset: 0;
+    }
+    .presv2-fork__dot {
+      transition: none;
+      opacity: 1;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .presv2-fork {
+      max-width: 460px;
+    }
+
+    .presv2-fork__node,
+    .presv2-fork__leaf {
+      font-size: 0.875rem;
+    }
+
+    .presv2-fork__leaves {
+      gap: 16px;
+    }
+  }
+</style>

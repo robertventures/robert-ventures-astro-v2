@@ -1,0 +1,502 @@
+---
+/**
+ * Beat 3 — "Your choice, your money: one bond, two paths, and the math." (the centerpiece)
+ * One bond, then a fork: monthly income, or compound and grow. Both outcomes shown side by side,
+ * then the pre-computed scenario cards, then an expandable "run your own number" calculator.
+ * The monthly-vs-compound choice is the calculator's framing, not a separate decision.
+ *
+ * Phase 1: the "fork" is conveyed by layout + an intro line. Phase 3 adds the fork SVG diagram
+ * (PresV2ForkDiagram), the ACH-deposit illustration on Path 1, and the compounding curve on Path 2.
+ */
+import PresV2ScenarioCards from "../../components/presentation-v2/PresV2ScenarioCards.astro";
+import PresV2Calculator from "../../components/presentation-v2/PresV2Calculator.astro";
+import PresV2Cta from "../../components/presentation-v2/PresV2Cta.astro";
+import PresV2ForkDiagram from "../../components/presentation-v2/PresV2ForkDiagram.astro";
+import PresV2AchDeposit from "../../components/presentation-v2/PresV2AchDeposit.astro";
+import PresV2CompoundingCurve from "../../components/presentation-v2/PresV2CompoundingCurve.astro";
+import PresV2ComparisonBars from "../../components/presentation-v2/PresV2ComparisonBars.astro";
+
+const growthRows = [
+  { period: "1 year", pct: "10.47% avg/yr" },
+  { period: "3 years", pct: "11.61% avg/yr" },
+  { period: "5 years", pct: "12.91% avg/yr" },
+];
+---
+
+<section class="pres-v2-choice" id="your-choice">
+  <div class="pres-v2-choice__container">
+    <div class="pres-v2-choice__intro">
+      <p class="pres-v2-choice__eyebrow">One bond, your call</p>
+      <h2 class="pres-v2-choice__heading">One bond. You choose what the interest <em>does.</em></h2>
+      <p class="pres-v2-choice__subhead">
+        Same bond, same fixed rate. You decide whether the interest lands in your bank every month,
+        or stays in and earns interest of its own. You can choose differently on every bond you buy.
+      </p>
+      <PresV2ForkDiagram />
+    </div>
+
+    <div class="pres-v2-choice__paths">
+      <article class="pres-v2-choice__path">
+        <header class="pres-v2-choice__path-head">
+          <span class="pres-v2-choice__path-tag">Path 1</span>
+          <h3 class="pres-v2-choice__path-title">Get paid every month.</h3>
+        </header>
+        <p class="pres-v2-choice__path-number">8% or 10% APY, paid into your bank</p>
+        <p class="pres-v2-choice__path-line">
+          An ACH deposit lands in your account every month. You don't watch a screen. You don't time
+          anything. It arrives. ($100,000 at 10% is about $833 a month.)
+        </p>
+        <div class="pres-v2-choice__path-visual">
+          <PresV2AchDeposit />
+        </div>
+        <ul class="pres-v2-choice__path-features">
+          <li>Cash flow from day one</li>
+          <li>Principal returned at maturity</li>
+          <li>IRA-compatible</li>
+        </ul>
+      </article>
+
+      <article class="pres-v2-choice__path">
+        <header class="pres-v2-choice__path-head">
+          <span class="pres-v2-choice__path-tag">Path 2</span>
+          <h3 class="pres-v2-choice__path-title">Let it grow.</h3>
+        </header>
+        <p class="pres-v2-choice__path-number">Interest earns interest, through the term</p>
+        <p class="pres-v2-choice__path-line">
+          Your interest doesn't leave. It earns interest too. The longer you hold, the higher your
+          average yearly return climbs.
+        </p>
+
+        <div class="pres-v2-grow">
+          <PresV2CompoundingCurve />
+          <p class="pres-v2-grow__label">Here's how it grows over time:</p>
+          <div class="pres-v2-grow__table">
+            {
+              growthRows.map((r) => (
+                <div class="pres-v2-grow__row">
+                  <span class="pres-v2-grow__period">{r.period}</span>
+                  <span class="pres-v2-grow__pct">{r.pct}</span>
+                </div>
+              ))
+            }
+          </div>
+          <div class="pres-v2-grow__hero">
+            <span class="pres-v2-grow__hero-label">In 10 years</span>
+            <span class="pres-v2-grow__hero-value">17.07%</span>
+            <span class="pres-v2-grow__hero-effective">Your average yearly return</span>
+          </div>
+          <p class="pres-v2-grow__disclaimer">For illustration. The bond rate is set by contract.</p>
+        </div>
+
+        <ul class="pres-v2-choice__path-features">
+          <li>Interest earns interest</li>
+          <li>About 17.07% effective average yearly return over 10 years (illustrative)</li>
+          <li>Best for money you won't need soon</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="pres-v2-choice__tie">
+      Same bond, same fixed rate. You decide what the interest does, and you can choose differently
+      on every bond you buy. Investing from an IRA? IRA bonds compound through the term.
+    </p>
+
+    <div class="pres-v2-choice__math">
+      <PresV2ScenarioCards />
+      <PresV2ComparisonBars />
+
+      <details class="pres-v2-choice__calc">
+        <summary class="pres-v2-choice__calc-summary">
+          <span>Run your own number</span>
+          <span class="pres-v2-choice__calc-chevron" aria-hidden="true"></span>
+        </summary>
+        <div class="pres-v2-choice__calc-body">
+          <PresV2Calculator />
+        </div>
+      </details>
+    </div>
+
+    <div class="pres-v2-choice__cta">
+      <PresV2Cta location="mechanic" primaryLabel="Pick your path inside your account" ghostAsTextLink={true} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pres-v2-choice {
+    background: var(--bg-primary);
+    padding: 0;
+    margin: 0;
+    scroll-margin-top: 1rem;
+  }
+
+  .pres-v2-choice__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .pres-v2-choice__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 680px;
+    text-align: center;
+  }
+
+  .pres-v2-choice__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+    margin: 0;
+  }
+
+  .pres-v2-choice__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 118%;
+    margin: 0;
+  }
+
+  .pres-v2-choice__heading em {
+    color: var(--green-dark);
+    font-style: italic;
+  }
+
+  .pres-v2-choice__subhead {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 152%;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  .pres-v2-choice__paths {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 920px;
+  }
+
+  .pres-v2-choice__path {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pres-v2-choice__path-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pres-v2-choice__path-tag {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .pres-v2-choice__path-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .pres-v2-choice__path-number {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin: 0;
+    line-height: 1.3;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-v2-choice__path-line {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .pres-v2-choice__path-visual {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+
+  .pres-v2-choice__path-features {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pres-v2-choice__path-features li {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-heading);
+    line-height: 1.4;
+    padding-left: 22px;
+    position: relative;
+  }
+
+  .pres-v2-choice__path-features li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    /* a small white check */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7.4l2.6 2.6L11 4.4' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* Compounding growth block (visual lifted from IntroCompoundingGrowth) */
+  .pres-v2-grow {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pres-v2-grow__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .pres-v2-grow__table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pres-v2-grow__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pres-v2-grow__row:last-child {
+    border-bottom: none;
+  }
+
+  .pres-v2-grow__period {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .pres-v2-grow__pct {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: var(--green-dark);
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-v2-grow__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: var(--green-tint);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .pres-v2-grow__hero-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pres-v2-grow__hero-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 2.25rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .pres-v2-grow__hero-effective {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-heading);
+  }
+
+  .pres-v2-grow__disclaimer {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .pres-v2-choice__tie {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    text-align: center;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .pres-v2-choice__math {
+    width: 100%;
+    max-width: 920px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pres-v2-choice__calc {
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    overflow: hidden;
+  }
+
+  .pres-v2-choice__calc-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .pres-v2-choice__calc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pres-v2-choice__calc-chevron {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--text-body);
+    border-bottom: 2px solid var(--text-body);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .pres-v2-choice__calc[open] .pres-v2-choice__calc-chevron {
+    transform: rotate(-135deg);
+  }
+
+  .pres-v2-choice__calc-body {
+    padding: 4px 20px 24px;
+  }
+
+  .pres-v2-choice__cta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-v2-choice__container {
+      padding: 4.5rem 2rem;
+      gap: 2.5rem;
+    }
+
+    .pres-v2-choice__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-v2-choice__subhead {
+      font-size: 1.125rem;
+    }
+
+    .pres-v2-choice__paths {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .pres-v2-choice__path {
+      padding: 26px 28px;
+    }
+
+    .pres-v2-choice__path-title {
+      font-size: 1.625rem;
+    }
+
+    .pres-v2-choice__path-number {
+      font-size: 1.125rem;
+    }
+
+    .pres-v2-choice__path-line {
+      font-size: 1rem;
+    }
+
+    .pres-v2-choice__tie {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .pres-v2-choice__container {
+      padding: 5.5rem 2rem;
+    }
+
+    .pres-v2-choice__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .pres-v2-choice__heading {
+      font-size: 3.5rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .pres-v2-choice__container {
+      max-width: 1440px;
+      padding: 6.5rem 6rem;
+    }
+  }
+</style>

@@ -30,11 +30,15 @@
   --text-body: #555555;
   --text-muted: #bbbbbb;
 
-  /* Brand green — CTAs & accents */
+  /* Brand green — CTAs & accents.
+     Use --green-dark for filled CTA backgrounds: --green-brand on white is ~2:1 and fails WCAG AA. */
   --green-brand: #67b78f;
   --green-hover: #4e9a74;
   --green-dark: #2b6b47;
   --green-tint: #ebf5ef;
+
+  /* Warning / "diminished value" accent (bar fills and large numbers, not body text) */
+  --warning: #c0843e;
 
   /* Surface / card colors */
   --surface-card: #ffffff;
@@ -48,6 +52,7 @@
   --dark-text-body: rgba(255, 255, 255, 0.45);
   --dark-card-fill: rgba(255, 255, 255, 0.07);
   --dark-border: rgba(255, 255, 255, 0.1);
+  --dark-eyebrow: #7fd0a4; /* light mint green for eyebrow text on --dark-bg (passes AA) */
 
   /* Legacy aliases (used by some base styles) */
   --accent: #67b78f;

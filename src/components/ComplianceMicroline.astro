@@ -1,0 +1,68 @@
+---
+/**
+ * One small, plainly-readable compliance/reassurance line.
+ * Keeps the regulated copy in one place so a reviewer can edit it once.
+ * Used under CTAs, under the hero video, under charts, and under calculator results.
+ * Variants compose into longer lines via the `lines` prop, e.g. lines={["sec", "not-fdic", "risk"]}.
+ */
+type Variant = "risk" | "not-fdic" | "sec" | "free-to-start" | "projections";
+
+interface Props {
+  /** A single named line, or omit and pass `lines` for a composed sentence. */
+  variant?: Variant;
+  /** Compose several named lines into one sentence (joined with a space). Defaults to the standard SEC + FDIC + risk line. */
+  lines?: Variant[];
+  /** Override entirely with custom text. */
+  text?: string;
+  align?: "left" | "center";
+  class?: string;
+}
+
+const LINES: Record<Variant, string> = {
+  risk: "Investing involves risk, including possible loss of principal.",
+  "not-fdic": "Not FDIC-insured.",
+  sec: "SEC-qualified under Regulation A, Tier 2.",
+  "free-to-start": "Free to start. No card or bank info. Nothing committed until you sign.",
+  projections: "Projections, not a promise of future results.",
+};
+
+const {
+  variant,
+  lines,
+  text: customText,
+  align = "center",
+  class: className,
+} = Astro.props as Props;
+
+const resolved =
+  customText ??
+  (variant
+    ? LINES[variant]
+    : (lines ?? (["sec", "not-fdic", "risk"] as Variant[])).map((l) => LINES[l]).join(" "));
+---
+
+<p class:list={["compliance-microline", `is-${align}`, className]}>{resolved}</p>
+
+<style>
+  .compliance-microline {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .is-center {
+    text-align: center;
+  }
+
+  .is-left {
+    text-align: left;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .compliance-microline {
+      font-size: 13px;
+    }
+  }
+</style>
