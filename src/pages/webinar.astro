@@ -634,6 +634,24 @@ try {
       hiddenInput.setAttribute("data-timezone", userTz);
       hiddenInput.setAttribute("data-original-timezone", originalTimezone);
       hiddenInput.setAttribute("data-webinar-id", scheduledWebinarId);
+
+      const noticeEl = document.querySelector("[data-webinar-notice]");
+      if (noticeEl) {
+        const dateStr = new Intl.DateTimeFormat("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          timeZone: userTz,
+        }).format(nextDate);
+        const timeStr = new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZoneName: "longGeneric",
+          timeZone: userTz,
+        }).format(nextDate);
+        noticeEl.textContent =
+          "You'll be invited to our live webinar on " + dateStr + " at " + timeStr + ".";
+      }
     }
 
     function calculateNextSessionDate(details) {
