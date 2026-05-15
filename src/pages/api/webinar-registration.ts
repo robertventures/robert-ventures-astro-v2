@@ -699,7 +699,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 custom_data: {
                   // Investment intent as predicted lifetime value (not actual revenue)
                   predicted_ltv: investValue,
-                  currency: "USD",
                   content_type: "webinar_registration",
                 },
               },
