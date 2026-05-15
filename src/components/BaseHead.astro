@@ -163,6 +163,7 @@ const {
 <!-- REDTRACK — captures RTK click ID on every page for ad attribution -->
 <!-- Intercepts uniclick.js API calls so they go through our first-party proxy (/rtk/*) -->
 <!-- This prevents Firefox ETP and Safari ITP from blocking the tracking requests -->
+{Astro.site.hostname === "robertventures.com" && (
 <script is:inline define:vars={{ rtkCampaignId }}>
   (function () {
     // 1. Immediately grab clickid from URL and save to cookie
@@ -234,3 +235,4 @@ const {
     }, 500);
   })();
 </script>
+)}
