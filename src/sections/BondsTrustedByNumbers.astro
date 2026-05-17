@@ -1,10 +1,36 @@
 ---
-// Fallback values used until the client-side /api/stats fetch resolves.
-// The fetch lives in the <script> at the bottom so the page can prerender
-// while still showing fresh numbers on every load.
-const totalRaisedValue = 1.07;
-const reinvestmentRate = 24;
-const uniqueInvestors = 68;
+// Fetch stats from local API with fallback values
+// Default fallback values
+let totalRaisedValue = 1.07;
+let reinvestmentRate = 24;
+let uniqueInvestors = 68;
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const response = await fetch(statsUrl);
+  if (response.ok) {
+    const data = await response.json();
+
+    // Parse totalAmountRaised (string) and convert to millions
+    const totalRaised = parseFloat(data.totalAmountRaised);
+    if (!isNaN(totalRaised)) {
+      totalRaisedValue = parseFloat((totalRaised / 1000000).toFixed(2));
+    }
+
+    // Use usersWithInvestments directly
+    if (typeof data.usersWithInvestments === "number") {
+      uniqueInvestors = data.usersWithInvestments;
+    }
+
+    // Round reinvestment rate to nearest integer
+    if (typeof data.percentUsersWithMultipleInvestments === "number") {
+      reinvestmentRate = Math.round(data.percentUsersWithMultipleInvestments);
+    }
+  }
+} catch (error) {
+  console.error("Failed to fetch stats from API:", error);
+  // Fallback values are already set
+}
 ---
 
 <style>
@@ -148,30 +174,15 @@ const uniqueInvestors = 68;
 
     <div class="columns-container">
       <div class="column">
-        <span
-          class="stat-value"
-          data-stat="totalRaised"
-          data-value={totalRaisedValue}
-          data-suffix="M">0</span
-        >
+        <span class="stat-value" data-value={totalRaisedValue} data-suffix="M">0</span>
         <span class="description">Total Raised</span>
       </div>
       <div class="column">
-        <span
-          class="stat-value"
-          data-stat="reinvestmentRate"
-          data-value={reinvestmentRate}
-          data-suffix="%">0</span
-        >
+        <span class="stat-value" data-value={reinvestmentRate} data-suffix="%">0</span>
         <span class="description">Reinvestment Rate</span>
       </div>
       <div class="column">
-        <span
-          class="stat-value"
-          data-stat="uniqueInvestors"
-          data-value={uniqueInvestors}
-          data-suffix="">0</span
-        >
+        <span class="stat-value" data-value={uniqueInvestors} data-suffix="">0</span>
         <span class="description">Unique Investors</span>
       </div>
       <div class="column">
@@ -185,33 +196,6 @@ const uniqueInvestors = 68;
 <script is:inline>
   (function () {
     let hasAnimated = false;
-
-    // Fire the stats fetch immediately. Counter animation awaits this before running
-    // so it always animates to the fresh number, never to the fallback.
-    const statsReady = fetch("/api/stats")
-      .then(function (r) {
-        return r.ok ? r.json() : null;
-      })
-      .then(function (data) {
-        if (!data) return;
-        function setStat(key, value) {
-          const el = document.querySelector('.stat-value[data-stat="' + key + '"]');
-          if (el) el.setAttribute("data-value", String(value));
-        }
-        const totalRaised = parseFloat(data.totalAmountRaised);
-        if (!isNaN(totalRaised)) {
-          setStat("totalRaised", (totalRaised / 1000000).toFixed(2));
-        }
-        if (typeof data.usersWithInvestments === "number") {
-          setStat("uniqueInvestors", data.usersWithInvestments);
-        }
-        if (typeof data.percentUsersWithMultipleInvestments === "number") {
-          setStat("reinvestmentRate", Math.round(data.percentUsersWithMultipleInvestments));
-        }
-      })
-      .catch(function (err) {
-        console.error("Failed to fetch stats from API:", err);
-      });
 
     function initAnimation() {
       // Check if GSAP is loaded
@@ -231,11 +215,10 @@ const uniqueInvestors = 68;
 
       // Intersection Observer to trigger animation on scroll
       const observer = new IntersectionObserver(
-        async (entries) => {
-          for (const entry of entries) {
+        (entries) => {
+          entries.forEach((entry) => {
             if (entry.isIntersecting && !hasAnimated) {
               hasAnimated = true;
-              await statsReady;
 
               // Animate each stat value with counter effect
               statValues.forEach((stat, index) => {
@@ -265,7 +248,7 @@ const uniqueInvestors = 68;
                 ease: "power2.out",
               });
             }
-          }
+          });
         },
         {
           threshold: 0.1,

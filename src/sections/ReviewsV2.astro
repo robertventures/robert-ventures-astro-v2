@@ -12,16 +12,88 @@ interface Review {
   rating: number;
 }
 
-// Fresh reviews + investor count are fetched client-side (see the script at
-// the bottom) so the page can prerender while still showing live data on
-// every load. The fallback markup below renders during the few hundred ms
-// before the fetch resolves; the client-side script then rebuilds the
-// Splide slides from the live API response.
-const reviews: Review[] = [];
-const uniqueInvestors = 68;
+function mapSenjaToReview(raw: any): Review {
+  // Format date - Senja typically returns ISO dates
+  const dateStr = raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "";
+  let formattedDate = "";
+  if (dateStr) {
+    try {
+      const date = new Date(dateStr);
+      formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch (e) {
+      formattedDate = dateStr;
+    }
+  }
+
+  return {
+    name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
+    avatar:
+      raw?.customer_avatar ??
+      raw?.avatar ??
+      raw?.profile_picture ??
+      raw?.profile_pic ??
+      raw?.customer?.avatar ??
+      raw?.user?.avatar ??
+      "",
+    text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
+    date: formattedDate,
+    rating: raw?.rating ?? raw?.stars ?? 5, // Default to 5 if not provided
+  };
+}
+
+let reviews: Review[] = [];
 
 // Get placeholder image URL for fallback
 const placeholderImageUrl = avatarPlaceholder.src;
+
+try {
+  const apiUrl = new URL("/api/testimonials", Astro.url);
+  const response = await fetch(apiUrl);
+  if (response.ok) {
+    const payload = await response.json();
+
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    // Filter for approved, non-video testimonials and map to Review format
+    const approvedOnly = (rawList as any[])
+      .filter((t) => t?.approved === true)
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0); // Only include reviews with text
+
+    const nonVideoOnly = (rawList as any[])
+      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
+      .map(mapSenjaToReview)
+      .filter((r) => r.text && r.text.trim().length > 0);
+
+    reviews = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+  }
+} catch (error) {
+  // Silently fail; fallback to empty array (will show hardcoded reviews)
+  console.error("Failed to fetch reviews from Senja:", error);
+}
+
+// Fetch unique investors count from local stats API
+let uniqueInvestors = 68; // Default fallback value
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const statsResponse = await fetch(statsUrl);
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+    if (typeof statsData.usersWithInvestments === "number") {
+      uniqueInvestors = statsData.usersWithInvestments;
+    }
+  }
+} catch (error) {
+  // Fallback value is already set
+}
 ---
 
 <!-- Splide.js CSS — loaded non-render-blocking since reviews are below the fold -->
@@ -311,7 +383,7 @@ const placeholderImageUrl = avatarPlaceholder.src;
 
 <section>
   <div class="section-container">
-    <h3>Trusted by <span class="reviews-v2-investor-count">{uniqueInvestors}</span>+ Investors</h3>
+    <h3>Trusted by {uniqueInvestors}+ Investors</h3>
     <div class="slider-wrapper">
       <div class="reviews-slider">
         <div class="splide" id="reviews-slider" aria-label="Reviews">
@@ -690,7 +762,8 @@ const placeholderImageUrl = avatarPlaceholder.src;
       // sessionStorage not available, use memory flag only
     }
 
-    const splideOptions = {
+    // Initialize Splide slider
+    const splide = new Splide("#reviews-slider", {
       type: "slide",
       rewind: false,
       pagination: false,
@@ -708,10 +781,7 @@ const placeholderImageUrl = avatarPlaceholder.src;
       flickPower: 600,
       flickMaxPages: 1,
       waitForTransition: false,
-    };
-
-    // Initialize Splide slider with the SSG-rendered fallback slides
-    const splide = new Splide("#reviews-slider", splideOptions);
+    });
 
     splide.mount();
 
@@ -730,215 +800,43 @@ const placeholderImageUrl = avatarPlaceholder.src;
       }
     });
 
-    // Bind read-more behavior to whichever slides are currently in the DOM.
-    // Called once for the fallback slides and again after fresh data replaces them.
-    function bindReadMoreHandlers() {
-      const readMoreLinks = document.querySelectorAll("#reviews-slider .read-more");
+    // Read more functionality
+    const readMoreLinks = document.querySelectorAll(".read-more");
 
-      readMoreLinks.forEach((link) => {
-        const quoteId = link.getAttribute("data-readmore");
-        const quote = document.querySelector(
-          '#reviews-slider [data-quote="' + quoteId + '"]'
-        );
+    readMoreLinks.forEach((link) => {
+      const quoteId = link.getAttribute("data-readmore");
+      const quote = document.querySelector(`[data-quote="${quoteId}"]`);
 
-        if (!quote) return;
+      if (!quote) return;
 
-        const scrollHeight = quote.scrollHeight;
-        const clientHeight = quote.clientHeight;
+      // Check if quote exceeds line-clamp limit by comparing scrollHeight with clientHeight
+      const scrollHeight = quote.scrollHeight;
+      const clientHeight = quote.clientHeight;
 
-        if (scrollHeight <= clientHeight + 2) {
-          link.style.display = "none";
-          return;
-        }
+      // Only show read more if content exceeds the visible height (truncated)
+      if (scrollHeight <= clientHeight + 2) {
+        // Add small buffer for rounding
+        link.style.display = "none";
+        return;
+      }
 
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          const isExpanded = quote.classList.contains("expanded");
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const isExpanded = quote.classList.contains("expanded");
 
-          if (isExpanded) {
-            quote.classList.remove("expanded");
-            link.textContent = "Read more";
-          } else {
-            quote.classList.add("expanded");
-            link.textContent = "Read less";
+        if (isExpanded) {
+          quote.classList.remove("expanded");
+          link.textContent = "Read more";
+        } else {
+          quote.classList.add("expanded");
+          link.textContent = "Read less";
 
-            triggerEvent("review_read_more_click", {
-              page_name: getPageName(),
-            });
-          }
-        });
-      });
-    }
-
-    bindReadMoreHandlers();
-
-    // Convert raw Senja testimonial to a normalized review object.
-    function mapSenjaToReview(raw) {
-      const dateStr = (raw && (raw.date || raw.created_at || raw.timestamp)) || "";
-      let formattedDate = "";
-      if (dateStr) {
-        try {
-          const d = new Date(dateStr);
-          formattedDate = d.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
+          // Track "Read more" click (only when expanding)
+          triggerEvent("review_read_more_click", {
+            page_name: getPageName(),
           });
-        } catch (e) {
-          formattedDate = dateStr;
         }
-      }
-      return {
-        name:
-          (raw && (raw.customer_name || raw.name || (raw.customer && raw.customer.name))) ||
-          "Anonymous",
-        avatar:
-          (raw &&
-            (raw.customer_avatar ||
-              raw.avatar ||
-              raw.profile_picture ||
-              raw.profile_pic ||
-              (raw.customer && raw.customer.avatar) ||
-              (raw.user && raw.user.avatar))) ||
-          "",
-        text: (raw && (raw.text || raw.content || raw.testimonial)) || "",
-        date: formattedDate,
-        rating: (raw && (raw.rating || raw.stars)) || 5,
-      };
-    }
-
-    function processTestimonials(payload) {
-      if (!payload) return null;
-      const rawList = Array.isArray(payload)
-        ? payload
-        : payload.testimonials || payload.data || payload.results || [];
-      function notVideo(t) {
-        return t && !t.video_url && !t.video && t.type !== "video" && !t.has_video;
-      }
-      const approvedOnly = rawList
-        .filter((t) => t && t.approved === true)
-        .filter(notVideo)
-        .map(mapSenjaToReview)
-        .filter((r) => r.text && r.text.trim().length > 0);
-      const nonVideoOnly = rawList
-        .filter(notVideo)
-        .map(mapSenjaToReview)
-        .filter((r) => r.text && r.text.trim().length > 0);
-      return approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
-    }
-
-    function escapeHtml(s) {
-      return String(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
-
-    // Reuse the star SVG markup that the SSG-rendered fallback slides already
-    // contain in the DOM. Avoids hardcoding the SVG twice.
-    function getStarInnerHtml() {
-      const sampleStar = document.querySelector("#reviews-slider .star");
-      return sampleStar ? sampleStar.innerHTML : "";
-    }
-
-    function getPlaceholderSrc() {
-      const sampleImg = document.querySelector("#reviews-slider .reviewer-image");
-      return sampleImg ? sampleImg.getAttribute("src") || "" : "";
-    }
-
-    function buildSlideHtml(review, index, starInner, placeholderSrc) {
-      const starCount = Math.min(Math.max(Math.round(review.rating || 5), 1), 5);
-      let starsHtml = "";
-      for (let s = 0; s < starCount; s++) {
-        starsHtml += '<span class="star">' + starInner + "</span>";
-      }
-      const avatar = review.avatar
-        ? '<img src="' +
-          escapeHtml(review.avatar) +
-          '" alt="' +
-          escapeHtml(review.name) +
-          '" class="reviewer-image" loading="lazy" onerror="this.onerror=null;this.src=\'' +
-          placeholderSrc +
-          "';\" />"
-        : '<img src="' +
-          placeholderSrc +
-          '" alt="' +
-          escapeHtml(review.name) +
-          '" class="reviewer-image" />';
-      const dateHtml = review.date
-        ? '<p class="review-date">' + escapeHtml(review.date) + "</p>"
-        : "";
-      const quoteId = index + 1;
-
-      return (
-        '<li class="splide__slide">' +
-        '<div class="review-card">' +
-        '<div class="reviewer-info">' +
-        avatar +
-        "</div>" +
-        '<div class="quote-container">' +
-        '<p class="quote" data-quote="' +
-        quoteId +
-        '">' +
-        escapeHtml(review.text) +
-        "</p>" +
-        '<a class="read-more" data-readmore="' +
-        quoteId +
-        '" href="javascript:void(0)">Read more</a>' +
-        "</div>" +
-        '<div class="review-footer">' +
-        '<div class="reviewer-details">' +
-        '<div class="stars">' +
-        starsHtml +
-        "</div>" +
-        '<p class="reviewer-name">' +
-        escapeHtml(review.name) +
-        "</p>" +
-        "</div>" +
-        dateHtml +
-        "</div>" +
-        "</div>" +
-        "</li>"
-      );
-    }
-
-    // Fetch fresh data and swap slides + investor count.
-    Promise.all([
-      fetch("/api/testimonials")
-        .then((r) => (r.ok ? r.json() : null))
-        .then(processTestimonials)
-        .catch((err) => {
-          console.error("Failed to fetch reviews from Senja:", err);
-          return null;
-        }),
-      fetch("/api/stats")
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-    ]).then(function (results) {
-      const freshReviews = results[0];
-      const stats = results[1];
-
-      if (stats && typeof stats.usersWithInvestments === "number") {
-        const countEl = document.querySelector(".reviews-v2-investor-count");
-        if (countEl) countEl.textContent = String(stats.usersWithInvestments);
-      }
-
-      if (!freshReviews || freshReviews.length === 0) return;
-
-      const list = document.querySelector("#reviews-slider .splide__list");
-      if (!list) return;
-
-      const starInner = getStarInnerHtml();
-      const placeholderSrc = getPlaceholderSrc();
-      const newHtml = freshReviews
-        .map((r, i) => buildSlideHtml(r, i, starInner, placeholderSrc))
-        .join("");
-
-      list.innerHTML = newHtml;
-      splide.refresh();
-      bindReadMoreHandlers();
+      });
     });
   });
 </script>
