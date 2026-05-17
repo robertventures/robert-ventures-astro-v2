@@ -7,81 +7,11 @@ interface Review {
   rating: number;
 }
 
-function mapSenjaToReview(raw: any): Review {
-  const dateStr = raw?.date ?? raw?.created_at ?? raw?.timestamp ?? "";
-  let formattedDate = "";
-  if (dateStr) {
-    try {
-      const date = new Date(dateStr);
-      formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-    } catch (e) {
-      formattedDate = dateStr;
-    }
-  }
-
-  return {
-    name: raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "Anonymous",
-    avatar:
-      raw?.customer_avatar ??
-      raw?.avatar ??
-      raw?.profile_picture ??
-      raw?.profile_pic ??
-      raw?.customer?.avatar ??
-      raw?.user?.avatar ??
-      "",
-    text: raw?.text ?? raw?.content ?? raw?.testimonial ?? "",
-    date: formattedDate,
-    rating: raw?.rating ?? raw?.stars ?? 5,
-  };
-}
-
-let reviews: Review[] = [];
-
-try {
-  const apiUrl = new URL("/api/testimonials", Astro.url);
-  const response = await fetch(apiUrl);
-  if (response.ok) {
-    const payload = await response.json();
-
-    const rawList = Array.isArray(payload)
-      ? payload
-      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
-
-    const approvedOnly = (rawList as any[])
-      .filter((t) => t?.approved === true)
-      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
-      .map(mapSenjaToReview)
-      .filter((r) => r.text && r.text.trim().length > 0);
-
-    const nonVideoOnly = (rawList as any[])
-      .filter((t) => !t?.video_url && !t?.video && t?.type !== "video" && !t?.has_video)
-      .map(mapSenjaToReview)
-      .filter((r) => r.text && r.text.trim().length > 0);
-
-    reviews = approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
-  }
-} catch (error) {
-  console.error("Failed to fetch reviews from Senja:", error);
-}
-
-let uniqueInvestors = 68;
-
-try {
-  const statsUrl = new URL("/api/stats", Astro.url);
-  const statsResponse = await fetch(statsUrl);
-  if (statsResponse.ok) {
-    const statsData = await statsResponse.json();
-    if (typeof statsData.usersWithInvestments === "number") {
-      uniqueInvestors = statsData.usersWithInvestments;
-    }
-  }
-} catch (error) {
-  // Fallback value is already set
-}
+// Fresh reviews and the investor count are fetched client-side (see the cycling
+// script at the bottom of this file) so the page can prerender while still
+// showing live data on every load. The fallback data below is what users see
+// for the few hundred ms before the fetches resolve.
+const uniqueInvestors = 68;
 
 const fallbackReviews: Review[] = [
   {
@@ -128,7 +58,7 @@ const fallbackReviews: Review[] = [
   },
 ];
 
-const displayReviews = reviews.length > 0 ? reviews : fallbackReviews;
+const displayReviews = fallbackReviews;
 
 const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
 ---
@@ -586,9 +516,108 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
 
 <script is:inline data-astro-rerun>
   (function () {
-    function init() {
+    function mapSenjaToReview(raw) {
+      var dateStr = (raw && (raw.date || raw.created_at || raw.timestamp)) || "";
+      var formattedDate = "";
+      if (dateStr) {
+        try {
+          var d = new Date(dateStr);
+          formattedDate = d.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          });
+        } catch (e) {
+          formattedDate = dateStr;
+        }
+      }
+      return {
+        name:
+          (raw && (raw.customer_name || raw.name || (raw.customer && raw.customer.name))) ||
+          "Anonymous",
+        avatar:
+          (raw &&
+            (raw.customer_avatar ||
+              raw.avatar ||
+              raw.profile_picture ||
+              raw.profile_pic ||
+              (raw.customer && raw.customer.avatar) ||
+              (raw.user && raw.user.avatar))) ||
+          "",
+        text: (raw && (raw.text || raw.content || raw.testimonial)) || "",
+        date: formattedDate,
+        rating: (raw && (raw.rating || raw.stars)) || 5,
+      };
+    }
+
+    function processTestimonials(payload) {
+      if (!payload) return null;
+      var rawList = Array.isArray(payload)
+        ? payload
+        : payload.testimonials || payload.data || payload.results || [];
+      function notVideo(t) {
+        return t && !t.video_url && !t.video && t.type !== "video" && !t.has_video;
+      }
+      var approvedOnly = rawList
+        .filter(function (t) {
+          return t && t.approved === true;
+        })
+        .filter(notVideo)
+        .map(mapSenjaToReview)
+        .filter(function (r) {
+          return r.text && r.text.trim().length > 0;
+        });
+      var nonVideoOnly = rawList
+        .filter(notVideo)
+        .map(mapSenjaToReview)
+        .filter(function (r) {
+          return r.text && r.text.trim().length > 0;
+        });
+      return approvedOnly.length > 0 ? approvedOnly : nonVideoOnly;
+    }
+
+    // Fire both fetches immediately, in parallel. init() awaits them before
+    // starting the cycle, so users always see fresh reviews + investor count.
+    var reviewsReady = fetch("/api/testimonials")
+      .then(function (r) {
+        return r.ok ? r.json() : null;
+      })
+      .then(processTestimonials)
+      .catch(function (err) {
+        console.error("Failed to fetch reviews from Senja:", err);
+        return null;
+      });
+
+    var statsReady = fetch("/api/stats")
+      .then(function (r) {
+        return r.ok ? r.json() : null;
+      })
+      .catch(function () {
+        return null;
+      });
+
+    async function init() {
       var stage = document.getElementById("cta-social-proof-stage");
       if (!stage) return;
+
+      var freshReviews = await reviewsReady;
+      if (freshReviews && freshReviews.length > 0) {
+        stage.setAttribute(
+          "data-reviews",
+          JSON.stringify(
+            freshReviews.map(function (r) {
+              return { name: r.name, text: r.text, rating: r.rating, date: r.date };
+            })
+          )
+        );
+      }
+
+      var stats = await statsReady;
+      if (stats && typeof stats.usersWithInvestments === "number") {
+        var statText = stage.querySelector(".cta-stat-text");
+        if (statText)
+          statText.textContent = "Trusted by " + stats.usersWithInvestments + "+ Investors";
+      }
 
       var reviewsData = [];
       try {

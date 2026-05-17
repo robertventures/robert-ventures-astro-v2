@@ -19,7 +19,10 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      exclude: ["/webinar-follow-up", "/call-thank-you", "/404"],
+      filter: (page) =>
+        !page.includes("/webinar-follow-up") &&
+        !page.includes("/call-thank-you") &&
+        !page.includes("/404"),
     }),
     tunnel(),
   ],
