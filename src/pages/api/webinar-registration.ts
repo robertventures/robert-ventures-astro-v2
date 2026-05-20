@@ -39,6 +39,7 @@ import { notifySlack } from "../../lib/notifySlack";
 import { autoCorrectEmail, normalizeNameCase, splitFullName } from "../../lib/formHelpers";
 import { webinarRegistrationSchema } from "../../lib/schemas/webinar-registration.schema";
 import { supabase } from "../../lib/supabase";
+import { GHL_FIELDS, GHL_V2_BASE, GHL_V2_VERSION } from "../../lib/ghl-fields";
 
 // ========================================
 // MAIN API HANDLER
@@ -48,7 +49,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
   // INITIALIZATION & ENVIRONMENT SETUP
   // ========================================
   const apiKey = import.meta.env.WEBINARKIT_API_KEY;
-  const ghlApiKey = import.meta.env.GHL_API_KEY;
+  const ghlPit = import.meta.env.GHL_PIT;
+  const ghlLocationId = import.meta.env.GHL_LOCATION_ID;
   const censusApiKey = import.meta.env.CENSUS_API_KEY;
 
   try {
@@ -311,11 +313,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     console.log("👤 Name split:", { fullName: body.name, firstName, lastName });
 
     // ========================================
-    // STEP 1: GO HIGH LEVEL INTEGRATION
+    // STEP 1: GO HIGH LEVEL INTEGRATION (v2 API)
     // ========================================
-    // Create contact in GoHighLevel CRM system
+    // Upsert contact in GoHighLevel CRM via v2 API using Private Integration Token.
+    // v1 was returning empty-body 404s as it's being deprecated; v2 is the supported path.
     let ghlContactId = null;
-    if (ghlApiKey) {
+    if (ghlPit && ghlLocationId) {
       try {
         // Prepare date formatting for user's timezone
         const userTimezone = body.user_timezone || "Unknown";
@@ -364,91 +367,76 @@ export const POST: APIRoute = async ({ request, locals }) => {
           return undefined;
         })();
 
-        // Prepare custom fields for GoHighLevel contact (CRM segmentation and analytics)
-        // USED BY: GoHighLevel only - these fields help segment contacts for sales follow-up
-        const customField: Record<string, any> = {
-          // Investment intent amount for lead qualification
+        // Build slug → value map for custom fields. Only slugs present in
+        // GHL_FIELDS will reach GHL (others — google_*, wbraid/gbraid, legacy
+        // webinar_date variants — don't exist as columns in GHL and were being
+        // silently dropped in v1 too).
+        const customFieldSlugs: Record<string, any> = {
           invest_intent: body.invest_intent,
-          // Original signup date from frontend
           webinar_sign_up_date: body.webinar_sign_up_date,
-          // Formatted signup date in user's timezone for GHL
           webinar_signup_date: currentDate,
-          // User's IP address for location tracking
           userip: ipForGeo || "unknown",
-          // Device type for user experience insights
           device_type: deviceFinal,
-          // Webinar selection datetime (ISO UTC format)
-          webinar_date: body.date,
-          // Webinar selection datetime (human-readable with timezone)
-          webinar_full_date: body.fullDate,
-          // Duplicate field to match GHL handler expectations
           webinar_date__time: body.fullDate,
-          // Webinar date/time in user's local timezone (for email reminders)
           webinar_datetime_user_tz: body.webinar_datetime_user_tz || body.fullDate,
-          // Selected session date formatted in user's timezone
-          webinar_session_date: selectedSessionDate,
-          // Webinar event date in MM/DD/YYYY format for GHL calendar fields (e.g., 11/4/2025)
           webinar_event_date: selectedSessionCalendar,
-          // Google Calendar URL for easy calendar integration
           webinar_calendar_url: body.webinar_calendar_url || "",
-          // UTM parameters for marketing attribution (always send with defaults)
-          // Note: Google Ads data is mapped to UTM fields in userAttribution.js
           utm_source: body?.utm?.utm_source ?? "direct",
           utm_medium: body?.utm?.utm_medium ?? "none",
           utm_campaign: body?.utm?.utm_campaign ?? body?.utm_campaign ?? "none",
           utm_content: body?.utm?.utm_content ?? "none",
           utm_term: body?.utm?.utm_term ?? "none",
           utm_id: body?.utm?.utm_id ?? "none",
-          // Google Click ID (custom field for Google Ads attribution)
           google_click_id: body?.gclid ?? "none",
-          // RTK Click ID for attribution tracking
           rtk_click_id: body?.rtk_click_id ?? "none",
-          // Facebook ad-level attribution fields from RedTrack sub params
           fb_ad_id: body?.fb_ad_id ?? "none",
           fb_adset_id: body?.fb_adset_id ?? "none",
           fb_placement: body?.fb_placement ?? "none",
           fb_site_source: body?.fb_site_source ?? "none",
-          // Google ad-level attribution fields from RedTrack sub params
-          google_matchtype: body?.google_matchtype ?? "none",
-          google_adgroup_id: body?.google_adgroup_id ?? "none",
-          google_creative_id: body?.google_creative_id ?? "none",
-          google_campaign_id: body?.google_campaign_id ?? "none",
-          google_device: body?.google_device ?? "none",
-          google_ad_position: body?.google_ad_position ?? "none",
-          google_network: body?.google_network ?? "none",
-          google_placement: body?.google_placement ?? "none",
-          wbraid: body?.wbraid ?? "none",
-          gbraid: body?.gbraid ?? "none",
-          // Zip code income level classification (High/Mid/Low) from Census data
           zip_income_level: incomeLevel || "unknown",
-          // Campaign ID for tracking which campaign generated this contact
           cmpid: body?.cmpid ?? "none",
-          // Ad group name from RedTrack (utm_adgroup macro: {_agname})
           ad_group: body?.utm?.utm_adgroup ?? "none",
-          // Landing video: which video the user clicked play on before registering
           landing_video: body.landing_video || "No",
         };
+        void selectedSessionDate; // formerly sent as webinar_session_date — no GHL column
 
-        // Prepare the complete payload for GoHighLevel API
-        const ghlPayload = {
+        // Transform slug map → v2 customFields array of {id, field_value}.
+        const customFields = Object.entries(customFieldSlugs)
+          .filter(
+            ([slug, val]) =>
+              GHL_FIELDS[slug] && val !== undefined && val !== null && val !== ""
+          )
+          .map(([slug, val]) => ({
+            id: GHL_FIELDS[slug],
+            field_value: String(val),
+          }));
+
+        // v2 expects phone in E.164 format (+1XXXXXXXXXX for US)
+        const phoneDigits = body.phone_number.replace(/\D/g, "").replace(/^1/, "");
+        const phoneE164 = phoneDigits ? `+1${phoneDigits}` : undefined;
+
+        // v2 upsert payload (creates new contact or updates existing match by email/phone)
+        const ghlPayload: Record<string, any> = {
+          firstName,
+          lastName,
           name: body.name,
-          phone: body.phone_number.replace(/\D/g, "").replace(/^1/, ""),
           email: body.email,
+          locationId: ghlLocationId,
           source: utmCampaignFinal,
-          timezone: body.user_timezone || "Unknown",
-          // Default contact address fields (not customField)
+          ...(phoneE164 ? { phone: phoneE164 } : {}),
+          ...(body.user_timezone ? { timezone: body.user_timezone } : {}),
           ...(geoRegionName ? { state: geoRegionName } : {}),
           ...(geoCity ? { city: geoCity } : {}),
           ...(geoZip ? { postalCode: geoZip } : {}),
-          customField,
+          ...(geoCountryCode ? { country: geoCountryCode } : {}),
+          customFields,
         };
 
-        console.log("🧾 GHL customField being sent:", JSON.stringify(customField, null, 2));
-        console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
+        console.log("🧾 GHL v2 customFields:", JSON.stringify(customFields, null, 2));
+        console.log("📤 Sending to GoHighLevel v2 upsert:", JSON.stringify(ghlPayload, null, 2));
 
-        // Make API call to create contact in GoHighLevel.
-        // Wrapped with retry + safe body parsing: GHL v1 returns empty response
-        // bodies under rate-limit / transient failure, which used to crash
+        // Wrapped with retry + safe body parsing: any external service can return
+        // empty/non-JSON bodies under transient failure, which used to crash
         // JSON.parse and silently drop the contact (all custom fields lost).
         const postToGhl = async (
           payload: Record<string, any>,
@@ -457,18 +445,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
           const controller = new AbortController();
           const timer = setTimeout(() => controller.abort(), 5000);
           try {
-            const res = await fetch("https://rest.gohighlevel.com/v1/contacts", {
+            const res = await fetch(`${GHL_V2_BASE}/contacts/upsert`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${ghlApiKey}`,
+                Accept: "application/json",
+                Authorization: `Bearer ${ghlPit}`,
+                Version: GHL_V2_VERSION,
               },
               body: JSON.stringify(payload),
               signal: controller.signal,
             });
             clearTimeout(timer);
 
-            // Read as text first so an empty body doesn't crash JSON.parse
             const text = await res.text();
             let data: any = null;
             if (text && text.trim()) {
@@ -479,8 +468,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
               }
             }
 
-            // Retry on the exact failure signatures we see in production:
-            // empty body, 429 (rate limit), or 5xx
+            // Retry on empty body, 429 (rate limit), or 5xx
             const transient = !text || res.status === 429 || res.status >= 500;
             if (transient && attempt < 3) {
               console.log(`🔁 GHL transient failure, retrying (attempt ${attempt + 1})`);
@@ -501,10 +489,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
         };
 
         const { res: ghlRes, data: ghlData } = await postToGhl(ghlPayload);
-        ghlContactId = ghlData?.contact?.id || null;
+        // v2 upsert returns { contact: { id, ... }, new: boolean } or { id: "...", ... }
+        ghlContactId = ghlData?.contact?.id || ghlData?.id || null;
 
         if (!ghlRes.ok || !ghlContactId) {
-          console.warn("⚠️ GHL contact creation failed after 3 attempts:", {
+          console.warn("⚠️ GHL contact upsert failed after 3 attempts:", {
             status: ghlRes.status,
             data: ghlData,
           });
@@ -517,10 +506,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
             body.email
           );
         } else {
-          console.log("✅ GHL contact created:", ghlContactId);
+          console.log(
+            "✅ GHL contact upserted:",
+            ghlContactId,
+            ghlData?.new ? "(new)" : "(updated)"
+          );
         }
       } catch (err) {
-        console.error("❌ Error creating GHL contact after retries:", err);
+        console.error("❌ Error upserting GHL contact after retries:", err);
         await notifySlack(
           "Webinar Registration",
           "GoHighLevel Network/Parse Error",

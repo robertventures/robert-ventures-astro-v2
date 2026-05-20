@@ -30,7 +30,7 @@ import { notifySlack } from "../../lib/notifySlack";
 import { bookAppointmentSchema } from "../../lib/schemas/book-appointment.schema";
 
 const CALENDAR_ID = "xNXEISjf314X2BFZvdaZ";
-const LOCATION_ID = "bfHiy1NWixstyv5LQxSp";
+const LOCATION_ID = import.meta.env.GHL_LOCATION_ID;
 
 export const POST: APIRoute = async ({ request, locals }) => {
   // v1 key for contact lookup/upsert (rest.gohighlevel.com/v1)
