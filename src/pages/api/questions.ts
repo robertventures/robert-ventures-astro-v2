@@ -5,7 +5,9 @@ import { GHL_FIELDS, GHL_V2_BASE, GHL_V2_VERSION } from "../../lib/ghl-fields";
 export const prerender = false; // Ensure this route is server-rendered
 
 export const POST: APIRoute = async ({ request }) => {
-  const ghlPit = import.meta.env.GHL_PIT;
+  // process.env reads live (Astro inlines import.meta.env at build time, so
+  // env vars added to Netlify after the last deploy become undefined in the bundle).
+  const ghlPit = process.env.GHL_PIT || import.meta.env.GHL_PIT;
 
   const formData = await request.formData();
   const investmentTimeline = formData.get("investment_timeline")?.toString();

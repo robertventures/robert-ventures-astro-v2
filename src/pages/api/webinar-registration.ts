@@ -49,8 +49,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
   // INITIALIZATION & ENVIRONMENT SETUP
   // ========================================
   const apiKey = import.meta.env.WEBINARKIT_API_KEY;
-  const ghlPit = import.meta.env.GHL_PIT;
-  const ghlLocationId = import.meta.env.GHL_LOCATION_ID;
+  // Read GHL vars from process.env (runtime). Astro inlines import.meta.env.*
+  // values at BUILD time from whatever is in process.env then — so env vars
+  // added to Netlify after the last deploy become `undefined` in the bundle.
+  // process.env always reads live, so this survives env-var additions without
+  // requiring a rebuild.
+  const ghlPit = process.env.GHL_PIT || import.meta.env.GHL_PIT;
+  const ghlLocationId = process.env.GHL_LOCATION_ID || import.meta.env.GHL_LOCATION_ID;
   const censusApiKey = import.meta.env.CENSUS_API_KEY;
 
   try {
@@ -318,7 +323,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Upsert contact in GoHighLevel CRM via v2 API using Private Integration Token.
     // v1 was returning empty-body 404s as it's being deprecated; v2 is the supported path.
     let ghlContactId = null;
-    if (ghlPit && ghlLocationId) {
+    if (!ghlPit || !ghlLocationId) {
+      console.error("❌ GHL env vars missing at runtime", {
+        ghlPit: ghlPit ? "set" : "MISSING",
+        ghlLocationId: ghlLocationId ? "set" : "MISSING",
+      });
+      await notifySlack(
+        "Webinar Registration",
+        "GHL Env Var Missing",
+        `GHL_PIT=${ghlPit ? "set" : "MISSING"}, GHL_LOCATION_ID=${ghlLocationId ? "set" : "MISSING"}. Contact will only have WebinarKit fields.`,
+        body.email
+      );
+    } else {
       try {
         // Prepare date formatting for user's timezone
         const userTimezone = body.user_timezone || "Unknown";
