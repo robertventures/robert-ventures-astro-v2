@@ -446,30 +446,87 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.log("🧾 GHL customField being sent:", JSON.stringify(customField, null, 2));
         console.log("📤 Sending to GoHighLevel:", JSON.stringify(ghlPayload, null, 2));
 
-        // Make API call to create contact in GoHighLevel
-        const ghlRes = await fetch("https://rest.gohighlevel.com/v1/contacts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${ghlApiKey}`,
-          },
-          body: JSON.stringify(ghlPayload),
-        });
+        // Make API call to create contact in GoHighLevel.
+        // Wrapped with retry + safe body parsing: GHL v1 returns empty response
+        // bodies under rate-limit / transient failure, which used to crash
+        // JSON.parse and silently drop the contact (all custom fields lost).
+        const postToGhl = async (
+          payload: Record<string, any>,
+          attempt = 1
+        ): Promise<{ res: Response; data: any }> => {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 5000);
+          try {
+            const res = await fetch("https://rest.gohighlevel.com/v1/contacts", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${ghlApiKey}`,
+              },
+              body: JSON.stringify(payload),
+              signal: controller.signal,
+            });
+            clearTimeout(timer);
 
-        const ghlData = await ghlRes.json();
+            // Read as text first so an empty body doesn't crash JSON.parse
+            const text = await res.text();
+            let data: any = null;
+            if (text && text.trim()) {
+              try {
+                data = JSON.parse(text);
+              } catch {
+                console.warn("⚠️ GHL returned non-JSON body:", text.slice(0, 200));
+              }
+            }
+
+            // Retry on the exact failure signatures we see in production:
+            // empty body, 429 (rate limit), or 5xx
+            const transient = !text || res.status === 429 || res.status >= 500;
+            if (transient && attempt < 3) {
+              console.log(`🔁 GHL transient failure, retrying (attempt ${attempt + 1})`);
+              await new Promise((r) => setTimeout(r, 1000 * attempt));
+              return postToGhl(payload, attempt + 1);
+            }
+            return { res, data };
+          } catch (err) {
+            clearTimeout(timer);
+            if (attempt < 3) {
+              const msg = err instanceof Error ? err.message : String(err);
+              console.log(`🔁 GHL network error, retrying (attempt ${attempt + 1}): ${msg}`);
+              await new Promise((r) => setTimeout(r, 1000 * attempt));
+              return postToGhl(payload, attempt + 1);
+            }
+            throw err;
+          }
+        };
+
+        const { res: ghlRes, data: ghlData } = await postToGhl(ghlPayload);
         ghlContactId = ghlData?.contact?.id || null;
 
-        if (!ghlRes.ok) {
-          console.warn("⚠️ GHL contact creation failed:", ghlData);
+        if (!ghlRes.ok || !ghlContactId) {
+          console.warn("⚠️ GHL contact creation failed after 3 attempts:", {
+            status: ghlRes.status,
+            data: ghlData,
+          });
           await notifySlack(
             "Webinar Registration",
             "GoHighLevel API Error",
-            `Status ${ghlRes.status}`,
+            `Status ${ghlRes.status} after 3 attempts. Body: ${
+              ghlData ? JSON.stringify(ghlData).slice(0, 200) : "empty"
+            }`,
             body.email
           );
+        } else {
+          console.log("✅ GHL contact created:", ghlContactId);
         }
       } catch (err) {
-        console.error("❌ Error creating GHL contact:", err);
+        console.error("❌ Error creating GHL contact after retries:", err);
+        await notifySlack(
+          "Webinar Registration",
+          "GoHighLevel Network/Parse Error",
+          `Failed after 3 attempts: ${err instanceof Error ? err.message : String(err)}`,
+          body.email
+        );
       }
     }
 
