@@ -1,5 +1,26 @@
 ---
+import { Image } from "astro:assets";
+import outerBanks1 from "../../assets/outer-banks/outer-banks-1.jpg";
+import outerBanks2 from "../../assets/outer-banks/outer-banks-2.jpg";
+import outerBanks3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import outerBanks4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import outerBanks5 from "../../assets/outer-banks/outer-banks-5.jpg";
+import outerBanks6 from "../../assets/outer-banks/outer-banks-6.jpg";
+import outerBanks7 from "../../assets/outer-banks/outer-banks-7.jpg";
 
+const photos = [
+  { src: outerBanks1, alt: "Outer Banks construction photo 1" },
+  { src: outerBanks2, alt: "Outer Banks construction photo 2" },
+  { src: outerBanks3, alt: "Outer Banks construction photo 3" },
+  { src: outerBanks4, alt: "Outer Banks construction photo 4" },
+  { src: outerBanks5, alt: "Outer Banks construction photo 5" },
+  { src: outerBanks6, alt: "Outer Banks construction photo 6" },
+  { src: outerBanks7, alt: "Outer Banks construction photo 7" },
+];
+
+const photoSizes =
+  "(min-width: 1920px) 720px, (min-width: 1136px) 640px, (min-width: 600px) 560px, 90vw";
+const photoWidths = [600, 1000, 1400];
 ---
 
 <section class="pres-scarcity">
@@ -9,6 +30,33 @@
       Buildable Outer Banks land is limited by geography and regulation. Bitcoin is limited by code
       to 21 million total. Robert Ventures accumulates both through one fixed-rate bond structure.
     </p>
+
+    <div
+      class="pres-scarcity__slideshow splide"
+      id="pres-scarcity-slideshow"
+      aria-label="Outer Banks construction progress photos"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {
+            photos.map((photo, index) => (
+              <li class="splide__slide">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={photoWidths}
+                  sizes={photoSizes}
+                  format="webp"
+                  quality={75}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  class="pres-scarcity__photo"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
 
     <div class="pres-scarcity__split">
       <article class="pres-scarcity__col">
@@ -108,6 +156,25 @@
     text-align: center;
     margin: 0;
     max-width: 640px;
+  }
+
+  .pres-scarcity__slideshow {
+    width: 100%;
+    max-width: 720px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 4px;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 24px 48px rgba(0, 0, 0, 0.08);
+  }
+
+  .pres-scarcity__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
   }
 
   .pres-scarcity__split {
@@ -288,5 +355,46 @@
     .pres-scarcity__heading {
       font-size: 3.75rem;
     }
+
+    .pres-scarcity__slideshow {
+      max-width: 880px;
+    }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    function initPresScarcityCarousel() {
+      const carousel = document.getElementById("pres-scarcity-slideshow");
+      if (carousel && typeof Splide !== "undefined") {
+        new Splide(carousel, {
+          type: "fade",
+          rewind: true,
+          autoplay: true,
+          interval: 3000,
+          speed: 1000,
+          pauseOnHover: false,
+          arrows: false,
+          pagination: false,
+        }).mount();
+      }
+    }
+
+    function loadSplide() {
+      if (typeof Splide !== "undefined") {
+        initPresScarcityCarousel();
+      } else {
+        const splideScript = document.createElement("script");
+        splideScript.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
+        splideScript.onload = initPresScarcityCarousel;
+        document.head.appendChild(splideScript);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadSplide);
+    } else {
+      loadSplide();
+    }
+  })();
+</script>

@@ -1323,15 +1323,9 @@ try {
         if (!overlay || !overlay.classList.contains("is-active")) return;
         e.preventDefault();
         e.stopPropagation();
-        const isPlayMode = overlay.classList.contains("is-play-mode");
         try {
           player.muted = false;
         } catch (err) {}
-        if (isPlayMode) {
-          const result = player.play();
-          if (result && typeof result.catch === "function") result.catch(function () {});
-        }
-        // volumechange will fire and mark engaged. Dismiss now for snappy UX.
         dismissOverlay();
       }
 
@@ -1353,7 +1347,12 @@ try {
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
-        // User unmuted the muted-autoplay video by clicking it.
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
         markEngaged();
       });
 

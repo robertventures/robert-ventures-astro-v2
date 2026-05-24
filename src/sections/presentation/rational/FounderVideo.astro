@@ -1,0 +1,134 @@
+---
+// Placeholder for a short Joe Robert intro video. Not the 15-min webinar replay.
+// Visual placeholder only this round, no Mux player wiring.
+---
+
+<!-- TODO: replace placeholder with mux-player when short founder explainer is ready. Match the player + overlay pattern from PresHeroV2.astro lines 17-57. -->
+<section class="rational-founder" aria-labelledby="rational-founder-title">
+  <div class="rational-founder__container">
+    <p id="rational-founder-title" class="rational-founder__eyebrow">From the founder</p>
+
+    <div class="rational-founder__frame" role="img" aria-label="Founder video placeholder">
+      <div class="rational-founder__placeholder">
+        Founder explainer video. To be replaced with a short Joe Robert intro (not the 15-min
+        webinar replay).
+      </div>
+    </div>
+
+    <p class="rational-founder__caption">
+      <span class="rational-founder__caption-name">Joe Robert</span>
+      <span class="rational-founder__caption-sep" aria-hidden="true">&middot;</span>
+      <span class="rational-founder__caption-role">Manager &amp; Founder</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .rational-founder {
+    background: var(--bg-secondary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .rational-founder__container {
+    max-width: 1136px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .rational-founder__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    line-height: 130%;
+    text-align: center;
+  }
+
+  .rational-founder__frame {
+    width: 100%;
+    max-width: 780px;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 24px 48px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .rational-founder__placeholder {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 150%;
+    text-align: center;
+    max-width: 420px;
+  }
+
+  .rational-founder__caption {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .rational-founder__caption-name {
+    font-family: "Roboto Serif", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 130%;
+  }
+
+  .rational-founder__caption-sep {
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 130%;
+  }
+
+  .rational-founder__caption-role {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 130%;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .rational-founder__container {
+      padding: 3rem 2rem;
+      gap: 1.5rem;
+    }
+
+    .rational-founder__placeholder {
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .rational-founder__container {
+      padding: 4rem 2rem;
+      gap: 1.75rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .rational-founder__container {
+      padding: 6rem 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../../components/BaseHead.astro";
+import CtaSocialProof from "../../components/CtaSocialProof.astro";
+import DisclaimerBlock from "../../components/DisclaimerBlock.astro";
+import FormCreateAccount from "../../components/FormCreateAccount.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import StaircaseDecoration from "../../components/StaircaseDecoration.astro";
+
+const pageTitle = "Create Your Account | Robert Ventures";
+const pageDescription =
+  "Open your account and model a draft investment with your own numbers in minutes.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="pres-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <main class="create-account">
+      <StaircaseDecoration />
+
+      <div class="create-account__content">
+        <h1 class="create-account__heading">Run your own numbers.</h1>
+        <p class="create-account__subtitle">
+          Create your account in under two minutes to draft an investment with your amount, your
+          term, and see what you'd earn.
+        </p>
+        <FormCreateAccount showLogin={false} />
+        <CtaSocialProof />
+      </div>
+    </main>
+
+    <DisclaimerBlock trackLocation="offer_create_account_disclaimer" />
+  </body>
+</html>
+
+<style is:global>
+  body {
+    background-color: #ffffff;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation-name: ga-old-fwd;
+  }
+  ::view-transition-new(root) {
+    animation-name: ga-new-fwd;
+  }
+  html[data-astro-transition="back"]::view-transition-old(root) {
+    animation-name: ga-old-back;
+  }
+  html[data-astro-transition="back"]::view-transition-new(root) {
+    animation-name: ga-new-back;
+  }
+
+  @keyframes ga-new-fwd {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ga-old-fwd {
+    to {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-new-back {
+    from {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-old-back {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  html[data-astro-transition="traverse"]::view-transition-old(root),
+  html[data-astro-transition="traverse"]::view-transition-new(root) {
+    animation: none;
+  }
+</style>
+
+<style>
+  .pres-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pres-nav-logo :global(svg) {
+    display: block;
+    height: 30px;
+    width: auto;
+  }
+
+  .create-account {
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .create-account__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .create-account__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .create-account__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: #555555;
+    text-align: center;
+    margin: 0 0 1rem;
+    line-height: 150%;
+    text-wrap: balance;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .pres-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+
+    .pres-nav-logo :global(svg) {
+      height: 48px;
+    }
+
+    .create-account {
+      padding: 3rem 2rem 5rem;
+    }
+
+    .create-account__heading {
+      font-size: 2.5rem;
+    }
+
+    .create-account__subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .create-account {
+      padding: 4rem 2rem 6rem;
+    }
+
+    .create-account__heading {
+      font-size: 3rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .create-account {
+      padding: 6rem 2rem 7rem;
+    }
+
+    .create-account__heading {
+      font-size: 3.5rem;
+    }
+  }
+</style>

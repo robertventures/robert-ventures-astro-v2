@@ -441,13 +441,16 @@ const pageDescription =
       if (sections[0]) runSectionAnimation(0, sections[0]);
     }
 
-    // Founder video: muted autoplay when section approaches view, with a
+    // Intro video player: muted autoplay when section approaches view, with a
     // one-shot overlay nudging the user to unmute. After engagement, Mux's
-    // native UI handles pause/play/replay.
-    function setupFounderVideo() {
-      const player = document.getElementById("intro-mux-player");
-      const caption = document.querySelector(".intro-slide__photo-caption");
-      const overlay = document.getElementById("intro-mux-overlay");
+    // native UI handles pause/play/replay. Reused across all intro mux-players.
+    function setupIntroVideo(opts) {
+      const player = document.getElementById(opts.playerId);
+      const overlay = document.getElementById(opts.overlayId);
+      const caption = opts.captionSelector
+        ? document.querySelector(opts.captionSelector)
+        : null;
+      const videoId = opts.videoId;
       if (!player) return;
 
       let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
@@ -481,7 +484,7 @@ const pageDescription =
         dismissOverlay();
         if (window.posthogTrack) {
           window.posthogTrack("video_play", {
-            video_id: "intro-founder",
+            video_id: videoId,
             current_time: Math.round(player.currentTime || 0),
           });
         }
@@ -516,11 +519,15 @@ const pageDescription =
         if (!overlay || !overlay.classList.contains("is-active")) return;
         e.preventDefault();
         e.stopPropagation();
-        const isPlayMode = overlay.classList.contains("is-play-mode");
         try {
           player.muted = false;
         } catch (err) {}
-        if (isPlayMode) {
+        // If the user clicked while in play-mode (autoplay failed), restart
+        // from the beginning with sound. Otherwise just unmute in place.
+        if (overlay.classList.contains("is-play-mode")) {
+          try {
+            player.currentTime = 0;
+          } catch (err) {}
           const result = player.play();
           if (result && typeof result.catch === "function") result.catch(function () {});
         }
@@ -545,7 +552,12 @@ const pageDescription =
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
-        // User unmuted the muted-autoplay video by clicking it.
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
         markEngaged();
       });
 
@@ -576,14 +588,28 @@ const pageDescription =
       }
     }
 
+    function setupIntroVideos() {
+      setupIntroVideo({
+        playerId: "intro-mux-player-hero",
+        overlayId: "intro-mux-overlay-hero",
+        videoId: "intro-hero",
+      });
+      setupIntroVideo({
+        playerId: "intro-mux-player",
+        overlayId: "intro-mux-overlay",
+        captionSelector: ".intro-slide__photo-caption",
+        videoId: "intro-founder",
+      });
+    }
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", function () {
         initScroll();
-        setupFounderVideo();
+        setupIntroVideos();
       });
     } else {
       initScroll();
-      setupFounderVideo();
+      setupIntroVideos();
     }
 
     // Load Splide JS from CDN (for the real-estate carousel inside IntroRealEstateAssets)

@@ -2,28 +2,29 @@
 
 ---
 
-<section class="pres-founder">
+<section class="pres-founder offer-slide">
   <div class="pres-founder__container">
     <div class="pres-founder__content">
-      <p class="pres-founder__eyebrow">Built by a person, not a fund</p>
-      <h2 class="pres-founder__heading">One name on <em>every deal.</em></h2>
+      <p class="pres-founder__eyebrow">Your diligence pack</p>
+      <h2 class="pres-founder__heading">
+        Predictable income. Tangible assets. <span class="pres-founder__heading-accent">25 years of experience.</span>
+      </h2>
       <p class="pres-founder__subhead">
-        Joe Robert has been doing this for 25 years. 200 deals. $10 million raised from private
-        investors. Every offering completed. Every payment made.
+        Everything you asked for after the call. The case in seven parts.
       </p>
 
       <div class="pres-founder__video-wrapper">
         <div class="pres-founder__video-container">
           <mux-player
             id="pres-founder-mux-player"
-            playback-id="zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00"
+            playback-id="02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk"
             env-key="hr9aevib299lcvfdoip01jd60"
             preload="metadata"
             stream-type="on-demand"
             max-resolution="1080p"
             rendition-order="desc"
-            poster="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=214&height=121&time=5"
-            placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
+            poster="https://image.mux.com/02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk/thumbnail.png?width=214&height=121&time=5"
+            placeholder="https://image.mux.com/02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk/thumbnail.webp?time=5&width=16"
             muted
             playsinline
             default-show-captions></mux-player>
@@ -63,33 +64,25 @@
         </div>
       </div>
 
-      <ul class="pres-founder__stats">
-        <li class="pres-founder__stat">
-          <span class="pres-founder__stat-value">25+</span>
-          <span class="pres-founder__stat-label">Years of experience</span>
-        </li>
-        <li class="pres-founder__stat">
-          <span class="pres-founder__stat-value">100%</span>
-          <span class="pres-founder__stat-label">Payments record</span>
-        </li>
-        <li class="pres-founder__stat">
-          <span class="pres-founder__stat-value">$10M+</span>
-          <span class="pres-founder__stat-label">From private investors</span>
-        </li>
-        <li class="pres-founder__stat">
-          <span class="pres-founder__stat-value">200+</span>
-          <span class="pres-founder__stat-label">Properties sold</span>
-        </li>
-      </ul>
-
-      <div class="pres-founder__align">
-        <p class="pres-founder__align-eyebrow">Why my name is on the offering</p>
-        <p class="pres-founder__align-body">
-          For 25 years, my name has been on every deal. Robert Ventures has a team built to support
-          investors at every step, but I founded the firm, I lead it, and I am personally
-          accountable for every offering we put in front of you. The capital we raise funds the
-          projects I underwrite, and the track record below is mine to defend.
-        </p>
+      <div class="pres-founder__bottom-grid">
+        <ul class="pres-founder__stats">
+          <li class="pres-founder__stat">
+            <span class="pres-founder__stat-value">25+</span>
+            <span class="pres-founder__stat-label">Years of experience</span>
+          </li>
+          <li class="pres-founder__stat">
+            <span class="pres-founder__stat-value">$150M+</span>
+            <span class="pres-founder__stat-label">Assets managed</span>
+          </li>
+          <li class="pres-founder__stat">
+            <span class="pres-founder__stat-value">200+</span>
+            <span class="pres-founder__stat-label">Properties</span>
+          </li>
+          <li class="pres-founder__stat">
+            <span class="pres-founder__stat-value">1,500+</span>
+            <span class="pres-founder__stat-label">Mortgage investments</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -98,14 +91,13 @@
 <style>
   .pres-founder {
     background: var(--bg-primary);
-    padding: 0;
     margin: 0;
   }
 
   .pres-founder__container {
     max-width: 1136px;
     margin: 0 auto;
-    padding: 3rem 1.5rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -118,7 +110,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 2.25rem;
   }
 
   .pres-founder__eyebrow {
@@ -138,15 +130,20 @@
     font-size: 2rem;
     font-weight: 500;
     color: #1a1a1a;
-    line-height: 120%;
+    line-height: 135%;
     text-align: center;
+    text-wrap: balance;
     margin: 0;
     max-width: 600px;
   }
 
-  .pres-founder__heading em {
-    color: var(--green-dark);
-    font-style: italic;
+  .pres-founder__heading-accent {
+    color: #1a1a1a;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-color: var(--green-brand);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 6px;
   }
 
   .pres-founder__subhead {
@@ -163,15 +160,21 @@
     margin-top: -0.5rem;
   }
 
+  .pres-founder__bottom-grid,
   .pres-founder__stats,
   .pres-founder__align,
   .pres-founder__close {
     width: 100%;
   }
 
+  .pres-founder__bottom-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+
   .pres-founder__video-wrapper {
     width: 100%;
-    border-radius: 12px;
     overflow: hidden;
     box-shadow:
       0 4px 16px rgba(0, 0, 0, 0.06),
@@ -181,7 +184,7 @@
   .pres-founder__video-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     background: #152429;
   }
@@ -300,44 +303,44 @@
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
 
   .pres-founder__stat {
     background: var(--bg-secondary);
     border: 1px solid var(--border-light);
-    border-radius: 8px;
-    padding: 14px 12px;
-    text-align: center;
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    text-align: center;
+    gap: 0.25rem;
   }
 
   .pres-founder__stat-value {
     font-family: "Roboto Serif", serif;
-    font-size: 18px;
+    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
     font-weight: 700;
-    color: var(--text-heading);
+    color: var(--green-dark);
     font-variant-numeric: lining-nums;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .pres-founder__stat-label {
     font-family: "Roboto", sans-serif;
-    font-size: 13px;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 140%;
+    margin: 0;
   }
 
   .pres-founder__align {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 22px 24px;
-    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
-    border-left: 3px solid var(--green-brand);
-    border-radius: 0 8px 8px 0;
+    gap: 14px;
+    padding: 0;
   }
 
   .pres-founder__align-eyebrow {
@@ -351,11 +354,20 @@
     line-height: 130%;
   }
 
+  .pres-founder__align-lede {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    line-height: 150%;
+    margin: 0;
+  }
+
   .pres-founder__align-body {
     font-family: "Roboto Serif", serif;
     font-size: 18px;
-    color: var(--text-heading);
-    line-height: 160%;
+    color: var(--text-body);
+    line-height: 165%;
     margin: 0;
   }
 
@@ -369,12 +381,8 @@
   }
 
   @media only screen and (min-width: 600px) {
-    .pres-founder__container {
-      padding: 4rem 2rem;
-    }
-
     .pres-founder__content {
-      gap: 1.5rem;
+      gap: 3rem;
     }
 
     .pres-founder__heading {
@@ -383,25 +391,55 @@
 
     .pres-founder__stats {
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 16px;
     }
 
-    .pres-founder__stat-value {
-      font-size: 22px;
+    .pres-founder__stat {
+      padding: 1.5rem 1rem;
     }
 
-    .pres-founder__align {
-      padding: 28px;
+    .pres-founder__stat-label {
+      font-size: 0.9375rem;
+    }
+
+    .pres-founder__bottom-grid {
+      gap: 2.75rem;
     }
   }
 
-  @media only screen and (min-width: 1024px) {
-    .pres-founder__container {
-      padding: 5rem 2rem;
+  @media only screen and (min-width: 1136px) {
+    .pres-founder__bottom-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+      gap: 2rem 2.75rem;
+      align-items: start;
     }
 
-    .pres-founder__heading {
-      font-size: 3rem;
+    .pres-founder__bottom-grid .pres-founder__stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .pres-founder__bottom-grid .pres-founder__stat {
+      padding: 2rem 1.5rem;
+    }
+
+    .pres-founder__bottom-grid .pres-founder__stat-value {
+      font-size: 2.5rem;
+      line-height: 1.1;
+    }
+
+    .pres-founder__bottom-grid .pres-founder__stat-label {
+      font-size: 1.0625rem;
+    }
+
+    .pres-founder__align {
+      gap: 16px;
+      padding-top: 2px;
+    }
+
+    .pres-founder__align-lede {
+      font-size: 1.1875rem;
     }
   }
 
@@ -491,14 +529,9 @@
         if (!overlay || !overlay.classList.contains("is-active")) return;
         e.preventDefault();
         e.stopPropagation();
-        const isPlayMode = overlay.classList.contains("is-play-mode");
         try {
           player.muted = false;
         } catch (err) {}
-        if (isPlayMode) {
-          const result = player.play();
-          if (result && typeof result.catch === "function") result.catch(function () {});
-        }
         dismissOverlay();
       }
 
@@ -518,6 +551,12 @@
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
         markEngaged();
       });
 

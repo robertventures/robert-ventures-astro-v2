@@ -1,0 +1,197 @@
+---
+// Final CTA section on the offer page. Heading + subhead + dark "Get Started"
+// button that routes to /offer/create-account, with a soft gradient background,
+// the staircase decoration, and a 5-star/testimonial social-proof block below
+// the button. Staircase and social-proof are shared components also used on
+// the create-account page so styling stays in sync.
+import StaircaseDecoration from "../../../components/StaircaseDecoration.astro";
+import CtaSocialProof from "../../../components/CtaSocialProof.astro";
+---
+
+<section class="rational-cta offer-slide" aria-labelledby="rational-cta-heading">
+  <StaircaseDecoration />
+
+  <div class="rational-cta__container">
+    <p class="rational-cta__eyebrow">You've seen the case.</p>
+    <h2 id="rational-cta-heading" class="rational-cta__heading">
+      Predictable income. Tangible assets. 25 years of experience.
+    </h2>
+    <p class="rational-cta__sub">
+      Open an account and set up a draft investment in about two minutes. No commitment.
+    </p>
+
+    <div class="rational-cta__buttons">
+      <a
+        class="rational-cta__btn"
+        href="/offer/create-account"
+        data-track-cta="get_started"
+        data-track-location="rational_cta_section"
+      >
+        Get Started
+      </a>
+      <a
+        class="rational-cta__secondary-link"
+        href="/offer/book-call"
+        data-track-cta="book_followup_call"
+        data-track-location="rational_cta_section"
+      >
+        Questions still open? Schedule a follow-up call &rarr;
+      </a>
+    </div>
+
+    <CtaSocialProof />
+  </div>
+</section>
+
+<style>
+  .rational-cta {
+    background: linear-gradient(to bottom, #ffffff, #f4f6f5);
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rational-cta__container {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .rational-cta__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    line-height: 130%;
+  }
+
+  .rational-cta__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 120%;
+    margin: 0;
+  }
+
+  .rational-cta__sub {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 150%;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .rational-cta__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  /* Dark CTA button, mirrors the intro page's .intro-slide__cta */
+  .rational-cta__btn {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #152429;
+    border: none;
+    border-radius: 8px;
+    padding: 1.125rem 3rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+  }
+
+  .rational-cta__btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
+  }
+
+  .rational-cta__btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
+  }
+
+  .rational-cta__secondary-link {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  .rational-cta__secondary-link:hover {
+    text-decoration: underline;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .rational-cta__container {
+      max-width: 640px;
+      gap: 1.5rem;
+    }
+
+    .rational-cta__heading {
+      font-size: 2.75rem;
+    }
+
+    .rational-cta__sub {
+      font-size: 1.125rem;
+    }
+
+    .rational-cta__btn {
+      font-size: 1.1875rem;
+      padding: 1.25rem 3.5rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .rational-cta__secondary-link {
+      font-size: 0.9375rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .rational-cta__container {
+      max-width: 700px;
+      gap: 1.75rem;
+    }
+
+    .rational-cta__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .rational-cta__container {
+      max-width: 800px;
+    }
+
+    .rational-cta__heading {
+      font-size: 3.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,352 @@
+---
+import { Image } from "astro:assets";
+import outerBanks1 from "../../assets/outer-banks/outer-banks-1.jpg";
+import outerBanks2 from "../../assets/outer-banks/outer-banks-2.jpg";
+import outerBanks3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import outerBanks4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import outerBanks5 from "../../assets/outer-banks/outer-banks-5.jpg";
+import outerBanks6 from "../../assets/outer-banks/outer-banks-6.jpg";
+import outerBanks7 from "../../assets/outer-banks/outer-banks-7.jpg";
+
+const photos = [
+  { src: outerBanks1, alt: "Outer Banks construction photo 1" },
+  { src: outerBanks2, alt: "Outer Banks construction photo 2" },
+  { src: outerBanks3, alt: "Outer Banks construction photo 3" },
+  { src: outerBanks4, alt: "Outer Banks construction photo 4" },
+  { src: outerBanks5, alt: "Outer Banks construction photo 5" },
+  { src: outerBanks6, alt: "Outer Banks construction photo 6" },
+  { src: outerBanks7, alt: "Outer Banks construction photo 7" },
+];
+
+const sizes =
+  "(min-width: 1920px) 600px, (min-width: 1136px) 560px, (min-width: 600px) 520px, 90vw";
+const widths = [600, 1000, 1400];
+---
+
+<section class="pres-real-estate" id="pres-real-estate">
+  <div class="pres-real-estate__content">
+    <h2 class="pres-real-estate__heading">Real estate.<br />Real scarcity.</h2>
+    <p class="pres-real-estate__subtitle">
+      We build coastal properties in the Outer Banks. Capital funds Outer Banks development.
+    </p>
+
+    <div
+      class="pres-real-estate__slideshow splide"
+      id="pres-re-slideshow"
+      aria-label="Construction progress photos"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {
+            photos.map((photo, index) => (
+              <li class="splide__slide">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={widths}
+                  sizes={sizes}
+                  format="webp"
+                  quality={75}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  class="pres-real-estate__photo"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <ul class="pres-real-estate__benefits">
+      <li class="pres-real-estate__benefit">
+        <span class="pres-real-estate__benefit-title">Built and owned directly</span>
+        <span class="pres-real-estate__benefit-desc">
+          We hold and operate every property directly. No fund layer, no middlemen.
+        </span>
+      </li>
+      <li class="pres-real-estate__benefit">
+        <span class="pres-real-estate__benefit-title">Scarce land, rising prices</span>
+        <span class="pres-real-estate__benefit-desc">
+          88% of Dare County is protected. Prices doubled in 9 years ($311K to $622K).
+        </span>
+      </li>
+    </ul>
+    <p class="pres-real-estate__source">Source: Dare County Housing Task Force, 2024</p>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    function initPresReCarousel() {
+      const carousel = document.getElementById('pres-re-slideshow');
+      if (carousel) {
+        new Splide(carousel, {
+          type: "fade",
+          rewind: true,
+          autoplay: true,
+          interval: 3000,
+          speed: 1000,
+          pauseOnHover: false,
+          arrows: false,
+          pagination: false,
+        }).mount();
+      }
+    }
+
+    function loadSplide() {
+      if (typeof Splide !== "undefined") {
+        initPresReCarousel();
+      } else {
+        const splideScript = document.createElement("script");
+        splideScript.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
+        splideScript.onload = initPresReCarousel;
+        document.head.appendChild(splideScript);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadSplide);
+    } else {
+      loadSplide();
+    }
+  })();
+</script>
+
+<style>
+  .pres-real-estate {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 1.5rem;
+  }
+
+  .pres-real-estate__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .pres-real-estate__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pres-real-estate__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+    text-wrap: wrap;
+  }
+
+  .pres-real-estate__heading + .pres-real-estate__subtitle {
+    margin-top: -0.5rem;
+  }
+
+  .pres-real-estate__slideshow {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .pres-real-estate__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .pres-real-estate__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pres-real-estate__benefit {
+    background: linear-gradient(to right, rgba(235, 245, 239, 0.5), transparent);
+    border-left: 3px solid #67b78f;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .pres-real-estate__benefit-title {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 130%;
+  }
+
+  .pres-real-estate__benefit-desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    line-height: 140%;
+    text-wrap: wrap;
+  }
+
+  .pres-real-estate__source {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    color: #888888;
+    text-align: center;
+    font-style: italic;
+    margin: 0;
+    line-height: 140%;
+    text-wrap: wrap;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .pres-real-estate {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      padding-left: 2.5rem;
+      padding-right: 2rem;
+    }
+
+    .pres-real-estate__content {
+      gap: 1.5rem;
+      max-width: 520px;
+    }
+
+    .pres-real-estate__heading {
+      font-size: 2.75rem;
+    }
+
+    .pres-real-estate__benefits {
+      gap: 1rem;
+    }
+
+    .pres-real-estate__benefit {
+      padding: 1rem 1.25rem;
+    }
+
+    .pres-real-estate__benefit-title {
+      font-size: 1.25rem;
+    }
+
+    .pres-real-estate__benefit-desc {
+      font-size: 0.9375rem;
+    }
+
+    .pres-real-estate__source {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .pres-real-estate {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .pres-real-estate__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "heading  slideshow"
+        "subtitle slideshow"
+        "benefits slideshow"
+        "source   slideshow";
+      column-gap: 3rem;
+      row-gap: 0.75rem;
+      max-width: 1200px;
+      align-items: start;
+    }
+
+    .pres-real-estate__heading {
+      grid-area: heading;
+      font-size: 3.25rem;
+      text-align: left;
+    }
+
+    .pres-real-estate__subtitle {
+      grid-area: subtitle;
+      text-align: left;
+    }
+
+    .pres-real-estate__heading + .pres-real-estate__subtitle {
+      margin-top: 0;
+    }
+
+    .pres-real-estate__slideshow {
+      grid-area: slideshow;
+      align-self: center;
+    }
+
+    .pres-real-estate__benefits {
+      grid-area: benefits;
+      margin-top: 0.5rem;
+    }
+
+    .pres-real-estate__source {
+      grid-area: source;
+      text-align: left;
+    }
+
+    .pres-real-estate__benefit-title {
+      font-size: 1.375rem;
+    }
+
+    .pres-real-estate__benefit-desc {
+      font-size: 1rem;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .pres-real-estate {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .pres-real-estate__content {
+      max-width: 1400px;
+      column-gap: 4rem;
+    }
+
+    .pres-real-estate__heading {
+      font-size: 3.75rem;
+    }
+
+    .pres-real-estate__benefit-title {
+      font-size: 1.5rem;
+    }
+
+    .pres-real-estate__benefit-desc {
+      font-size: 1.0625rem;
+    }
+  }
+</style>

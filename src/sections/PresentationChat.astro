@@ -1546,14 +1546,9 @@ const startersJson = JSON.stringify(STARTERS);
       if (!overlay || !overlay.classList.contains("is-active")) return;
       e.preventDefault();
       e.stopPropagation();
-      const isPlayMode = overlay.classList.contains("is-play-mode");
       try {
         player!.muted = false;
       } catch (err) {}
-      if (isPlayMode) {
-        const result = player!.play();
-        if (result && typeof result.catch === "function") result.catch(() => {});
-      }
       dismissOverlay();
     }
 
@@ -1577,6 +1572,12 @@ const startersJson = JSON.stringify(STARTERS);
     player.addEventListener("volumechange", () => {
       if (engaged) return;
       if (player.muted) return;
+      try {
+        player.pause();
+        player.currentTime = 0;
+      } catch (e) {}
+      const result = player.play();
+      if (result && typeof result.catch === "function") result.catch(() => {});
       engaged = true;
       dismissOverlay();
     });

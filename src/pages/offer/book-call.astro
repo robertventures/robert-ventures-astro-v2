@@ -29,6 +29,20 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
           Bring your questions.
         </p>
         <IntroBookingCalendar />
+
+        <div class="book-call__alt">
+          <span class="book-call__alt-divider" aria-hidden="true">or</span>
+          <a
+            class="book-call__skip"
+            href="https://invest.robertventures.com/"
+            data-track-cta="skip_to_account"
+            data-track-location="offer_book_call_page"
+          >
+            Skip the call. Create my account
+            <span class="book-call__skip-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
         {
           import.meta.env.DEV && (
             <button type="button" id="book-call-dev-skip" class="book-call__dev-skip">
@@ -207,6 +221,91 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
   .book-call__dev-skip:hover {
     border-color: #555555;
     color: #1a1a1a;
+  }
+
+  /* "or skip to account" alternative under the calendar */
+  .book-call__alt {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.875rem;
+    margin-top: 1rem;
+  }
+
+  .book-call__alt-divider {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .book-call__alt-divider::before,
+  .book-call__alt-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 1.5rem);
+    height: 1px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .book-call__alt-divider::before {
+    left: 0;
+  }
+
+  .book-call__alt-divider::after {
+    right: 0;
+  }
+
+  .book-call__skip {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    background: transparent;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 0.875rem 1.25rem;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .book-call__skip:hover,
+  .book-call__skip:active {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .book-call__skip-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .book-call__skip:hover .book-call__skip-arrow {
+    transform: translateX(3px);
+  }
+
+  @media only screen and (min-width: 600px) {
+    .book-call__skip {
+      font-size: 1rem;
+      padding: 1rem 1.5rem;
+    }
   }
 </style>
 

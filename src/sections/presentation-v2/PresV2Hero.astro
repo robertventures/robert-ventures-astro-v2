@@ -531,14 +531,9 @@ const proof = ["Live since 2024", "100% on-time distributions", "~$1.23M from ~7
         if (!overlay || !overlay.classList.contains("is-active")) return;
         e.preventDefault();
         e.stopPropagation();
-        const isPlayMode = overlay.classList.contains("is-play-mode");
         try {
           player.muted = false;
         } catch (err) {}
-        if (isPlayMode) {
-          const result = player.play();
-          if (result && typeof result.catch === "function") result.catch(function () {});
-        }
         dismissOverlay();
       }
 
@@ -558,6 +553,12 @@ const proof = ["Live since 2024", "100% on-time distributions", "~$1.23M from ~7
       player.addEventListener("volumechange", function () {
         if (engaged) return;
         if (player.muted) return;
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
         markEngaged();
       });
 
