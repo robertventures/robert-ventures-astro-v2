@@ -88,6 +88,7 @@ body {
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  overflow-x: clip;
   color: var(--text-body);
   line-height: 1.7;
 }
