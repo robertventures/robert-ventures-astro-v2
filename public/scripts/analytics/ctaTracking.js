@@ -71,6 +71,34 @@
         }
     }
 
+    // Function to trigger offering document click events
+    function triggerDocumentEvent(documentSlug, buttonLocation) {
+        const pageName = getPageName();
+
+        const eventData = {
+            'event': 'document_click',
+            'document_slug': documentSlug,
+            'page_name': pageName,
+            'button_location': buttonLocation
+        };
+
+        // Push event to Google Tag Manager's dataLayer
+        if (window.dataLayer) {
+            window.dataLayer.push(eventData);
+            console.log('GA4 document_click event triggered:', eventData);
+        } else {
+            console.warn('dataLayer is not defined. Ensure Google Tag Manager is properly initialized.');
+        }
+
+        // POSTHOG: document_click
+        if (window.posthogTrack) {
+            window.posthogTrack('document_click', {
+                document_slug: documentSlug,
+                button_location: buttonLocation
+            });
+        }
+    }
+
     // Function to trigger phone click events
     function triggerPhoneEvent(phoneNumber, buttonLocation) {
         const pageName = getPageName();
@@ -164,6 +192,16 @@
                 triggerCtaEvent(ctaText, buttonLocation, eventOverride);
             }
 
+            // Check for document click tracking
+            const documentElement = event.target.closest('[data-track-document]');
+
+            if (documentElement) {
+                const documentSlug = documentElement.dataset.trackDocument;
+                const buttonLocation = documentElement.dataset.trackLocation || 'unknown';
+
+                triggerDocumentEvent(documentSlug, buttonLocation);
+            }
+
             // Check for phone click tracking
             const phoneElement = event.target.closest('[data-track-phone]');
             
@@ -205,6 +243,7 @@
 
     // Expose functions globally for inline usage if needed
     window.triggerCtaEvent = triggerCtaEvent;
+    window.triggerDocumentEvent = triggerDocumentEvent;
     window.triggerPhoneEvent = triggerPhoneEvent;
     window.triggerSocialEvent = triggerSocialEvent;
     window.triggerNavEvent = triggerNavEvent;
