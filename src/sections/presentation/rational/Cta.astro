@@ -13,11 +13,9 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
 
   <div class="rational-cta__container">
     <p class="rational-cta__eyebrow">You've seen the case.</p>
-    <h2 id="rational-cta-heading" class="rational-cta__heading">
-      Predictable income. Tangible assets. 25 years of experience.
-    </h2>
+    <h2 id="rational-cta-heading" class="rational-cta__heading">Start investing today.</h2>
     <p class="rational-cta__sub">
-      Open an account and set up a draft investment in about two minutes. No commitment.
+      Open your account and place your first investment in less than two minutes.
     </p>
 
     <div class="rational-cta__buttons">
@@ -47,6 +45,10 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
   .rational-cta {
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     margin: 0;
+    /* Extra vertical breathing room for the closing CTA, overrides the
+       shared section.offer-slide padding (scoped selector wins on specificity). */
+    padding-top: 4rem;
+    padding-bottom: 4rem;
     position: relative;
     overflow: hidden;
   }
@@ -108,7 +110,7 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
     font-size: 1.0625rem;
     font-weight: 500;
     color: #ffffff;
-    background: #152429;
+    background: var(--green-brand);
     border: none;
     border-radius: 8px;
     padding: 1.125rem 3rem;
@@ -116,23 +118,23 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
     text-decoration: none;
     display: inline-block;
     transition:
-      opacity 0.2s ease,
+      background 0.2s ease,
       transform 0.2s ease,
       box-shadow 0.2s ease;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+    box-shadow: 0 8px 22px rgba(103, 183, 143, 0.4);
   }
 
   .rational-cta__btn:hover {
-    opacity: 0.95;
+    background: var(--green-hover);
     transform: translateY(-1px);
-    box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
+    box-shadow: 0 12px 28px rgba(103, 183, 143, 0.5);
   }
 
   .rational-cta__btn:active {
     transform: translateY(0);
-    box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
+    box-shadow: 0 5px 14px rgba(103, 183, 143, 0.4);
   }
 
   .rational-cta__secondary-link {
@@ -149,6 +151,11 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
   }
 
   @media only screen and (min-width: 600px) {
+    .rational-cta {
+      padding-top: 5.5rem;
+      padding-bottom: 5.5rem;
+    }
+
     .rational-cta__container {
       max-width: 640px;
       gap: 1.5rem;
@@ -175,6 +182,11 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
   }
 
   @media only screen and (min-width: 1136px) {
+    .rational-cta {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+
     .rational-cta__container {
       max-width: 700px;
       gap: 1.75rem;
