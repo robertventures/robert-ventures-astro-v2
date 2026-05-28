@@ -38,8 +38,9 @@ src/pages/booking.astro
 # storage folder
 src/storage
 
-# Claude Code
+# Agent instructions (local only)
 CLAUDE.md
+AGENTS.md
 
 # Local documentation (not pushed to GitHub)
 docs/
