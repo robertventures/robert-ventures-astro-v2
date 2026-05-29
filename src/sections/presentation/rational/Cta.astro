@@ -1,9 +1,10 @@
 ---
-// Final CTA section on the offer page. Heading + subhead + dark "Get Started"
-// button that routes to /offer/create-account, with a soft gradient background,
-// the staircase decoration, and a 5-star/testimonial social-proof block below
-// the button. Staircase and social-proof are shared components also used on
-// the create-account page so styling stays in sync.
+// Final CTA section on the offer page. Heading + subhead + a green "Get Started"
+// button (routes to /offer/create-account) paired with a subtle "Book a
+// 10-minute call" secondary button (routes to /offer/book-call), over a soft
+// gradient background with the staircase decoration and a 5-star/testimonial
+// social-proof block below. Staircase and social-proof are shared components
+// also used on the create-account page so styling stays in sync.
 import StaircaseDecoration from "../../../components/StaircaseDecoration.astro";
 import CtaSocialProof from "../../../components/CtaSocialProof.astro";
 ---
@@ -15,7 +16,8 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
     <p class="rational-cta__eyebrow">You've seen the case.</p>
     <h2 id="rational-cta-heading" class="rational-cta__heading">Start investing today.</h2>
     <p class="rational-cta__sub">
-      Open your account and place your first investment in less than two minutes.
+      Open your account and place your first investment in under two minutes, or
+      schedule a call if you'd like help getting set up.
     </p>
 
     <div class="rational-cta__buttons">
@@ -28,12 +30,12 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
         Get Started
       </a>
       <a
-        class="rational-cta__secondary-link"
+        class="rational-cta__btn-secondary"
         href="/offer/book-call"
         data-track-cta="book_followup_call"
         data-track-location="rational_cta_section"
       >
-        Questions still open? Schedule a follow-up call &rarr;
+        Book a 10-minute call
       </a>
     </div>
 
@@ -98,36 +100,41 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
   .rational-cta__buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    align-items: center;
+    max-width: 320px;
+    align-items: stretch;
     margin-top: 1rem;
   }
 
-  /* Dark CTA button, mirrors the intro page's .intro-slide__cta */
+  /* Primary CTA button, mirrors the intro page's .intro-slide__cta */
   .rational-cta__btn {
     font-family: "Roboto", sans-serif;
     font-size: 1.0625rem;
     font-weight: 500;
     color: #ffffff;
     background: var(--green-brand);
-    border: none;
+    border: 1px solid var(--green-brand);
     border-radius: 8px;
-    padding: 1.125rem 3rem;
+    padding: 1.125rem 1.5rem;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
     transition:
       background 0.2s ease,
       transform 0.2s ease,
       box-shadow 0.2s ease;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
     box-shadow: 0 8px 22px rgba(103, 183, 143, 0.4);
   }
 
   .rational-cta__btn:hover {
     background: var(--green-hover);
+    border-color: var(--green-hover);
+    color: #ffffff;
     transform: translateY(-1px);
     box-shadow: 0 12px 28px rgba(103, 183, 143, 0.5);
   }
@@ -137,17 +144,33 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
     box-shadow: 0 5px 14px rgba(103, 183, 143, 0.4);
   }
 
-  .rational-cta__secondary-link {
+  /* Subtle secondary button, light gray fill with dark text so it reads
+     as a real second option without competing with the green primary. */
+  .rational-cta__btn-secondary {
     font-family: "Roboto", sans-serif;
-    font-size: 0.875rem;
-    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    background: #eef0ef;
+    border: 1px solid #e3e7e5;
+    border-radius: 8px;
+    padding: 0.875rem 1.5rem;
+    cursor: pointer;
     text-decoration: none;
-    margin-top: 1rem;
-    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
 
-  .rational-cta__secondary-link:hover {
-    text-decoration: underline;
+  .rational-cta__btn-secondary:hover {
+    background: #e3e7e5;
+    color: var(--text-heading);
   }
 
   @media only screen and (min-width: 600px) {
@@ -171,13 +194,12 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
 
     .rational-cta__btn {
       font-size: 1.1875rem;
-      padding: 1.25rem 3.5rem;
-      margin-top: 1.25rem;
-      margin-bottom: 0.75rem;
+      padding: 1.25rem 1.5rem;
     }
 
-    .rational-cta__secondary-link {
-      font-size: 0.9375rem;
+    .rational-cta__btn-secondary {
+      font-size: 1rem;
+      padding: 1rem 1.5rem;
     }
   }
 
