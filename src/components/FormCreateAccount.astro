@@ -1,13 +1,12 @@
 ---
-// Reusable create-account form. Shared by the /invest section and the
-// /offer/create-account page so both submit to the same /api/create-account
-// endpoint with identical validation, antibot, and PostHog tracking.
+// Reusable create-account form, used on the /create-account page. Submits to
+// the /api/create-account endpoint with validation, antibot, and PostHog
+// tracking.
 
 interface Props {
   // Show the "Already have an account? Log In" prompt under the submit button.
-  // Default true (matches the /invest section). The /offer/create-account page
-  // passes false because the user is committed to the create-account path at
-  // that point in the funnel.
+  // Default true. Pass false to hide it where the user is already committed to
+  // creating an account.
   showLogin?: boolean;
 }
 

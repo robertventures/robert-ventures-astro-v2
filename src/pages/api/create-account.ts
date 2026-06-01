@@ -5,7 +5,7 @@ import { notifySlack } from "../../lib/notifySlack";
 import { createAccountSchema } from "../../lib/schemas/create-account.schema";
 
 /**
- * Proxy route for account creation on the /invest page.
+ * Proxy route for account creation on the /create-account page.
  *
  * Sits between the browser and invest.robertventures.com/api/profile.
  * Runs two spam checks server-side (where they cannot be bypassed by bots),

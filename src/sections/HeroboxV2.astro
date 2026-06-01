@@ -12,24 +12,64 @@ import DualCTA from "../components/DualCTA.astro";
     overflow: hidden;
   }
 
-  .staircase-svg {
+  /* Background media layer plus white gradient overlay so the dark,
+     left-aligned text stays readable. The poster paints first, then a tiny
+     native video loop loads only when the browser has room for it. */
+  .hero-bg {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 800px;
-    height: 800px;
-    min-width: 800px;
-    min-height: 800px;
-    pointer-events: none;
+    inset: 0;
     z-index: 0;
     overflow: hidden;
   }
 
-  .staircase-svg rect {
-    fill: none;
-    stroke: #bbbbbb;
-    stroke-opacity: 0.15;
-    stroke-width: 1;
+  .hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url("/images/hero/home-hero-poster.webp");
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.02);
+    will-change: transform;
+  }
+
+  .hero-bg-video {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .hero-bg-video.is-loaded {
+    opacity: 1;
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.9) 50%,
+      rgba(255, 255, 255, 0.68) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Respect users who prefer reduced motion: keep the poster, skip the video. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-video {
+      display: none;
+    }
   }
 
   .section-container {
@@ -51,11 +91,11 @@ import DualCTA from "../components/DualCTA.astro";
   }
 
   h1 {
-    font-size: 56px;
+    font-size: 48px;
     font-weight: 500;
     margin: 0;
     margin-bottom: 40px;
-    line-height: 125%;
+    line-height: 115%;
     text-decoration-style: solid;
     text-align: left;
     color: var(--text-heading);
@@ -85,6 +125,27 @@ import DualCTA from "../components/DualCTA.astro";
     font-variant-numeric: lining-nums;
   }
 
+  /* Headline accent: text stays the same color as the rest of the headline,
+     only the underline uses the brand green. */
+  h1 .accent-underline {
+    text-decoration-line: underline;
+    text-decoration-color: var(--green-brand);
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: 5%;
+    text-underline-offset: 0px;
+    text-underline-position: from-font;
+  }
+
+  /* Forced headline breaks: on mobile the headline reads as three lines
+     (Building / wealth on / solid ground). Hidden from 600px up so the
+     headline wraps naturally on tablet and desktop. */
+  @media only screen and (min-width: 600px) {
+    .hb {
+      display: none;
+    }
+  }
+
   .form-cta {
     margin-bottom: 1.5rem;
     display: flex;
@@ -111,7 +172,7 @@ import DualCTA from "../components/DualCTA.astro";
     }
 
     h1 {
-      font-size: 64px;
+      font-size: 52px;
       line-height: 110%;
     }
   }
@@ -125,7 +186,7 @@ import DualCTA from "../components/DualCTA.astro";
 
     h1 {
       margin-bottom: 40px;
-      font-size: 80px;
+      font-size: 64px;
       line-height: 110%;
     }
   }
@@ -138,154 +199,74 @@ import DualCTA from "../components/DualCTA.astro";
 </style>
 
 <section>
-  <svg
-    class="staircase-svg"
-    width="800"
-    height="800"
-    xmlns="http://www.w3.org/2000/svg"
-    id="staircase-svg"
-  >
-    <rect x="0.5" y="735.5" width="64" height="64"></rect>
-    <rect x="80.5" y="655.5" width="64" height="64"></rect>
-    <rect x="80.5" y="735.5" width="64" height="64"></rect>
-    <rect x="160.5" y="575.5" width="64" height="64"></rect>
-    <rect x="160.5" y="655.5" width="64" height="64"></rect>
-    <rect x="160.5" y="735.5" width="64" height="64"></rect>
-    <rect x="240.5" y="495.5" width="64" height="64"></rect>
-    <rect x="240.5" y="575.5" width="64" height="64"></rect>
-    <rect x="240.5" y="655.5" width="64" height="64"></rect>
-    <rect x="240.5" y="735.5" width="64" height="64"></rect>
-    <rect x="320.5" y="415.5" width="64" height="64"></rect>
-    <rect x="320.5" y="495.5" width="64" height="64"></rect>
-    <rect x="320.5" y="575.5" width="64" height="64"></rect>
-    <rect x="320.5" y="655.5" width="64" height="64"></rect>
-    <rect x="320.5" y="735.5" width="64" height="64"></rect>
-    <rect x="400.5" y="335.5" width="64" height="64"></rect>
-    <rect x="400.5" y="415.5" width="64" height="64"></rect>
-    <rect x="400.5" y="495.5" width="64" height="64"></rect>
-    <rect x="400.5" y="575.5" width="64" height="64"></rect>
-    <rect x="400.5" y="655.5" width="64" height="64"></rect>
-    <rect x="400.5" y="735.5" width="64" height="64"></rect>
-    <rect x="480.5" y="255.5" width="64" height="64"></rect>
-    <rect x="480.5" y="335.5" width="64" height="64"></rect>
-    <rect x="480.5" y="415.5" width="64" height="64"></rect>
-    <rect x="480.5" y="495.5" width="64" height="64"></rect>
-    <rect x="480.5" y="575.5" width="64" height="64"></rect>
-    <rect x="480.5" y="655.5" width="64" height="64"></rect>
-    <rect x="480.5" y="735.5" width="64" height="64"></rect>
-    <rect x="560.5" y="175.5" width="64" height="64"></rect>
-    <rect x="560.5" y="255.5" width="64" height="64"></rect>
-    <rect x="560.5" y="335.5" width="64" height="64"></rect>
-    <rect x="560.5" y="415.5" width="64" height="64"></rect>
-    <rect x="560.5" y="495.5" width="64" height="64"></rect>
-    <rect x="560.5" y="575.5" width="64" height="64"></rect>
-    <rect x="560.5" y="655.5" width="64" height="64"></rect>
-    <rect x="560.5" y="735.5" width="64" height="64"></rect>
-    <rect x="640.5" y="95.5" width="64" height="64"></rect>
-    <rect x="640.5" y="175.5" width="64" height="64"></rect>
-    <rect x="640.5" y="255.5" width="64" height="64"></rect>
-    <rect x="640.5" y="335.5" width="64" height="64"></rect>
-    <rect x="640.5" y="415.5" width="64" height="64"></rect>
-    <rect x="640.5" y="495.5" width="64" height="64"></rect>
-    <rect x="640.5" y="575.5" width="64" height="64"></rect>
-    <rect x="640.5" y="655.5" width="64" height="64"></rect>
-    <rect x="640.5" y="735.5" width="64" height="64"></rect>
-    <rect x="720.5" y="15.5" width="64" height="64"></rect>
-    <rect x="720.5" y="95.5" width="64" height="64"></rect>
-    <rect x="720.5" y="175.5" width="64" height="64"></rect>
-    <rect x="720.5" y="255.5" width="64" height="64"></rect>
-    <rect x="720.5" y="335.5" width="64" height="64"></rect>
-    <rect x="720.5" y="415.5" width="64" height="64"></rect>
-    <rect x="720.5" y="495.5" width="64" height="64"></rect>
-    <rect x="720.5" y="575.5" width="64" height="64"></rect>
-    <rect x="720.5" y="655.5" width="64" height="64"></rect>
-    <rect x="720.5" y="735.5" width="64" height="64"></rect>
-  </svg>
+  <div class="hero-bg">
+    <video
+      class="hero-bg-video"
+      data-hero-bg-video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/images/hero/home-hero-poster.webp"
+      aria-hidden="true"></video>
+    <div class="hero-bg-overlay"></div>
+  </div>
   <div class="section-container">
-    <h1>Earn <span class="underlined-value">10%</span> Fixed Annual Returns</h1>
+    <h1>Building <br class="hb" />wealth on <br class="hb" /><span
+        class="accent-underline">solid ground</span
+      >.</h1>
 
-    <p class="hero-subtitle">Access high-yield passive income, powered by Real Estate & Bitcoin.</p>
+    <p class="hero-subtitle">
+      A founder-led investment company turning Outer Banks real estate and
+      Bitcoin into steady income.
+    </p>
 
     <div class="form-cta">
-      <DualCTA />
+      <DualCTA
+        label="Invest in our bonds"
+        href="/create-account"
+        trackCta="invest_in_our_bonds"
+      />
     </div>
   </div>
 </section>
 
 <script is:inline>
-  (function () {
-    function initAnimation() {
-      // Check if GSAP is loaded
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-        return;
-      }
+  const heroVideo = document.querySelector("[data-hero-bg-video]");
+  const canLoadHeroVideo =
+    heroVideo instanceof HTMLVideoElement &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      const gsapLib = window.gsap;
-
-      // Wait for SVG to be in DOM
-      const svg = document.getElementById("staircase-svg");
-      if (!svg) {
-        return;
-      }
-
-      const rects = svg.querySelectorAll("rect");
-
-      if (rects.length === 0) {
-        return;
-      }
-
-      // Set initial stroke color
-      gsapLib.set(rects, { stroke: "#BBBBBB", strokeOpacity: 0.15 });
-
-      // Create a timeline for continuous left-to-right shimmer effect
-      const tl = gsapLib.timeline({ repeat: -1 });
-
-      // Delay at the start of each animation loop
-      tl.to({}, { duration: 3 });
-
-      // Animate from left to right (fade to highlight color)
-      tl.to(rects, {
-        strokeOpacity: 0.6,
-        duration: 0.2,
-        stagger: {
-          amount: 0.5,
-          from: "start",
-        },
-      });
-
-      // Fade back to base color in the same staggered manner
-      tl.to(rects, {
-        strokeOpacity: 0.15,
-        duration: 0.5,
-        stagger: {
-          amount: 1,
-          from: "start",
-        },
-      });
+  const loadHeroVideo = () => {
+    if (!canLoadHeroVideo) {
+      return;
     }
 
-    // Wait for GSAP to load, then initialize animation
-    function startAnimation() {
-      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-        // GSAP already loaded, check if DOM is ready
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", initAnimation);
-        } else {
-          initAnimation();
-        }
-      } else {
-        // Wait for GSAP to load
-        window.addEventListener("gsapLoaded", function () {
-          if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initAnimation);
-          } else {
-            initAnimation();
-          }
-        });
-      }
-    }
+    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+    heroVideo.src = isMobileViewport
+      ? "/videos/home-hero-mobile.mp4"
+      : "/videos/home-hero-loop.mp4";
 
-    // Start the process
-    startAnimation();
-  })();
+    heroVideo.addEventListener(
+      "loadeddata",
+      () => {
+        heroVideo.classList.add("is-loaded");
+      },
+      { once: true },
+    );
+
+    heroVideo.load();
+    heroVideo.play().catch(() => {});
+  };
+
+  if (canLoadHeroVideo) {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(loadHeroVideo, { timeout: 1500 });
+    } else {
+      window.addEventListener("load", () => setTimeout(loadHeroVideo, 300), {
+        once: true,
+      });
+    }
+  }
 </script>

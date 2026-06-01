@@ -24,3 +24,17 @@
   to = "https://rt.robertventures.com/:splat"
   status = 200
   force = true
+
+# /invest was renamed to /create-account; /offer/create-account was consolidated
+# into it. Permanent redirects so old links, bookmarks, and indexed URLs still land.
+[[redirects]]
+  from = "/invest"
+  to = "/create-account"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/offer/create-account"
+  to = "/create-account"
+  status = 301
+  force = true

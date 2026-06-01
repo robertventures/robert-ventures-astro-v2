@@ -1,0 +1,506 @@
+---
+// Brand-story section: a short Robert Ventures story plus founder video, placed
+// above "Our Track Record". The <mux-player> web component is loaded lazily
+// from this section so it does not compete with the hero for initial page load.
+//
+// Placeholder video = the offer page founder video. Swapping in a dedicated
+// story video later is just a one-line playback-id change (and its poster URLs).
+const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
+---
+
+<section class="our-story">
+  <div class="our-story__container">
+    <p class="our-story__eyebrow">Built on the Outer Banks. Stacked in Bitcoin.</p>
+    <h2 class="our-story__heading">The Robert Ventures story</h2>
+
+    <div class="our-story__body">
+      <p>
+        Robert Ventures is a founder-led investment company. Your capital funds
+        two hard assets working as one strategy: coastal real estate on the Outer
+        Banks and Bitcoin we accumulate every month.
+      </p>
+      <p>
+        Founder Joe Robert runs it personally, with 25 years in asset management
+        and $750,000 of his own capital in line behind every bondholder. Watch his
+        story below.
+      </p>
+    </div>
+
+    <div class="our-story__video-wrapper">
+      <div class="our-story__video-container">
+        <mux-player
+          id="home-story-mux-player"
+          playback-id={PLAYBACK_ID}
+          env-key="hr9aevib299lcvfdoip01jd60"
+          preload="metadata"
+          stream-type="on-demand"
+          max-resolution="1080p"
+          rendition-order="desc"
+          poster={`https://image.mux.com/${PLAYBACK_ID}/thumbnail.png?width=1280&height=720&time=5`}
+          placeholder={`https://image.mux.com/${PLAYBACK_ID}/thumbnail.webp?time=5&width=16`}
+          muted
+          playsinline
+          default-show-captions></mux-player>
+        <div
+          class="our-story__mux-overlay"
+          id="home-story-mux-overlay"
+          role="button"
+          tabindex="0"
+        >
+          <div class="our-story__mux-overlay-pill">
+            <svg
+              class="our-story__mux-overlay-icon our-story__mux-overlay-icon--unmute"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                fill="#ffffff"></path>
+            </svg>
+            <svg
+              class="our-story__mux-overlay-icon our-story__mux-overlay-icon--play"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+            </svg>
+            <span class="our-story__mux-overlay-text our-story__mux-overlay-text--unmute">
+              Click to play with sound
+            </span>
+            <span class="our-story__mux-overlay-text our-story__mux-overlay-text--play">
+              Click to play
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .our-story {
+    background: var(--bg-primary);
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .our-story__container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 32px 16px;
+    text-align: left;
+  }
+
+  .our-story__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 130%;
+    margin: 0 0 12px;
+  }
+
+  .our-story__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 110%;
+    margin: 0 0 20px;
+  }
+
+  .our-story__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 640px;
+    margin: 0 0 32px;
+  }
+
+  .our-story__body p {
+    font-size: 18px;
+    line-height: 165%;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .our-story__video-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 24px 48px rgba(0, 0, 0, 0.08);
+  }
+
+  .our-story__video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #152429;
+  }
+
+  .our-story__video-container :global(mux-player) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+    --time-range: none;
+  }
+
+  .our-story__video-container :global(mux-player[mediaisfullscreen]) {
+    --time-range: initial;
+  }
+
+  /* "Click to play with sound" overlay, layered above the muted autoplay. */
+  .our-story__mux-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  .our-story__mux-overlay.is-active {
+    display: flex;
+  }
+
+  .our-story__mux-overlay:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .our-story__mux-overlay-pill {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    animation: our-story-mux-pill-glow 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .our-story__mux-overlay-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .our-story__mux-overlay-icon--play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  .our-story__mux-overlay-text--play {
+    display: none;
+  }
+
+  .our-story__mux-overlay.is-play-mode .our-story__mux-overlay-icon--unmute,
+  .our-story__mux-overlay.is-play-mode .our-story__mux-overlay-text--unmute {
+    display: none;
+  }
+
+  .our-story__mux-overlay.is-play-mode .our-story__mux-overlay-icon--play,
+  .our-story__mux-overlay.is-play-mode .our-story__mux-overlay-text--play {
+    display: inline-block;
+  }
+
+  @keyframes our-story-mux-pill-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .our-story__mux-overlay-pill {
+      animation: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .our-story__container {
+      padding: 48px 32px;
+    }
+
+    .our-story__heading {
+      font-size: 36px;
+    }
+
+    .our-story__mux-overlay-pill {
+      padding: 0.75rem 1.25rem 0.75rem 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .our-story__mux-overlay-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .our-story__container {
+      padding: 64px 112px;
+    }
+
+    .our-story__heading {
+      font-size: 36px;
+    }
+
+    .our-story__video-wrapper {
+      max-width: 960px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .our-story__container {
+      padding: 64px 312px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const muxPlayerSrc = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+    let hasSetupHomeStoryVideo = false;
+
+    function loadMuxPlayer() {
+      if (customElements.get("mux-player")) {
+        return Promise.resolve();
+      }
+
+      if (window.__homeStoryMuxPlayerPromise) {
+        return window.__homeStoryMuxPlayerPromise;
+      }
+
+      window.__homeStoryMuxPlayerPromise = new Promise(function (resolve, reject) {
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = muxPlayerSrc;
+        script.onload = function () {
+          customElements.whenDefined("mux-player").then(resolve).catch(reject);
+        };
+        script.onerror = function () {
+          reject(new Error("Failed to load Mux player"));
+        };
+        document.head.appendChild(script);
+      });
+
+      return window.__homeStoryMuxPlayerPromise;
+    }
+
+    function setupHomeStoryVideo() {
+      if (hasSetupHomeStoryVideo) return;
+
+      const player = document.getElementById("home-story-mux-player");
+      const overlay = document.getElementById("home-story-mux-overlay");
+      if (!player) return;
+      hasSetupHomeStoryVideo = true;
+
+      const prefersReducedMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      let autoplayState = "pending";
+      let isAutoplayPlay = false;
+      let engaged = false;
+
+      function showOverlayUnmuteMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active");
+        overlay.classList.remove("is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play with sound");
+      }
+
+      function showOverlayPlayMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active", "is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play");
+      }
+
+      function dismissOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove("is-active");
+      }
+
+      // The interaction we care about: the user clicks the video, which restarts
+      // it from the beginning with sound. We treat that as the "video_play".
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        dismissOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "home-story",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        // Reduced-motion users: never autoplay. Offer a click-to-play overlay.
+        if (prefersReducedMotion) {
+          autoplayState = "failed";
+          if (!engaged) showOverlayPlayMode();
+          return;
+        }
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        isAutoplayPlay = true;
+        const promise = player.play();
+        if (promise && typeof promise.then === "function") {
+          promise
+            .then(function () {
+              autoplayState = "playing";
+              if (!engaged) showOverlayUnmuteMode();
+            })
+            .catch(function () {
+              isAutoplayPlay = false;
+              autoplayState = "failed";
+              if (!engaged) showOverlayPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          if (!engaged) showOverlayUnmuteMode();
+        }
+      }
+
+      // Clicking the overlay restarts the video from the beginning, with sound.
+      function engageFromOverlay(e) {
+        if (!overlay || !overlay.classList.contains("is-active")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          player.currentTime = 0;
+          player.muted = false;
+        } catch (err) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
+        markEngaged();
+      }
+
+      if (overlay) {
+        overlay.addEventListener("click", engageFromOverlay);
+        overlay.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
+        });
+      }
+
+      player.addEventListener("play", function () {
+        const wasAutoplay = isAutoplayPlay;
+        isAutoplayPlay = false;
+        if (!wasAutoplay) markEngaged();
+      });
+
+      // If the user unmutes via the native player controls, restart from 0.
+      player.addEventListener("volumechange", function () {
+        if (engaged) return;
+        if (player.muted) return;
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
+        markEngaged();
+      });
+
+      if ("IntersectionObserver" in window) {
+        const videoIo = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.intersectionRatio >= 0.5) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (autoplayState === "playing" && player.paused && !engaged) {
+                  isAutoplayPlay = true;
+                  const result = player.play();
+                  if (result && typeof result.catch === "function") {
+                    result.catch(function () {
+                      isAutoplayPlay = false;
+                    });
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
+            });
+          },
+          { threshold: [0, 0.5, 1] }
+        );
+        videoIo.observe(player);
+      }
+    }
+
+    function startHomeStoryVideo() {
+      loadMuxPlayer()
+        .then(function () {
+          setupHomeStoryVideo();
+        })
+        .catch(function () {
+          const overlay = document.getElementById("home-story-mux-overlay");
+          if (overlay) {
+            overlay.classList.add("is-active", "is-play-mode");
+            overlay.setAttribute("aria-label", "Video unavailable");
+          }
+        });
+    }
+
+    function scheduleHomeStoryVideo() {
+      const section = document.querySelector(".our-story");
+
+      if ("IntersectionObserver" in window && section) {
+        const muxIo = new IntersectionObserver(
+          function (entries, observer) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                observer.disconnect();
+                startHomeStoryVideo();
+              }
+            });
+          },
+          { rootMargin: "800px 0px" },
+        );
+
+        muxIo.observe(section);
+        return;
+      }
+
+      window.addEventListener("load", startHomeStoryVideo, { once: true });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", scheduleHomeStoryVideo);
+    } else {
+      scheduleHomeStoryVideo();
+    }
+  })();
+</script>

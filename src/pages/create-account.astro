@@ -1,23 +1,20 @@
 ---
-import { ClientRouter } from "astro:transitions";
-import BaseHead from "../../components/BaseHead.astro";
-import CtaSocialProof from "../../components/CtaSocialProof.astro";
-import DisclaimerBlock from "../../components/DisclaimerBlock.astro";
-import FormCreateAccount from "../../components/FormCreateAccount.astro";
-import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
-import StaircaseDecoration from "../../components/StaircaseDecoration.astro";
+import BaseHead from "../components/BaseHead.astro";
+import CtaSocialProof from "../components/CtaSocialProof.astro";
+import DisclaimerBlock from "../components/DisclaimerBlock.astro";
+import FormCreateAccount from "../components/FormCreateAccount.astro";
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
+import StaircaseDecoration from "../components/StaircaseDecoration.astro";
 
-const pageTitle = "Create Your Account | Robert Ventures";
+const pageTitle = "Invest in Fixed-Rate Bonds - Up to 10% APY | Robert Ventures";
 const pageDescription =
-  "Open your account and model a draft investment with your own numbers in minutes.";
+  "Start investing with Robert Ventures. Earn up to 10% APY with fixed-rate bonds SEC-qualified under Regulation A Tier 2. Bonds are unsecured general obligations; capital funds Outer Banks development and Bitcoin accumulation.";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead title={pageTitle} description={pageDescription} />
-    <meta name="robots" content="noindex" />
-    <ClientRouter />
   </head>
   <body>
     <div class="pres-nav-logo" role="img" aria-label="Robert Ventures">
@@ -28,17 +25,16 @@ const pageDescription =
       <StaircaseDecoration />
 
       <div class="create-account__content">
-        <h1 class="create-account__heading">Run your own numbers.</h1>
+        <h1 class="create-account__heading">Create an account.</h1>
         <p class="create-account__subtitle">
-          Create your account in under two minutes, draft an investment with your amount and your
-          term, and see what you will earn.
+          Get up to 10% annual returns with Robert Ventures.
         </p>
-        <FormCreateAccount showLogin={false} />
+        <FormCreateAccount />
         <CtaSocialProof />
       </div>
     </main>
 
-    <DisclaimerBlock trackLocation="offer_create_account_disclaimer" />
+    <DisclaimerBlock trackLocation="invest_disclaimer" />
   </body>
 </html>
 
@@ -51,52 +47,6 @@ const pageDescription =
 
   html {
     scroll-behavior: auto;
-  }
-
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 320ms;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  ::view-transition-old(root) {
-    animation-name: ga-old-fwd;
-  }
-  ::view-transition-new(root) {
-    animation-name: ga-new-fwd;
-  }
-  html[data-astro-transition="back"]::view-transition-old(root) {
-    animation-name: ga-old-back;
-  }
-  html[data-astro-transition="back"]::view-transition-new(root) {
-    animation-name: ga-new-back;
-  }
-
-  @keyframes ga-new-fwd {
-    from {
-      transform: translateX(100%);
-    }
-  }
-  @keyframes ga-old-fwd {
-    to {
-      transform: translateX(-20%);
-      opacity: 0.6;
-    }
-  }
-  @keyframes ga-new-back {
-    from {
-      transform: translateX(-20%);
-      opacity: 0.6;
-    }
-  }
-  @keyframes ga-old-back {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
-  html[data-astro-transition="traverse"]::view-transition-old(root),
-  html[data-astro-transition="traverse"]::view-transition-new(root) {
-    animation: none;
   }
 </style>
 

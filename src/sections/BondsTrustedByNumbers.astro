@@ -1,7 +1,6 @@
 ---
 // Fetch stats from local API with fallback values
 // Default fallback values
-let totalRaisedValue = 1.07;
 let reinvestmentRate = 24;
 let uniqueInvestors = 68;
 
@@ -10,12 +9,6 @@ try {
   const response = await fetch(statsUrl);
   if (response.ok) {
     const data = await response.json();
-
-    // Parse totalAmountRaised (string) and convert to millions
-    const totalRaised = parseFloat(data.totalAmountRaised);
-    if (!isNaN(totalRaised)) {
-      totalRaisedValue = parseFloat((totalRaised / 1000000).toFixed(2));
-    }
 
     // Use usersWithInvestments directly
     if (typeof data.usersWithInvestments === "number") {
@@ -174,20 +167,20 @@ try {
 
     <div class="columns-container">
       <div class="column">
-        <span class="stat-value" data-value={totalRaisedValue} data-suffix="M">0</span>
-        <span class="description">Total Raised</span>
+        <span class="stat-value" data-value="100" data-suffix="%" data-decimals="0">0</span>
+        <span class="description">On-Time Distributions</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value={reinvestmentRate} data-suffix="%">0</span>
+        <span class="stat-value" data-value={reinvestmentRate} data-suffix="%" data-decimals="0">0</span>
         <span class="description">Reinvestment Rate</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value={uniqueInvestors} data-suffix="">0</span>
+        <span class="stat-value" data-value={uniqueInvestors} data-suffix="" data-decimals="0">0</span>
         <span class="description">Unique Investors</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value="100" data-suffix="%">0</span>
-        <span class="description">On-Time Distributions</span>
+        <span class="stat-value" data-value="150" data-prefix="$" data-suffix="M" data-decimals="0">0</span>
+        <span class="description">Managed by founder Joe Robert</span>
       </div>
     </div>
   </div>
@@ -224,6 +217,8 @@ try {
               statValues.forEach((stat, index) => {
                 const finalValue = parseFloat(stat.getAttribute("data-value"));
                 const suffix = stat.getAttribute("data-suffix") || "";
+                const prefix = stat.getAttribute("data-prefix") || "";
+                const decimals = parseInt(stat.getAttribute("data-decimals") || "0", 10);
 
                 gsapLib.to(stat, {
                   innerHTML: finalValue,
@@ -231,10 +226,10 @@ try {
                   delay: index * 0.1,
                   opacity: 1,
                   ease: "power2.out",
-                  snap: { innerHTML: suffix === "M" ? 0.01 : 1 },
+                  snap: { innerHTML: decimals > 0 ? 0.01 : 1 },
                   onUpdate: function () {
                     const currentValue = parseFloat(stat.innerHTML);
-                    stat.innerHTML = currentValue.toFixed(suffix === "M" ? 2 : 0) + suffix;
+                    stat.innerHTML = prefix + currentValue.toFixed(decimals) + suffix;
                   },
                 });
               });

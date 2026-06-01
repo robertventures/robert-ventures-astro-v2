@@ -1,5 +1,15 @@
 ---
+interface Props {
+  label?: string;
+  href?: string;
+  trackCta?: string;
+}
 
+const {
+  label = "Join Our Webinar",
+  href = "/webinar",
+  trackCta = "join_our_webinar",
+} = Astro.props;
 ---
 
 <style>
@@ -51,7 +61,5 @@
 </style>
 
 <div class="cta-block">
-  <a class="webinar" href="/webinar" data-track-cta="join_our_webinar" data-track-location="hero"
-    >Join Our Webinar</a
-  >
+  <a class="webinar" href={href} data-track-cta={trackCta} data-track-location="hero">{label}</a>
 </div>
