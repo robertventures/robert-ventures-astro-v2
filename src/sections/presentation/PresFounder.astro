@@ -4,14 +4,18 @@
 
 <section class="pres-founder offer-slide">
   <div class="pres-founder__container">
-    <div class="pres-founder__content">
-      <p class="pres-founder__eyebrow">Your diligence pack</p>
-      <h2 class="pres-founder__heading">
-        Predictable income. Tangible assets. <span class="pres-founder__heading-accent">25 years of experience.</span>
-      </h2>
-      <p class="pres-founder__subhead">
-        Everything you asked for after the call. The case in seven parts.
-      </p>
+    <div class="pres-founder__hero">
+      <div class="pres-founder__text">
+        <p class="pres-founder__eyebrow">Your diligence pack</p>
+        <h2 class="pres-founder__heading">
+          Predictable income. Tangible assets. <span class="pres-founder__heading-accent"
+            >25 years of experience.</span
+          >
+        </h2>
+        <p class="pres-founder__subhead">
+          Everything you asked for after the call. The case in seven parts.
+        </p>
+      </div>
 
       <div class="pres-founder__video-wrapper">
         <div class="pres-founder__video-container">
@@ -63,28 +67,26 @@
           </div>
         </div>
       </div>
-
-      <div class="pres-founder__bottom-grid">
-        <ul class="pres-founder__stats">
-          <li class="pres-founder__stat">
-            <span class="pres-founder__stat-value">25+</span>
-            <span class="pres-founder__stat-label">Years of experience</span>
-          </li>
-          <li class="pres-founder__stat">
-            <span class="pres-founder__stat-value">$150M+</span>
-            <span class="pres-founder__stat-label">Assets managed</span>
-          </li>
-          <li class="pres-founder__stat">
-            <span class="pres-founder__stat-value">200+</span>
-            <span class="pres-founder__stat-label">Properties</span>
-          </li>
-          <li class="pres-founder__stat">
-            <span class="pres-founder__stat-value">1,500+</span>
-            <span class="pres-founder__stat-label">Mortgage investments</span>
-          </li>
-        </ul>
-      </div>
     </div>
+
+    <ul class="pres-founder__stats">
+      <li class="pres-founder__stat">
+        <span class="pres-founder__stat-value">25+</span>
+        <span class="pres-founder__stat-label">Years of experience</span>
+      </li>
+      <li class="pres-founder__stat">
+        <span class="pres-founder__stat-value">$150M+</span>
+        <span class="pres-founder__stat-label">Assets managed</span>
+      </li>
+      <li class="pres-founder__stat">
+        <span class="pres-founder__stat-value">200+</span>
+        <span class="pres-founder__stat-label">Properties</span>
+      </li>
+      <li class="pres-founder__stat">
+        <span class="pres-founder__stat-value">1,500+</span>
+        <span class="pres-founder__stat-label">Mortgage investments</span>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -103,9 +105,15 @@
     gap: 40px;
   }
 
-  .pres-founder__content {
-    max-width: 880px;
-    margin: 0 auto;
+  .pres-founder__hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.25rem;
+  }
+
+  .pres-founder__text {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -160,17 +168,8 @@
     margin-top: -0.5rem;
   }
 
-  .pres-founder__bottom-grid,
-  .pres-founder__stats,
-  .pres-founder__align,
-  .pres-founder__close {
+  .pres-founder__stats {
     width: 100%;
-  }
-
-  .pres-founder__bottom-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2.25rem;
   }
 
   .pres-founder__video-wrapper {
@@ -336,52 +335,9 @@
     margin: 0;
   }
 
-  .pres-founder__align {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 0;
-  }
-
-  .pres-founder__align-eyebrow {
-    font-family: "Roboto", sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
-    line-height: 130%;
-  }
-
-  .pres-founder__align-lede {
-    font-family: "Roboto Serif", serif;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-heading);
-    line-height: 150%;
-    margin: 0;
-  }
-
-  .pres-founder__align-body {
-    font-family: "Roboto Serif", serif;
-    font-size: 18px;
-    color: var(--text-body);
-    line-height: 165%;
-    margin: 0;
-  }
-
-  .pres-founder__close {
-    font-family: "Roboto Serif", serif;
-    font-size: 20px;
-    font-style: italic;
-    color: var(--text-heading);
-    line-height: 150%;
-    margin: 0;
-  }
-
   @media only screen and (min-width: 600px) {
-    .pres-founder__content {
+    .pres-founder__hero,
+    .pres-founder__text {
       gap: 3rem;
     }
 
@@ -401,57 +357,57 @@
     .pres-founder__stat-label {
       font-size: 0.9375rem;
     }
-
-    .pres-founder__bottom-grid {
-      gap: 2.75rem;
-    }
   }
 
   @media only screen and (min-width: 1136px) {
-    .pres-founder__bottom-grid {
+    /* Two-column hero: text left, video right, vertically centered against each other */
+    .pres-founder__hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
-      gap: 2rem 2.75rem;
-      align-items: start;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      align-items: center;
+      gap: 2.75rem;
     }
 
-    .pres-founder__bottom-grid .pres-founder__stats {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    .pres-founder__text {
+      align-items: flex-start;
+      gap: 1.25rem;
     }
 
-    .pres-founder__bottom-grid .pres-founder__stat {
+    .pres-founder__eyebrow,
+    .pres-founder__heading,
+    .pres-founder__subhead {
+      text-align: left;
+    }
+
+    .pres-founder__heading,
+    .pres-founder__subhead {
+      max-width: none;
+    }
+
+    /* Stats become a full-width proof band of four cards below the hero row */
+    .pres-founder__stat {
       padding: 2rem 1.5rem;
     }
 
-    .pres-founder__bottom-grid .pres-founder__stat-value {
+    .pres-founder__stat-value {
       font-size: 2.5rem;
       line-height: 1.1;
     }
 
-    .pres-founder__bottom-grid .pres-founder__stat-label {
+    .pres-founder__stat-label {
       font-size: 1.0625rem;
-    }
-
-    .pres-founder__align {
-      gap: 16px;
-      padding-top: 2px;
-    }
-
-    .pres-founder__align-lede {
-      font-size: 1.1875rem;
     }
   }
 
   @media only screen and (min-width: 1136px) {
     .pres-founder__heading {
-      font-size: 3.25rem;
+      font-size: 2.5rem;
     }
   }
 
   @media only screen and (min-width: 1920px) {
     .pres-founder__heading {
-      font-size: 3.75rem;
+      font-size: 2.625rem;
     }
   }
 </style>
