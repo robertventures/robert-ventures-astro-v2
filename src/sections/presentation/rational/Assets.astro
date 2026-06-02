@@ -137,7 +137,7 @@ const btcTimeline = [
 
 <section class="rational-assets offer-slide" aria-labelledby="rational-assets-heading">
   <div class="rational-assets__container">
-    <!-- BLOCK 2: MARKET PROOF (intro + stats + lede left, home-values chart right at desktop) -->
+    <!-- BLOCK 2: MARKET PROOF (centered: heading on top, then chart, then stat band) -->
     <article class="rational-assets__block rational-assets__market">
       <div class="rational-assets__market-info">
         <header class="rational-assets__header">
@@ -287,13 +287,12 @@ const btcTimeline = [
       </ul>
     </article>
 
-    <!-- BLOCK 3: PORTFOLIO (intro + stats + strategy left, photos right at desktop) -->
+    <!-- BLOCK 3: PORTFOLIO (centered: heading on top, then stats, photos, strategy) -->
     <article
       class="rational-assets__block rational-assets__portfolio"
       aria-labelledby="rational-assets-portfolio-heading"
     >
-      <div class="rational-assets__portfolio-info">
-        <div class="rational-assets__block-header">
+      <div class="rational-assets__block-header">
         <p class="rational-assets__block-eyebrow">What we own today</p>
         <h3 id="rational-assets-portfolio-heading" class="rational-assets__block-heading">
           24 properties in Dare County.
@@ -310,11 +309,6 @@ const btcTimeline = [
           ))
         }
       </ul>
-
-        <p class="rational-assets__strategy">
-          We buy underpriced lots, build to the comp, and sell into a supply-constrained market.
-        </p>
-      </div>
 
       <div
         class="splide rational-assets__carousel"
@@ -342,6 +336,10 @@ const btcTimeline = [
           </ul>
         </div>
       </div>
+
+      <p class="rational-assets__strategy">
+        We buy underpriced lots, build to the comp, and sell into a supply-constrained market.
+      </p>
     </article>
 
     <!-- BLOCK 4: BITCOIN SECONDARY (header + adoption timeline + how-we-hold-it) -->
@@ -524,9 +522,8 @@ const btcTimeline = [
     gap: 1.5rem;
   }
 
-  /* Left column of the market + portfolio blocks (intro/header + stats + supporting line) */
-  .rational-assets__market-info,
-  .rational-assets__portfolio-info {
+  /* Market intro group (eyebrow + heading + subhead + lede), centered on top */
+  .rational-assets__market-info {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1094,72 +1091,12 @@ const btcTimeline = [
       gap: 3.5rem;
     }
 
-    /* All Assets blocks span the full 1136 container on desktop (un-inset,
-       and gives the chart + carousel real width). */
-    .rational-assets__block,
+    /* Coastal (market) and portfolio render as centered single-column stacks:
+       eyebrow + heading on top, content (chart / stats / carousel) below. This
+       is the base flex-column layout, so they need no desktop grid overrides.
+       Bitcoin keeps its two-column card; match it to the other blocks' width. */
     .rational-asset-secondary {
-      max-width: none;
-    }
-
-    /* Block 2 market proof: heading + subhead + lede left, wide chart right,
-       3-stat band full-width below. */
-    .rational-assets__market {
-      display: grid;
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-      grid-template-areas:
-        "info chart"
-        "stats stats";
-      align-items: start;
-      column-gap: 2.75rem;
-      row-gap: 2rem;
-    }
-
-    .rational-assets__market-info {
-      grid-area: info;
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .rational-assets__market .obx-chart {
-      grid-area: chart;
-    }
-
-    .rational-assets__market > .rational-assets__stats {
-      grid-area: stats;
-    }
-
-    .rational-assets__market .rational-assets__header {
-      align-items: flex-start;
-      text-align: left;
-      max-width: none;
-    }
-
-    .rational-assets__market .rational-assets__lede {
-      max-width: none;
-      text-align: left;
-    }
-
-    /* Block 3 portfolio: intro + stats + strategy left, photo carousel right */
-    .rational-assets__portfolio {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      align-items: start;
-      gap: 2.75rem;
-    }
-
-    .rational-assets__portfolio-info {
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .rational-assets__portfolio .rational-assets__block-header {
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .rational-assets__portfolio .rational-assets__strategy {
-      max-width: none;
-      text-align: left;
+      max-width: 1000px;
     }
 
     .rational-assets__heading {
