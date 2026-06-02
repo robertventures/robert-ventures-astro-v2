@@ -441,11 +441,13 @@ try {
       const emailEl = form.querySelector("input[name='email']");
       const phoneEl = form.querySelector("input[name='phone_number']");
       const investEl = document.getElementById("wf-invest-select");
+      const sessionEl = document.getElementById("wf-session-value");
 
       const name = (nameEl && nameEl.value.trim()) || "";
       const email = (emailEl && emailEl.value.trim()) || "";
       const phoneDigits = phoneEl ? phoneEl.value.replace(/\D/g, "") : "";
       const invest = (investEl && investEl.value) || "";
+      const sessionVal = (sessionEl && sessionEl.value) || "";
 
       let firstInvalid = null;
       let message = "";
@@ -462,6 +464,9 @@ try {
       } else if (!invest) {
         firstInvalid = investEl;
         message = "Please select how much you are looking to invest.";
+      } else if (!sessionVal) {
+        firstInvalid = sessionEl;
+        message = "Please select the date of the webinar.";
       }
 
       if (firstInvalid) {
@@ -570,8 +575,8 @@ try {
     }
 
     function populateSessionsDropdown(data) {
-      const hiddenInput = document.getElementById("wf-session-value");
-      if (!hiddenInput) return;
+      const selectEl = document.getElementById("wf-session-value");
+      if (!selectEl) return;
 
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
@@ -585,7 +590,7 @@ try {
         }
       });
 
-      const sessionsWithDates = sessionList
+      let sessionsWithDates = sessionList
         .map(function (session) {
           try {
             const details = JSON.parse(session.id);
@@ -602,21 +607,9 @@ try {
           return a.nextDate.getTime() - b.nextDate.getTime();
         });
 
-      let sundaySession = null;
-      for (let i = 0; i < sessionsWithDates.length; i++) {
-        if (sessionsWithDates[i].nextDate.getDay() === 0) {
-          sundaySession = sessionsWithDates[i];
-          break;
-        }
-      }
-
-      let nextDate, sessionId, originalTimezone;
-
-      if (sundaySession) {
-        nextDate = sundaySession.nextDate;
-        sessionId = sundaySession.session.id;
-        originalTimezone = sundaySession.details.timeZone || "America/New_York";
-      } else {
+      // Fallback: if WebinarKit returns nothing usable, synthesize the Sunday 2pm
+      // session so the form still has a valid option to submit.
+      if (sessionsWithDates.length === 0) {
         const fallbackDetails = {
           type: "ongoing",
           day: "Sunday",
@@ -624,34 +617,80 @@ try {
           period: "PM",
           timeZone: "America/New_York",
         };
-        nextDate = calculateNextSessionDate(fallbackDetails);
-        sessionId = JSON.stringify(fallbackDetails);
-        originalTimezone = fallbackDetails.timeZone;
+        sessionsWithDates = [
+          {
+            session: { id: JSON.stringify(fallbackDetails) },
+            details: fallbackDetails,
+            nextDate: calculateNextSessionDate(fallbackDetails),
+          },
+        ];
       }
 
-      hiddenInput.value = sessionId;
-      hiddenInput.setAttribute("data-date", nextDate.toISOString());
-      hiddenInput.setAttribute("data-timezone", userTz);
-      hiddenInput.setAttribute("data-original-timezone", originalTimezone);
-      hiddenInput.setAttribute("data-webinar-id", scheduledWebinarId);
+      // Rebuild the dropdown: a placeholder first (so the visitor actively picks a
+      // date), then one <option> per upcoming session, soonest first. Each session
+      // option carries the same attributes the submit handler reads off the selection.
+      selectEl.innerHTML = "";
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.disabled = true;
+      placeholder.selected = true;
+      placeholder.textContent = "Select the date of the webinar";
+      selectEl.appendChild(placeholder);
 
-      const noticeEl = document.querySelector("[data-webinar-notice]");
-      if (noticeEl) {
-        const dateStr = new Intl.DateTimeFormat("en-US", {
+      sessionsWithDates.forEach(function (entry) {
+        const opt = document.createElement("option");
+        opt.value = entry.session.id;
+        opt.textContent = formatSessionLabel(entry.nextDate, userTz);
+        opt.setAttribute("data-date", entry.nextDate.toISOString());
+        opt.setAttribute("data-timezone", userTz);
+        opt.setAttribute("data-original-timezone", entry.details.timeZone || "America/New_York");
+        opt.setAttribute("data-webinar-id", scheduledWebinarId);
+        selectEl.appendChild(opt);
+      });
+
+      // Show the select as filled once a real date is chosen. Assign onchange (not
+      // addEventListener) so the ClientRouter script re-run cannot stack duplicates.
+      selectEl.onchange = function () {
+        selectEl.classList.toggle("has-value", !!selectEl.value);
+      };
+    }
+
+    // Build a compact option label in the visitor's timezone, e.g.
+    // "Today, Jun 8 at 2:00 PM EDT" or "Sunday, Jun 8 at 2:00 PM EDT".
+    function formatSessionLabel(date, tz) {
+      const dayKey = function (d) {
+        return new Intl.DateTimeFormat("en-CA", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          timeZone: tz,
+        }).format(d);
+      };
+      const now = new Date();
+      const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      let relative;
+      if (dayKey(date) === dayKey(now)) {
+        relative = "Today";
+      } else if (dayKey(date) === dayKey(tomorrow)) {
+        relative = "Tomorrow";
+      } else {
+        relative = new Intl.DateTimeFormat("en-US", {
           weekday: "long",
-          month: "long",
-          day: "numeric",
-          timeZone: userTz,
-        }).format(nextDate);
-        const timeStr = new Intl.DateTimeFormat("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZoneName: "longGeneric",
-          timeZone: userTz,
-        }).format(nextDate);
-        noticeEl.textContent =
-          "You'll be invited to our live webinar on " + dateStr + " at " + timeStr + ".";
+          timeZone: tz,
+        }).format(date);
       }
+      const monthDay = new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        timeZone: tz,
+      }).format(date);
+      const time = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
+        timeZone: tz,
+      }).format(date);
+      return relative + ", " + monthDay + " at " + time;
     }
 
     function calculateNextSessionDate(details) {
@@ -928,7 +967,9 @@ try {
         const loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
         const errorEl = document.querySelector(".wf-slide__field-error");
 
-        if (!selectEl || !selectEl.value) {
+        // No real sessions loaded at all = technical failure, distinct from the
+        // visitor not having picked a date yet (validateForm reports that).
+        if (!selectEl || !selectEl.querySelector("option[data-date]")) {
           showError(errorEl, "Session unavailable. Please refresh the page.");
           return;
         }
@@ -954,7 +995,7 @@ try {
         }
 
         const formData = new FormData(form);
-        const selectedOption = selectEl;
+        const selectedOption = selectEl.selectedOptions && selectEl.selectedOptions[0];
 
         const isoDateUTC = selectedOption ? selectedOption.getAttribute("data-date") || "" : "";
         const sessionValue = selectedOption ? selectedOption.value : "";

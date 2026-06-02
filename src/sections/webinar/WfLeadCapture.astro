@@ -7,8 +7,7 @@ import usFlag from "../../images/icons/usflag.png";
   <div class="wf-slide__content">
     <div class="wf-slide__text">
       <h1 class="wf-slide__heading">
-        See the Full<br />
-        <span class="wf-slide__accent">Presentation.<span class="wf-slide__underline"></span></span>
+        Join the <span class="wf-slide__accent">Webinar.<span class="wf-slide__underline"></span></span>
       </h1>
       <p class="wf-slide__subtitle">
         Watch how investors are earning fixed 10%, built on real estate and bitcoin.
@@ -56,8 +55,15 @@ import usFlag from "../../images/icons/usflag.png";
         <option value="100000+">$100,000+</option>
       </select>
 
-      <!-- Session value for silent registration (populated by JS, not displayed) -->
-      <input type="hidden" name="session" id="wf-session-value" />
+      <!-- Webinar session selector (options populated by JS from WebinarKit) -->
+      <select
+        name="session"
+        id="wf-session-value"
+        class="wf-slide__select"
+        aria-label="Select the date of the webinar"
+      >
+        <option value="" disabled selected>Select the date of the webinar</option>
+      </select>
 
       <!-- Honeypot — bots fill this, humans won't (validated server-side) -->
       <input
@@ -71,7 +77,7 @@ import usFlag from "../../images/icons/usflag.png";
 
       <p class="wf-slide__field-error"></p>
       <button type="submit" class="wf-slide__continue">
-        <span class="wf-slide__button-text">Get Access</span>
+        <span class="wf-slide__button-text">Save My Seat</span>
         <span class="wf-slide__loader"></span>
       </button>
       {
@@ -81,9 +87,6 @@ import usFlag from "../../images/icons/usflag.png";
           </button>
         )
       }
-      <p class="wf-slide__notice" data-webinar-notice>
-        You'll be invited to our live webinar this Sunday.
-      </p>
     </div>
   </div>
 </section>
@@ -165,16 +168,6 @@ import usFlag from "../../images/icons/usflag.png";
     color: #555555;
     margin: 0;
     line-height: 150%;
-  }
-
-  .wf-slide__notice {
-    font-family: "Roboto", sans-serif;
-    font-size: 0.8125rem;
-    color: #1a1a1a;
-    font-weight: 600;
-    margin: 0;
-    line-height: 140%;
-    text-align: center;
   }
 
   .wf-slide__fields {
@@ -397,12 +390,3 @@ import usFlag from "../../images/icons/usflag.png";
     }
   }
 </style>
-
-<script>
-  if (new Date().getDay() === 0) {
-    const notice = document.querySelector("[data-webinar-notice]");
-    if (notice) {
-      notice.textContent = "You'll be invited to today's live webinar.";
-    }
-  }
-</script>
