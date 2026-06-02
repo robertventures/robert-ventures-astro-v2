@@ -55,16 +55,6 @@ import usFlag from "../../images/icons/usflag.png";
         <option value="100000+">$100,000+</option>
       </select>
 
-      <!-- Webinar session selector (options populated by JS from WebinarKit) -->
-      <select
-        name="session"
-        id="wf-session-value"
-        class="wf-slide__select"
-        aria-label="Select the date of the webinar"
-      >
-        <option value="" disabled selected>Select the date of the webinar</option>
-      </select>
-
       <!-- Honeypot — bots fill this, humans won't (validated server-side) -->
       <input
         type="text"
@@ -76,10 +66,21 @@ import usFlag from "../../images/icons/usflag.png";
       />
 
       <p class="wf-slide__field-error"></p>
-      <button type="submit" class="wf-slide__continue">
-        <span class="wf-slide__button-text">Save My Seat</span>
-        <span class="wf-slide__loader"></span>
+
+      <!-- Step 1: validate the details above, then reveal the date options -->
+      <button type="button" id="wf-select-date" class="wf-slide__continue">
+        <span class="wf-slide__button-text">Select the webinar date</span>
       </button>
+
+      <!-- Step 2: pick a date (buttons injected by JS), then confirm -->
+      <div class="wf-slide__dates" id="wf-dates" hidden>
+        <p class="wf-slide__dates-label">Choose your webinar time</p>
+        <div class="wf-slide__dates-list" id="wf-dates-list"></div>
+        <button type="submit" id="wf-confirm" class="wf-slide__continue" disabled>
+          <span class="wf-slide__button-text">Save My Seat</span>
+          <span class="wf-slide__loader"></span>
+        </button>
+      </div>
       {
         import.meta.env.DEV && (
           <button type="button" id="wf-dev-skip" class="wf-slide__dev-skip">
@@ -303,6 +304,70 @@ import usFlag from "../../images/icons/usflag.png";
 
   .wf-slide__continue:active {
     transform: translateY(1px);
+  }
+
+  .wf-slide__continue:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* Webinar date selection (buttons revealed after the details are filled) */
+  .wf-slide__dates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  /* Keep the block collapsed until step 1 reveals it (the display:flex above
+     would otherwise override the browser default for [hidden]). */
+  .wf-slide__dates[hidden] {
+    display: none;
+  }
+
+  .wf-slide__dates-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    text-align: center;
+  }
+
+  .wf-slide__dates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .wf-date-option {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-heading);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .wf-date-option:hover {
+    border-color: var(--green-brand);
+  }
+
+  .wf-date-option.is-selected {
+    border-color: var(--green-brand);
+    background: #ebf5ef;
+    color: var(--text-heading);
+    font-weight: 600;
   }
 
   /* Dev-only skip button, never rendered in production builds. */

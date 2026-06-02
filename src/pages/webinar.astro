@@ -441,13 +441,11 @@ try {
       const emailEl = form.querySelector("input[name='email']");
       const phoneEl = form.querySelector("input[name='phone_number']");
       const investEl = document.getElementById("wf-invest-select");
-      const sessionEl = document.getElementById("wf-session-value");
 
       const name = (nameEl && nameEl.value.trim()) || "";
       const email = (emailEl && emailEl.value.trim()) || "";
       const phoneDigits = phoneEl ? phoneEl.value.replace(/\D/g, "") : "";
       const invest = (investEl && investEl.value) || "";
-      const sessionVal = (sessionEl && sessionEl.value) || "";
 
       let firstInvalid = null;
       let message = "";
@@ -464,9 +462,6 @@ try {
       } else if (!invest) {
         firstInvalid = investEl;
         message = "Please select how much you are looking to invest.";
-      } else if (!sessionVal) {
-        firstInvalid = sessionEl;
-        message = "Please select the date of the webinar.";
       }
 
       if (firstInvalid) {
@@ -575,8 +570,8 @@ try {
     }
 
     function populateSessionsDropdown(data) {
-      const selectEl = document.getElementById("wf-session-value");
-      if (!selectEl) return;
+      const list = document.getElementById("wf-dates-list");
+      if (!list) return;
 
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
@@ -608,7 +603,7 @@ try {
         });
 
       // Fallback: if WebinarKit returns nothing usable, synthesize the Sunday 2pm
-      // session so the form still has a valid option to submit.
+      // session so there is still a valid option to pick.
       if (sessionsWithDates.length === 0) {
         const fallbackDetails = {
           type: "ongoing",
@@ -626,33 +621,34 @@ try {
         ];
       }
 
-      // Rebuild the dropdown: a placeholder first (so the visitor actively picks a
-      // date), then one <option> per upcoming session, soonest first. Each session
-      // option carries the same attributes the submit handler reads off the selection.
-      selectEl.innerHTML = "";
-      const placeholder = document.createElement("option");
-      placeholder.value = "";
-      placeholder.disabled = true;
-      placeholder.selected = true;
-      placeholder.textContent = "Select the date of the webinar";
-      selectEl.appendChild(placeholder);
-
-      sessionsWithDates.forEach(function (entry) {
-        const opt = document.createElement("option");
-        opt.value = entry.session.id;
-        opt.textContent = formatSessionLabel(entry.nextDate, userTz);
-        opt.setAttribute("data-date", entry.nextDate.toISOString());
-        opt.setAttribute("data-timezone", userTz);
-        opt.setAttribute("data-original-timezone", entry.details.timeZone || "America/New_York");
-        opt.setAttribute("data-webinar-id", scheduledWebinarId);
-        selectEl.appendChild(opt);
+      // Show at most 3 upcoming sessions as buttons, soonest first. Each button
+      // carries the same attributes the submit handler reads off the selection.
+      const confirmBtn = document.getElementById("wf-confirm");
+      list.innerHTML = "";
+      if (confirmBtn) confirmBtn.disabled = true;
+      sessionsWithDates.slice(0, 3).forEach(function (entry) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "wf-date-option";
+        btn.value = entry.session.id;
+        btn.textContent = formatSessionLabel(entry.nextDate, userTz);
+        btn.setAttribute("aria-pressed", "false");
+        btn.setAttribute("data-date", entry.nextDate.toISOString());
+        btn.setAttribute("data-timezone", userTz);
+        btn.setAttribute("data-original-timezone", entry.details.timeZone || "America/New_York");
+        btn.setAttribute("data-webinar-id", scheduledWebinarId);
+        btn.addEventListener("click", function () {
+          const options = list.querySelectorAll(".wf-date-option");
+          for (let i = 0; i < options.length; i++) {
+            options[i].classList.remove("is-selected");
+            options[i].setAttribute("aria-pressed", "false");
+          }
+          btn.classList.add("is-selected");
+          btn.setAttribute("aria-pressed", "true");
+          if (confirmBtn) confirmBtn.disabled = false;
+        });
+        list.appendChild(btn);
       });
-
-      // Show the select as filled once a real date is chosen. Assign onchange (not
-      // addEventListener) so the ClientRouter script re-run cannot stack duplicates.
-      selectEl.onchange = function () {
-        selectEl.classList.toggle("has-value", !!selectEl.value);
-      };
     }
 
     // Build a compact option label in the visitor's timezone, e.g.
@@ -959,7 +955,7 @@ try {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const selectEl = document.getElementById("wf-session-value");
+        const datesList = document.getElementById("wf-dates-list");
         const submitButton = form.querySelector("button[type='submit']");
         const buttonText = submitButton
           ? submitButton.querySelector(".wf-slide__button-text")
@@ -967,9 +963,9 @@ try {
         const loader = submitButton ? submitButton.querySelector(".wf-slide__loader") : null;
         const errorEl = document.querySelector(".wf-slide__field-error");
 
-        // No real sessions loaded at all = technical failure, distinct from the
-        // visitor not having picked a date yet (validateForm reports that).
-        if (!selectEl || !selectEl.querySelector("option[data-date]")) {
+        // No date buttons loaded at all = technical failure, distinct from the
+        // visitor not having picked a date yet (handled just below).
+        if (!datesList || !datesList.querySelector(".wf-date-option")) {
           showError(errorEl, "Session unavailable. Please refresh the page.");
           return;
         }
@@ -977,6 +973,12 @@ try {
         if (!validateForm()) {
           const formSection = sections[2];
           if (formSection) formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
+        const selectedOption = datesList.querySelector(".wf-date-option.is-selected");
+        if (!selectedOption) {
+          showError(errorEl, "Please select the date of the webinar.");
           return;
         }
 
@@ -995,7 +997,6 @@ try {
         }
 
         const formData = new FormData(form);
-        const selectedOption = selectEl.selectedOptions && selectEl.selectedOptions[0];
 
         const isoDateUTC = selectedOption ? selectedOption.getAttribute("data-date") || "" : "";
         const sessionValue = selectedOption ? selectedOption.value : "";
@@ -1283,6 +1284,27 @@ try {
       });
     }
 
+    // Step 1 of date selection: validate the details, then reveal the date buttons.
+    function setupDateSelection() {
+      const selectDateBtn = document.getElementById("wf-select-date");
+      const datesBlock = document.getElementById("wf-dates");
+      const list = document.getElementById("wf-dates-list");
+      if (!selectDateBtn || !datesBlock || !list) return;
+      // Assign onclick (not addEventListener) so the ClientRouter re-run cannot stack handlers.
+      selectDateBtn.onclick = function () {
+        if (!validateForm()) return;
+        if (!list.querySelector(".wf-date-option")) {
+          showError(
+            document.querySelector(".wf-slide__field-error"),
+            "Session unavailable. Please refresh the page."
+          );
+          return;
+        }
+        datesBlock.hidden = false;
+        selectDateBtn.style.display = "none";
+      };
+    }
+
     // Mux Video analytics + pause-when-offscreen
     function setupMuxAnalytics() {
       const player = document.getElementById("wf-mux-player");
@@ -1478,6 +1500,7 @@ try {
       setupContinueButtons();
       setupInvestDropdown();
       setupDevSkip();
+      setupDateSelection();
       loadWebinarData();
       setupFormSubmission();
       setupMuxPreloading();
