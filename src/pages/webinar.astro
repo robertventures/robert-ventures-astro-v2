@@ -668,8 +668,11 @@ try {
       });
     }
 
-    // Build a compact option label in the visitor's timezone, e.g.
-    // "Today, Jun 8 at 2:00 PM EDT" or "Sunday, Jun 8 at 2:00 PM EDT".
+    // Build a compact option label in the visitor's local timezone, e.g.
+    // "Today, Jun 8 at 2:00 PM ET" or "Sunday, Jun 8 at 2:00 PM PT". The zone
+    // uses the generic US form (ET/CT/MT/PT) so it does not flip with daylight
+    // saving. Offset-only zones with no friendly name (which resolve to "GMT-4")
+    // get no label; the list header covers them with "shown in your local time".
     function formatSessionLabel(date, tz) {
       const dayKey = function (d) {
         return new Intl.DateTimeFormat("en-CA", {
@@ -700,10 +703,22 @@ try {
       const time = new Intl.DateTimeFormat("en-US", {
         hour: "numeric",
         minute: "2-digit",
-        timeZoneName: "short",
         timeZone: tz,
       }).format(date);
-      return relative + ", " + monthDay + " at " + time;
+      // Generic US zone label (ET / CT / MT / PT). Pulled out via formatToParts so we
+      // can drop it when the browser can only offer a raw "GMT-4" style offset (happens
+      // for offset-only zones with no friendly name). In that case the list header still
+      // tells visitors the times are in their local time.
+      const tzPart = new Intl.DateTimeFormat("en-US", {
+        timeZoneName: "shortGeneric",
+        timeZone: tz,
+      })
+        .formatToParts(date)
+        .find(function (part) {
+          return part.type === "timeZoneName";
+        });
+      const tzLabel = tzPart && tzPart.value.indexOf("GMT") === -1 ? " " + tzPart.value : "";
+      return relative + ", " + monthDay + " at " + time + tzLabel;
     }
 
     // How long until the session starts, e.g. "Starts in 6 days" / "Starts in 3 hours".

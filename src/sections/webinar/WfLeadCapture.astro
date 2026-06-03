@@ -85,6 +85,7 @@ import usFlag from "../../images/icons/usflag.png";
           <div class="wf-slide__panel" id="wf-step-dates" inert>
             <button type="button" id="wf-dates-back" class="wf-slide__back">← Back</button>
             <p class="wf-slide__dates-label">Choose your webinar time</p>
+            <p class="wf-slide__dates-hint">Times shown in your local time</p>
             <div class="wf-slide__dates-list" id="wf-dates-list"></div>
             <button type="submit" id="wf-confirm" class="wf-slide__continue" disabled>
               <span class="wf-slide__button-text">Save My Seat</span>
@@ -383,6 +384,15 @@ import usFlag from "../../images/icons/usflag.png";
     font-weight: 600;
     color: #1a1a1a;
     margin: 0;
+    text-align: center;
+  }
+
+  .wf-slide__dates-hint {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #6b7280;
+    margin: 0.25rem 0 0;
     text-align: center;
   }
 
