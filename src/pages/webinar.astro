@@ -4,7 +4,9 @@ import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import WfLeadCapture from "../sections/webinar/WfLeadCapture.astro";
 import WfHero from "../sections/webinar/WfHero.astro";
-import WfFounderIntro from "../sections/webinar/WfFounderIntro.astro";
+import WfAudience from "../sections/webinar/WfAudience.astro";
+// Joe founder-intro slide is hidden for now; kept on disk for easy restore.
+// import WfFounderIntro from "../sections/webinar/WfFounderIntro.astro";
 import { ClientRouter } from "astro:transitions";
 
 const pageTitle = "Learn More | Robert Ventures";
@@ -106,7 +108,7 @@ try {
 
     <form class="wf-form" id="wf-registration-form" novalidate>
       <WfHero />
-      <WfFounderIntro />
+      <WfAudience />
       <WfLeadCapture />
       <DisclaimerBlock trackLocation="webinar_disclaimer" withSmsConsent={true} />
     </form>
@@ -631,7 +633,22 @@ try {
         btn.type = "button";
         btn.className = "wf-date-option";
         btn.value = entry.session.id;
-        btn.textContent = formatSessionLabel(entry.nextDate, userTz);
+        const text = document.createElement("span");
+        text.className = "wf-date-option__text";
+        const when = document.createElement("span");
+        when.className = "wf-date-option__when";
+        when.textContent = formatSessionLabel(entry.nextDate, userTz);
+        const countdown = document.createElement("span");
+        countdown.className = "wf-date-option__countdown";
+        countdown.textContent = formatCountdown(entry.nextDate);
+        text.appendChild(when);
+        text.appendChild(countdown);
+        // Decorative radio circle; selection is announced via aria-pressed on the button.
+        const indicator = document.createElement("span");
+        indicator.className = "wf-date-option__indicator";
+        indicator.setAttribute("aria-hidden", "true");
+        btn.appendChild(text);
+        btn.appendChild(indicator);
         btn.setAttribute("aria-pressed", "false");
         btn.setAttribute("data-date", entry.nextDate.toISOString());
         btn.setAttribute("data-timezone", userTz);
@@ -687,6 +704,19 @@ try {
         timeZone: tz,
       }).format(date);
       return relative + ", " + monthDay + " at " + time;
+    }
+
+    // How long until the session starts, e.g. "Starts in 6 days" / "Starts in 3 hours".
+    function formatCountdown(date) {
+      const ms = date.getTime() - Date.now();
+      if (ms <= 0) return "Starting now";
+      const days = Math.floor(ms / 86400000);
+      if (days >= 1) return "Starts in " + days + (days === 1 ? " day" : " days");
+      const hours = Math.floor(ms / 3600000);
+      if (hours >= 1) return "Starts in " + hours + (hours === 1 ? " hour" : " hours");
+      const minutes = Math.floor(ms / 60000);
+      if (minutes >= 1) return "Starts in " + minutes + (minutes === 1 ? " minute" : " minutes");
+      return "Starting soon";
     }
 
     function calculateNextSessionDate(details) {
@@ -1284,12 +1314,45 @@ try {
       });
     }
 
-    // Step 1 of date selection: validate the details, then reveal the date buttons.
+    // Slide the two-step form between the details panel and the date panel,
+    // mirroring the 320ms /webinar -> /webinar/capital page transition.
+    function goToDatesStep() {
+      const steps = document.getElementById("wf-steps");
+      const track = document.getElementById("wf-steps-track");
+      const details = document.getElementById("wf-step-details");
+      const dates = document.getElementById("wf-step-dates");
+      if (!steps || !track || !details || !dates) return;
+      // Lock to the current height, force a reflow, then animate to the date height.
+      steps.style.height = details.offsetHeight + "px";
+      void steps.offsetHeight;
+      track.classList.add("is-dates");
+      steps.style.height = dates.offsetHeight + "px";
+      details.setAttribute("inert", "");
+      dates.removeAttribute("inert");
+    }
+
+    function backToDetailsStep() {
+      const steps = document.getElementById("wf-steps");
+      const track = document.getElementById("wf-steps-track");
+      const details = document.getElementById("wf-step-details");
+      const dates = document.getElementById("wf-step-dates");
+      if (!steps || !track || !details || !dates) return;
+      track.classList.remove("is-dates");
+      steps.style.height = details.offsetHeight + "px";
+      dates.setAttribute("inert", "");
+      details.removeAttribute("inert");
+    }
+
+    // Step 1: validate the details, then slide to the date buttons.
     function setupDateSelection() {
+      const steps = document.getElementById("wf-steps");
+      const details = document.getElementById("wf-step-details");
       const selectDateBtn = document.getElementById("wf-select-date");
-      const datesBlock = document.getElementById("wf-dates");
+      const backBtn = document.getElementById("wf-dates-back");
       const list = document.getElementById("wf-dates-list");
-      if (!selectDateBtn || !datesBlock || !list) return;
+      if (!steps || !details || !selectDateBtn || !list) return;
+      // Pin the slider height to the details panel (from auto, so this does not animate).
+      steps.style.height = details.offsetHeight + "px";
       // Assign onclick (not addEventListener) so the ClientRouter re-run cannot stack handlers.
       selectDateBtn.onclick = function () {
         if (!validateForm()) return;
@@ -1300,9 +1363,9 @@ try {
           );
           return;
         }
-        datesBlock.hidden = false;
-        selectDateBtn.style.display = "none";
+        goToDatesStep();
       };
+      if (backBtn) backBtn.onclick = backToDetailsStep;
     }
 
     // Mux Video analytics + pause-when-offscreen
@@ -1475,11 +1538,10 @@ try {
     }
 
     function setupDevSkip() {
-      const btn = document.getElementById("wf-dev-skip");
-      if (!btn) return;
-      if (btn.dataset.boundClick === "1") return;
-      btn.dataset.boundClick = "1";
-      btn.addEventListener("click", function () {
+      const detailsBtn = document.getElementById("wf-dev-skip");
+      const datesBtn = document.getElementById("wf-dev-skip-dates");
+      // Prefill test data so the downstream pages skip their real API calls too.
+      function setDevTestData() {
         try {
           localStorage.setItem("test_mode", "1");
           localStorage.setItem("ghl_contact_id", "test_contact_123");
@@ -1488,9 +1550,23 @@ try {
           localStorage.setItem("phone_number", "5555551234");
           localStorage.setItem("invest_intent", "10000");
         } catch (e) {}
-        if (window.rvNavigate) window.rvNavigate("/webinar/capital");
-        else window.location.href = "/webinar/capital";
-      });
+      }
+      // Details step: skip filling the fields, slide to the date step.
+      // Date step: skip the real registration, jump straight to the capital page.
+      // onclick (not addEventListener) stays idempotent across ClientRouter re-runs.
+      if (detailsBtn) {
+        detailsBtn.onclick = function () {
+          setDevTestData();
+          goToDatesStep();
+        };
+      }
+      if (datesBtn) {
+        datesBtn.onclick = function () {
+          setDevTestData();
+          if (window.rvNavigate) window.rvNavigate("/webinar/capital");
+          else window.location.href = "/webinar/capital";
+        };
+      }
     }
 
     function boot() {
