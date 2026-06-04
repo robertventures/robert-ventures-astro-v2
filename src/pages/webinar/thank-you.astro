@@ -764,6 +764,11 @@ export const prerender = false;
           }
 
           btn.addEventListener("click", function () {
+            if (window.posthogTrack) {
+              window.posthogTrack("open_email_clicked", {
+                email_provider: resolved.info ? resolved.info.name : "unknown",
+              });
+            }
             if (resolved.info) {
               window.open(resolved.info.url, "_blank", "noopener,noreferrer");
               return;

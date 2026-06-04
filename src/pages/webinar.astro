@@ -1379,6 +1379,14 @@ try {
           return;
         }
         goToDatesStep();
+        if (window.posthogTrack) {
+          window.posthogTrack("webinar_date_step_opened", {
+            invest_intent: document.getElementById("wf-invest-select")
+              ? document.getElementById("wf-invest-select").value
+              : "",
+            session_type: "live",
+          });
+        }
       };
       if (backBtn) backBtn.onclick = backToDetailsStep;
     }
