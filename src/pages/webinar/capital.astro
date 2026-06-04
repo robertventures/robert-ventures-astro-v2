@@ -49,7 +49,7 @@ const options = [
 
     <main class="qf-main">
       <header class="qf-header">
-        <h1 class="qf-heading">Quick question before we go on.</h1>
+        <h1 class="qf-heading">Quick question before we complete your registration.</h1>
         <p class="qf-helper">
           Where's your money sitting today? Most viewers are coming from a CD, savings, or a
           brokerage account.
@@ -363,7 +363,7 @@ const options = [
                   window.posthogSetPerson({ capital_source: value });
                 }
                 setTimeout(function () {
-                  go("/introduction");
+                  go("/webinar/thank-you");
                 }, 120);
               }
 

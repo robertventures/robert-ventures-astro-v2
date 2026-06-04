@@ -1,0 +1,987 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import DisclaimerBlock from "../../components/DisclaimerBlock.astro";
+import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
+import { ClientRouter } from "astro:transitions";
+
+const pageTitle = "Thank You For Registering | Robert Ventures";
+const pageDescription =
+  "You're registered for the Robert Ventures webinar. Check your email for your confirmation and live link.";
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={pageTitle}
+      description={pageDescription}
+      rtkCampaignId="697c996793ba48f6ba89582f"
+    />
+    <meta name="robots" content="noindex" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"
+    />
+    <ClientRouter />
+    <script is:inline>
+      document.addEventListener("astro:before-preparation", function (event) {
+        if (event.navigationType === "traverse") {
+          event.direction = "traverse";
+        }
+      });
+      document.addEventListener("astro:before-swap", function (event) {
+        if (event.direction === "traverse") {
+          event.viewTransition.skipTransition();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="wt-logo" role="img" aria-label="Robert Ventures"><RvLogo /></div>
+
+    <main class="wt-main">
+      <section class="wt-slide">
+        <div class="wt-slide__content">
+          <span class="wt-slide__tag">You're Registered</span>
+
+          <h1 class="wt-slide__heading">You're all set.</h1>
+
+          <div class="wf-slide__media">
+            <div class="wf-slide__video-wrapper">
+              <div class="wf-slide__video-container" id="wf-video-container">
+                <mux-player
+                  id="wf-mux-player"
+                  playback-id="001A12SQoxX3Rlzfli9I3502zOHWxqKx02tgLWKvxHdQBg"
+                  env-key="hr9aevib299lcvfdoip01jd60"
+                  preload="metadata"
+                  stream-type="on-demand"
+                  max-resolution="1080p"
+                  rendition-order="desc"
+                  muted
+                  playsinline
+                  default-show-captions></mux-player>
+                <div class="wf-slide__mux-overlay" id="wf-mux-overlay" role="button" tabindex="0">
+                  <div class="wf-slide__mux-overlay-pill">
+                    <svg
+                      class="wf-slide__mux-overlay-icon wf-slide__mux-overlay-icon--unmute"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                        fill="#ffffff"></path>
+                    </svg>
+                    <svg
+                      class="wf-slide__mux-overlay-icon wf-slide__mux-overlay-icon--play"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+                    </svg>
+                    <span class="wf-slide__mux-overlay-text wf-slide__mux-overlay-text--unmute">
+                      Your video is playing. Click to unmute.
+                    </span>
+                    <span class="wf-slide__mux-overlay-text wf-slide__mux-overlay-text--play">
+                      Click to play
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="wf-slide__photo-caption">
+                <span class="wf-slide__photo-name">Joe Robert</span>
+                <span class="wf-slide__photo-role">Manager & Founder</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="wt-slide__when-label">We'll see you in:</p>
+
+          <div class="wt-countdown" id="wt-countdown" aria-live="polite">
+            <div class="wt-countdown__unit">
+              <span class="wt-countdown__value" data-unit="days">00</span>
+              <span class="wt-countdown__label">Days</span>
+            </div>
+            <div class="wt-countdown__unit">
+              <span class="wt-countdown__value" data-unit="hours">00</span>
+              <span class="wt-countdown__label">Hours</span>
+            </div>
+            <div class="wt-countdown__unit">
+              <span class="wt-countdown__value" data-unit="minutes">00</span>
+              <span class="wt-countdown__label">Minutes</span>
+            </div>
+            <div class="wt-countdown__unit">
+              <span class="wt-countdown__value" data-unit="seconds">00</span>
+              <span class="wt-countdown__label">Seconds</span>
+            </div>
+          </div>
+
+          <p class="wt-slide__when" id="wt-session-when"></p>
+
+          <div class="wt-slide__email">
+            <p class="wt-slide__email-text">
+              Check your inbox. We just sent your confirmation with the webinar link and a calendar
+              invite.
+            </p>
+            <button type="button" class="wt-slide__cta" id="wt-open-email-btn">
+              <span class="wt-slide__cta-text">Open my email</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <DisclaimerBlock trackLocation="webinar_thank_you_disclaimer" />
+
+    <style is:global>
+      html {
+        scroll-behavior: auto;
+      }
+      body {
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 320ms;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::view-transition-old(root) {
+        animation-name: ga-old-fwd;
+      }
+      ::view-transition-new(root) {
+        animation-name: ga-new-fwd;
+      }
+      html[data-astro-transition="back"]::view-transition-old(root) {
+        animation-name: ga-old-back;
+      }
+      html[data-astro-transition="back"]::view-transition-new(root) {
+        animation-name: ga-new-back;
+      }
+
+      @keyframes ga-new-fwd {
+        from {
+          transform: translateX(100%);
+        }
+      }
+      @keyframes ga-old-fwd {
+        to {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-new-back {
+        from {
+          transform: translateX(-20%);
+          opacity: 0.6;
+        }
+      }
+      @keyframes ga-old-back {
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      html[data-astro-transition="traverse"]::view-transition-old(root),
+      html[data-astro-transition="traverse"]::view-transition-new(root) {
+        animation: none;
+      }
+    </style>
+
+    <style>
+      .wt-logo {
+        display: flex;
+        justify-content: center;
+        padding: 1.25rem 1rem;
+      }
+      .wt-logo :global(svg) {
+        display: block;
+        height: 40px;
+        width: auto;
+      }
+      @media only screen and (min-width: 600px) {
+        .wt-logo {
+          padding: 1.5rem 1rem;
+        }
+        .wt-logo :global(svg) {
+          height: 48px;
+        }
+      }
+
+      .wt-main {
+        margin: 0;
+        padding: 0;
+      }
+
+      .wt-slide {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: #ffffff;
+        box-sizing: border-box;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      .wt-slide__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+        max-width: 480px;
+        opacity: 0;
+      }
+
+      .wt-slide__tag {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--green-brand);
+        background: #ebf5ef;
+        padding: 0.375rem 1rem;
+        border-radius: 100px;
+      }
+
+      .wt-slide__heading {
+        font-family: "Roboto Serif", serif;
+        color: #1a1a1a;
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 120%;
+        margin: 0;
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .wt-slide__body {
+        font-family: "Roboto", sans-serif;
+        color: #555555;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 150%;
+        margin: -0.25rem 0 0;
+        text-align: center;
+      }
+
+      /* Founder video — identical to the webinar hero. Swap the mux
+         playback-id / env-key later when the new video is uploaded. */
+      .wf-slide__media {
+        width: 100%;
+      }
+
+      .wf-slide__video-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .wf-slide__video-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: #152429;
+      }
+
+      .wf-slide__video-container mux-player {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        --media-object-fit: cover;
+        --media-object-position: center;
+        --time-range: none;
+      }
+
+      .wf-slide__video-container mux-player[mediaisfullscreen] {
+        --time-range: initial;
+      }
+
+      .wf-slide__mux-overlay {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 3;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .wf-slide__mux-overlay.is-active {
+        display: flex;
+      }
+
+      .wf-slide__mux-overlay:focus-visible {
+        outline: 3px solid #ffffff;
+        outline-offset: -4px;
+      }
+
+      .wf-slide__mux-overlay-pill {
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 999px;
+        padding: 0.625rem 1rem 0.625rem 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ffffff;
+        font-family: "Roboto", sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        animation: wf-mux-pill-glow 2.4s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .wf-slide__mux-overlay-icon {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+
+      .wf-slide__mux-overlay-icon--play {
+        display: none;
+        margin-left: 2px;
+      }
+
+      .wf-slide__mux-overlay-text--play {
+        display: none;
+      }
+
+      .wf-slide__mux-overlay.is-play-mode .wf-slide__mux-overlay-icon--unmute,
+      .wf-slide__mux-overlay.is-play-mode .wf-slide__mux-overlay-text--unmute {
+        display: none;
+      }
+
+      .wf-slide__mux-overlay.is-play-mode .wf-slide__mux-overlay-icon--play,
+      .wf-slide__mux-overlay.is-play-mode .wf-slide__mux-overlay-text--play {
+        display: inline-block;
+      }
+
+      @keyframes wf-mux-pill-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .wf-slide__mux-overlay-pill {
+          animation: none;
+        }
+      }
+
+      .wf-slide__photo-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to top, rgba(26, 26, 26, 0.8), transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+        transition: opacity 0.3s ease;
+      }
+
+      .wf-slide__photo-caption.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .wf-slide__photo-name {
+        font-family: "Roboto Serif", serif;
+        color: #ffffff;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 130%;
+      }
+
+      .wf-slide__photo-role {
+        font-family: "Roboto", sans-serif;
+        color: #67b78f;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 130%;
+      }
+
+      .wt-slide__when-label {
+        font-family: "Roboto", sans-serif;
+        color: #555555;
+        font-size: 0.9375rem;
+        line-height: 150%;
+        margin: 0.25rem 0 -0.25rem;
+        text-align: center;
+      }
+
+      /* Countdown */
+      .wt-countdown {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        width: 100%;
+        max-width: 340px;
+        margin-top: 0.5rem;
+      }
+
+      .wt-countdown__unit {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0 0.25rem;
+      }
+
+      .wt-countdown__unit + .wt-countdown__unit {
+        border-left: 1px solid var(--border-light);
+      }
+
+      /* When there are no days left, drop the Days column and the now-leading
+         divider so Hours becomes the first visible unit. */
+      .wt-countdown.is-no-days .wt-countdown__unit:first-child {
+        display: none;
+      }
+
+      .wt-countdown.is-no-days .wt-countdown__unit:nth-child(2) {
+        border-left: none;
+      }
+
+      .wt-countdown__value {
+        font-family: "Roboto", sans-serif;
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1;
+        color: #1a1a1a;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+      }
+
+      .wt-countdown__label {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.625rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #999999;
+      }
+
+      .wt-slide__when {
+        font-family: "Roboto", sans-serif;
+        color: #1a1a1a;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        line-height: 140%;
+        margin: -0.25rem 0 0;
+        text-align: center;
+        min-height: 1.2em;
+      }
+
+      /* Email block */
+      .wt-slide__email {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.875rem;
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+
+      .wt-slide__email-text {
+        font-family: "Roboto", sans-serif;
+        color: #555555;
+        font-size: 0.9375rem;
+        line-height: 150%;
+        margin: 0;
+        max-width: 360px;
+      }
+
+      .wt-slide__cta {
+        font-family: "Roboto", sans-serif;
+        font-size: 1.0625rem;
+        font-weight: 500;
+        color: #ffffff;
+        background: #152429;
+        border: none;
+        border-radius: 8px;
+        padding: 1.125rem 3rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+      }
+
+      .wt-slide__cta:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
+      }
+
+      .wt-slide__cta:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
+      }
+
+      @media only screen and (min-width: 600px) {
+        .wt-slide {
+          padding: 3rem 2rem 4rem;
+        }
+        .wt-slide__content {
+          gap: 1.5rem;
+          max-width: 520px;
+        }
+        .wt-slide__heading {
+          font-size: 2.75rem;
+        }
+        .wt-slide__body {
+          font-size: 1.125rem;
+        }
+        .wt-countdown {
+          max-width: 380px;
+        }
+        .wt-countdown__value {
+          font-size: 2.25rem;
+        }
+        .wt-countdown__label {
+          font-size: 0.6875rem;
+        }
+        .wt-slide__when-label {
+          font-size: 1rem;
+        }
+        .wt-slide__when {
+          font-size: 1.0625rem;
+        }
+        .wf-slide__mux-overlay-pill {
+          padding: 0.75rem 1.25rem 0.75rem 1rem;
+          font-size: 0.9375rem;
+        }
+        .wf-slide__mux-overlay-icon {
+          width: 24px;
+          height: 24px;
+        }
+        .wf-slide__photo-name {
+          font-size: 1.5rem;
+        }
+        .wf-slide__photo-role {
+          font-size: 1rem;
+        }
+        .wt-slide__email-text {
+          font-size: 1rem;
+        }
+        .wt-slide__cta {
+          font-size: 1.1875rem;
+          padding: 1.25rem 3.5rem;
+        }
+      }
+
+      @media only screen and (min-width: 1136px) {
+        .wt-slide {
+          padding: 4rem 2rem 5rem;
+        }
+        .wt-slide__content {
+          max-width: 560px;
+        }
+        .wt-slide__heading {
+          font-size: 3.25rem;
+        }
+        .wt-slide__body {
+          font-size: 1.25rem;
+        }
+        .wt-countdown__value {
+          font-size: 2.5rem;
+        }
+      }
+
+      @media only screen and (min-width: 1920px) {
+        .wt-slide {
+          padding: 5rem 2rem 6rem;
+        }
+        .wt-slide__content {
+          max-width: 600px;
+        }
+        .wt-slide__heading {
+          font-size: 3.75rem;
+        }
+      }
+    </style>
+
+    <script is:inline data-astro-rerun>
+      (function () {
+        var hasPlayedFounderVideo = false;
+
+        // Read the session the visitor picked at registration. During local
+        // testing there may be no session at all, in which case the countdown
+        // simply shows zeros (00) so the timer layout is still visible.
+        function getSession() {
+          try {
+            var raw = localStorage.getItem("webinarSession");
+            if (!raw) return null;
+            var parsed = JSON.parse(raw);
+            return parsed && parsed.date ? parsed : null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function pad(n) {
+          n = Math.max(0, Math.floor(n));
+          return n < 10 ? "0" + n : String(n);
+        }
+
+        function setUnit(unit, value) {
+          var el = document.querySelector('.wt-countdown__value[data-unit="' + unit + '"]');
+          if (el) el.textContent = value;
+        }
+
+        function setNoDays(noDays) {
+          var container = document.getElementById("wt-countdown");
+          if (container) container.classList.toggle("is-no-days", !!noDays);
+        }
+
+        function renderZeros() {
+          setUnit("days", "00");
+          setUnit("hours", "00");
+          setUnit("minutes", "00");
+          setUnit("seconds", "00");
+          setNoDays(true);
+        }
+
+        function setupCountdown() {
+          var session = getSession();
+          var whenEl = document.getElementById("wt-session-when");
+
+          // No real session (e.g. testing in dev): show zeros, no live ticking.
+          if (!session) {
+            renderZeros();
+            if (whenEl) whenEl.textContent = "";
+            return;
+          }
+
+          if (whenEl && session.fullDate) {
+            whenEl.textContent = session.fullDate;
+          }
+
+          var targetMs = Date.parse(session.date);
+          if (isNaN(targetMs)) {
+            renderZeros();
+            return;
+          }
+
+          var TEN_MINUTES_MS = 10 * 60 * 1000;
+
+          function tick() {
+            var diff = targetMs - Date.now();
+            if (diff <= 0) {
+              renderZeros();
+              if (whenEl) whenEl.textContent = "Your webinar is starting now.";
+              return true; // stop ticking
+            }
+            var totalSeconds = Math.floor(diff / 1000);
+            var days = Math.floor(totalSeconds / 86400);
+            var hours = Math.floor((totalSeconds % 86400) / 3600);
+            var minutes = Math.floor((totalSeconds % 3600) / 60);
+            var seconds = totalSeconds % 60;
+            setUnit("days", pad(days));
+            setUnit("hours", pad(hours));
+            setUnit("minutes", pad(minutes));
+            setUnit("seconds", pad(seconds));
+            setNoDays(days === 0);
+            // "Starting now" only nudges in the final 10 minutes; otherwise keep
+            // showing the scheduled date/time.
+            if (whenEl) {
+              whenEl.textContent =
+                diff < TEN_MINUTES_MS ? "Your webinar is starting now." : session.fullDate || "";
+            }
+            return false;
+          }
+
+          if (tick()) return;
+          var interval = setInterval(function () {
+            if (tick()) clearInterval(interval);
+          }, 1000);
+        }
+
+        // "Open my email" — detects the visitor's provider from the saved
+        // email and opens the right webmail inbox, falling back per-platform.
+        var EMAIL_PROVIDERS = {
+          "gmail.com": { name: "Gmail", url: "https://mail.google.com/mail/u/0/#inbox" },
+          "googlemail.com": { name: "Gmail", url: "https://mail.google.com/mail/u/0/#inbox" },
+          "yahoo.com": { name: "Yahoo Mail", url: "https://mail.yahoo.com/" },
+          "ymail.com": { name: "Yahoo Mail", url: "https://mail.yahoo.com/" },
+          "outlook.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "hotmail.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "live.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "msn.com": { name: "Outlook", url: "https://outlook.live.com/mail/0/inbox" },
+          "icloud.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "me.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "mac.com": { name: "iCloud Mail", url: "https://www.icloud.com/mail" },
+          "aol.com": { name: "AOL Mail", url: "https://mail.aol.com/" },
+          "proton.me": { name: "ProtonMail", url: "https://mail.proton.me/u/0/inbox" },
+          "protonmail.com": { name: "ProtonMail", url: "https://mail.proton.me/u/0/inbox" },
+        };
+
+        function getProviderInfo() {
+          var email = "";
+          try {
+            email = (localStorage.getItem("userEmail") || "").trim().toLowerCase();
+          } catch (e) {}
+          var domain = (email.split("@")[1] || "").trim();
+          return { email: email, info: EMAIL_PROVIDERS[domain] || null };
+        }
+
+        function setupOpenEmail() {
+          var btn = document.getElementById("wt-open-email-btn");
+          if (!btn) return;
+          if (btn.dataset.boundClick === "1") return;
+          btn.dataset.boundClick = "1";
+
+          var resolved = getProviderInfo();
+          if (resolved.info) {
+            var labelEl = btn.querySelector(".wt-slide__cta-text");
+            if (labelEl) labelEl.textContent = "Open " + resolved.info.name;
+          }
+
+          btn.addEventListener("click", function () {
+            if (window.posthogTrack) {
+              window.posthogTrack("open_email_clicked", {
+                email_provider: resolved.info ? resolved.info.name : "unknown",
+              });
+            }
+            if (resolved.info) {
+              window.open(resolved.info.url, "_blank", "noopener,noreferrer");
+              return;
+            }
+            var ua = navigator.userAgent || "";
+            if (/iPad|iPhone|iPod/.test(ua)) {
+              window.location.href = "message://";
+            } else if (/Android/i.test(ua)) {
+              window.open("https://mail.google.com/", "_blank", "noopener,noreferrer");
+            } else {
+              window.location.href = "mailto:";
+            }
+          });
+        }
+
+        function runFadeIn() {
+          var content = document.querySelector(".wt-slide__content");
+          if (!content) return;
+          if (!window.gsapLoaded || typeof window.gsap === "undefined") {
+            window.addEventListener(
+              "gsapLoaded",
+              function () {
+                runFadeIn();
+              },
+              { once: true }
+            );
+            return;
+          }
+          var gsap = window.gsap;
+          gsap.fromTo(
+            content,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
+          );
+        }
+
+        // Mux video — same behavior as the webinar hero: muted autoplay with an
+        // unmute overlay; clicking unmutes and restarts the video from 0.
+        function setupMuxAnalytics() {
+          const player = document.getElementById("wf-mux-player");
+          const caption = document.querySelector(".wf-slide__photo-caption");
+          const overlay = document.getElementById("wf-mux-overlay");
+          if (!player) return;
+
+          let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
+          let isAutoplayPlay = false;
+          let engaged = false;
+
+          function showOverlayUnmuteMode() {
+            if (!overlay) return;
+            overlay.classList.add("is-active");
+            overlay.classList.remove("is-play-mode");
+            overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+          }
+
+          function showOverlayPlayMode() {
+            if (!overlay) return;
+            overlay.classList.add("is-active", "is-play-mode");
+            overlay.setAttribute("aria-label", "Click to play");
+          }
+
+          function dismissOverlay() {
+            if (!overlay) return;
+            overlay.classList.remove("is-active");
+          }
+
+          function markEngaged() {
+            if (engaged) return;
+            engaged = true;
+            hasPlayedFounderVideo = true;
+            dismissOverlay();
+            if (window.posthogTrack) {
+              window.posthogTrack("video_play", {
+                video_id: "wf-intro-joe-robert",
+                current_time: Math.round(player.currentTime || 0),
+              });
+            }
+          }
+
+          function attemptAutoplay() {
+            if (autoplayState !== "pending") return;
+            autoplayState = "trying";
+            try {
+              player.muted = true;
+            } catch (e) {}
+            isAutoplayPlay = true;
+            const promise = player.play();
+            if (promise && typeof promise.then === "function") {
+              promise
+                .then(function () {
+                  autoplayState = "playing";
+                  if (!engaged) showOverlayUnmuteMode();
+                })
+                .catch(function () {
+                  isAutoplayPlay = false;
+                  autoplayState = "failed";
+                  if (!engaged) showOverlayPlayMode();
+                });
+            } else {
+              autoplayState = "playing";
+              if (!engaged) showOverlayUnmuteMode();
+            }
+          }
+
+          function engageFromOverlay(e) {
+            if (!overlay || !overlay.classList.contains("is-active")) return;
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+              player.muted = false;
+            } catch (err) {}
+            dismissOverlay();
+          }
+
+          if (overlay) {
+            overlay.addEventListener("click", engageFromOverlay);
+            overlay.addEventListener("keydown", function (e) {
+              if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
+            });
+          }
+
+          player.addEventListener("play", function () {
+            const wasAutoplay = isAutoplayPlay;
+            isAutoplayPlay = false;
+            if (caption) caption.classList.add("is-hidden");
+            if (!wasAutoplay) markEngaged();
+          });
+
+          player.addEventListener("volumechange", function () {
+            if (engaged) return;
+            if (player.muted) return;
+            try {
+              player.pause();
+              player.currentTime = 0;
+            } catch (e) {}
+            const result = player.play();
+            if (result && typeof result.catch === "function") result.catch(function () {});
+            markEngaged();
+          });
+
+          player.addEventListener("pause", function () {
+            if (player.ended) return;
+            if (caption) caption.classList.remove("is-hidden");
+          });
+
+          player.addEventListener("ended", function () {
+            if (caption) caption.classList.remove("is-hidden");
+          });
+
+          if ("IntersectionObserver" in window) {
+            const videoIo = new IntersectionObserver(
+              function (entries) {
+                entries.forEach(function (entry) {
+                  if (entry.isIntersecting) {
+                    if (autoplayState === "pending") {
+                      attemptAutoplay();
+                    } else if (
+                      autoplayState === "playing" &&
+                      player.paused &&
+                      !hasPlayedFounderVideo
+                    ) {
+                      isAutoplayPlay = true;
+                      const result = player.play();
+                      if (result && typeof result.catch === "function") {
+                        result.catch(function () {
+                          isAutoplayPlay = false;
+                        });
+                      }
+                    }
+                  } else if (!player.paused) {
+                    player.pause();
+                  }
+                });
+              },
+              { threshold: 0, rootMargin: "0px 0px 40% 0px" }
+            );
+            videoIo.observe(player);
+          }
+        }
+
+        function setupMuxPreloading() {
+          const player = document.getElementById("wf-mux-player");
+          if (!player) return;
+
+          if (document.readyState === "complete") {
+            player.setAttribute("preload", "auto");
+          } else {
+            window.addEventListener("load", function () {
+              player.setAttribute("preload", "auto");
+            });
+          }
+        }
+
+        function boot() {
+          setupCountdown();
+          setupOpenEmail();
+          setupMuxPreloading();
+          setupMuxAnalytics();
+          runFadeIn();
+        }
+
+        // Load Mux Player from CDN (module script, non-blocking).
+        const muxScript = document.createElement("script");
+        muxScript.src = "https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs";
+        muxScript.type = "module";
+        document.head.appendChild(muxScript);
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", boot);
+        } else {
+          boot();
+        }
+      })();
+    </script>
+  </body>
+</html>

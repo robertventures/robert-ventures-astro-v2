@@ -1,0 +1,241 @@
+---
+
+---
+
+<section class="wf-slide" id="wf-slide-audience">
+  <div class="wf-slide__content">
+    <span class="wf-slide__tag">Who This Is For</span>
+
+    <h2 class="wf-slide__heading">Is This You?</h2>
+    <p class="wf-slide__subtitle">
+      If you have savings or money market cash you'd like to put to work, you might be a great fit.
+    </p>
+
+    <ul class="wf-audience-list">
+      <li class="wf-audience-card">
+        You're Actively Looking For
+        <span class="wf-audience-card__accent">Better Returns On Your Capital</span>
+      </li>
+      <li class="wf-audience-card">
+        You Want A Company That
+        <span class="wf-audience-card__accent">Pays Investors First</span>
+      </li>
+      <li class="wf-audience-card">
+        You Value Fixed
+        <span class="wf-audience-card__accent">8-10% Distributions</span>
+        Paid Monthly
+      </li>
+      <li class="wf-audience-card">
+        You Care About A Successful
+        <span class="wf-audience-card__accent">Strategy & Manager Track Record</span>
+      </li>
+      <li class="wf-audience-card">
+        You Want A Manager Who Has
+        <span class="wf-audience-card__accent">Never Lost Investor Capital In 25 Years</span>
+      </li>
+    </ul>
+
+    <button
+      type="button"
+      class="wf-slide__chevron"
+      data-next-slide="2"
+      aria-label="Scroll to next slide"
+    >
+      <span class="wf-slide__chevron-arrow"></span>
+      <span class="wf-slide__chevron-arrow"></span>
+    </button>
+  </div>
+</section>
+
+<style>
+  .wf-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    padding: 3rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .wf-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 480px;
+    opacity: 0;
+  }
+
+  .wf-slide__tag {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-brand);
+    background: #ebf5ef;
+    padding: 0.375rem 1rem;
+    border-radius: 100px;
+  }
+
+  .wf-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 130%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .wf-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    color: #555555;
+    text-align: center;
+    text-wrap: balance;
+    margin: -0.25rem 0 0;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Qualifier cards */
+  .wf-audience-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .wf-audience-card {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    box-shadow:
+      0 1px 2px rgba(26, 26, 26, 0.04),
+      0 10px 24px rgba(26, 26, 26, 0.09);
+    padding: 1rem 1.25rem;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #1a1a1a;
+  }
+
+  .wf-audience-card__accent {
+    display: block;
+    color: var(--green-brand);
+    font-weight: 700;
+  }
+
+  /* Scroll chevron */
+  .wf-slide__chevron {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    animation: wf-chevron-bounce 1.5s ease-in-out infinite;
+  }
+
+  .wf-slide__chevron-arrow {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-right: 2.5px solid #555555;
+    border-bottom: 2.5px solid #555555;
+    transform: rotate(45deg);
+    margin-top: -6px;
+  }
+
+  .wf-slide__chevron-arrow:first-child {
+    margin-top: 0;
+    opacity: 0.4;
+  }
+
+  @keyframes wf-chevron-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .wf-slide {
+      padding: 1.5rem 2rem 2rem;
+    }
+
+    .wf-slide__content {
+      gap: 1.25rem;
+      max-width: 540px;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.5rem;
+    }
+
+    .wf-slide__subtitle {
+      font-size: 1.125rem;
+    }
+
+    .wf-audience-card {
+      padding: 1.125rem 1.5rem;
+      font-size: 1.125rem;
+    }
+
+    .wf-slide__chevron-arrow {
+      width: 16px;
+      height: 16px;
+      border-right-width: 3px;
+      border-bottom-width: 3px;
+      margin-top: -7px;
+    }
+
+    .wf-slide__chevron-arrow:first-child {
+      margin-top: 0;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .wf-slide {
+      padding: 4rem 2rem;
+    }
+
+    .wf-slide__content {
+      max-width: 600px;
+    }
+
+    .wf-slide__heading {
+      font-size: 2.75rem;
+    }
+
+    .wf-slide__chevron {
+      display: none;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .wf-slide {
+      padding: 5rem 2rem;
+    }
+
+    .wf-slide__heading {
+      font-size: 3rem;
+    }
+  }
+</style>

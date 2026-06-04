@@ -137,35 +137,25 @@ const btcTimeline = [
 
 <section class="rational-assets offer-slide" aria-labelledby="rational-assets-heading">
   <div class="rational-assets__container">
-    <!-- BLOCK 1: HEADER -->
-    <header class="rational-assets__header">
-      <p class="rational-assets__eyebrow">Tangible assets</p>
-      <h2 id="rational-assets-heading" class="rational-assets__heading">
-        Coastal real estate on the Outer Banks.
-      </h2>
-      <p class="rational-assets__subhead">
-        The income comes from real things. Coastal real estate on the Outer Banks, plus a Bitcoin
-        reserve.
-      </p>
-    </header>
+    <!-- BLOCK 2: MARKET PROOF (centered: heading on top, then chart, then stat band) -->
+    <article class="rational-assets__block rational-assets__market">
+      <div class="rational-assets__market-info">
+        <header class="rational-assets__header">
+          <p class="rational-assets__eyebrow">Tangible assets</p>
+          <h2 id="rational-assets-heading" class="rational-assets__heading">
+            Coastal real estate on the Outer Banks.
+          </h2>
+          <p class="rational-assets__subhead">
+            The income comes from real things. Coastal real estate on the Outer Banks, plus a
+            Bitcoin reserve.
+          </p>
+        </header>
 
-    <!-- BLOCK 2: MARKET PROOF (stats + lede + chart) -->
-    <article class="rational-assets__block">
-      <ul class="rational-assets__stats" aria-label="Outer Banks market stats">
-        {
-          marketStats.map((s) => (
-            <li class="rational-assets__stat">
-              <span class="rational-assets__stat-value">{s.value}</span>
-              <span class="rational-assets__stat-label">{s.label}</span>
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="rational-assets__lede">
-        Land doesn't grow on a barrier island, and tourism demand keeps showing up. Over the past
-        ten years, prices reflect it.
-      </p>
+        <p class="rational-assets__lede">
+          Land doesn't grow on a barrier island, and tourism demand keeps showing up. Over the past
+          ten years, prices reflect it.
+        </p>
+      </div>
 
       <div class="obx-chart">
         <div class="obx-chart__header">
@@ -284,10 +274,24 @@ const btcTimeline = [
 
         <p class="obx-chart__source">Data from Zillow Home Value Index, Dare County, NC.</p>
       </div>
+
+      <ul class="rational-assets__stats" aria-label="Outer Banks market stats">
+        {
+          marketStats.map((s) => (
+            <li class="rational-assets__stat">
+              <span class="rational-assets__stat-value">{s.value}</span>
+              <span class="rational-assets__stat-label">{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
     </article>
 
-    <!-- BLOCK 3: PORTFOLIO (eyebrow + stats + photos + strategy line) -->
-    <article class="rational-assets__block" aria-labelledby="rational-assets-portfolio-heading">
+    <!-- BLOCK 3: PORTFOLIO (centered: heading on top, then stats, photos, strategy) -->
+    <article
+      class="rational-assets__block rational-assets__portfolio"
+      aria-labelledby="rational-assets-portfolio-heading"
+    >
       <div class="rational-assets__block-header">
         <p class="rational-assets__block-eyebrow">What we own today</p>
         <h3 id="rational-assets-portfolio-heading" class="rational-assets__block-heading">
@@ -341,10 +345,21 @@ const btcTimeline = [
     <!-- BLOCK 4: BITCOIN SECONDARY (header + adoption timeline + how-we-hold-it) -->
     <aside class="rational-asset-secondary">
       <div class="rational-asset-secondary__card">
-        <p class="rational-asset-secondary__eyebrow">The digital reserve</p>
-        <h3 class="rational-asset-secondary__heading">Stacked in digital assets.</h3>
+        <div class="rational-asset-secondary__narrative">
+          <p class="rational-asset-secondary__eyebrow">The digital reserve</p>
+          <h3 class="rational-asset-secondary__heading">Stacked in digital assets.</h3>
 
-        <p class="rational-asset-secondary__lede">A decade of institutional adoption.</p>
+          <p class="rational-asset-secondary__lede">A decade of institutional adoption.</p>
+
+          <p class="rational-asset-secondary__body">
+            Every month, alongside the property portfolio, we accumulate Bitcoin and Ethereum. The
+            same scarcity logic that drives our Outer Banks strategy.
+          </p>
+
+          <p class="rational-asset-secondary__body rational-asset-secondary__body--quiet">
+            Held as a long-term digital reserve. Never traded.
+          </p>
+        </div>
 
         <ol class="btc-timeline" aria-label="Bitcoin institutional adoption timeline">
           {
@@ -360,15 +375,6 @@ const btcTimeline = [
             ))
           }
         </ol>
-
-        <p class="rational-asset-secondary__body">
-          Every month, alongside the property portfolio, we accumulate Bitcoin and Ethereum. The
-          same scarcity logic that drives our Outer Banks strategy.
-        </p>
-
-        <p class="rational-asset-secondary__body rational-asset-secondary__body--quiet">
-          Held as a long-term digital reserve. Never traded.
-        </p>
       </div>
     </aside>
 
@@ -514,6 +520,15 @@ const btcTimeline = [
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+  }
+
+  /* Market intro group (eyebrow + heading + subhead + lede), centered on top */
+  .rational-assets__market-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
   }
 
   .rational-assets__block-header {
@@ -855,6 +870,13 @@ const btcTimeline = [
     gap: 14px;
   }
 
+  .rational-asset-secondary__narrative {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+
   .rational-asset-secondary__eyebrow {
     font-family: "Roboto", sans-serif;
     font-size: 12px;
@@ -1069,8 +1091,16 @@ const btcTimeline = [
       gap: 3.5rem;
     }
 
+    /* Coastal (market) and portfolio render as centered single-column stacks:
+       eyebrow + heading on top, content (chart / stats / carousel) below. This
+       is the base flex-column layout, so they need no desktop grid overrides.
+       Bitcoin keeps its two-column card; match it to the other blocks' width. */
+    .rational-asset-secondary {
+      max-width: 1000px;
+    }
+
     .rational-assets__heading {
-      font-size: 3.25rem;
+      font-size: 2.5rem;
     }
 
     .rational-assets__subhead {
@@ -1093,8 +1123,18 @@ const btcTimeline = [
       padding: 2rem 1.75rem 1.5rem;
     }
 
+    /* Block 4 Bitcoin: narrative left, vertical adoption timeline right
+       (spans full width via the shared rule above). */
     .rational-asset-secondary__card {
       padding: 2.25rem 2.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 2.5rem;
+    }
+
+    .btc-timeline {
+      margin: 0;
     }
 
     .rational-asset-secondary__heading {
@@ -1104,7 +1144,7 @@ const btcTimeline = [
 
   @media only screen and (min-width: 1920px) {
     .rational-assets__heading {
-      font-size: 3.75rem;
+      font-size: 2.625rem;
     }
   }
 
