@@ -13,19 +13,6 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     <p class="our-story__eyebrow">Built on the Outer Banks. Stacked in Bitcoin.</p>
     <h2 class="our-story__heading">The Robert Ventures story</h2>
 
-    <div class="our-story__body">
-      <p>
-        Robert Ventures is a founder-led investment company. Your capital funds
-        two hard assets working as one strategy: coastal real estate on the Outer
-        Banks and Bitcoin we accumulate every month.
-      </p>
-      <p>
-        Founder Joe Robert runs it personally, with 25 years in asset management
-        and $750,000 of his own capital in line behind every bondholder. Watch his
-        story below.
-      </p>
-    </div>
-
     <div class="our-story__video-wrapper">
       <div class="our-story__video-container">
         <mux-player
@@ -41,12 +28,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
           muted
           playsinline
           default-show-captions></mux-player>
-        <div
-          class="our-story__mux-overlay"
-          id="home-story-mux-overlay"
-          role="button"
-          tabindex="0"
-        >
+        <div class="our-story__mux-overlay" id="home-story-mux-overlay" role="button" tabindex="0">
           <div class="our-story__mux-overlay-pill">
             <svg
               class="our-story__mux-overlay-icon our-story__mux-overlay-icon--unmute"
@@ -76,6 +58,18 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
         </div>
       </div>
     </div>
+
+    <div class="our-story__body">
+      <p>
+        Robert Ventures is a founder-led investment company. Your capital funds two hard assets
+        working as one strategy: coastal real estate on the Outer Banks and Bitcoin we accumulate
+        every month.
+      </p>
+      <p>
+        Founder Joe Robert runs it personally, with 25 years in asset management and $750,000 of his
+        own capital in line behind every bondholder.
+      </p>
+    </div>
   </div>
 </section>
 
@@ -103,6 +97,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     letter-spacing: 0.08em;
     line-height: 130%;
     margin: 0 0 12px;
+    text-align: center;
   }
 
   .our-story__heading {
@@ -112,6 +107,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     color: var(--text-heading);
     line-height: 110%;
     margin: 0 0 20px;
+    text-align: center;
   }
 
   .our-story__body {
@@ -131,6 +127,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
 
   .our-story__video-wrapper {
     width: 100%;
+    margin: 0 0 24px;
     overflow: hidden;
     border-radius: 12px;
     box-shadow:
@@ -248,6 +245,11 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
       padding: 48px 32px;
     }
 
+    .our-story__eyebrow,
+    .our-story__heading {
+      text-align: left;
+    }
+
     .our-story__heading {
       font-size: 36px;
     }
@@ -266,14 +268,35 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
   @media only screen and (min-width: 1136px) {
     .our-story__container {
       padding: 64px 112px;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      grid-template-rows: auto auto 1fr;
+      grid-template-areas:
+        "eyebrow video"
+        "heading video"
+        "body    video";
+      column-gap: 64px;
+      align-items: start;
+    }
+
+    .our-story__eyebrow {
+      grid-area: eyebrow;
     }
 
     .our-story__heading {
+      grid-area: heading;
       font-size: 36px;
     }
 
+    .our-story__body {
+      grid-area: body;
+      margin-bottom: 0;
+    }
+
     .our-story__video-wrapper {
-      max-width: 960px;
+      grid-area: video;
+      margin: 0;
+      max-width: 100%;
     }
   }
 
@@ -323,8 +346,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
       hasSetupHomeStoryVideo = true;
 
       const prefersReducedMotion =
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       let autoplayState = "pending";
       let isAutoplayPlay = false;
@@ -487,7 +509,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
               }
             });
           },
-          { rootMargin: "800px 0px" },
+          { rootMargin: "800px 0px" }
         );
 
         muxIo.observe(section);

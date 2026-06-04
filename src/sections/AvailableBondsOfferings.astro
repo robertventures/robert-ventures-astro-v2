@@ -64,13 +64,20 @@
     max-width: 480px;
   }
 
-  .cards-container {
+  .offerings {
     display: flex;
     flex-direction: column;
     gap: 32px;
     width: 100%;
     position: relative;
     z-index: 1;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
   }
 
   .bond-card {
@@ -97,10 +104,10 @@
 
   .card-divider {
     width: 100%;
-    height: 1px;
-    background-color: var(--border-light);
+    height: 2px;
+    background-color: var(--green-brand);
     margin-top: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .apy-display {
@@ -140,67 +147,14 @@
     color: var(--text-heading);
   }
 
-  .lockup-badge {
-    display: inline-block;
-    padding: 8px 16px;
-    border-radius: 20px;
+  .card-term {
+    font-family: "Roboto", sans-serif;
     font-size: 14px;
-    font-weight: 500;
-    align-self: flex-start;
-  }
-
-  .bond-card.featured .lockup-badge {
-    background: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
     color: var(--green-dark);
-  }
-
-  .bond-card:not(.featured) .lockup-badge {
-    background: var(--green-tint);
-    color: var(--green-dark);
-  }
-
-  .card-description {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  .bond-card.featured .card-description {
-    color: var(--text-body);
-  }
-
-  .bond-card:not(.featured) .card-description {
-    color: var(--text-body);
-  }
-
-  .features-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 0;
-  }
-
-  .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-  }
-
-  .bond-card.featured .feature-item {
-    color: var(--text-heading);
-  }
-
-  .bond-card:not(.featured) .feature-item {
-    color: var(--text-heading);
-  }
-
-  .feature-item::before {
-    content: "✓";
-    color: var(--green-brand);
-    font-weight: bold;
-    font-size: 18px;
-    flex-shrink: 0;
   }
 
   .cta-button {
@@ -221,7 +175,6 @@
       border-color 0.2s ease;
     align-self: stretch;
     box-sizing: border-box;
-    margin-top: 8px;
   }
 
   .cta-button:active {
@@ -268,8 +221,11 @@
       flex: 1;
     }
 
-    .cards-container {
+    .offerings {
       flex: 2;
+    }
+
+    .cards-container {
       flex-direction: row;
       gap: 32px;
     }
@@ -305,58 +261,39 @@
       </p>
     </div>
 
-    <div class="cards-container">
-      <!-- 10% APY Bond - Featured -->
-      <div class="bond-card featured">
-        <div class="card-header">
-          <div class="apy-display">
-            <span class="apy-value">10%</span>
-            <span class="apy-label">Annual Returns</span>
+    <div class="offerings">
+      <div class="cards-container">
+        <!-- 10% APY Bond - Featured -->
+        <div class="bond-card featured">
+          <div class="card-header">
+            <span class="card-term">3 Years Minimum Commitment</span>
+            <div class="card-divider"></div>
+            <div class="apy-display">
+              <span class="apy-value">10%</span>
+              <span class="apy-label">Annual Returns</span>
+            </div>
           </div>
-          <div class="card-divider"></div>
-          <span class="lockup-badge">3 Years Minimum Commitment</span>
         </div>
 
-        <p class="card-description">Higher returns and sustainable long-term capital growth.</p>
-
-        <div class="features-list">
-          <div class="feature-item">Monthly payouts</div>
-          <div class="feature-item">Compound returns</div>
+        <!-- 8% APY Bond -->
+        <div class="bond-card">
+          <div class="card-header">
+            <span class="card-term">1 Year Minimum Commitment</span>
+            <div class="card-divider"></div>
+            <div class="apy-display">
+              <span class="apy-value">8%</span>
+              <span class="apy-label">Annual Returns</span>
+            </div>
+          </div>
         </div>
-
-        <a
-          href="/webinar"
-          class="cta-button"
-          data-track-cta="get_started"
-          data-track-location="bond_10_percent">Get Started</a
-        >
       </div>
 
-      <!-- 8% APY Bond -->
-      <div class="bond-card">
-        <div class="card-header">
-          <div class="apy-display">
-            <span class="apy-value">8%</span>
-            <span class="apy-label">Annual Returns</span>
-          </div>
-          <div class="card-divider"></div>
-          <span class="lockup-badge">1 Year Minimum Commitment</span>
-        </div>
-
-        <p class="card-description">Shorter commitment and quick access to capital.</p>
-
-        <div class="features-list">
-          <div class="feature-item">Monthly payouts</div>
-          <div class="feature-item">Compound returns</div>
-        </div>
-
-        <a
-          href="/webinar"
-          class="cta-button"
-          data-track-cta="get_started"
-          data-track-location="bond_8_percent">Get Started</a
-        >
-      </div>
+      <a
+        href="/webinar"
+        class="cta-button"
+        data-track-cta="get_started"
+        data-track-location="bond_offerings">Get Started</a
+      >
     </div>
   </div>
 </section>
