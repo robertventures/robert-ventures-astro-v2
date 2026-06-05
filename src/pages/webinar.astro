@@ -5,6 +5,7 @@ import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
 import WfLeadCapture from "../sections/webinar/WfLeadCapture.astro";
 import WfHero from "../sections/webinar/WfHero.astro";
 import WfAudience from "../sections/webinar/WfAudience.astro";
+import ReviewsV3 from "../sections/ReviewsV3.astro";
 // Joe founder-intro slide is hidden for now; kept on disk for easy restore.
 // import WfFounderIntro from "../sections/webinar/WfFounderIntro.astro";
 import { ClientRouter } from "astro:transitions";
@@ -104,13 +105,16 @@ try {
       <button class="wf-indicator__dot" data-section="1" aria-label="Go to section 2"></button>
       <div class="wf-indicator__line"></div>
       <button class="wf-indicator__dot" data-section="2" aria-label="Go to section 3"></button>
+      <div class="wf-indicator__line"></div>
+      <button class="wf-indicator__dot" data-section="3" aria-label="Go to section 4"></button>
     </nav>
 
     <form class="wf-form" id="wf-registration-form" novalidate>
       <WfHero />
       <WfAudience />
       <WfLeadCapture />
-      <DisclaimerBlock trackLocation="webinar_disclaimer" withSmsConsent={true} />
+      <ReviewsV3 />
+      <DisclaimerBlock trackLocation="webinar_disclaimer" withSmsConsent={false} />
     </form>
   </body>
 </html>
@@ -179,6 +183,17 @@ try {
   .wf-form {
     margin: 0;
     padding: 0;
+  }
+
+  /* Per-page override for the shared ReviewsV3 section: white background here,
+     with the testimonial card flipped to grey so it still stands out. Mirrors
+     the same override used on offer-v2. */
+  section:has(.reviews-v3-container) {
+    background: var(--bg-primary);
+  }
+
+  section:has(.reviews-v3-container) .review-card {
+    background: var(--bg-secondary);
   }
 
   /* Default vertical rhythm for webinar slides. Each section can override
@@ -1269,6 +1284,11 @@ try {
     // Scroll-based init: collect sections, wire up two IntersectionObservers
     function initScroll() {
       sections = Array.from(document.querySelectorAll("section.wf-slide"));
+      // The testimonials section is a plain <section> (shared ReviewsV3 component),
+      // so it is not a .wf-slide. Append it so it gets its own indicator dot.
+      var reviewsContainer = document.querySelector(".reviews-v3-container");
+      var reviewsSection = reviewsContainer ? reviewsContainer.closest("section") : null;
+      if (reviewsSection) sections.push(reviewsSection);
       sections.forEach(function (section, i) {
         section.setAttribute("data-section-index", String(i));
       });
