@@ -57,9 +57,9 @@ const portfolioStats = [
 
 const OBX_W = 880;
 const OBX_H = 460;
-const OBX_PAD_L = 96;
-const OBX_PAD_R = 200;
-const OBX_PAD_T = 50;
+const OBX_PAD_L = 80;
+const OBX_PAD_R = 56;
+const OBX_PAD_T = 64;
 const OBX_PAD_B = 60;
 const OBX_PLOT_W = OBX_W - OBX_PAD_L - OBX_PAD_R;
 const OBX_PLOT_H = OBX_H - OBX_PAD_T - OBX_PAD_B;
@@ -224,7 +224,7 @@ const btcTimeline = [
               <text
                 class="obx-chart__endpoint-label obx-chart__endpoint-label--start"
                 x={obxXFor(obxFirst.year) + 14}
-                y={obxYFor(obxFirst.value) + 8}
+                y={obxYFor(obxFirst.value) + 32}
               >
                 {obxFmt(obxFirst.value)}
               </text>
@@ -234,18 +234,29 @@ const btcTimeline = [
               <circle cx={obxXFor(obxLast.year)} cy={obxYFor(obxLast.value)} r="8"></circle>
               <text
                 class="obx-chart__endpoint-label obx-chart__endpoint-label--end"
-                x={obxXFor(obxLast.year) + 16}
-                y={obxYFor(obxLast.value) + 10}
+                x={obxXFor(obxLast.year)}
+                y={obxYFor(obxLast.value) - 18}
+                text-anchor="end"
               >
                 {obxFmt(obxLast.value)}
               </text>
             </g>
 
             <g class="obx-chart__callout">
-              <text class="obx-chart__callout-pct" x={OBX_PAD_L + 16} y={OBX_PAD_T + 56}>
+              <text
+                class="obx-chart__callout-pct"
+                x={OBX_W / 2}
+                y={OBX_PAD_T - 30}
+                text-anchor="middle"
+              >
                 {`+${obxGrowthPct}%`}
               </text>
-              <text class="obx-chart__callout-sub" x={OBX_PAD_L + 16} y={OBX_PAD_T + 92}>
+              <text
+                class="obx-chart__callout-sub"
+                x={OBX_W / 2}
+                y={OBX_PAD_T + 2}
+                text-anchor="middle"
+              >
                 {`${obxFirst.year} to ${obxLast.year}`}
               </text>
             </g>
@@ -338,7 +349,7 @@ const btcTimeline = [
       </div>
 
       <p class="rational-assets__strategy">
-        We buy underpriced lots, build to the comp, and sell into a supply-constrained market.
+        We buy underpriced lots, build them sale-ready, and sell into a supply-constrained market.
       </p>
     </article>
 
@@ -764,13 +775,13 @@ const btcTimeline = [
 
   .obx-chart__endpoint-label--end {
     fill: var(--green-dark);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 600;
   }
 
   .obx-chart__callout-pct {
     font-family: "Roboto Serif", serif;
-    font-size: 52px;
+    font-size: 44px;
     font-weight: 700;
     fill: var(--green-dark);
     font-variant-numeric: lining-nums;
