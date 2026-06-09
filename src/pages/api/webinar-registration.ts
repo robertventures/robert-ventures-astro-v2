@@ -622,9 +622,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // STEP 3: META CONVERSIONS API
     // ========================================
     // Send conversion event to Meta (Facebook) for analytics and advertising
-    // Skip for low investment intent ($1k/$5k) to improve Meta ad optimization quality
+    // Skip for low investment intent ($1k) to improve Meta ad optimization quality
     const investIntentValue = String(body.invest_intent || "");
-    const shouldSendToMeta = investIntentValue !== "1000" && investIntentValue !== "5000";
+    const shouldSendToMeta = investIntentValue !== "1000";
 
     if (shouldSendToMeta) {
       try {
