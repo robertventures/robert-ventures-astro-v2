@@ -1,0 +1,211 @@
+---
+// Option-3 comparison section: a compact "why investors trust us" band that
+// keeps the two strong numbers (reinvestment, on-time) and swaps the weak ones
+// (bare investor count, the mislabeled $150M) for credibility you can stand on.
+// Lives next to BondsTrustedByNumbers so the two can be compared on the page.
+//
+// Reinvestment rate is pulled live from the same /api/stats source the old
+// section uses. The hardcoded 28 is only a fallback when the API is unreachable.
+let reinvestmentRate = 28;
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const response = await fetch(statsUrl);
+  if (response.ok) {
+    const data = await response.json();
+    if (typeof data.percentUsersWithMultipleInvestments === "number") {
+      reinvestmentRate = Math.round(data.percentUsersWithMultipleInvestments);
+    }
+  }
+} catch (error) {
+  console.error("Failed to fetch stats for trust signals:", error);
+}
+---
+
+<section class="trust">
+  <div class="trust__container">
+    <h3 class="trust__heading">Why investors trust us</h3>
+    <p class="trust__intro">
+      Investors stay because the numbers and the structure both hold up.
+    </p>
+
+    <div class="trust__grid">
+      <div class="trust__item">
+        <span class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path
+              d="M20 11A8 8 0 0 0 6.3 5.3L4 7.5M4 4v3.5H7.5M4 13a8 8 0 0 0 13.7 5.7L20 16.5M20 20v-3.5H16.5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="trust__label">{reinvestmentRate}% reinvest</span>
+        <span class="trust__desc">Investors who come back for more.</span>
+      </div>
+
+      <div class="trust__item">
+        <span class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+            <path
+              d="M8.5 12.2l2.5 2.5 4.5-5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="trust__label">100% on time</span>
+        <span class="trust__desc">Every distribution paid on schedule.</span>
+      </div>
+
+      <div class="trust__item">
+        <span class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path
+              d="M12 3l7 3v5c0 4.2-2.8 7.6-7 9-4.2-1.4-7-4.8-7-9V6l7-3z"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linejoin="round"></path>
+            <path
+              d="M9 12l2 2 4-4.5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="trust__label">SEC-qualified</span>
+        <span class="trust__desc">Reg A Tier 2, audited every year.</span>
+      </div>
+
+      <div class="trust__item">
+        <span class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"></circle>
+            <path
+              d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"></path>
+          </svg>
+        </span>
+        <span class="trust__label">Founder invested</span>
+        <span class="trust__desc">Joe's capital sits behind every bondholder.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust {
+    background: var(--bg-primary);
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .trust__container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 32px 16px;
+    text-align: left;
+  }
+
+  .trust__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text-heading);
+    line-height: 110%;
+    margin: 0 0 8px;
+  }
+
+  .trust__intro {
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--text-body);
+    margin: 0 0 28px;
+    max-width: 520px;
+  }
+
+  .trust__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 16px;
+  }
+
+  .trust__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .trust__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(103, 183, 143, 0.12);
+    color: var(--green-brand);
+  }
+
+  .trust__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .trust__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-heading);
+    line-height: 120%;
+    font-variant-numeric: lining-nums;
+  }
+
+  .trust__desc {
+    font-size: 14px;
+    line-height: 150%;
+    color: var(--text-body);
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
+    .trust__container {
+      padding: 48px 32px;
+    }
+
+    .trust__heading {
+      font-size: 36px;
+    }
+
+    .trust__grid {
+      gap: 32px 24px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .trust__container {
+      padding: 64px 112px;
+    }
+
+    .trust__heading {
+      font-size: 36px;
+    }
+
+    .trust__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .trust__container {
+      padding: 64px 312px;
+    }
+  }
+</style>
