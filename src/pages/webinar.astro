@@ -1250,7 +1250,7 @@ try {
             }
 
             const investForMeta = payload.invest_intent;
-            if (investForMeta !== "1000" && investForMeta !== "5000") {
+            if (investForMeta !== "1000") {
               try {
                 if (typeof window.fbq === "function") {
                   window.fbq("track", "CompleteRegistration", {}, { eventID: payload.event_id });
