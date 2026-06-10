@@ -1,11 +1,4 @@
 ---
-// homeSpacing: opt-in to the global section spacing tokens (homepage only).
-// Other pages (/webinar, /offer, /offer-v2) keep the original padding.
-interface Props {
-  homeSpacing?: boolean;
-}
-const { homeSpacing = false } = Astro.props;
-
 // Interface for review data from Senja
 interface Review {
   name: string;
@@ -158,16 +151,10 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
   }
 
   .reviews-v3-container {
-    padding: 32px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-  }
-
-  /* Homepage opt-in: the two-class selector outranks the single-class
-     breakpoint paddings below, and the tokens handle the responsiveness. */
-  .reviews-v3-container.home-spacing {
-    padding: var(--section-pad-y) var(--section-pad-x);
   }
 
   h3 {
@@ -356,10 +343,6 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
 
   /* --- Tablet (600px+) --- */
   @media only screen and (min-width: 600px) {
-    .reviews-v3-container {
-      padding: 48px 32px;
-    }
-
     h3 {
       font-size: 40px;
     }
@@ -414,10 +397,6 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
 
   /* --- Desktop (1136px+) --- */
   @media only screen and (min-width: 1136px) {
-    .reviews-v3-container {
-      padding: 40px 112px 64px;
-    }
-
     .split-layout {
       gap: 64px;
     }
@@ -463,10 +442,6 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
 
   /* --- Ultra-wide (1920px+) --- */
   @media only screen and (min-width: 1920px) {
-    .reviews-v3-container {
-      padding: 40px 312px 64px;
-    }
-
     .photo-collage {
       flex: 0 0 400px;
       height: 400px;
@@ -504,7 +479,7 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
 </style>
 
 <section>
-  <div class:list={["reviews-v3-container", homeSpacing && "home-spacing"]}>
+  <div class="reviews-v3-container">
     <h3>Trusted by {uniqueInvestors}+ Investors</h3>
     <div
       class="split-layout"

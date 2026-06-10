@@ -325,13 +325,6 @@ p {
   font-family: var(--font-body);
 }
 
-/* FAQ Panel paragraph line-height override */
-.panel p,
-.panel.expanded p,
-.panel > div p {
-  line-height: 150%;
-}
-
 h1,
 h2,
 h3,
