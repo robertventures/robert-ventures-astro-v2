@@ -1,7 +1,45 @@
 ---
 import Rvlogo from "../images/brand/logo-horizontal-whitebg.svg";
+import GetStartedCta from "./GetStartedCta.astro";
 
-import Opener from "../images/icons/link-icon.svg";
+const menuItems = [
+  {
+    label: "Home",
+    href: "/",
+    description: "The offering at a glance: bonds paying a fixed 8% to 10%.",
+    trackNav: "home",
+  },
+  {
+    label: "Strategy",
+    href: "/strategy",
+    description: "Where your capital goes: Outer Banks real estate and digital assets.",
+    trackNav: "strategy",
+  },
+  {
+    label: "About Us",
+    href: "/about-us",
+    description: "Meet Joe Robert and the team behind Robert Ventures.",
+    trackNav: "about_us",
+  },
+  {
+    label: "Articles",
+    href: "/articles/",
+    description: "Insights on investing, real estate, and digital assets.",
+    trackNav: "articles",
+  },
+  {
+    label: "Reviews",
+    href: "/reviews",
+    description: "What our investors say, in their own words.",
+    trackNav: "reviews",
+  },
+  {
+    label: "Contact",
+    href: "/calendar",
+    description: "Schedule a call with our team.",
+    trackNav: "contact",
+  },
+];
 ---
 
 <style>
@@ -48,7 +86,7 @@ import Opener from "../images/icons/link-icon.svg";
     padding: 0;
   }
 
-  nav {
+  .top-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -56,18 +94,18 @@ import Opener from "../images/icons/link-icon.svg";
     height: 100%;
   }
 
-  nav a {
+  .top-nav a {
     padding: 1em 0.5em;
     color: var(--text-heading);
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
 
-  nav h2 a {
+  .top-nav h2 a {
     padding: 0;
     border-bottom: none;
   }
-  nav a.active {
+  .top-nav a.active {
     text-decoration: none;
     border-bottom-color: var(--accent);
   }
@@ -87,39 +125,58 @@ import Opener from "../images/icons/link-icon.svg";
   }
 
   .hamburger {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: none;
     cursor: pointer;
   }
 
-  .hamburger svg {
-    transition: transform 0.3s ease-in-out;
-    color: var(--text-heading);
+  .hamburger__bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-heading);
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.2s ease;
+  }
+
+  .hamburger.open .hamburger__bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.open .hamburger__bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.open .hamburger__bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   .mobile-menu {
     position: fixed;
+    top: 64px;
     left: 0;
-    bottom: 0;
     width: 100%;
-    height: 90dvh;
-    background-color: white;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    height: calc(100dvh - 64px);
+    background: var(--bg-primary);
     z-index: 1000;
-    padding: 3rem 1.5rem;
-    overflow-y: auto;
-    border-radius: 1rem 1rem 0rem 0rem;
-    background: #fff;
+    display: flex;
+    flex-direction: column;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(100%);
+    transform: translateY(12px);
     transition:
-      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.25s,
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.25s ease,
       visibility 0.25s;
-  }
-
-  .hidden {
-    display: none;
   }
 
   .mobile-menu.show {
@@ -128,82 +185,110 @@ import Opener from "../images/icons/link-icon.svg";
     transform: translateY(0);
   }
 
-  .mobile-menu:not(.show) {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(100%);
-  }
-
-  .menu-link-lists {
+  .menu-list {
+    flex: 1;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    margin-bottom: 5rem;
+    width: 100%;
+    padding: 8px 0 16px;
   }
 
-  .list-heading {
-    margin-bottom: 1rem;
-    line-height: 1;
-    color: #737373;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .links-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .mobile-menu a {
-    display: block;
-    color: var(--black);
-    text-decoration: none;
+  .menu-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #1d1d1f;
-    font-family: var(--font-body);
-    font-size: 1.25rem;
-    font-style: normal;
+    gap: 16px;
+    padding: 18px 24px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Alternating row fill so each destination reads as its own block */
+  .menu-item:nth-child(odd) {
+    background: var(--bg-secondary);
+  }
+
+  .mobile-menu.show .menu-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered reveal: each row settles in slightly after the previous one.
+     The delays only apply under .show, so closing is instant. */
+  .mobile-menu.show .menu-item:nth-child(1) {
+    transition-delay: 0.05s;
+  }
+  .mobile-menu.show .menu-item:nth-child(2) {
+    transition-delay: 0.09s;
+  }
+  .mobile-menu.show .menu-item:nth-child(3) {
+    transition-delay: 0.13s;
+  }
+  .mobile-menu.show .menu-item:nth-child(4) {
+    transition-delay: 0.17s;
+  }
+  .mobile-menu.show .menu-item:nth-child(5) {
+    transition-delay: 0.21s;
+  }
+  .mobile-menu.show .menu-item:nth-child(6) {
+    transition-delay: 0.25s;
+  }
+
+  .menu-item__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .menu-item__title {
+    font-family: var(--font-heading);
+    font-size: 22px;
     font-weight: 500;
-    line-height: 1; /* 1.25rem */
+    line-height: 1.2;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
   }
 
-  .mobile-menu a p {
-    line-height: 1;
-  }
-
-  .footer-end {
-    text-align: center;
-  }
-
-  .footer-end svg {
-    margin: 0 auto;
-    margin-bottom: 1.5rem;
-  }
-
-  .footer-end p {
-    color: #737373;
-    text-align: center;
-    font-size: 0.875rem;
-    line-height: 150%; /* 1.3125rem */
-    margin-bottom: 1rem;
-  }
-
-  .footer-end a {
-    color: #737373;
-    text-align: center;
-    font-size: 1rem;
+  .menu-item__desc {
+    font-family: var(--font-body);
+    font-size: 14px;
     font-weight: 400;
-    line-height: 150%; /* 1.5rem */
-    display: block;
-    text-decoration: underline;
+    line-height: 1.5;
+    color: var(--text-body);
   }
 
-  .footer-end img {
-    max-height: none;
+  .menu-item__chevron {
+    flex-shrink: 0;
+    color: var(--text-muted);
+  }
+
+  .menu-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 24px calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border-light);
+    background: var(--bg-primary);
+  }
+
+  .menu-signin {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .menu-signin a {
+    color: var(--text-heading);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .desktop-links {
@@ -221,20 +306,22 @@ import Opener from "../images/icons/link-icon.svg";
   }
 
   @media only screen and (min-width: 768px) {
-    .mobile-menu {
-      padding: 4rem 3rem;
+    .menu-list {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 16px 0;
     }
-    .menu-link-lists {
-      flex-direction: row;
-      justify-content: space-between;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .menu-item,
+    .hamburger__bar {
+      transition: none;
     }
 
-    .menu-link-lists > div {
-      flex: 1;
-    }
-
-    .link img {
-      display: none;
+    .mobile-menu.show .menu-item {
+      transition-delay: 0s;
     }
   }
 
@@ -258,14 +345,14 @@ import Opener from "../images/icons/link-icon.svg";
       align-items: center;
     }
 
-    nav {
+    .top-nav {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       gap: 32px;
     }
 
-    nav h2 {
+    .top-nav h2 {
       margin-right: auto;
     }
 
@@ -331,7 +418,7 @@ import Opener from "../images/icons/link-icon.svg";
 
 <header>
   <div class="header-container">
-    <nav>
+    <nav class="top-nav">
       <h2>
         <a href="/"><Rvlogo /></a>
       </h2>
@@ -350,118 +437,86 @@ import Opener from "../images/icons/link-icon.svg";
           data-track-location="header">Sign in</a
         >
       </div>
-      <div class="hamburger" id="hamburger">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect y="4" width="24" height="2" fill="currentColor"></rect>
-          <rect y="11" width="24" height="2" fill="currentColor"></rect>
-          <rect y="18" width="24" height="2" fill="currentColor"></rect>
-        </svg>
-      </div>
+      <button
+        class="hamburger"
+        id="hamburger"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+      </button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
-      <div class="footer-content">
-        <div class="menu-link-lists">
-          <div class="list">
-            <!-- <p class="list-heading">Robert Ventures</p> -->
-            <div class="links-container">
-              <a href="/" class="link" data-track-nav="home" data-track-location="mobile_menu">
-                <p>Home</p>
-                <Opener />
-              </a>
-              <a
-                href="/strategy"
-                class="link"
-                data-track-nav="strategy"
-                data-track-location="mobile_menu"
+      <nav class="menu-list" aria-label="Mobile navigation">
+        {
+          menuItems.map((item) => (
+            <a
+              href={item.href}
+              class="menu-item"
+              data-track-nav={item.trackNav}
+              data-track-location="mobile_menu"
+            >
+              <span class="menu-item__text">
+                <span class="menu-item__title">{item.label}</span>
+                <span class="menu-item__desc">{item.description}</span>
+              </span>
+              <svg
+                class="menu-item__chevron"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
               >
-                <p>Strategy</p>
-                <Opener />
-              </a>
-              <a
-                href="/about-us"
-                class="link"
-                data-track-nav="about_us"
-                data-track-location="mobile_menu"
-              >
-                <p>About Us</p>
-                <Opener />
-              </a>
-              <a
-                href="/articles/"
-                class="link"
-                data-track-nav="articles"
-                data-track-location="mobile_menu"
-              >
-                <p>Articles</p>
-                <Opener />
-              </a>
-              <a
-                href="/reviews"
-                class="link"
-                data-track-nav="reviews"
-                data-track-location="mobile_menu"
-              >
-                <p>Reviews</p>
-                <Opener />
-              </a>
-              <a
-                href="/calendar"
-                class="link"
-                data-track-nav="contact"
-                data-track-location="mobile_menu"
-              >
-                <p>Contact</p>
-                <Opener />
-              </a>
-              <a
-                href="https://invest.robertventures.com"
-                class="link"
-                data-track-cta="login"
-                data-track-location="mobile_menu"
-              >
-                <p>Login</p>
-                <Opener />
-              </a>
-            </div>
-          </div>
-        </div>
+                <path
+                  d="M6 3.5L10.5 8L6 12.5"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </a>
+          ))
+        }
+      </nav>
+      <div class="menu-footer">
+        <p class="menu-signin">
+          Already an investor?
+          <a
+            href="https://invest.robertventures.com"
+            data-track-cta="login"
+            data-track-location="mobile_menu">Sign in</a
+          >
+        </p>
+        <GetStartedCta trackCta="get_started" trackLocation="mobile_menu" />
       </div>
     </div>
   </div>
 
   <script>
-    document.getElementById("hamburger").addEventListener("click", function () {
-      const mobileMenu = document.getElementById("mobileMenu");
-      const isOpen = mobileMenu.classList.contains("show");
-      if (isOpen) {
-        mobileMenu.classList.remove("show");
-        document.body.classList.remove("menu-open");
-      } else {
-        mobileMenu.classList.add("show");
-        document.body.classList.add("menu-open");
-      }
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    function setMenu(open: boolean) {
+      mobileMenu.classList.toggle("show", open);
+      hamburger.classList.toggle("open", open);
+      hamburger.setAttribute("aria-expanded", String(open));
+      hamburger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("menu-open", open);
+    }
+
+    hamburger.addEventListener("click", function () {
+      setMenu(!mobileMenu.classList.contains("show"));
     });
 
-    let startY: number;
-
-    document.getElementById("mobileMenu").addEventListener("touchstart", function (e) {
-      startY = e.touches[0].clientY;
-    });
-
-    document.getElementById("mobileMenu").addEventListener("touchmove", function (e) {
-      const currentY = e.touches[0].clientY;
-      const diffY = currentY - startY;
-
-      if (diffY > 300) {
-        const mobileMenu = document.getElementById("mobileMenu");
-        mobileMenu.classList.remove("show");
-        document.body.classList.remove("menu-open");
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && mobileMenu.classList.contains("show")) {
+        setMenu(false);
       }
     });
   </script>
