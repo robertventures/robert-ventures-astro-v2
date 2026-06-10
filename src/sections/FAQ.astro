@@ -1,12 +1,5 @@
 ---
 import Opener from "../images/icons/caretdown.svg";
-
-// homeSpacing: opt-in to the global section spacing tokens (homepage only).
-// Other pages (/strategy) keep the original padding.
-interface Props {
-  homeSpacing?: boolean;
-}
-const { homeSpacing = false } = Astro.props;
 const formatAnswer = (raw: string) => {
   if (!raw) return "";
   const normalized = String(raw).trim().replace(/\r\n/g, "\n");
@@ -17,36 +10,49 @@ const faqs = [
   {
     question: "Is it FDIC-insured? What's the real risk?",
     slug: "fdic_insured",
-    answer: `FDIC insurance only applies to bank deposits, such as savings accounts, not to most investments people already own, including stocks, bonds, mutual funds, and REITs.<br/>
-        Like any investment, there's risk. We mitigate this risk through diversification in real estate and Bitcoin. Additionally, our CEO, Joe Robert, has over 20 years of experience, has raised over $10 million in past offerings, and has never missed a payment. One in four investors reinvest within ~40 days, typically with four times their initial amount.`,
+    answer: `No. FDIC insurance only applies to bank deposits, like savings accounts. It doesn't cover investments such as stocks, bonds, mutual funds, or REITs. Our bonds are investments, not bank deposits.
+
+We're SEC-qualified under Regulation A Tier 2, which means our offering went through the SEC's review process, and our financials are audited annually by an independent CPA.
+
+Like any investment, there is risk. We mitigate it through diversification across Outer Banks real estate and digital assets. Our founder, Joe Robert, has managed investor capital for 25 years, and every investor in his offerings has been repaid in full, with all interest owed.`,
   },
   {
     question: "How can we realistically pay 10% in this market?",
     slug: "how_pay_10_percent",
-    answer: `Our real estate projects in the Outer Banks target annualized returns of 10% or more, and we also generate long-term growth from investments in Bitcoin and Ethereum. Both sectors have delivered double-digit returns over time, and we don't rely on leverage.<br/>
-        The 10% rate is achievable because we operate efficiently, investing only when the timing and demand are right. We build on lots as the market demands it, and if conditions cool, we can shift capital into Bitcoin instead of being forced to deploy it like significant funds.`,
+    answer: `Our bonds are structured as debt, not equity. The 8% and 10% rates aren't projections built on a pro forma. They're contractual obligations of the company to you as the investor.
+
+Your capital funds Outer Banks real estate development and a long-term digital asset reserve. We build only two to three units at a time, starting the next one once a sale is pending, and the sales of those units currently fund operations and investor payments. We invest only when the timing and demand are right.`,
   },
   {
     question: "Are there any fees?",
     slug: "fees",
-    answer: `No. Our bonds are designed with zero intermediary or management fees, so nothing is taken from your monthly payments. This structure ensures that your returns are sent directly to you and reflects our commitment to transparency and aligning our interests with yours.`,
+    answer: `No. We issue bonds directly, with no broker or third party in between, and zero intermediary or management fees. Nothing is taken from your monthly payments, so your returns are sent directly to you.`,
   },
   {
     question: "How are my investments taxed?",
     slug: "taxes",
-    answer: `Robert Ventures' investments are taxed the same as any other high-yield bond or interest-bearing investment. You will receive a Form 1099-INT at the beginning of every tax year for the previous year, covering all interest paid during the calendar/tax year.`,
+    answer: `The same as any other interest-bearing investment. Each January you'll receive a Form 1099-INT covering all interest paid during the prior year.`,
   },
   {
-    question: "How experienced is Robert Ventures?",
+    question: "Who's behind Robert Ventures?",
     slug: "experience",
-    answer: `Although this offering is relatively new, having been launched to the public in October 2024 after a year of SEC qualification, it is supported by extensive experience. Over the last 15 years, our manager, Joe Robert, has raised over $10 million from 60 private investors through various partnerships, including Silver Bay Capital. During that time, he has managed 1,500 mortgages and sold 200 properties, completing every offering and repaying investors in full.<br/> 
-        Now operating under Robert Ventures, he works directly with investors, offering full transparency, eliminating middlemen, and potentially achieving better yields.`,
+    answer: `Our founder, Joe Robert, has 25 years of asset management experience: $150 million in total assets managed across real estate, mortgages, and digital assets, including 200+ properties and 1,500+ mortgage investments. In past offerings he has raised over $10 million from private investors, with every offering completed and every investor repaid in full, with all interest owed.
+
+Robert Ventures is his SEC-qualified offering, open to both accredited and non-accredited investors. We work directly with investors, with full transparency and no middlemen.`,
   },
   {
-    question: "Why is Bitcoin part of our treasuries?",
+    question: "Why are digital assets part of our strategy?",
     slug: "digital_assets",
-    answer: `We only hold Bitcoin and Ethereum, top assets now used and owned by governments (including the US), pensions, and asset managers like BlackRock, the biggest globally. We don't trade, but hold those assets in our treasuries, like large institutions do.<br/>
-        They've been the best-performing assets of the past decade and complement the stability of our real estate. We're preparing ourselves for a digital economy.`,
+    answer: `For the same reason we buy land on the Outer Banks: scarcity. We hold a long-term digital asset reserve, accumulated monthly, the same way institutions like BlackRock and Fidelity now do. We don't trade. Our reserve is anchored by Bitcoin, which has a fixed supply of 21 million, ever, with Ethereum as a secondary holding.
+
+Everything is custodied at BitGo Bank & Trust, N.A., a federally chartered bank regulated by the U.S. government, with $250 million in insurance against hacks, theft, and security breaches.`,
+  },
+  {
+    question: "Can I get my money out early?",
+    slug: "early_withdrawal",
+    answer: `Our bonds have a 1-year or 3-year commitment period depending on the term you choose, with a 10-year maturity. After your commitment period ends, you can request a withdrawal at any time, and we're obligated to return your capital with accrued interest within 90 days.
+
+This is designed for long-term compound growth. If you need this money for near-term expenses, it's not the right fit.`,
   },
 ];
 ---
@@ -62,20 +68,11 @@ const faqs = [
   .section-container {
     background: transparent;
     border-radius: 0;
-    padding-top: 48px;
-    padding-bottom: 48px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     text-align: left;
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-  }
-
-  /* Homepage opt-in: the two-class selector outranks the single-class
-     breakpoint paddings below, and the tokens handle the responsiveness. */
-  .section-container.home-spacing {
-    padding: var(--section-pad-y) var(--section-pad-x);
   }
 
   .section-content {
@@ -191,36 +188,12 @@ const faqs = [
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding-top: 64px;
-      padding-bottom: 64px;
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
-    .section-content {
-      max-width: 100%;
-    }
-
     h3 {
       font-size: 40px;
     }
   }
 
   @media only screen and (min-width: 1136px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 112px;
-      padding-right: 112px;
-      margin: 0;
-      width: 100%;
-    }
-
-    .section-content {
-      max-width: 100%;
-    }
-
     .faqs {
       grid-template-columns: 1fr;
     }
@@ -238,23 +211,10 @@ const faqs = [
       transition: none;
     }
   }
-
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 312px;
-      padding-right: 312px;
-    }
-
-    .section-content {
-      max-width: 100%;
-    }
-  }
 </style>
 
 <section>
-  <div class:list={["section-container", homeSpacing && "home-spacing"]}>
+  <div class="section-container">
     <div class="section-content">
       <h3>Frequently Asked Questions</h3>
       <div class="faqs">
