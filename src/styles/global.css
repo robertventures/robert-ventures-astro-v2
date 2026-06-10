@@ -21,6 +21,12 @@
   --font-body: "Roboto", sans-serif;
   --font-heading: "Roboto Serif", serif;
 
+  /* Section spacing system (8px grid). Sections pad with
+     `padding: var(--section-pad-y) var(--section-pad-x)` so vertical rhythm
+     stays identical across the page. Overridden per breakpoint below. */
+  --section-pad-y: 48px;
+  --section-pad-x: 16px;
+
   /* Page backgrounds */
   --bg-primary: #ffffff;
   --bg-secondary: #f4f6f8;
@@ -65,6 +71,27 @@
   --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
 
   --background: #ffffff;
+}
+
+/* Section spacing tokens per breakpoint (mobile values live in :root above) */
+@media only screen and (min-width: 600px) {
+  :root {
+    --section-pad-y: 64px;
+    --section-pad-x: 32px;
+  }
+}
+
+@media only screen and (min-width: 1136px) {
+  :root {
+    --section-pad-y: 96px;
+    --section-pad-x: 112px;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  :root {
+    --section-pad-x: 312px;
+  }
 }
 
 html {

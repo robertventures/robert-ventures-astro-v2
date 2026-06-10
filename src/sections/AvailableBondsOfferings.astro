@@ -1,5 +1,6 @@
 ---
 // Available Bonds Offerings Section
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <style>
@@ -157,29 +158,9 @@
     color: var(--green-dark);
   }
 
-  .cta-button {
-    display: inline-block;
-    padding: 12px;
-    background-color: var(--green-brand);
-    border: 1px solid var(--green-brand);
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 18px;
-    font-family: "Roboto", sans-serif;
-    border-radius: 8px;
-    text-align: center;
-    line-height: 100%;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease;
-    align-self: stretch;
-    box-sizing: border-box;
-  }
-
-  .cta-button:active {
-    background-color: var(--green-hover);
-    border-color: var(--green-hover);
+  .cta-wrap {
+    display: flex;
+    justify-content: center;
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
@@ -288,12 +269,9 @@
         </div>
       </div>
 
-      <a
-        href="/webinar"
-        class="cta-button"
-        data-track-cta="get_started"
-        data-track-location="bond_offerings">Get Started</a
-      >
+      <div class="cta-wrap">
+        <GetStartedCta href="/webinar" trackCta="get_started" trackLocation="bond_offerings" />
+      </div>
     </div>
   </div>
 </section>

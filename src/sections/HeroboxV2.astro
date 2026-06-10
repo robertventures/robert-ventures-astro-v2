@@ -1,19 +1,5 @@
 ---
-// Live unique-investor count for the social-proof line inside the CTA.
-// Same source and fallback as the Track Record section (BondsTrustedByNumbers).
-let uniqueInvestors = 68;
-try {
-  const statsUrl = new URL("/api/stats", Astro.url);
-  const response = await fetch(statsUrl);
-  if (response.ok) {
-    const data = await response.json();
-    if (typeof data.usersWithInvestments === "number") {
-      uniqueInvestors = data.usersWithInvestments;
-    }
-  }
-} catch (error) {
-  console.error("Failed to fetch stats for hero social proof:", error);
-}
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <style>
@@ -92,7 +78,7 @@ try {
   }
 
   .section-container {
-    padding: 64px 16px 40px;
+    padding: 64px var(--section-pad-x) var(--section-pad-y);
     background: transparent;
     text-align: center;
     width: 100%;
@@ -187,75 +173,6 @@ try {
     margin: 0 10px;
   }
 
-  /* Glassmorphism test: frosted, translucent green with a backdrop blur.
-     Kept darker than brand green so the white text (especially the small
-     proof line) stays readable over the semi-transparent fill. */
-  .hero-cta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-    max-width: 384px;
-    box-sizing: border-box;
-    padding: 15px 28px;
-    border-radius: 14px;
-    text-decoration: none;
-    text-align: center;
-    color: #ffffff;
-    background-image: linear-gradient(
-      180deg,
-      rgba(60, 134, 99, 0.85) 0%,
-      rgba(42, 110, 78, 0.88) 100%
-    );
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      0 8px 28px -6px rgba(42, 110, 78, 0.4),
-      0 2px 6px rgba(0, 0, 0, 0.1);
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .hero-cta:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.55);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      0 16px 36px -8px rgba(42, 110, 78, 0.5),
-      0 3px 8px rgba(0, 0, 0, 0.12);
-  }
-
-  .hero-cta:active {
-    transform: translateY(0);
-    filter: brightness(0.97);
-  }
-
-  .hero-cta__label {
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.15;
-    letter-spacing: 0.01em;
-  }
-
-  .hero-cta__proof {
-    font-family: "Roboto", sans-serif;
-    font-size: 12.5px;
-    font-weight: 400;
-    line-height: 1.15;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .hero-cta__proof strong {
-    font-weight: 700;
-    color: #ffffff;
-  }
-
   .form-cta {
     margin-bottom: 1.5rem;
     display: flex;
@@ -278,7 +195,7 @@ try {
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-      padding: 80px 32px 56px;
+      padding: 80px var(--section-pad-x) var(--section-pad-y);
     }
 
     h1 {
@@ -289,7 +206,7 @@ try {
 
   @media only screen and (min-width: 1136px) {
     .section-container {
-      padding: 112px 112px 88px;
+      padding: 112px var(--section-pad-x) var(--section-pad-y);
       margin: 0;
       width: 100%;
     }
@@ -301,11 +218,6 @@ try {
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding: 112px 312px 88px;
-    }
-  }
 </style>
 
 <section>
@@ -342,15 +254,7 @@ try {
     </ul>
 
     <div class="form-cta">
-      <a
-        class="hero-cta"
-        href="/create-account"
-        data-track-cta="hero_primary_cta"
-        data-track-location="hero"
-      >
-        <span class="hero-cta__label">Get started</span>
-        <span class="hero-cta__proof">Join <strong>{uniqueInvestors}+</strong> investors</span>
-      </a>
+      <GetStartedCta trackCta="hero_primary_cta" trackLocation="hero" />
     </div>
   </div>
 </section>

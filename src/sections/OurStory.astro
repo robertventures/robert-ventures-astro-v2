@@ -5,7 +5,9 @@
 //
 // Placeholder video = the offer page founder video. Swapping in a dedicated
 // story video later is just a one-line playback-id change (and its poster URLs).
-const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
+const PLAYBACK_ID = "jXmrZvCpjCvvduXpBk2cZQG77tbsA7HLuxlDrvDKfkE";
+
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <section class="our-story">
@@ -31,9 +33,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
           <span class="our-story__beat-index">02</span>
           <span class="our-story__beat-body">
             <span class="our-story__beat-label">Paid on time, every time</span>
-            <span class="our-story__beat-desc">
-              Double-digit returns to every investor.
-            </span>
+            <span class="our-story__beat-desc"> Double-digit returns to every investor. </span>
           </span>
         </li>
         <li class="our-story__beat">
@@ -47,10 +47,10 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
         </li>
       </ol>
 
-      <p class="our-story__watch">Hear it from Joe, in his own words.</p>
     </div>
 
     <div class="our-story__media">
+      <p class="our-story__watch">Hear it from Joe, in his own words.</p>
       <div class="our-story__video-wrapper">
         <div class="our-story__video-container">
           <mux-player
@@ -66,7 +66,12 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
             muted
             playsinline
             default-show-captions></mux-player>
-          <div class="our-story__mux-overlay" id="home-story-mux-overlay" role="button" tabindex="0">
+          <div
+            class="our-story__mux-overlay"
+            id="home-story-mux-overlay"
+            role="button"
+            tabindex="0"
+          >
             <div class="our-story__mux-overlay-pill">
               <svg
                 class="our-story__mux-overlay-icon our-story__mux-overlay-icon--unmute"
@@ -100,6 +105,9 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
         <span class="our-story__caption-name">Joe Robert</span>
         <span class="our-story__caption-role">Founder &amp; Manager</span>
       </p>
+      <div class="our-story__cta-wrap">
+        <GetStartedCta fullWidth trackCta="story_primary_cta" trackLocation="our_story" />
+      </div>
     </div>
   </div>
 </section>
@@ -115,7 +123,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 32px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     text-align: left;
   }
 
@@ -125,7 +133,7 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     font-weight: 500;
     color: var(--text-heading);
     line-height: 110%;
-    margin: 0 0 20px;
+    margin: 0 0 32px;
     text-align: center;
   }
 
@@ -145,8 +153,11 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
   }
 
   .our-story__watch {
+    font-size: 18px;
+    line-height: 165%;
     font-weight: 600;
     color: var(--green-dark);
+    margin: 0 0 12px;
   }
 
   .our-story__lead {
@@ -226,6 +237,10 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     font-weight: 400;
     color: var(--text-body);
     line-height: 120%;
+  }
+
+  .our-story__cta-wrap {
+    margin-top: 24px;
   }
 
   .our-story__video-wrapper {
@@ -344,10 +359,6 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
   }
 
   @media only screen and (min-width: 600px) {
-    .our-story__container {
-      padding: 48px 32px;
-    }
-
     .our-story__heading {
       text-align: left;
     }
@@ -369,7 +380,6 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
 
   @media only screen and (min-width: 1136px) {
     .our-story__container {
-      padding: 64px 112px;
       display: grid;
       grid-template-columns: 1fr 1.1fr;
       grid-template-rows: auto 1fr;
@@ -400,11 +410,6 @@ const PLAYBACK_ID = "02V4Xj64PQinKENPL018mrEuU00bs3T4thfSecE01pxCLVk";
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    .our-story__container {
-      padding: 64px 312px;
-    }
-  }
 </style>
 
 <script is:inline>

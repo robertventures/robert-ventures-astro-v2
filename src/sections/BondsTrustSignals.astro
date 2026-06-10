@@ -20,6 +20,8 @@ try {
 } catch (error) {
   console.error("Failed to fetch stats for trust signals:", error);
 }
+
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <section class="trust">
@@ -96,6 +98,10 @@ try {
         <span class="trust__desc">Joe's capital sits behind every bondholder.</span>
       </div>
     </div>
+
+    <div class="trust__cta-wrap">
+      <GetStartedCta trackCta="trust_primary_cta" trackLocation="trust_signals" />
+    </div>
   </div>
 </section>
 
@@ -110,10 +116,11 @@ try {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 32px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     text-align: left;
   }
 
+  /* Centered title block at every size, matching Reviews/FAQ. */
   .trust__heading {
     font-family: "Roboto Serif", serif;
     font-size: 32px;
@@ -121,14 +128,16 @@ try {
     color: var(--text-heading);
     line-height: 110%;
     margin: 0 0 8px;
+    text-align: center;
   }
 
   .trust__intro {
     font-size: 16px;
     line-height: 150%;
     color: var(--text-body);
-    margin: 0 0 28px;
+    margin: 0 auto 28px;
     max-width: 520px;
+    text-align: center;
   }
 
   .trust__grid {
@@ -174,11 +183,13 @@ try {
     color: var(--text-body);
   }
 
-  @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .trust__container {
-      padding: 48px 32px;
-    }
+  .trust__cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
 
+  @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .trust__heading {
       font-size: 36px;
     }
@@ -189,10 +200,6 @@ try {
   }
 
   @media only screen and (min-width: 1136px) {
-    .trust__container {
-      padding: 64px 112px;
-    }
-
     .trust__heading {
       font-size: 36px;
     }
@@ -203,9 +210,4 @@ try {
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    .trust__container {
-      padding: 64px 312px;
-    }
-  }
 </style>

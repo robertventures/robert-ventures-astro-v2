@@ -1,0 +1,185 @@
+---
+// Shared "Get started" CTA cluster: frosted-green button plus a social-proof
+// row beneath it (overlapping investor avatars from Senja, star rating, and
+// the live investor count). Data comes from the cached getSocialProof helper,
+// so several instances on one page share a single fetch round.
+//
+// The root is full-width capped at 384px; the parent wrapper decides outer
+// alignment (left-anchored, centered, top margin).
+import { getSocialProof } from "../lib/socialProof";
+
+interface Props {
+  trackCta: string;
+  trackLocation: string;
+  href?: string;
+  /** Remove the 384px cap so the CTA spans its container (e.g. the full
+      width of the OurStory video column). */
+  fullWidth?: boolean;
+}
+
+const { trackCta, trackLocation, href = "/create-account", fullWidth = false } = Astro.props;
+
+const { uniqueInvestors, avatarUrls, averageRating } = await getSocialProof(Astro.url);
+
+const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
+---
+
+<div class:list={["gs-cta-block", fullWidth && "gs-cta-block--full"]}>
+  <a class="gs-cta" href={href} data-track-cta={trackCta} data-track-location={trackLocation}>
+    <span class="gs-cta__label">Get started</span>
+  </a>
+  <div class="gs-trust-row">
+    {
+      avatarUrls.length > 0 && (
+        <div class="gs-trust-avatars" aria-hidden="true">
+          {avatarUrls.map((url) => (
+            <img
+              src={url}
+              alt=""
+              width="32"
+              height="32"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none'"
+            />
+          ))}
+        </div>
+      )
+    }
+    <div class="gs-trust-text">
+      <span class="gs-trust-stars">
+        <span class="gs-trust-stars__icons" set:html={starSvg.repeat(5)} />
+        <span class="gs-trust-stars__rating">{averageRating}</span>
+      </span>
+      <span class="gs-trust-proof">Join {uniqueInvestors}+ investors</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .gs-cta-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 384px;
+  }
+
+  .gs-cta-block--full {
+    max-width: none;
+  }
+
+  /* Frosted, translucent green with a backdrop blur, kept darker than brand
+     green so the white label stays readable over the semi-transparent fill. */
+  .gs-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 28px;
+    border-radius: 14px;
+    text-decoration: none;
+    text-align: center;
+    color: #ffffff;
+    background-image: linear-gradient(
+      180deg,
+      rgba(60, 134, 99, 0.85) 0%,
+      rgba(42, 110, 78, 0.88) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      0 8px 28px -6px rgba(42, 110, 78, 0.4),
+      0 2px 6px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .gs-cta:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 16px 36px -8px rgba(42, 110, 78, 0.5),
+      0 3px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  .gs-cta:active {
+    transform: translateY(0);
+    filter: brightness(0.97);
+  }
+
+  .gs-cta__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+  }
+
+  /* Social-proof row below the button: overlapping investor avatars from
+     Senja, star rating, and the live investor count. */
+  .gs-trust-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .gs-trust-avatars {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .gs-trust-avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    background: var(--bg-secondary);
+  }
+
+  .gs-trust-avatars img:not(:first-child) {
+    margin-left: -8px;
+  }
+
+  .gs-trust-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .gs-trust-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1;
+  }
+
+  .gs-trust-stars__icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .gs-trust-stars__rating {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-heading);
+  }
+
+  .gs-trust-proof {
+    font-family: "Roboto", sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--text-body);
+  }
+</style>

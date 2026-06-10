@@ -1,5 +1,12 @@
 ---
 import Opener from "../images/icons/caretdown.svg";
+
+// homeSpacing: opt-in to the global section spacing tokens (homepage only).
+// Other pages (/strategy) keep the original padding.
+interface Props {
+  homeSpacing?: boolean;
+}
+const { homeSpacing = false } = Astro.props;
 const formatAnswer = (raw: string) => {
   if (!raw) return "";
   const normalized = String(raw).trim().replace(/\r\n/g, "\n");
@@ -63,6 +70,12 @@ const faqs = [
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+  }
+
+  /* Homepage opt-in: the two-class selector outranks the single-class
+     breakpoint paddings below, and the tokens handle the responsiveness. */
+  .section-container.home-spacing {
+    padding: var(--section-pad-y) var(--section-pad-x);
   }
 
   .section-content {
@@ -241,7 +254,7 @@ const faqs = [
 </style>
 
 <section>
-  <div class="section-container">
+  <div class:list={["section-container", homeSpacing && "home-spacing"]}>
     <div class="section-content">
       <h3>Frequently Asked Questions</h3>
       <div class="faqs">

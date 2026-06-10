@@ -1,4 +1,11 @@
 ---
+// homeSpacing: opt-in to the global section spacing tokens (homepage only).
+// Other pages (/webinar, /offer, /offer-v2) keep the original padding.
+interface Props {
+  homeSpacing?: boolean;
+}
+const { homeSpacing = false } = Astro.props;
+
 // Interface for review data from Senja
 interface Review {
   name: string;
@@ -155,6 +162,12 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+  }
+
+  /* Homepage opt-in: the two-class selector outranks the single-class
+     breakpoint paddings below, and the tokens handle the responsiveness. */
+  .reviews-v3-container.home-spacing {
+    padding: var(--section-pad-y) var(--section-pad-x);
   }
 
   h3 {
@@ -491,7 +504,7 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
 </style>
 
 <section>
-  <div class="reviews-v3-container">
+  <div class:list={["reviews-v3-container", homeSpacing && "home-spacing"]}>
     <h3>Trusted by {uniqueInvestors}+ Investors</h3>
     <div
       class="split-layout"
