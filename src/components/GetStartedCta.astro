@@ -17,7 +17,7 @@ interface Props {
   fullWidth?: boolean;
 }
 
-const { trackCta, trackLocation, href = "/create-account", fullWidth = false } = Astro.props;
+const { trackCta, trackLocation, href = "/invest", fullWidth = false } = Astro.props;
 
 const { uniqueInvestors, avatarUrls, averageRating } = await getSocialProof(Astro.url);
 

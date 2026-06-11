@@ -25,16 +25,17 @@
   status = 200
   force = true
 
-# /invest was renamed to /create-account; /offer/create-account was consolidated
-# into it. Permanent redirects so old links, bookmarks, and indexed URLs still land.
+# /create-account was renamed back to /invest (WebinarKit sends watchers to
+# /invest); /offer/create-account was consolidated into it. Permanent redirects
+# so old links, bookmarks, and indexed URLs still land.
 [[redirects]]
-  from = "/invest"
-  to = "/create-account"
+  from = "/create-account"
+  to = "/invest"
   status = 301
   force = true
 
 [[redirects]]
   from = "/offer/create-account"
-  to = "/create-account"
+  to = "/invest"
   status = 301
   force = true
