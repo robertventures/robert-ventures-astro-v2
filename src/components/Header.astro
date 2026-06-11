@@ -43,7 +43,13 @@ const menuItems = [
 ---
 
 <style>
+  /* Freeze the page while the menu is open. position: fixed is the lock iOS
+     actually honors for touch scrolling; overflow: hidden alone is ignored.
+     The script sets an inline top offset so the page does not jump. */
   body.menu-open {
+    position: fixed;
+    left: 0;
+    right: 0;
     overflow: hidden;
   }
 
@@ -170,6 +176,8 @@ const menuItems = [
     z-index: 1000;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
     opacity: 0;
     visibility: hidden;
     transform: translateY(12px);
@@ -186,8 +194,7 @@ const menuItems = [
   }
 
   .menu-list {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -268,6 +275,7 @@ const menuItems = [
   }
 
   .menu-footer {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -503,12 +511,23 @@ const menuItems = [
     const hamburger = document.getElementById("hamburger");
     const mobileMenu = document.getElementById("mobileMenu");
 
+    let savedScrollY = 0;
+
     function setMenu(open: boolean) {
       mobileMenu.classList.toggle("show", open);
       hamburger.classList.toggle("open", open);
       hamburger.setAttribute("aria-expanded", String(open));
       hamburger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-      document.body.classList.toggle("menu-open", open);
+
+      if (open) {
+        savedScrollY = window.scrollY;
+        document.body.style.top = `-${savedScrollY}px`;
+        document.body.classList.add("menu-open");
+      } else {
+        document.body.classList.remove("menu-open");
+        document.body.style.top = "";
+        window.scrollTo({ top: savedScrollY, behavior: "instant" });
+      }
     }
 
     hamburger.addEventListener("click", function () {
