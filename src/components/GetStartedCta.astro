@@ -1,5 +1,5 @@
 ---
-// Shared "Get started" CTA cluster: frosted-green button plus a social-proof
+// Shared "Get started" CTA cluster: solid green button plus a social-proof
 // row beneath it (overlapping investor avatars from Senja, star rating, and
 // the live investor count). Data comes from the cached getSocialProof helper,
 // so several instances on one page share a single fetch round.
@@ -68,57 +68,39 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     max-width: none;
   }
 
-  /* Frosted, translucent green with a backdrop blur, kept darker than brand
-     green so the white label stays readable over the semi-transparent fill. */
+  /* Solid brand-green button, same recipe as the webinar page CTA
+     (.wf-slide__continue in WfLeadCapture) so both pages stay consistent. */
   .gs-cta {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    padding: 15px 28px;
-    border-radius: 14px;
+    padding: 1rem;
+    border-radius: 8px;
     text-decoration: none;
     text-align: center;
     color: #ffffff;
-    background-image: linear-gradient(
-      180deg,
-      rgba(60, 134, 99, 0.85) 0%,
-      rgba(42, 110, 78, 0.88) 100%
-    );
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      0 8px 28px -6px rgba(42, 110, 78, 0.4),
-      0 2px 6px rgba(0, 0, 0, 0.1);
+    background: var(--green-brand);
+    border: none;
     transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
+      background-color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .gs-cta:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.55);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      0 16px 36px -8px rgba(42, 110, 78, 0.5),
-      0 3px 8px rgba(0, 0, 0, 0.12);
+    background-color: var(--green-hover);
   }
 
   .gs-cta:active {
-    transform: translateY(0);
-    filter: brightness(0.97);
+    transform: translateY(1px);
   }
 
   .gs-cta__label {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 600;
     line-height: 1.15;
-    letter-spacing: 0.01em;
   }
 
   /* Social-proof row below the button: overlapping investor avatars from
