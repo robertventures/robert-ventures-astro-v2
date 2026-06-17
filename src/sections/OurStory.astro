@@ -104,9 +104,10 @@ import GetStartedCta from "../components/GetStartedCta.astro";
         <span class="our-story__caption-name">Joe Robert</span>
         <span class="our-story__caption-role">Founder &amp; Manager</span>
       </p>
-      <div class="our-story__cta-wrap">
-        <GetStartedCta fullWidth trackCta="story_primary_cta" trackLocation="our_story" />
-      </div>
+    </div>
+
+    <div class="our-story__cta-wrap">
+      <GetStartedCta fullWidth trackCta="story_primary_cta" trackLocation="our_story" />
     </div>
   </div>
 </section>
@@ -381,10 +382,11 @@ import GetStartedCta from "../components/GetStartedCta.astro";
     .our-story__container {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto auto 1fr;
       grid-template-areas:
         "heading media"
-        "body    media";
+        "body    media"
+        "cta     media";
       column-gap: 64px;
       align-items: start;
     }
@@ -401,6 +403,10 @@ import GetStartedCta from "../components/GetStartedCta.astro";
 
     .our-story__media {
       grid-area: media;
+    }
+
+    .our-story__cta-wrap {
+      grid-area: cta;
     }
 
     .our-story__video-wrapper {
