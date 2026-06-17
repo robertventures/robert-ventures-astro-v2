@@ -225,7 +225,7 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
 
     /* Two-column: text + buttons left, stars + testimonial right */
     .rational-cta__container {
-      max-width: 1080px;
+      max-width: var(--content-max);
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: center;
@@ -245,10 +245,6 @@ import CtaSocialProof from "../../../components/CtaSocialProof.astro";
   }
 
   @media only screen and (min-width: 1920px) {
-    .rational-cta__container {
-      max-width: 1136px;
-    }
-
     .rational-cta__heading {
       font-size: 2.625rem;
     }

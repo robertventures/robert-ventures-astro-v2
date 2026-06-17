@@ -367,7 +367,7 @@
       flex-direction: row;
       align-items: center;
       gap: 4rem;
-      max-width: 1200px;
+      max-width: var(--content-max-wide);
     }
 
     .intro-slide__media {
@@ -415,10 +415,6 @@
 
   /* Extra Large: 1920px+ */
   @media only screen and (min-width: 1920px) {
-    .intro-slide__content {
-      max-width: 1400px;
-    }
-
     .intro-slide__heading {
       font-size: 3.75rem;
     }

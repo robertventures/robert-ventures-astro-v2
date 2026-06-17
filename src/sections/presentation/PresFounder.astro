@@ -1,12 +1,14 @@
 ---
-
+// Offer page hero. The primary CTA uses the shared GetStartedCta cluster
+// (homepage-style button + avatars/stars/"Join N+ investors" proof) so the
+// hero CTA matches the homepage.
+import GetStartedCta from "../../components/GetStartedCta.astro";
 ---
 
 <section class="pres-founder offer-slide">
   <div class="pres-founder__container">
     <div class="pres-founder__hero">
       <div class="pres-founder__text">
-        <p class="pres-founder__eyebrow">Your diligence pack</p>
         <h2 class="pres-founder__heading">
           Predictable income. Tangible assets. <span class="pres-founder__heading-accent"
             >25 years of experience.</span
@@ -64,26 +66,30 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <ul class="pres-founder__stats">
-      <li class="pres-founder__stat">
-        <span class="pres-founder__stat-value">25+</span>
-        <span class="pres-founder__stat-label">Years of experience</span>
-      </li>
-      <li class="pres-founder__stat">
-        <span class="pres-founder__stat-value">$150M+</span>
-        <span class="pres-founder__stat-label">Assets managed</span>
-      </li>
-      <li class="pres-founder__stat">
-        <span class="pres-founder__stat-value">200+</span>
-        <span class="pres-founder__stat-label">Properties</span>
-      </li>
-      <li class="pres-founder__stat">
-        <span class="pres-founder__stat-value">1,500+</span>
-        <span class="pres-founder__stat-label">Mortgage investments</span>
-      </li>
-    </ul>
+      <ul class="pres-founder__stats">
+        <li class="pres-founder__stat">
+          <span class="pres-founder__stat-value">25+</span>
+          <span class="pres-founder__stat-label">Years of experience</span>
+        </li>
+        <li class="pres-founder__stat">
+          <span class="pres-founder__stat-value">$150M+</span>
+          <span class="pres-founder__stat-label">Assets managed</span>
+        </li>
+        <li class="pres-founder__stat">
+          <span class="pres-founder__stat-value">200+</span>
+          <span class="pres-founder__stat-label">Properties</span>
+        </li>
+        <li class="pres-founder__stat">
+          <span class="pres-founder__stat-value">1,500+</span>
+          <span class="pres-founder__stat-label">Mortgage investments</span>
+        </li>
+      </ul>
+
+      <div class="pres-founder__cta">
+        <GetStartedCta trackCta="get_started" trackLocation="offer_hero" href="/invest" />
+      </div>
+    </div>
   </div>
 </section>
 
@@ -94,7 +100,7 @@
   }
 
   .pres-founder__container {
-    max-width: 1136px;
+    max-width: var(--content-max);
     margin: 0 auto;
     padding: 0;
     display: flex;
@@ -118,24 +124,13 @@
     gap: 2.25rem;
   }
 
-  .pres-founder__eyebrow {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
-    line-height: 130%;
-    text-align: center;
-  }
-
   .pres-founder__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 2rem;
+    font-size: 2.375rem;
     font-weight: 500;
     color: #1a1a1a;
-    line-height: 135%;
+    line-height: 116%;
+    letter-spacing: -0.015em;
     text-align: center;
     text-wrap: balance;
     margin: 0;
@@ -144,7 +139,6 @@
 
   .pres-founder__heading-accent {
     color: #1a1a1a;
-    white-space: nowrap;
     text-decoration: underline;
     text-decoration-color: var(--green-brand);
     text-decoration-thickness: 4px;
@@ -293,43 +287,58 @@
     }
   }
 
+  /* Single 4-across highlights stripe at every breakpoint, hairline dividers
+     between columns and a top/bottom rule framing the band. */
   .pres-founder__stats {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
   }
 
   .pres-founder__stat {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 0.25rem;
+    gap: 0.4rem;
+    border-right: 1px solid var(--border-light);
+  }
+
+  .pres-founder__stat:last-child {
+    border-right: none;
   }
 
   .pres-founder__stat-value {
     font-family: "Roboto Serif", serif;
-    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
-    font-weight: 700;
+    font-size: clamp(1.25rem, 0.9rem + 1.7vw, 2.25rem);
+    font-weight: 600;
     color: var(--green-dark);
     font-variant-numeric: lining-nums;
     letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1;
   }
 
   .pres-founder__stat-label {
     font-family: "Roboto", sans-serif;
-    font-size: 0.875rem;
-    color: var(--text-body);
-    line-height: 140%;
+    font-size: 0.625rem;
+    color: #888888;
+    line-height: 130%;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin: 0;
+  }
+
+  /* Primary CTA below the hero: the shared GetStartedCta cluster, centered. */
+  .pres-founder__cta {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   @media only screen and (min-width: 600px) {
@@ -339,72 +348,75 @@
     }
 
     .pres-founder__heading {
-      font-size: 2.75rem;
-    }
-
-    .pres-founder__stats {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .pres-founder__stat {
-      padding: 1.5rem 1rem;
-    }
-
-    .pres-founder__stat-label {
-      font-size: 0.9375rem;
+      font-size: 3rem;
     }
   }
 
   @media only screen and (min-width: 1136px) {
-    /* Two-column hero: text left, video right, vertically centered against each other */
+    /* All info stacks in the left column: headline, then the 4-across
+       highlights stripe, then the CTA. The video sits on the right, spanning
+       the full height of the left stack. */
     .pres-founder__hero {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      align-items: center;
-      gap: 2.75rem;
+      grid-template-areas:
+        "text  video"
+        "stats video"
+        "cta   video";
+      align-items: start;
+      column-gap: 3.5rem;
+      row-gap: 1.75rem;
     }
 
     .pres-founder__text {
+      grid-area: text;
       align-items: flex-start;
-      gap: 1.25rem;
     }
 
-    .pres-founder__eyebrow,
+    .pres-founder__video-wrapper {
+      grid-area: video;
+      align-self: center;
+    }
+
+    .pres-founder__stats {
+      grid-area: stats;
+    }
+
+    .pres-founder__cta {
+      grid-area: cta;
+      justify-content: flex-start;
+    }
+
     .pres-founder__heading,
     .pres-founder__subhead {
       text-align: left;
-    }
-
-    .pres-founder__heading,
-    .pres-founder__subhead {
       max-width: none;
     }
 
-    /* Stats become a full-width proof band of four cards below the hero row */
+    /* Stripe now lives in the narrower left column, so keep values compact. */
     .pres-founder__stat {
-      padding: 2rem 1.5rem;
+      padding: 1.25rem 0.5rem;
     }
 
     .pres-founder__stat-value {
-      font-size: 2.5rem;
-      line-height: 1.1;
+      font-size: 1.75rem;
+      line-height: 1;
     }
 
     .pres-founder__stat-label {
-      font-size: 1.0625rem;
+      font-size: 0.625rem;
     }
   }
 
   @media only screen and (min-width: 1136px) {
     .pres-founder__heading {
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
   }
 
   @media only screen and (min-width: 1920px) {
     .pres-founder__heading {
-      font-size: 2.625rem;
+      font-size: 3.5rem;
     }
   }
 </style>

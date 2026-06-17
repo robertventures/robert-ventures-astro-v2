@@ -49,6 +49,10 @@ const seriesWithPath = series.map((s) => {
   return { ...s, d, endX: xFor(MONTHS), endY: yFor(s.endpoint) };
 });
 
+// Outcomes for the left-column stat list: highest value first so the order
+// matches the chart's top-to-bottom line order at year 10.
+const outcomes = [...seriesWithPath].reverse();
+
 const yTicks = [0, 10_000, 20_000, 30_000];
 const xTicks = [0, 2, 4, 6, 8, 10];
 
@@ -58,36 +62,33 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
 
 <section class="rational-math offer-slide" aria-labelledby="rational-math-heading">
   <div class="rational-math__container">
-    <div class="rational-math__info">
-      <div class="rational-math__header">
-        <p class="rational-math__eyebrow">The compound math</p>
-        <h2 id="rational-math-heading" class="rational-math__heading">
-          $10,000, three places, 10 years.
-        </h2>
-        <p class="rational-math__subhead">
-          Take the 8% and 10% from the contract and run them forward. Compounded monthly. Not a
-          projection. Just math.
-        </p>
-      </div>
+    <div class="rational-math__header">
+      <p class="rational-math__eyebrow">The compound math</p>
+      <h2 id="rational-math-heading" class="rational-math__heading">
+        $10,000, three places, 10 years.
+      </h2>
+    </div>
 
-      <p class="rational-math__callout">
-        The 3-year bond turns $10,000 into <strong>$27,070</strong>. A 4% CD turns it into
-        <strong>$14,908</strong>.
+    <div class="rational-math__info">
+      <p class="rational-math__subhead">
+        Take the 8% and 10% from the contract and run them forward. Compounded monthly. Not a
+        projection. Just math.
       </p>
+
+      <ul class="rational-math__outcomes" aria-label="Value of $10,000 after 10 years">
+        {
+          outcomes.map((s) => (
+            <li class:list={["rational-math__outcome", `is-${s.colorClass}`]}>
+              <span class="rational-math__outcome-swatch" aria-hidden="true" />
+              <span class="rational-math__outcome-value">{fmt(s.endpoint)}</span>
+              <span class="rational-math__outcome-label">{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
     <div class="rational-math__visual">
-      <ul class="rational-math__legend" role="list">
-      {
-        seriesWithPath.map((s) => (
-          <li class:list={["rational-math__legend-item", `is-${s.colorClass}`]}>
-            <span class="rational-math__legend-swatch" aria-hidden="true" />
-            <span class="rational-math__legend-label">{s.label}</span>
-          </li>
-        ))
-      }
-    </ul>
-
     <div class="rational-math__chart-wrap">
       <svg
         class="rational-math__chart"
@@ -189,7 +190,7 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
   }
 
   .rational-math__container {
-    max-width: 1136px;
+    max-width: var(--content-max);
     margin: 0 auto;
     padding: 0;
     display: flex;
@@ -243,6 +244,8 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
     color: var(--text-muted);
     line-height: 150%;
     margin: 0;
+    max-width: 720px;
+    text-align: center;
   }
 
   .rational-math__legend {
@@ -437,6 +440,68 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
     font-weight: 600;
   }
 
+  /* Outcomes stat list (left column). Doubles as the chart legend: the colored
+     swatch ties each row to its line. Fills the column height so it balances
+     the chart, mirroring the Coastal section's stat list. */
+  .rational-math__outcomes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rational-math__outcome {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .rational-math__outcome:last-child {
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .rational-math__outcome-swatch {
+    flex: none;
+    width: 16px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--text-muted);
+    align-self: center;
+  }
+
+  .rational-math__outcome.is-bond8 .rational-math__outcome-swatch {
+    background: var(--green-brand, #67b78f);
+  }
+
+  .rational-math__outcome.is-bond10 .rational-math__outcome-swatch {
+    background: var(--green-dark);
+  }
+
+  .rational-math__outcome-value {
+    font-family: "Roboto Serif", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    line-height: 1.1;
+    font-variant-numeric: lining-nums;
+    min-width: 6rem;
+  }
+
+  .rational-math__outcome.is-bond10 .rational-math__outcome-value {
+    color: var(--green-dark);
+  }
+
+  .rational-math__outcome-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 135%;
+  }
+
   .rational-math__disclaimer {
     font-family: "Roboto", sans-serif;
     font-size: 0.8125rem;
@@ -475,22 +540,42 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
   }
 
   @media only screen and (min-width: 1136px) {
-    /* Two-column: text + callout left, chart (wider column) right */
+    /* Headline owns a full-width top row, then a two-column body: supporting copy
+       left, chart right in the narrower column (the chart is tall, so the smaller
+       column keeps it from dwarfing the short supporting copy). The heading never
+       competes with the chart legend. */
     .rational-math__container {
       display: grid;
-      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+      grid-template-areas:
+        "head head"
+        "info visual";
+      align-items: stretch;
       column-gap: 2.75rem;
+      row-gap: 1.5rem;
       text-align: left;
     }
 
+    .rational-math__header {
+      grid-area: head;
+      align-items: flex-start;
+      text-align: left;
+      max-width: none;
+    }
+
     .rational-math__info {
+      grid-area: info;
+      align-self: start;
       align-items: flex-start;
       gap: 1.75rem;
     }
 
-    .rational-math__header {
-      align-items: flex-start;
+    .rational-math__visual {
+      grid-area: visual;
+      align-items: stretch;
+    }
+
+    .rational-math__subhead {
       text-align: left;
       max-width: none;
     }
@@ -498,10 +583,6 @@ const fmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`
     .rational-math__callout {
       text-align: left;
       max-width: none;
-    }
-
-    .rational-math__visual {
-      align-items: stretch;
     }
 
     .rational-math__legend {

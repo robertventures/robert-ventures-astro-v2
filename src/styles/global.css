@@ -27,6 +27,18 @@
   --section-pad-y: 48px;
   --section-pad-x: 16px;
 
+  /* Content max-width system. Section shells set
+     `max-width: var(--content-max); margin: 0 auto` so every section shares one
+     source of truth for how wide content gets on desktop. Three tiers:
+       --content-max      standard content sections (the majority)
+       --content-max-wide media-forward sections (real estate, founder video)
+       --content-max-doc  long-form reading (blog + legal pages)
+     The wide tier expands on ultra-wide screens (overridden below); the other
+     two stay flat. These are NOT for inner text/measure caps (640, 520, ...). */
+  --content-max: 1136px;
+  --content-max-wide: 1200px;
+  --content-max-doc: 1280px;
+
   /* Page backgrounds */
   --bg-primary: #ffffff;
   --bg-secondary: #f4f6f8;
@@ -91,6 +103,7 @@
 @media only screen and (min-width: 1920px) {
   :root {
     --section-pad-x: 312px;
+    --content-max-wide: 1400px;
   }
 }
 
@@ -390,19 +403,12 @@ section {
 /* Large: 1136px - 1919px */
 @media only screen and (min-width: 1136px) {
   .section-container {
-    max-width: 1136px; /* Or align to grid max-width */
+    max-width: var(--content-max);
     padding: 4rem 2rem;
   }
 
   .section-content {
     max-width: 921px;
-  }
-}
-
-/* Extra Large: 1920px - Larger */
-@media only screen and (min-width: 1920px) {
-  .section-container {
-    max-width: 1440px; /* Constrain heavily on ultra-wide */
   }
 }
 

@@ -90,44 +90,6 @@ const obxXTicks = [2014, 2016, 2018, 2020, 2022, 2024];
 const obxFmt = (v: number) => `$${Math.round(v).toLocaleString()}`;
 const obxFmtCompact = (v: number) => (v === 0 ? "$0" : `$${(v / 1000).toFixed(0)}K`);
 
-// Bitcoin institutional adoption timeline. Each milestone is a verifiable
-// event in Bitcoin's path from experiment to financial infrastructure.
-// We do not show price (per offer.md L209 marketing rule).
-// 2025 entries consolidate Fidelity 401(k), BNY custody, and GENIUS Act
-// proof points from proof-points.md.
-const btcTimeline = [
-  {
-    year: "2014",
-    title: "Institutional custody emerges",
-    detail: "BitGo and Coinbase Custody build cold-storage infrastructure for funds.",
-  },
-  {
-    year: "2017",
-    title: "CME launches Bitcoin futures",
-    detail: "Regulated derivatives debut on the Chicago Mercantile Exchange.",
-  },
-  {
-    year: "2020",
-    title: "MicroStrategy adopts Bitcoin treasury",
-    detail: "First public company to hold Bitcoin as a primary reserve asset.",
-  },
-  {
-    year: "2021",
-    title: "Tesla and El Salvador",
-    detail: "First Fortune 100 corporate treasury. First sovereign nation as legal tender.",
-  },
-  {
-    year: "2024",
-    title: "Spot Bitcoin ETFs approved",
-    detail: "BlackRock, Fidelity, and others launch on US exchanges. Tens of billions in inflows.",
-  },
-  {
-    year: "2025",
-    title: "Bitcoin enters mainstream finance",
-    detail:
-      "Fidelity adds Bitcoin to 401(k) plans. BNY Mellon provides bank custody. GENIUS Act sets federal rules.",
-  },
-];
 ---
 
 <link
@@ -139,17 +101,18 @@ const btcTimeline = [
   <div class="rational-assets__container">
     <!-- BLOCK 2: MARKET PROOF (centered: heading on top, then chart, then stat band) -->
     <article class="rational-assets__block rational-assets__market">
+      <header class="rational-assets__header">
+        <p class="rational-assets__eyebrow">Tangible assets</p>
+        <h2 id="rational-assets-heading" class="rational-assets__heading">
+          Coastal real estate on the Outer Banks.
+        </h2>
+      </header>
+
       <div class="rational-assets__market-info">
-        <header class="rational-assets__header">
-          <p class="rational-assets__eyebrow">Tangible assets</p>
-          <h2 id="rational-assets-heading" class="rational-assets__heading">
-            Coastal real estate on the Outer Banks.
-          </h2>
-          <p class="rational-assets__subhead">
-            The income comes from real things. Coastal real estate on the Outer Banks, plus a
-            Bitcoin reserve.
-          </p>
-        </header>
+        <p class="rational-assets__subhead">
+          The income comes from real things. Coastal real estate on the Outer Banks, plus a Bitcoin
+          reserve.
+        </p>
 
         <p class="rational-assets__lede">
           Land doesn't grow on a barrier island, and tourism demand keeps showing up. Over the past
@@ -298,7 +261,8 @@ const btcTimeline = [
       </ul>
     </article>
 
-    <!-- BLOCK 3: PORTFOLIO (centered: heading on top, then stats, photos, strategy) -->
+    <!-- BLOCK 3: PORTFOLIO (desktop: heading full-width top, strategy + stats left,
+         photo carousel right; mirrors the market block above) -->
     <article
       class="rational-assets__block rational-assets__portfolio"
       aria-labelledby="rational-assets-portfolio-heading"
@@ -310,16 +274,22 @@ const btcTimeline = [
         </h3>
       </div>
 
-      <ul class="rational-assets__stats" aria-label="Portfolio stats">
-        {
-          portfolioStats.map((s) => (
-            <li class="rational-assets__stat">
-              <span class="rational-assets__stat-value">{s.value}</span>
-              <span class="rational-assets__stat-label">{s.label}</span>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="rational-assets__portfolio-info">
+        <p class="rational-assets__strategy">
+          We buy underpriced lots, build them sale-ready, and sell into a supply-constrained market.
+        </p>
+
+        <ul class="rational-assets__stats" aria-label="Portfolio stats">
+          {
+            portfolioStats.map((s) => (
+              <li class="rational-assets__stat">
+                <span class="rational-assets__stat-value">{s.value}</span>
+                <span class="rational-assets__stat-label">{s.label}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
       <div
         class="splide rational-assets__carousel"
@@ -347,45 +317,19 @@ const btcTimeline = [
           </ul>
         </div>
       </div>
-
-      <p class="rational-assets__strategy">
-        We buy underpriced lots, build them sale-ready, and sell into a supply-constrained market.
-      </p>
     </article>
 
-    <!-- BLOCK 4: BITCOIN SECONDARY (header + adoption timeline + how-we-hold-it) -->
+    <!-- BLOCK 4: DIGITAL RESERVE (one-line takeaway + 3 milestone markers) -->
     <aside class="rational-asset-secondary">
       <div class="rational-asset-secondary__card">
         <div class="rational-asset-secondary__narrative">
           <p class="rational-asset-secondary__eyebrow">The digital reserve</p>
           <h3 class="rational-asset-secondary__heading">Stacked in digital assets.</h3>
-
-          <p class="rational-asset-secondary__lede">A decade of institutional adoption.</p>
-
           <p class="rational-asset-secondary__body">
-            Every month, alongside the property portfolio, we accumulate Bitcoin and Ethereum. The
-            same scarcity logic that drives our Outer Banks strategy.
-          </p>
-
-          <p class="rational-asset-secondary__body rational-asset-secondary__body--quiet">
-            Held as a long-term digital reserve. Never traded.
+            Every month, alongside the real estate, we add to a long-term Bitcoin and Ethereum
+            reserve. A decade of institutional adoption stands behind it. Never traded.
           </p>
         </div>
-
-        <ol class="btc-timeline" aria-label="Bitcoin institutional adoption timeline">
-          {
-            btcTimeline.map((m) => (
-              <li class="btc-timeline__item">
-                <span class="btc-timeline__dot" aria-hidden="true" />
-                <div class="btc-timeline__content">
-                  <p class="btc-timeline__year">{m.year}</p>
-                  <p class="btc-timeline__title">{m.title}</p>
-                  <p class="btc-timeline__detail">{m.detail}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
       </div>
     </aside>
 
@@ -476,7 +420,7 @@ const btcTimeline = [
   }
 
   .rational-assets__container {
-    max-width: 1136px;
+    max-width: var(--content-max);
     margin: 0 auto;
     padding: 0;
     display: flex;
@@ -521,12 +465,13 @@ const btcTimeline = [
     color: var(--text-body);
     line-height: 150%;
     margin: 0;
+    max-width: 640px;
   }
 
   /* Generic block container (market proof + portfolio) */
   .rational-assets__block {
     width: 100%;
-    max-width: 1000px;
+    max-width: var(--content-max);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -538,6 +483,7 @@ const btcTimeline = [
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     gap: 1.5rem;
     width: 100%;
   }
@@ -625,7 +571,17 @@ const btcTimeline = [
     text-align: center;
   }
 
-  /* Strategy punchline below the photo carousel */
+  /* Portfolio left column: strategy lede + stats list */
+  .rational-assets__portfolio-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* Strategy lede that frames the portfolio */
   .rational-assets__strategy {
     font-family: "Roboto Serif", serif;
     font-size: 1.0625rem;
@@ -916,106 +872,6 @@ const btcTimeline = [
     margin: 0;
   }
 
-  .rational-asset-secondary__body--quiet {
-    color: var(--text-muted);
-    font-style: italic;
-  }
-
-  /* Bitcoin lede line that sets up the timeline */
-  .rational-asset-secondary__lede {
-    font-family: "Roboto Serif", serif;
-    font-size: 1.0625rem;
-    font-weight: 500;
-    font-style: italic;
-    color: var(--text-body);
-    line-height: 150%;
-    margin: 0;
-  }
-
-  /* Bitcoin institutional adoption timeline */
-  .btc-timeline {
-    list-style: none;
-    padding: 0 0 0 28px;
-    margin: 0.5rem 0;
-    position: relative;
-    counter-reset: btc-step;
-  }
-
-  .btc-timeline::before {
-    content: "";
-    position: absolute;
-    left: 9px;
-    top: 14px;
-    bottom: 14px;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--green-brand, #67b78f) 0%, var(--green-dark) 100%);
-    opacity: 0.6;
-  }
-
-  .btc-timeline__item {
-    position: relative;
-    padding-bottom: 1.25rem;
-  }
-
-  .btc-timeline__item:last-child {
-    padding-bottom: 0;
-  }
-
-  .btc-timeline__dot {
-    position: absolute;
-    left: -25px;
-    top: 6px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--green-brand, #67b78f);
-    border: 3px solid #ffffff;
-    box-shadow: 0 0 0 1px var(--green-brand, #67b78f);
-  }
-
-  .btc-timeline__item:last-child .btc-timeline__dot {
-    background: var(--green-dark);
-    box-shadow: 0 0 0 1px var(--green-dark);
-    width: 16px;
-    height: 16px;
-    left: -27px;
-    top: 4px;
-  }
-
-  .btc-timeline__content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .btc-timeline__year {
-    font-family: "Roboto", sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
-    line-height: 130%;
-    font-variant-numeric: lining-nums;
-  }
-
-  .btc-timeline__title {
-    font-family: "Roboto Serif", serif;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-heading);
-    line-height: 135%;
-    margin: 2px 0 0;
-  }
-
-  .btc-timeline__detail {
-    font-family: "Roboto", sans-serif;
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    line-height: 150%;
-    margin: 4px 0 0;
-  }
 
   @media only screen and (min-width: 600px) {
     .rational-assets__container {
@@ -1080,20 +936,8 @@ const btcTimeline = [
       font-size: 1.625rem;
     }
 
-    .rational-asset-secondary__lede {
-      font-size: 1.125rem;
-    }
-
     .rational-asset-secondary__body {
       font-size: 1rem;
-    }
-
-    .btc-timeline__title {
-      font-size: 1.0625rem;
-    }
-
-    .btc-timeline__detail {
-      font-size: 0.9375rem;
     }
   }
 
@@ -1102,12 +946,136 @@ const btcTimeline = [
       gap: 3.5rem;
     }
 
-    /* Coastal (market) and portfolio render as centered single-column stacks:
-       eyebrow + heading on top, content (chart / stats / carousel) below. This
-       is the base flex-column layout, so they need no desktop grid overrides.
+    /* Coastal (market) at desktop: the headline owns a full-width top row, then
+       a two-column body: supporting copy + stats stack in the left column, and
+       the chart fills the right column, spanning both the copy and stats rows.
+       Stacking the stats under the copy makes the left column as tall as the
+       chart, so the two columns read as balanced masses.
        Bitcoin keeps its two-column card; match it to the other blocks' width. */
+    .rational-assets__market {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        "head  head"
+        "copy  chart"
+        "stats chart";
+      align-items: start;
+      column-gap: 3rem;
+      row-gap: 1.5rem;
+    }
+
+    /* Headline band: full-width top row, left-aligned */
+    .rational-assets__market .rational-assets__header {
+      grid-area: head;
+      align-items: flex-start;
+      text-align: left;
+      max-width: none;
+    }
+
+    /* Left column, top: supporting copy, left-aligned */
+    .rational-assets__market .rational-assets__market-info {
+      grid-area: copy;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .rational-assets__market .rational-assets__subhead,
+    .rational-assets__market .rational-assets__lede {
+      text-align: left;
+      max-width: none;
+    }
+
+    /* Right column: chart spans the copy + stats rows */
+    .rational-assets__market .obx-chart {
+      grid-area: chart;
+    }
+
+    /* Chart label left-aligned to share the same left edge as the copy, so the
+       chart label and the copy line up across the top of the body row. */
+    .rational-assets__market .obx-chart__header {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    /* In both two-column blocks the stats become a vertical key-stat list (the
+       full-width 3-across band is only used on smaller screens) so they fill the
+       left column and balance the adjacent visual's height. */
+    .rational-assets__market .rational-assets__stats,
+    .rational-assets__portfolio .rational-assets__stats {
+      display: flex;
+      flex-direction: column;
+      border-top: none;
+      border-bottom: none;
+    }
+
+    /* Market stats occupy the dedicated grid row; portfolio stats sit inside the
+       left-column wrapper. */
+    .rational-assets__market .rational-assets__stats {
+      grid-area: stats;
+    }
+
+    .rational-assets__market .rational-assets__stat,
+    .rational-assets__portfolio .rational-assets__stat {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      text-align: left;
+      border-right: none;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .rational-assets__market .rational-assets__stat:last-child,
+    .rational-assets__portfolio .rational-assets__stat:last-child {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .rational-assets__market .rational-assets__stat-value,
+    .rational-assets__portfolio .rational-assets__stat-value {
+      min-width: 6.5rem;
+    }
+
+    /* Portfolio block: mirrors the market block. Heading full-width on top, then
+       strategy lede + stats list (left) beside the photo carousel (right). */
+    .rational-assets__portfolio {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        "head     head"
+        "info     carousel";
+      align-items: start;
+      column-gap: 3rem;
+      row-gap: 1.5rem;
+    }
+
+    .rational-assets__portfolio .rational-assets__block-header {
+      grid-area: head;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .rational-assets__portfolio .rational-assets__portfolio-info {
+      grid-area: info;
+      align-items: flex-start;
+      text-align: left;
+      gap: 1.75rem;
+    }
+
+    .rational-assets__portfolio .rational-assets__strategy {
+      text-align: left;
+      max-width: none;
+    }
+
+    .rational-assets__portfolio .rational-assets__carousel {
+      grid-area: carousel;
+    }
+
+    /* Secondary aside: a tighter, centered card (narrower than the full-width
+       primary blocks) so it reads as a focused, lower-priority note. */
     .rational-asset-secondary {
-      max-width: 1000px;
+      max-width: 820px;
+      margin: 0 auto;
     }
 
     .rational-assets__heading {
@@ -1126,26 +1094,21 @@ const btcTimeline = [
       font-size: 2.25rem;
     }
 
+    /* Chart heading is the supporting label for the right column, so keep it
+       clearly smaller than the 2.5rem main headline on the left. */
     .obx-chart__heading {
-      font-size: 2rem;
+      font-size: 1.5rem;
     }
 
     .obx-chart__wrap {
       padding: 2rem 1.75rem 1.5rem;
     }
 
-    /* Block 4 Bitcoin: narrative left, vertical adoption timeline right
-       (spans full width via the shared rule above). */
+    /* Block 4 digital reserve: narrative on top, horizontal 3-point timeline
+       below, stacked within a compact card. */
     .rational-asset-secondary__card {
       padding: 2.25rem 2.5rem;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: start;
-      gap: 2.5rem;
-    }
-
-    .btc-timeline {
-      margin: 0;
+      gap: 1.75rem;
     }
 
     .rational-asset-secondary__heading {
