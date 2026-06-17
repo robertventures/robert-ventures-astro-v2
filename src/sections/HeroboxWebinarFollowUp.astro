@@ -15,7 +15,7 @@ import FormCreateAccount from "../components/FormCreateAccount.astro";
   .section-container {
     position: relative;
     z-index: 1;
-    padding: 48px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     background: transparent;
     width: 100%;
     max-width: 100%;
@@ -243,10 +243,6 @@ import FormCreateAccount from "../components/FormCreateAccount.astro";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
     h1 {
       font-size: 48px;
       line-height: 110%;
@@ -264,7 +260,6 @@ import FormCreateAccount from "../components/FormCreateAccount.astro";
 
   @media only screen and (min-width: 1136px) {
     .section-container {
-      padding: 96px 112px;
       margin: 0;
       width: 100%;
     }
@@ -300,12 +295,6 @@ import FormCreateAccount from "../components/FormCreateAccount.astro";
 
     .investment-detail-stat {
       width: 100%;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding: 96px 312px;
     }
   }
 </style>

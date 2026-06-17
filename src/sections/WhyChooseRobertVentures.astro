@@ -10,22 +10,22 @@ import opentoallImg from "../images/illustrations/opentoall-img.png";
     background: var(--bg-secondary);
     position: relative;
     color: var(--text-body);
-    padding: 0;
+    padding: 0 var(--section-pad-x);
     margin: 0;
   }
 
   .section-container {
-    padding: 48px 16px;
+    padding: var(--section-pad-y) 0;
     text-align: left;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
     background: transparent;
   }
 
   h3 {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-lg);
     font-weight: 500;
     margin: 0;
     margin-bottom: 32px;
@@ -88,14 +88,6 @@ import opentoallImg from "../images/illustrations/opentoall-img.png";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
     .cards-container {
       grid-template-columns: repeat(2, 1fr);
       row-gap: 16px;
@@ -104,34 +96,10 @@ import opentoallImg from "../images/illustrations/opentoall-img.png";
   }
 
   @media only screen and (min-width: 1136px) {
-    section {
-      padding: 0 56px 0 56px;
-    }
-
-    .section-container {
-      padding: 96px 56px;
-      margin: 0;
-      width: 100%;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
     .cards-container {
       grid-template-columns: repeat(3, 1fr);
       row-gap: 16px;
       column-gap: 16px;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    section {
-      padding: 0 156px 0 156px;
-    }
-
-    .section-container {
-      padding: 96px 156px;
     }
   }
 </style>

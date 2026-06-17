@@ -144,16 +144,18 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
   section {
     background: var(--bg-secondary);
     color: var(--text-heading);
-    padding: 0;
+    /* Full-bleed section owns the horizontal gutter; the inner
+       .reviews-v3-container owns the max-width cap + centering. */
+    padding: 0 var(--section-pad-x);
     margin: 0;
     width: 100%;
     overflow: hidden;
   }
 
   .reviews-v3-container {
-    padding: var(--section-pad-y) var(--section-pad-x);
+    padding: var(--section-pad-y) 0;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 

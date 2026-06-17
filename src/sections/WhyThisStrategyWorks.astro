@@ -12,7 +12,7 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
     background: var(--bg-secondary);
     position: relative;
     color: var(--text-body);
-    padding: 0;
+    padding: 0 var(--section-pad-x);
     margin: 0;
     overflow: hidden;
     border-top: 1px solid var(--border-light);
@@ -21,17 +21,17 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
   .section-container {
     position: relative;
     z-index: 1;
-    padding: 48px 16px;
+    padding: var(--section-pad-y) 0;
     background: transparent;
     text-align: center;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 
   h3 {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-lg);
     font-weight: 500;
     margin: 0;
     margin-bottom: 32px;
@@ -44,9 +44,7 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
     display: flex;
     flex-direction: column;
     gap: 32px;
-    margin-left: -16px;
-    margin-right: -16px;
-    width: calc(100% + 32px);
+    width: 100%;
     margin-top: 32px;
   }
 
@@ -97,22 +95,6 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
   }
 
   @media only screen and (min-width: 1136px) {
-    section {
-      padding: 0 56px 0 56px;
-    }
-
-    .section-container {
-      padding: 96px 56px;
-      margin: 0;
-      width: 100%;
-    }
-
-    .cards-container {
-      margin-left: -56px;
-      margin-right: -56px;
-      width: calc(100% + 112px);
-    }
-
     .card-content-wrapper {
       padding: 48px 56px 48px 56px;
       flex-direction: row;
@@ -137,48 +119,6 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
 
     .card-header {
       padding: 24px 56px;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    section {
-      padding: 0 156px 0 156px;
-    }
-
-    .section-container {
-      padding: 96px 156px;
-    }
-
-    .cards-container {
-      margin-left: -156px;
-      margin-right: -156px;
-      width: calc(100% + 312px);
-    }
-
-    .card-content-wrapper {
-      padding: 48px 156px 48px 156px;
-      flex-direction: row;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .card-content-wrapper > .card-content {
-      flex: 1;
-      max-width: 512px;
-    }
-
-    .card-content {
-      flex-direction: row;
-      gap: 24px;
-      max-width: none;
-    }
-
-    .card-content-column {
-      flex: 1;
-    }
-
-    .card-header {
-      padding: 24px 156px;
     }
   }
 
@@ -533,18 +473,8 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
     .cards-container {
-      margin-left: -32px;
-      margin-right: -32px;
-      width: calc(100% + 64px);
+      width: 100%;
     }
 
     .card-description-row {
@@ -573,24 +503,8 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
   }
 
   @media only screen and (min-width: 1136px) {
-    section {
-      padding: 0 56px 0 56px;
-    }
-
-    .section-container {
-      padding: 96px 56px;
-      margin: 0;
-      width: 100%;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
     .cards-container {
-      margin-left: -56px;
-      margin-right: -56px;
-      width: calc(100% + 112px);
+      width: 100%;
     }
 
     .card-description-row {
@@ -618,21 +532,6 @@ import houseImg from "../images/illustrations/house-169-1.jpg";
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    section {
-      padding: 0 156px 0 156px;
-    }
-
-    .section-container {
-      padding: 96px 156px;
-    }
-
-    .cards-container {
-      margin-left: -156px;
-      margin-right: -156px;
-      width: calc(100% + 312px);
-    }
-  }
 </style>
 
 <section>

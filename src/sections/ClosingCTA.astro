@@ -1,11 +1,11 @@
 ---
-import DualCTA from "../components/DualCTA.astro";
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <style>
   section {
-    background: var(--dark-bg);
-    border-top: 1px solid var(--dark-border);
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-light);
     padding: 0;
     margin: 0;
     position: relative;
@@ -24,14 +24,14 @@ import DualCTA from "../components/DualCTA.astro";
 
   .staircase-svg rect {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.07);
+    stroke: rgba(103, 183, 143, 0.12);
     stroke-width: 1;
   }
 
   .cta-section-container {
     position: relative;
     z-index: 1;
-    padding: 64px 16px;
+    padding: 64px var(--section-pad-x);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,9 +41,9 @@ import DualCTA from "../components/DualCTA.astro";
 
   h2 {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-lg);
     font-weight: 500;
-    color: var(--dark-text-heading);
+    color: var(--text-heading);
     margin: 0;
     line-height: 125%;
   }
@@ -52,7 +52,7 @@ import DualCTA from "../components/DualCTA.astro";
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 400;
-    color: var(--dark-text-body);
+    color: var(--text-body);
     line-height: 150%;
     margin: 0;
     max-width: 512px;
@@ -60,17 +60,13 @@ import DualCTA from "../components/DualCTA.astro";
 
   @media only screen and (min-width: 600px) {
     .cta-section-container {
-      padding: 80px 32px;
-    }
-
-    h2 {
-      font-size: 40px;
+      padding: 80px var(--section-pad-x);
     }
   }
 
   @media only screen and (min-width: 1136px) {
     .cta-section-container {
-      padding: 96px 112px;
+      padding: 96px var(--section-pad-x);
     }
 
     .staircase-svg {
@@ -145,8 +141,8 @@ import DualCTA from "../components/DualCTA.astro";
   </svg>
   <div class="cta-section-container">
     <h2>Ready to Get Started?</h2>
-    <p>Join our webinar to learn how our dual sector strategy can work for you.</p>
-    <DualCTA />
+    <p>See how our dual sector strategy can work for you.</p>
+    <GetStartedCta trackCta="closing_primary_cta" trackLocation="closing_cta" />
   </div>
 </section>
 
@@ -164,14 +160,14 @@ import DualCTA from "../components/DualCTA.astro";
       const rects = svg.querySelectorAll("rect");
       if (rects.length === 0) return;
 
-      gsapLib.set(rects, { stroke: "rgba(255, 255, 255, 0.07)" });
+      gsapLib.set(rects, { stroke: "rgba(103, 183, 143, 0.12)" });
 
       const tl = gsapLib.timeline({ repeat: -1 });
 
       tl.to({}, { duration: 3 });
 
       tl.to(rects, {
-        stroke: "rgba(255, 255, 255, 0.15)",
+        stroke: "rgba(103, 183, 143, 0.28)",
         duration: 0.2,
         stagger: {
           amount: 0.5,
@@ -180,7 +176,7 @@ import DualCTA from "../components/DualCTA.astro";
       });
 
       tl.to(rects, {
-        stroke: "rgba(255, 255, 255, 0.07)",
+        stroke: "rgba(103, 183, 143, 0.12)",
         duration: 0.5,
         stagger: {
           amount: 1,

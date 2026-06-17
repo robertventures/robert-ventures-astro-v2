@@ -27,6 +27,18 @@
   --section-pad-y: 48px;
   --section-pad-x: 16px;
 
+  /* Heading size system. Sections set their heading `font-size` to one of these
+     tokens so the typographic scale has a single source of truth and steps in
+     lockstep across breakpoints (overridden per breakpoint below). Four tiers:
+       --fs-hero        page hero headings (homepage, strategy, about)
+       --fs-heading-xl  large section titles
+       --fs-heading-lg  standard section titles
+       --fs-heading-md  compact section titles */
+  --fs-hero: 44px;
+  --fs-heading-xl: 40px;
+  --fs-heading-lg: 32px;
+  --fs-heading-md: 32px;
+
   /* Content max-width system. Section shells set
      `max-width: var(--content-max); margin: 0 auto` so every section shares one
      source of truth for how wide content gets on desktop. Three tiers:
@@ -90,6 +102,11 @@
   :root {
     --section-pad-y: 64px;
     --section-pad-x: 32px;
+
+    --fs-hero: 48px;
+    --fs-heading-xl: 48px;
+    --fs-heading-lg: 40px;
+    --fs-heading-md: 36px;
   }
 }
 
@@ -97,6 +114,11 @@
   :root {
     --section-pad-y: 96px;
     --section-pad-x: 112px;
+
+    --fs-hero: 58px;
+    --fs-heading-xl: 56px;
+    --fs-heading-lg: 40px;
+    --fs-heading-md: 36px;
   }
 }
 

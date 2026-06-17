@@ -35,7 +35,7 @@ try {
   }
 
   .section-container {
-    padding: 32px 16px;
+    padding: 32px var(--section-pad-x);
     text-align: left;
     width: 100%;
     max-width: 100%;
@@ -46,7 +46,7 @@ try {
 
   h3 {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-md);
     font-weight: 500;
     margin: 0;
     margin-bottom: 16px;
@@ -110,11 +110,7 @@ try {
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .section-container {
-      padding: 48px 32px;
-    }
-
-    h3 {
-      font-size: 36px;
+      padding: 48px var(--section-pad-x);
     }
 
     .columns-container {
@@ -129,13 +125,9 @@ try {
 
   @media only screen and (min-width: 1136px) {
     .section-container {
-      padding: 64px 112px;
+      padding: 64px var(--section-pad-x);
       margin: 0;
       width: 100%;
-    }
-
-    h3 {
-      font-size: 36px;
     }
 
     .columns-container {
@@ -144,12 +136,6 @@ try {
 
     .column {
       flex: 1;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding: 64px 312px;
     }
   }
 </style>

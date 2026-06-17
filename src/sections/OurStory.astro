@@ -107,7 +107,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
     </div>
 
     <div class="our-story__cta-wrap">
-      <GetStartedCta fullWidth trackCta="story_primary_cta" trackLocation="our_story" />
+      <GetStartedCta trackCta="story_primary_cta" trackLocation="our_story" />
     </div>
   </div>
 </section>
@@ -117,19 +117,23 @@ import GetStartedCta from "../components/GetStartedCta.astro";
     background: var(--bg-primary);
     color: var(--text-body);
     margin: 0;
+    /* Full-bleed section owns the horizontal gutter; the inner
+       .our-story__container owns the max-width cap + centering. Setting the
+       gutter here also overrides the global `section { padding: 0 2rem }`. */
+    padding: 0 var(--section-pad-x);
   }
 
   .our-story__container {
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
-    padding: var(--section-pad-y) var(--section-pad-x);
+    padding: var(--section-pad-y) 0;
     text-align: left;
   }
 
   .our-story__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-md);
     font-weight: 500;
     color: var(--text-heading);
     line-height: 110%;
@@ -363,10 +367,6 @@ import GetStartedCta from "../components/GetStartedCta.astro";
       text-align: left;
     }
 
-    .our-story__heading {
-      font-size: 36px;
-    }
-
     .our-story__mux-overlay-pill {
       padding: 0.75rem 1.25rem 0.75rem 1rem;
       font-size: 0.9375rem;
@@ -393,7 +393,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
 
     .our-story__heading {
       grid-area: heading;
-      font-size: 36px;
+      text-align: left;
     }
 
     .our-story__body {

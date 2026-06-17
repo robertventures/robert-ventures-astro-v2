@@ -16,7 +16,7 @@ import withdrawEarningsImg from "../images/illustrations/withdraw-earnings.png";
   }
 
   .section-container {
-    padding: 48px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     text-align: left;
     width: 100%;
     max-width: 100%;
@@ -27,7 +27,7 @@ import withdrawEarningsImg from "../images/illustrations/withdraw-earnings.png";
 
   h2 {
     font-family: "Roboto Serif", serif;
-    font-size: 40px;
+    font-size: var(--fs-heading-xl);
     font-weight: 500;
     margin: 0;
     margin-bottom: 32px;
@@ -131,12 +131,7 @@ import withdrawEarningsImg from "../images/illustrations/withdraw-earnings.png";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
     h2 {
-      font-size: 48px;
       text-align: center;
     }
 
@@ -159,16 +154,11 @@ import withdrawEarningsImg from "../images/illustrations/withdraw-earnings.png";
 
   @media only screen and (min-width: 1136px) {
     .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 112px;
-      padding-right: 112px;
       margin: 0;
       width: 100%;
     }
 
     h2 {
-      font-size: 56px;
       text-align: center;
     }
 
@@ -201,13 +191,6 @@ import withdrawEarningsImg from "../images/illustrations/withdraw-earnings.png";
   }
 
   @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 312px;
-      padding-right: 312px;
-    }
-
     .blocks {
       flex-wrap: nowrap;
       gap: 12px;

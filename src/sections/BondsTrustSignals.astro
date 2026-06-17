@@ -121,7 +121,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
   /* Centered title block at every size, matching Reviews/FAQ. */
   .trust__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-md);
     font-weight: 500;
     color: var(--text-heading);
     line-height: 110%;
@@ -188,20 +188,12 @@ import GetStartedCta from "../components/GetStartedCta.astro";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .trust__heading {
-      font-size: 36px;
-    }
-
     .trust__grid {
       gap: 32px 24px;
     }
   }
 
   @media only screen and (min-width: 1136px) {
-    .trust__heading {
-      font-size: 36px;
-    }
-
     .trust__grid {
       grid-template-columns: repeat(4, 1fr);
       gap: 40px;

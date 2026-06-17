@@ -10,14 +10,14 @@ import william from "../images/team/will.jpg";
   section {
     background: linear-gradient(to bottom, #ffffff, #f4f6f5);
     color: var(--text-heading);
-    padding: 0;
+    padding: 0 var(--section-pad-x);
     margin: 0;
   }
 
   .section-container {
-    padding: 48px 16px;
+    padding: var(--section-pad-y) 0;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
     background: transparent;
     border-radius: 0;
@@ -30,7 +30,7 @@ import william from "../images/team/will.jpg";
   }
 
   h1 {
-    font-size: 56px;
+    font-size: var(--fs-hero);
     font-weight: 500;
     margin: 0;
     margin-bottom: 32px;
@@ -179,12 +179,7 @@ import william from "../images/team/will.jpg";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
     h1 {
-      font-size: 64px;
       line-height: 110%;
     }
 
@@ -219,18 +214,8 @@ import william from "../images/team/will.jpg";
   }
 
   @media only screen and (min-width: 1136px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 112px;
-      padding-right: 112px;
-      margin: 0;
-      width: 100%;
-    }
-
     h1 {
       margin-bottom: 32px;
-      font-size: 80px;
       line-height: 110%;
     }
 
@@ -263,14 +248,6 @@ import william from "../images/team/will.jpg";
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 312px;
-      padding-right: 312px;
-    }
-  }
 </style>
 
 <section>

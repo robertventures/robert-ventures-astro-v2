@@ -11,7 +11,7 @@
   }
 
   .section-container {
-    padding: 48px 16px;
+    padding: var(--section-pad-y) var(--section-pad-x);
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
@@ -33,7 +33,7 @@
 
   h3 {
     font-family: "Roboto Serif", serif;
-    font-size: 32px;
+    font-size: var(--fs-heading-lg);
     font-weight: 500;
     margin: 0 0 32px 0;
     line-height: 125%;
@@ -233,15 +233,6 @@
     margin: 0;
   }
 
-  @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-  }
 
   @media only screen and (min-width: 800px) {
     .controls-section {
@@ -273,22 +264,8 @@
   }
 
   @media only screen and (min-width: 1136px) {
-    .section-container {
-      padding: 96px 112px;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
     .controls-section {
       max-width: 512px;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding: 96px 312px;
     }
   }
 </style>

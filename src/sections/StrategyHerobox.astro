@@ -1,15 +1,15 @@
 ---
 import { Image } from "astro:assets";
 import graphAllocationImg from "../images/illustrations/graph-allocation.png";
-import DualCTA from "../components/DualCTA.astro";
+import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <style>
   section {
-    background: var(--bg-secondary);
+    background: #ffffff;
     position: relative;
     color: var(--text-body);
-    padding: 0;
+    padding: 0 var(--section-pad-x);
     margin: 0;
     overflow: hidden;
   }
@@ -17,16 +17,16 @@ import DualCTA from "../components/DualCTA.astro";
   .section-container {
     position: relative;
     z-index: 1;
-    padding: 48px 16px;
+    padding: var(--section-pad-y) 0;
     background: transparent;
     text-align: center;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 
   h1 {
-    font-size: 56px;
+    font-size: var(--fs-hero);
     font-weight: 500;
     margin: 0;
     margin-bottom: 32px;
@@ -197,12 +197,7 @@ import DualCTA from "../components/DualCTA.astro";
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding: 64px 32px;
-    }
-
     h1 {
-      font-size: 64px;
       line-height: 110%;
     }
 
@@ -234,15 +229,8 @@ import DualCTA from "../components/DualCTA.astro";
   }
 
   @media only screen and (min-width: 1136px) {
-    .section-container {
-      padding: 96px 112px;
-      margin: 0;
-      width: 100%;
-    }
-
     h1 {
       margin-bottom: 32px;
-      font-size: 80px;
       line-height: 110%;
     }
 
@@ -271,15 +259,6 @@ import DualCTA from "../components/DualCTA.astro";
     }
   }
 
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding: 96px 312px;
-    }
-
-    .hero-content {
-      gap: 96px;
-    }
-  }
 </style>
 
 <section>
@@ -291,7 +270,7 @@ import DualCTA from "../components/DualCTA.astro";
           A strategy that delivers consistent fixed-rate returns – blending the security of real
           estate with the growth of Bitcoin.
         </p>
-        <DualCTA />
+        <GetStartedCta trackCta="strategy_hero_cta" trackLocation="strategy_hero" />
       </div>
       <div class="hero-right">
         <div class="top-section">

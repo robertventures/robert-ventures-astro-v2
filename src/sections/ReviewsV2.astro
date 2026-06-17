@@ -114,24 +114,26 @@ try {
   section {
     background: var(--bg-secondary);
     color: var(--text-heading);
-    padding: 0;
+    padding: 0 var(--section-pad-x);
     margin: 0;
     width: 100%;
     overflow-x: hidden;
   }
 
   .section-container {
-    padding-top: 48px;
-    padding-bottom: 48px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-top: var(--section-pad-y);
+    padding-bottom: var(--section-pad-y);
+    padding-left: 0;
+    padding-right: 0;
     text-align: left;
     width: 100%;
-    max-width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
     background: transparent;
     border-radius: 0;
-    overflow-x: hidden;
+    /* Visible so the full-bleed .slider-wrapper can break out past this capped
+       container; the right overflow is clipped at the viewport by the wrapper. */
+    overflow: visible;
   }
 
   .slider-wrapper {
@@ -142,8 +144,10 @@ try {
     margin-left: -50vw;
     margin-right: -50vw;
     overflow-x: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
+    /* Left edge tracks the content column (same position as the capped heading);
+       right side keeps bleeding off-screen. */
+    padding-left: max(var(--section-pad-x), calc((100vw - var(--content-max)) / 2));
+    padding-right: var(--section-pad-x);
     box-sizing: border-box;
   }
 
@@ -320,63 +324,9 @@ try {
     }
   }
 
-  @media only screen and (min-width: 600px) and (max-width: 1135px) {
-    .section-container {
-      padding-top: 64px;
-      padding-bottom: 64px;
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
+  @media only screen and (min-width: 600px) {
     h3 {
       font-size: 40px;
-    }
-
-    .slider-wrapper {
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
-    .splide__track {
-      padding: 0;
-    }
-  }
-
-  @media only screen and (min-width: 1136px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 112px;
-      padding-right: 112px;
-      margin: 0;
-      width: 100%;
-    }
-
-    h3 {
-      font-size: 40px;
-    }
-
-    .slider-wrapper {
-      padding-left: 112px;
-      padding-right: 112px;
-    }
-
-    .splide__track {
-      padding: 0;
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    .section-container {
-      padding-top: 96px;
-      padding-bottom: 96px;
-      padding-left: 312px;
-      padding-right: 312px;
-    }
-
-    .slider-wrapper {
-      padding-left: 312px;
-      padding-right: 312px;
     }
   }
 </style>
