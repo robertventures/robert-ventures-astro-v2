@@ -14,7 +14,7 @@ export default defineConfig({
     quality: 85,
   },
   build: {
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
   integrations: [
     mdx(),

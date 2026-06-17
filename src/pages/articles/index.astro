@@ -33,12 +33,12 @@ const articles = (await getCollection("articles")).sort(
         border-radius: 1rem;
         background: #fff;
         padding: 48px 16px;
-        max-width: none;
+        max-width: 100%;
       }
 
       .section-content {
         margin: 0 auto;
-        max-width: none;
+        max-width: var(--content-max);
       }
 
       h1 {
@@ -127,10 +127,10 @@ const articles = (await getCollection("articles")).sort(
         }
         .section-container {
           padding: 64px 32px;
-          max-width: none;
+          max-width: 100%;
         }
         .section-content {
-          max-width: none;
+          max-width: var(--content-max);
         }
         ul {
           grid-template-columns: repeat(2, 1fr);
@@ -148,24 +148,11 @@ const articles = (await getCollection("articles")).sort(
           padding: 0;
         }
         .section-container {
-          padding: 96px 112px;
-          max-width: none;
+          padding: 96px 32px;
+          max-width: 100%;
         }
         .section-content {
-          max-width: none;
-        }
-      }
-
-      @media only screen and (min-width: 1920px) {
-        section {
-          padding: 0;
-        }
-        .section-container {
-          padding: 96px 312px;
-          max-width: none;
-        }
-        .section-content {
-          max-width: none;
+          max-width: var(--content-max);
         }
       }
     </style>
