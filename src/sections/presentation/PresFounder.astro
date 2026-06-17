@@ -387,6 +387,13 @@ import GetStartedCta from "../../components/GetStartedCta.astro";
       justify-content: flex-start;
     }
 
+    /* Span the full left column so the button lines up with the stats band
+       above it. Removes the shared CTA block's 384px cap on desktop only;
+       mobile/tablet keep the capped, centered button. */
+    .pres-founder__cta :global(.gs-cta-block) {
+      max-width: none;
+    }
+
     .pres-founder__heading,
     .pres-founder__subhead {
       text-align: left;
