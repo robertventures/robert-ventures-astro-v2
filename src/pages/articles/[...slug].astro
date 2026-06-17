@@ -1,24 +1,20 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
 
-export const prerender = true;
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const posts = await getCollection("articles");
-  return posts.map((post: any) => ({
-    params: { slug: post.slug.replace(/\/$/, "") }, // Remove trailing slash
-    props: post,
-  }));
+const { slug } = Astro.params;
+const posts = await getCollection("articles");
+const article = posts.find((post: any) => post.slug.replace(/\/$/, "") === slug);
+
+if (!article) {
+  return new Response(null, { status: 404, statusText: "Not found" });
 }
 
-type Props = CollectionEntry<"articles">;
-
-const articles = Astro.props;
-const { Content } = await articles.render();
+const { Content } = await article.render();
 ---
 
-<BlogPost {...articles.data}>
+<BlogPost {...article.data}>
   <Content />
 </BlogPost>
-<!-- FORM HANDLER -->
