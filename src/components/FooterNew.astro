@@ -30,6 +30,7 @@ import Facebook from "../images/socials/facebook.svg";
   }
 
   .footer-content {
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 
@@ -51,13 +52,7 @@ import Facebook from "../images/socials/facebook.svg";
     height: 1px;
     background: var(--border-light);
     margin: 0;
-    margin-bottom: 0;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: 100%;
   }
 
   .footer-link-lists {
@@ -111,26 +106,13 @@ import Facebook from "../images/socials/facebook.svg";
     padding-top: 16px;
     padding-bottom: 16px;
     border-top: 1px solid var(--border-light);
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    padding-left: 16px;
-    padding-right: 16px;
-    box-sizing: border-box;
+    width: 100%;
   }
 
   @media only screen and (min-width: 600px) and (max-width: 1135px) {
     .footer-container {
       padding-top: 16px;
       padding-bottom: 0;
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-
-    .end {
       padding-left: 32px;
       padding-right: 32px;
     }
@@ -145,22 +127,12 @@ import Facebook from "../images/socials/facebook.svg";
       margin: 0;
       width: 100%;
     }
-
-    .end {
-      padding-left: 112px;
-      padding-right: 112px;
-    }
   }
 
   @media only screen and (min-width: 1920px) {
     .footer-container {
       padding-top: 16px;
       padding-bottom: 0;
-      padding-left: 312px;
-      padding-right: 312px;
-    }
-
-    .end {
       padding-left: 312px;
       padding-right: 312px;
     }
