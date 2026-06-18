@@ -1,5 +1,22 @@
 {
   "permissions": {
-    "allow": ["WebFetch(domain:fred.stlouisfed.org)", "WebSearch"]
+    "allow": [
+      "WebFetch(domain:fred.stlouisfed.org)",
+      "WebSearch",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s http://localhost:4321/strategy -o /tmp/strategy.html)",
+      "Read(//tmp/**)",
+      "Bash(python3 -c ' *)",
+      "mcp__paper__get_font_family_info",
+      "mcp__paper__create_artboard",
+      "mcp__paper__write_html",
+      "Bash(python3 -c \"import cairosvg; print\\('yes'\\)\")",
+      "Bash(node -e \"require\\('sharp'\\); console.log\\('yes'\\)\")",
+      "Bash(mkdir -p /tmp/paper-assets)",
+      "Bash(node -e ' *)",
+      "mcp__paper__get_screenshot",
+      "mcp__paper__get_node_info",
+      "mcp__paper__get_computed_styles"
+    ]
   }
 }

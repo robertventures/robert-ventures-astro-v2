@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import graphAllocationImg from "../images/illustrations/graph-allocation.png";
-import GetStartedCta from "../components/GetStartedCta.astro";
 ---
 
 <style>
@@ -79,7 +78,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
     width: 100%;
     height: 1px;
     background-color: var(--border-light);
-    margin: 24px 0;
+    margin: 0;
   }
 
   .aum-section {
@@ -209,7 +208,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
   @media only screen and (min-width: 800px) {
     .hero-content {
       flex-direction: row;
-      align-items: flex-start;
+      align-items: center;
       gap: 48px;
     }
 
@@ -236,7 +235,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
 
     .hero-content {
       flex-direction: row;
-      align-items: flex-start;
+      align-items: center;
       gap: 64px;
     }
 
@@ -267,22 +266,16 @@ import GetStartedCta from "../components/GetStartedCta.astro";
       <div class="hero-left">
         <h1>Dual Sector Strategy</h1>
         <p class="hero-subtitle">
-          A strategy that delivers consistent fixed-rate returns – blending the security of real
-          estate with the growth of Bitcoin.
+          A strategy that delivers consistent fixed-rate returns, pairing the security of real
+          estate with the growth of digital assets. Built on Joe Robert's 25 years of investing.
         </p>
-        <GetStartedCta trackCta="strategy_hero_cta" trackLocation="strategy_hero" />
       </div>
       <div class="hero-right">
-        <div class="top-section">
-          <div class="aum-value">$3.83M</div>
-          <div class="aum-label">Total Portfolio AUM</div>
+        <div class="allocation-section">
           <div class="allocation-label">
             <span class="allocation-bullet"></span>
-            Q3 2025 Allocation
+            Portfolio Allocation
           </div>
-        </div>
-        <div class="section-divider"></div>
-        <div class="allocation-section">
           <div class="chart-legend-wrapper">
             <div class="chart-container">
               <Image
@@ -298,7 +291,7 @@ import GetStartedCta from "../components/GetStartedCta.astro";
               </div>
               <div class="legend-item">
                 <span class="legend-color digital-assets"></span>
-                <span class="legend-text">24.4% Bitcoin</span>
+                <span class="legend-text">24.4% Digital Assets</span>
               </div>
             </div>
           </div>
