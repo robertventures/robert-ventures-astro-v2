@@ -28,7 +28,7 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
           Pick a time and a member of our team will call you for a quick 10-minute conversation.
           Bring your questions.
         </p>
-        <IntroBookingCalendar />
+        <IntroBookingCalendar redirectUrl="/call-thank-you?src=offer" />
 
         <div class="book-call__alt">
           <span class="book-call__alt-divider" aria-hidden="true">or</span>
@@ -333,8 +333,8 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
             JSON.stringify({ slot: fakeSlot, timezone: "America/New_York" })
           );
         } catch (e) {}
-        if (window.rvNavigate) window.rvNavigate("/webinar/confirmation");
-        else window.location.href = "/webinar/confirmation";
+        if (window.rvNavigate) window.rvNavigate("/call-thank-you?src=offer");
+        else window.location.href = "/call-thank-you?src=offer";
       });
     }
 

@@ -115,8 +115,14 @@ const pageDescription = "Thank you for booking a Q&A call with Robert Ventures."
 
     <script>
       // POSTHOG: calendar_booking_completed
-      // This page is only reachable after completing a booking on /calendar,
-      // so loading this page = a confirmed booking.
+      // This page is shared by two booking sources:
+      //   1. /calendar (the GHL "Contact" iframe) -- tracked here.
+      //   2. /offer/book-call -- already tracked at booking time by the widget's
+      //      `appointment_booked` event (session_page: "/offer/book-call").
+      // To keep calendar_booking_completed exclusive to the Contact path, skip
+      // all tracking here when the visit came from the offer flow (?src=offer).
+      const isOfferBooking = new URLSearchParams(window.location.search).get("src") === "offer";
+
       function fireBookingEvents() {
         // PostHog: track the booking event
         if ((window as any).posthogTrack) {
@@ -134,23 +140,27 @@ const pageDescription = "Thank you for booking a Q&A call with Robert Ventures."
         }
       }
 
-      // Wait for PostHog to be ready (loaded via GTM, may take a moment)
-      if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
-        fireBookingEvents();
-      } else {
-        // PostHog not ready yet — wait for it to load, then fire
-        let attempts = 0;
-        const interval = setInterval(() => {
-          attempts++;
-          if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
-            clearInterval(interval);
-            fireBookingEvents();
-          } else if (attempts >= 20) {
-            // After 10 seconds, fire anyway so GA4 still gets tracked
-            clearInterval(interval);
-            fireBookingEvents();
-          }
-        }, 500);
+      // Offer-funnel bookings are already tracked by the widget; only the
+      // Contact path (/calendar) fires the calendar booking events here.
+      if (!isOfferBooking) {
+        // Wait for PostHog to be ready (loaded via GTM, may take a moment)
+        if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
+          fireBookingEvents();
+        } else {
+          // PostHog not ready yet — wait for it to load, then fire
+          let attempts = 0;
+          const interval = setInterval(() => {
+            attempts++;
+            if (typeof (window as any).posthog === "object" && (window as any).posthog.capture) {
+              clearInterval(interval);
+              fireBookingEvents();
+            } else if (attempts >= 20) {
+              // After 10 seconds, fire anyway so GA4 still gets tracked
+              clearInterval(interval);
+              fireBookingEvents();
+            }
+          }, 500);
+        }
       }
     </script>
   </body>

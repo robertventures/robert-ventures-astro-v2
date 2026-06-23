@@ -6,6 +6,11 @@
 // in localStorage, then full_name+userEmail+phone_number from a prior webinar
 // registration, then an inline form rendered between time selection and
 // confirmation for cold visitors.
+//
+// redirectUrl: where to send the visitor after a successful booking. Defaults
+// to /webinar/confirmation (introduction funnel); the offer funnel overrides
+// it to /call-thank-you.
+const { redirectUrl = "/webinar/confirmation" } = Astro.props;
 ---
 
 <p class="booking__note">
@@ -13,7 +18,7 @@
   commit to.
 </p>
 
-<div class="booking" data-booking-root data-state="loading">
+<div class="booking" data-booking-root data-state="loading" data-redirect-url={redirectUrl}>
   <!-- Loading state -->
   <div class="booking__panel" data-panel="loading">
     <div class="booking__spinner" aria-hidden="true"></div>
@@ -1003,8 +1008,9 @@
           } catch (e) {}
         }
 
-        if (window.rvNavigate) window.rvNavigate("/webinar/confirmation");
-        else window.location.href = "/webinar/confirmation";
+        const redirectUrl = root.getAttribute("data-redirect-url") || "/webinar/confirmation";
+        if (window.rvNavigate) window.rvNavigate(redirectUrl);
+        else window.location.href = redirectUrl;
       } catch (err) {
         errorEl.textContent = "Network error. Please try again.";
         errorEl.hidden = false;

@@ -10,7 +10,9 @@ import GetStartedCta from "../../components/GetStartedCta.astro";
     <div class="pres-founder__hero">
       <div class="pres-founder__text">
         <h2 class="pres-founder__heading">
-          Predictable income. Tangible assets. <span class="pres-founder__heading-accent"
+          <span class="pres-founder__heading-line">Predictable income.</span>
+          <span class="pres-founder__heading-line">Tangible assets.</span>
+          <span class="pres-founder__heading-line pres-founder__heading-accent"
             >25 years of experience.</span
           >
         </h2>
@@ -126,15 +128,20 @@ import GetStartedCta from "../../components/GetStartedCta.astro";
 
   .pres-founder__heading {
     font-family: "Roboto Serif", serif;
-    font-size: 2.375rem;
+    font-size: 1.875rem;
     font-weight: 500;
     color: #1a1a1a;
     line-height: 116%;
     letter-spacing: -0.015em;
     text-align: center;
-    text-wrap: balance;
     margin: 0;
     max-width: 600px;
+  }
+
+  /* Each phrase is its own block so line breaks land between phrases,
+     never inside one. Keeps the three-beat headline readable. */
+  .pres-founder__heading-line {
+    display: block;
   }
 
   .pres-founder__heading-accent {
