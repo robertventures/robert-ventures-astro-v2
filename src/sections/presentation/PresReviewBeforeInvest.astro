@@ -1,4 +1,8 @@
 ---
+// `trackLocation` lets each page report its own analytics location for the
+// document clicks. Defaults to "review_block" so existing callers are unchanged.
+const { trackLocation = "review_block" } = Astro.props;
+
 const documents = [
   {
     title: "Offering Circular",
@@ -51,7 +55,7 @@ const documents = [
               target="_blank"
               rel="noopener"
               data-track-document={doc.slug}
-              data-track-location="review_block"
+              data-track-location={trackLocation}
             >
               <span class={`pres-review__icon pres-review__icon--${doc.icon}`} aria-hidden="true">
                 {doc.icon === "pdf" ? (

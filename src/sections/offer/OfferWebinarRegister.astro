@@ -1,0 +1,1092 @@
+---
+// In-funnel webinar registration, modeled on IntroBookingCalendar so it looks
+// and feels like the /offer/book-call picker. Instead of booking a call slot,
+// it registers the visitor for a live webinar session:
+//   - Sessions come from /api/webinar-data (WebinarKit).
+//   - Identity is reused from a prior registration (full_name + userEmail +
+//     phone_number in localStorage). Known visitors skip straight to confirm;
+//     missing-info visitors get a short form (name, email, phone, invest
+//     amount, SMS consent).
+//   - Registration POSTs /api/webinar-registration (the same endpoint /webinar
+//     uses), then writes the standard localStorage keys so the existing
+//     /webinar/capital -> /webinar/thank-you chain works unchanged.
+//
+// redirectUrl: where to go after a successful registration. Defaults to
+// /webinar/capital (the next step in the webinar funnel).
+const { redirectUrl = "/webinar/capital" } = Astro.props;
+---
+
+<p class="booking__note">
+  Choose a live session below and we'll save your spot. We'll email you the link and a reminder
+  before it starts.
+</p>
+
+<div class="booking" data-webinar-register-root data-state="loading" data-redirect-url={redirectUrl}>
+  <!-- Loading state -->
+  <div class="booking__panel" data-panel="loading">
+    <div class="booking__spinner" aria-hidden="true"></div>
+    <p class="booking__muted">Loading sessions...</p>
+  </div>
+
+  <!-- Session picker -->
+  <div class="booking__panel" data-panel="picking-session">
+    <div class="booking__header">
+      <p class="booking__label">Pick a session</p>
+      <p class="booking__tz-label">Times shown in your local time</p>
+    </div>
+    <div class="booking__days" data-webinar-sessions></div>
+    <p class="booking__muted booking__empty" data-webinar-empty hidden>
+      No upcoming sessions right now. Please check back soon.
+    </p>
+  </div>
+
+  <!-- Collecting info (visitors we don't recognize) -->
+  <div class="booking__panel" data-panel="collecting-info">
+    <button type="button" class="booking__back-inline" data-webinar-info-back>
+      <span class="booking__back-arrow" aria-hidden="true"></span>
+      Pick a different session
+    </button>
+    <p class="booking__label">Where should we send the details?</p>
+    <p class="booking__muted" data-webinar-info-summary></p>
+    <div class="booking__fields">
+      <input
+        type="text"
+        name="full_name"
+        placeholder="Full Name"
+        autocomplete="name"
+        class="booking__input"
+        data-webinar-info-name
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        autocomplete="email"
+        class="booking__input"
+        data-webinar-info-email
+      />
+      <input
+        type="tel"
+        name="phone_number"
+        placeholder="(555) 555-5555"
+        maxlength="14"
+        inputmode="numeric"
+        autocomplete="tel-national"
+        class="booking__input"
+        data-webinar-info-phone
+      />
+      <select name="invest_intent" class="booking__select" data-webinar-info-invest>
+        <option value="" selected>How much are you looking to invest?</option>
+        <option value="1000">$1,000</option>
+        <option value="5000">$5,000</option>
+        <option value="10000">$10,000</option>
+        <option value="25000">$25,000</option>
+        <option value="50000">$50,000</option>
+        <option value="100000+">$100,000+</option>
+      </select>
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        class="booking__honeypot"
+        aria-hidden="true"
+        data-webinar-info-honeypot
+      />
+    </div>
+    <label class="booking__sms">
+      <input type="checkbox" value="yes" checked class="booking__sms-input" data-webinar-info-sms />
+      <span class="booking__sms-text">
+        I agree to receive recurring automated marketing text messages from Robert Ventures at the
+        number provided. Msg & data rates may apply. Msg frequency varies. Reply STOP to cancel.
+      </span>
+    </label>
+    <p class="booking__error" data-webinar-info-error hidden></p>
+    <button type="button" class="booking__confirm" data-webinar-info-continue> Continue </button>
+  </div>
+
+  <!-- Confirming -->
+  <div class="booking__panel" data-panel="confirming">
+    <p class="booking__label">Confirm your spot</p>
+    <div class="booking__summary" data-webinar-summary></div>
+    <button type="button" class="booking__confirm" data-webinar-confirm> Save my spot </button>
+    <button type="button" class="booking__back-inline" data-webinar-to-sessions>
+      Pick a different session
+    </button>
+    <p class="booking__error" data-webinar-error hidden></p>
+  </div>
+</div>
+
+<!--
+  Reuses the same `booking__*` visual language as IntroBookingCalendar so this
+  page matches /offer/book-call. The day/session and time nodes are built in JS
+  (no Astro scope attribute), so styles are global. The two components never
+  render on the same page, so the shared class names never collide.
+-->
+<style is:global>
+  .booking__note {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: #555555;
+    line-height: 150%;
+    margin: 0 0 0.75rem;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .booking__back-arrow {
+    width: 8px;
+    height: 8px;
+    border-left: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    display: inline-block;
+  }
+
+  .booking {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .booking__panel {
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .booking[data-state="loading"] [data-panel="loading"],
+  .booking[data-state="picking-session"] [data-panel="picking-session"],
+  .booking[data-state="collecting-info"] [data-panel="collecting-info"],
+  .booking[data-state="confirming"] [data-panel="confirming"] {
+    display: flex;
+  }
+
+  .booking__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .booking__input {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding: 0.875rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #1a1a1a;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .booking__input:focus {
+    outline: none;
+    border-color: #152429;
+  }
+
+  .booking__input::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+
+  .booking__select {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding: 0.875rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #999999;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    cursor: pointer;
+  }
+
+  .booking__select.has-value {
+    color: #1a1a1a;
+  }
+
+  .booking__select:focus {
+    outline: none;
+    border-color: #152429;
+  }
+
+  .booking__sms {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .booking__sms-input {
+    appearance: none;
+    -webkit-appearance: none;
+    margin-top: 2px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 13px;
+    height: 13px;
+    border: 1px solid #888888;
+    border-radius: 2px;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 9px 9px;
+    cursor: pointer;
+  }
+
+  .booking__sms-input:checked {
+    background-color: #888888;
+    border-color: #888888;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6l2.5 2.5L9.5 3'/%3E%3C/svg%3E");
+  }
+
+  .booking__sms-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: #888888;
+    line-height: 160%;
+    text-align: left;
+  }
+
+  .booking__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .booking__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .booking__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .booking__muted {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .booking__tz-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    margin: 0;
+  }
+
+  .booking__days {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .booking__day {
+    font-family: "Roboto", sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 1rem 1.125rem;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    line-height: 130%;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.15s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .booking__day:hover {
+    border-color: #152429;
+    background: #f4f6f5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21, 36, 41, 0.08);
+  }
+
+  .booking__day-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .booking__day-weekday {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+  }
+
+  .booking__day-countdown {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #2b6b47;
+    line-height: 120%;
+  }
+
+  .booking__day-chevron {
+    width: 8px;
+    height: 8px;
+    border-right: 1.5px solid #555555;
+    border-top: 1.5px solid #555555;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .booking__back-inline {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #555555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0;
+  }
+
+  .booking__back-inline:hover {
+    color: #1a1a1a;
+  }
+
+  .booking__summary {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    background: #f4f6f5;
+    border-radius: 8px;
+    line-height: 150%;
+  }
+
+  .booking__confirm {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #152429;
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem 1.5rem;
+    cursor: pointer;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .booking__confirm:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  .booking__confirm:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .booking__error {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    color: #b00020;
+    margin: 0;
+  }
+
+  .booking__spinner {
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    border: 2.5px solid rgba(21, 36, 41, 0.15);
+    border-top-color: #152429;
+    border-radius: 50%;
+    animation: booking-spin 0.8s linear infinite;
+  }
+
+  @keyframes booking-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .booking__spinner {
+      animation: none;
+    }
+    .booking__confirm:hover {
+      transform: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .booking__note {
+      font-size: 0.9375rem;
+    }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    var root = document.querySelector("[data-webinar-register-root]");
+    if (!root) return;
+    if (root.dataset.bound === "1") return;
+    root.dataset.bound = "1";
+
+    var sessionsEl = root.querySelector("[data-webinar-sessions]");
+    var emptyEl = root.querySelector("[data-webinar-empty]");
+    var summaryEl = root.querySelector("[data-webinar-summary]");
+    var confirmBtn = root.querySelector("[data-webinar-confirm]");
+    var errorEl = root.querySelector("[data-webinar-error]");
+    var toSessionsBtn = root.querySelector("[data-webinar-to-sessions]");
+
+    var infoSummaryEl = root.querySelector("[data-webinar-info-summary]");
+    var infoNameEl = root.querySelector("[data-webinar-info-name]");
+    var infoEmailEl = root.querySelector("[data-webinar-info-email]");
+    var infoPhoneEl = root.querySelector("[data-webinar-info-phone]");
+    var infoInvestEl = root.querySelector("[data-webinar-info-invest]");
+    var infoHoneypotEl = root.querySelector("[data-webinar-info-honeypot]");
+    var infoErrorEl = root.querySelector("[data-webinar-info-error]");
+    var infoBackBtn = root.querySelector("[data-webinar-info-back]");
+    var infoContinueBtn = root.querySelector("[data-webinar-info-continue]");
+
+    function setState(s) {
+      root.setAttribute("data-state", s);
+    }
+
+    function readLs(key) {
+      try {
+        var v = localStorage.getItem(key);
+        return v ? v.trim() : "";
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function getCookie(name) {
+      try {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length === 2) {
+          var raw = parts.pop().split(";").shift();
+          try {
+            return decodeURIComponent(raw);
+          } catch (e) {
+            return raw;
+          }
+        }
+      } catch (e) {}
+      return undefined;
+    }
+
+    // Registration needs name + email + phone. If all three are present (set on
+    // a prior /webinar or booking registration), the visitor is "known" and
+    // skips the form. ghl_contact_id + stored invest_intent ride along if set.
+    function getKnownContact() {
+      var name = readLs("full_name");
+      var email = readLs("userEmail");
+      var phone = readLs("phone_number");
+      if (name && email && phone) {
+        return {
+          name: name,
+          email: email,
+          phone: phone,
+          invest_intent: readLs("invest_intent"),
+        };
+      }
+      return null;
+    }
+
+    var state = {
+      sessions: [],
+      selected: null,
+      knownContact: null,
+      pendingContact: null,
+    };
+
+    // ── Date helpers (mirrors /webinar) ──────────────────────────────────────
+    function calculateNextSessionDate(details) {
+      var weekdays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      var targetDay = weekdays.indexOf(details.day);
+      var timeParts = details.time.split(":").map(Number);
+      var hour24 = timeParts[0];
+      var minutes = timeParts[1];
+      if (details.period.toUpperCase() === "PM" && hour24 < 12) hour24 += 12;
+      if (details.period.toUpperCase() === "AM" && hour24 === 12) hour24 = 0;
+
+      var now = new Date();
+      var currentTzTime = new Date(
+        now.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
+      );
+      var currentDay = currentTzTime.getDay();
+      var daysToAdd = (targetDay - currentDay + 7) % 7;
+      if (daysToAdd === 0) {
+        var currentHour = currentTzTime.getHours();
+        var currentMinute = currentTzTime.getMinutes();
+        if (currentHour > hour24 || (currentHour === hour24 && currentMinute >= minutes)) {
+          daysToAdd = 7;
+        }
+      }
+      var sessionDate = new Date(currentTzTime);
+      sessionDate.setDate(sessionDate.getDate() + daysToAdd);
+      sessionDate.setHours(hour24, minutes, 0, 0);
+      var tempDate = new Date(sessionDate.toISOString().slice(0, -1));
+      var tzOffset =
+        new Date(
+          tempDate.toLocaleString("en-US", { timeZone: details.timeZone || "America/New_York" })
+        ).getTime() - tempDate.getTime();
+      return new Date(sessionDate.getTime() - tzOffset);
+    }
+
+    function formatSessionLabel(date, tz) {
+      function dayKey(d) {
+        return new Intl.DateTimeFormat("en-CA", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          timeZone: tz,
+        }).format(d);
+      }
+      var now = new Date();
+      var tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      var relative;
+      if (dayKey(date) === dayKey(now)) relative = "Today";
+      else if (dayKey(date) === dayKey(tomorrow)) relative = "Tomorrow";
+      else relative = new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: tz }).format(date);
+      var monthDay = new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        timeZone: tz,
+      }).format(date);
+      var time = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: tz,
+      }).format(date);
+      var tzPart = new Intl.DateTimeFormat("en-US", { timeZoneName: "shortGeneric", timeZone: tz })
+        .formatToParts(date)
+        .find(function (part) {
+          return part.type === "timeZoneName";
+        });
+      var tzLabel = tzPart && tzPart.value.indexOf("GMT") === -1 ? " " + tzPart.value : "";
+      return relative + ", " + monthDay + " at " + time + tzLabel;
+    }
+
+    function formatCountdown(date) {
+      var ms = date.getTime() - Date.now();
+      if (ms <= 0) return "Starting now";
+      var days = Math.floor(ms / 86400000);
+      if (days >= 1) return "Starts in " + days + (days === 1 ? " day" : " days");
+      var hours = Math.floor(ms / 3600000);
+      if (hours >= 1) return "Starts in " + hours + (hours === 1 ? " hour" : " hours");
+      var minutes = Math.floor(ms / 60000);
+      if (minutes >= 1) return "Starts in " + minutes + (minutes === 1 ? " minute" : " minutes");
+      return "Starting soon";
+    }
+
+    function getFullDateString(isoDateUTC, sessionTimeZone) {
+      var date = new Date(isoDateUTC);
+      return date.toLocaleString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: sessionTimeZone,
+        timeZoneName: "short",
+      });
+    }
+
+    function getLocalDateTimeString(isoDateUTC, userTimeZone) {
+      var date = new Date(isoDateUTC);
+      var datePart = date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        timeZone: userTimeZone,
+      });
+      var timePart = date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: userTimeZone,
+      });
+      return datePart + " at " + timePart;
+    }
+
+    function getESTTimestamp(userTimezone) {
+      userTimezone = userTimezone || "America/New_York";
+      var now = new Date();
+      var userLocalTime = new Date(now.toLocaleString("en-US", { timeZone: userTimezone }));
+      var utcTime = new Date(now.toLocaleString("en-US", { timeZone: "UTC" }));
+      var offsetMinutes = userLocalTime.getTime() - utcTime.getTime();
+      var offsetHours = Math.floor(Math.abs(offsetMinutes) / (1000 * 60 * 60));
+      var offsetSign = offsetMinutes >= 0 ? "+" : "-";
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+      return (
+        userLocalTime.getFullYear() +
+        "-" +
+        pad(userLocalTime.getMonth() + 1) +
+        "-" +
+        pad(userLocalTime.getDate()) +
+        "T" +
+        pad(userLocalTime.getHours()) +
+        ":" +
+        pad(userLocalTime.getMinutes()) +
+        ":" +
+        pad(userLocalTime.getSeconds()) +
+        offsetSign +
+        "0" +
+        offsetHours +
+        ":00"
+      );
+    }
+
+    // ── Sessions ─────────────────────────────────────────────────────────────
+    function buildSessions(data) {
+      var userTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
+      var scheduledWebinarId = (data.webinarIds && data.webinarIds.scheduled) || "";
+      var results = (data && data.results) || [];
+
+      var sessionList = results.filter(function (item) {
+        try {
+          var parsed = JSON.parse(item.id);
+          return parsed && parsed.type === "ongoing";
+        } catch (e) {
+          return false;
+        }
+      });
+
+      var withDates = sessionList
+        .map(function (session) {
+          try {
+            var details = JSON.parse(session.id);
+            var nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
+            return { session: session, details: details, nextDate: nextDate };
+          } catch (e) {
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .sort(function (a, b) {
+          return a.nextDate.getTime() - b.nextDate.getTime();
+        });
+
+      if (withDates.length === 0) {
+        var fallbackDetails = {
+          type: "ongoing",
+          day: "Sunday",
+          time: "2:00",
+          period: "PM",
+          timeZone: "America/New_York",
+        };
+        withDates = [
+          {
+            session: { id: JSON.stringify(fallbackDetails) },
+            details: fallbackDetails,
+            nextDate: calculateNextSessionDate(fallbackDetails),
+          },
+        ];
+      }
+
+      return withDates.slice(0, 3).map(function (entry) {
+        return {
+          sessionId: entry.session.id,
+          details: entry.details,
+          isoDateUTC: entry.nextDate.toISOString(),
+          userTz: userTz,
+          originalTz: entry.details.timeZone || "America/New_York",
+          webinarId: scheduledWebinarId,
+          nextDate: entry.nextDate,
+        };
+      });
+    }
+
+    function renderSessions() {
+      sessionsEl.innerHTML = "";
+      if (!state.sessions.length) {
+        emptyEl.hidden = false;
+        return;
+      }
+      emptyEl.hidden = true;
+
+      state.sessions.forEach(function (s) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "booking__day";
+
+        var main = document.createElement("div");
+        main.className = "booking__day-main";
+
+        var when = document.createElement("span");
+        when.className = "booking__day-weekday";
+        when.textContent = formatSessionLabel(s.nextDate, s.userTz);
+
+        var countdown = document.createElement("span");
+        countdown.className = "booking__day-countdown";
+        countdown.textContent = formatCountdown(s.nextDate);
+
+        main.appendChild(when);
+        main.appendChild(countdown);
+
+        var chevron = document.createElement("span");
+        chevron.className = "booking__day-chevron";
+        chevron.setAttribute("aria-hidden", "true");
+
+        btn.appendChild(main);
+        btn.appendChild(chevron);
+
+        btn.addEventListener("click", function () {
+          state.selected = s;
+          var label = formatSessionLabel(s.nextDate, s.userTz);
+          summaryEl.textContent = label;
+          errorEl.hidden = true;
+          errorEl.textContent = "";
+
+          state.knownContact = getKnownContact();
+          if (state.knownContact) {
+            setState("confirming");
+          } else {
+            if (infoSummaryEl) {
+              infoSummaryEl.textContent = "We'll save your spot for " + label + ".";
+            }
+            if (infoErrorEl) {
+              infoErrorEl.hidden = true;
+              infoErrorEl.textContent = "";
+            }
+            prefillInfoForm();
+            setState("collecting-info");
+          }
+        });
+
+        sessionsEl.appendChild(btn);
+      });
+    }
+
+    function loadSessions() {
+      setState("loading");
+      var ssrEl = document.getElementById("ssr-webinar-data");
+      if (ssrEl) {
+        try {
+          var ssr = JSON.parse(ssrEl.textContent || "");
+          if (ssr && ssr.results) {
+            state.sessions = buildSessions(ssr);
+            renderSessions();
+            setState("picking-session");
+            return;
+          }
+        } catch (e) {}
+      }
+      fetch("/api/webinar-data", { cache: "no-store", headers: { Accept: "application/json" } })
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          state.sessions = buildSessions(data);
+          renderSessions();
+          setState("picking-session");
+        })
+        .catch(function (err) {
+          console.error("Failed to load webinar sessions:", err);
+          state.sessions = buildSessions({});
+          renderSessions();
+          setState("picking-session");
+        });
+    }
+
+    // ── Info form (cold visitors) ────────────────────────────────────────────
+    function formatPhoneDigits(value) {
+      var digits = (value || "").replace(/\D/g, "");
+      if (digits.length === 11 && digits[0] === "1") digits = digits.slice(1);
+      digits = digits.slice(0, 10);
+      if (!digits) return "";
+      if (digits.length <= 3) return "(" + digits;
+      if (digits.length <= 6) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+      return "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+    }
+
+    function setupInfoPhoneFormatting() {
+      if (!infoPhoneEl) return;
+      infoPhoneEl.addEventListener("input", function (e) {
+        e.target.value = formatPhoneDigits(e.target.value);
+      });
+      infoPhoneEl.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      infoPhoneEl.addEventListener("paste", function (e) {
+        e.preventDefault();
+        var clip = e.clipboardData || window.clipboardData;
+        var pasted = clip ? clip.getData("text") : "";
+        e.target.value = formatPhoneDigits(pasted);
+      });
+    }
+
+    // Keep the select's text dark once a real value is chosen.
+    if (infoInvestEl) {
+      infoInvestEl.addEventListener("change", function () {
+        if (infoInvestEl.value) infoInvestEl.classList.add("has-value");
+        else infoInvestEl.classList.remove("has-value");
+      });
+    }
+
+    function prefillInfoForm() {
+      var src = state.pendingContact;
+      if (!src) return;
+      if (infoNameEl) infoNameEl.value = src.name || "";
+      if (infoEmailEl) infoEmailEl.value = src.email || "";
+      if (infoPhoneEl) infoPhoneEl.value = formatPhoneDigits(src.phone || "");
+      if (infoInvestEl && src.invest_intent) {
+        infoInvestEl.value = src.invest_intent;
+        infoInvestEl.classList.add("has-value");
+      }
+    }
+
+    function showInfoError(msg, focusEl) {
+      if (infoErrorEl) {
+        infoErrorEl.textContent = msg;
+        infoErrorEl.hidden = false;
+      }
+      if (focusEl) {
+        try {
+          focusEl.focus({ preventScroll: true });
+        } catch (e) {
+          focusEl.focus();
+        }
+      }
+    }
+
+    function handleInfoContinue() {
+      if (infoHoneypotEl && infoHoneypotEl.value && infoHoneypotEl.value.trim() !== "") return;
+
+      var name = (infoNameEl && infoNameEl.value.trim()) || "";
+      var email = (infoEmailEl && infoEmailEl.value.trim()) || "";
+      var phoneDigits = infoPhoneEl ? infoPhoneEl.value.replace(/\D/g, "") : "";
+      var invest = (infoInvestEl && infoInvestEl.value) || "";
+
+      if (infoErrorEl) {
+        infoErrorEl.hidden = true;
+        infoErrorEl.textContent = "";
+      }
+
+      if (!name || name.indexOf("@") !== -1) {
+        showInfoError("Please enter your full name.", infoNameEl);
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showInfoError("Please enter a valid email address.", infoEmailEl);
+        return;
+      }
+      if (phoneDigits.length !== 10) {
+        showInfoError("Please enter a valid 10-digit phone number.", infoPhoneEl);
+        return;
+      }
+      if (!invest) {
+        showInfoError("Please choose how much you're looking to invest.", infoInvestEl);
+        return;
+      }
+
+      state.pendingContact = {
+        name: name,
+        email: email,
+        phone: phoneDigits,
+        invest_intent: invest,
+      };
+      summaryEl.textContent = formatSessionLabel(state.selected.nextDate, state.selected.userTz);
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+      setState("confirming");
+    }
+
+    // ── Registration ─────────────────────────────────────────────────────────
+    function register() {
+      var sel = state.selected;
+      if (!sel) return;
+
+      var contact = state.knownContact || state.pendingContact;
+      if (!contact) {
+        setState("collecting-info");
+        return;
+      }
+
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Saving...";
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+
+      var phoneDigits = (contact.phone || "").replace(/\D/g, "").replace(/^1/, "");
+      var investIntent = contact.invest_intent || readLs("invest_intent") || "";
+      var signupTs = getESTTimestamp(sel.userTz);
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var utmData = {};
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "utm_adgroup"].forEach(
+        function (param) {
+          var val = urlParams.get(param) || getCookie(param);
+          if (val) utmData[param] = val;
+        }
+      );
+
+      var payload = {
+        session: sel.sessionId,
+        name: contact.name,
+        email: contact.email,
+        phone_number: phoneDigits,
+        invest_intent: investIntent,
+        company: "",
+        date: sel.isoDateUTC,
+        fullDate: getFullDateString(sel.isoDateUTC, sel.details.timeZone),
+        user_timezone: sel.userTz,
+        webinar_datetime_user_tz: getLocalDateTimeString(sel.isoDateUTC, sel.userTz),
+        webinar_sign_up_date: signupTs,
+        webinar_id: sel.webinarId,
+        utm: utmData,
+      };
+
+      fetch("/api/webinar-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Registration failed (" + res.status + ")");
+          return res.json();
+        })
+        .then(function (result) {
+          try {
+            if (result && result.ghl_contact_id) {
+              localStorage.setItem("ghl_contact_id", result.ghl_contact_id);
+            }
+            localStorage.setItem("userEmail", contact.email);
+            localStorage.setItem("full_name", contact.name);
+            localStorage.setItem("phone_number", phoneDigits);
+            localStorage.setItem("user_timezone", sel.userTz || "America/New_York");
+            if (investIntent) localStorage.setItem("invest_intent", investIntent);
+            localStorage.setItem("webinar_sign_up_date", signupTs);
+            localStorage.setItem(
+              "webinarSession",
+              JSON.stringify({
+                title: "Robert Ventures Webinar",
+                date: sel.isoDateUTC,
+                timeZone: sel.details.timeZone,
+                fullDate: payload.fullDate,
+                email: contact.email,
+                name: contact.name,
+              })
+            );
+          } catch (e) {}
+
+          try {
+            if (window.posthogSetPerson) {
+              window.posthogSetPerson({
+                name: contact.name,
+                email: contact.email,
+                phone: phoneDigits,
+                ghl_contact_id: result ? result.ghl_contact_id : undefined,
+                invest_intent: investIntent,
+                session_type: "live",
+                registration_page: "offer_join_webinar",
+              });
+            }
+            if (window.posthogTrack) {
+              window.posthogTrack("webinar_registered", {
+                invest_intent: investIntent,
+                session_date: sel.isoDateUTC,
+                session_type: "live",
+                ghl_contact_id: result ? result.ghl_contact_id : undefined,
+                registration_page: "offer_join_webinar",
+              });
+            }
+          } catch (e) {}
+
+          var redirectUrl = root.getAttribute("data-redirect-url") || "/webinar/capital";
+          if (window.rvNavigate) window.rvNavigate(redirectUrl);
+          else window.location.href = redirectUrl;
+        })
+        .catch(function (err) {
+          console.error("Webinar registration error:", err);
+          errorEl.textContent = "Something went wrong. Please try again.";
+          errorEl.hidden = false;
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = "Save my spot";
+          if (window.posthogTrack) {
+            window.posthogTrack("webinar_registration_failed", {
+              invest_intent: investIntent,
+              session_type: "live",
+              registration_page: "offer_join_webinar",
+            });
+          }
+        });
+    }
+
+    // ── Wire events ──────────────────────────────────────────────────────────
+    setupInfoPhoneFormatting();
+
+    if (toSessionsBtn) {
+      toSessionsBtn.addEventListener("click", function () {
+        setState("picking-session");
+      });
+    }
+    if (infoBackBtn) {
+      infoBackBtn.addEventListener("click", function () {
+        setState("picking-session");
+      });
+    }
+    if (infoContinueBtn) infoContinueBtn.addEventListener("click", handleInfoContinue);
+    if (confirmBtn) confirmBtn.addEventListener("click", register);
+
+    loadSessions();
+  })();
+</script>

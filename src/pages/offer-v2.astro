@@ -3,17 +3,16 @@ import { ClientRouter } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
 import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
-import OfferCompoundingGrowth from "../sections/offer/OfferCompoundingGrowth.astro";
-import OfferValueProposition from "../sections/offer/OfferValueProposition.astro";
-import OfferFounderVideo from "../sections/offer/OfferFounderVideo.astro";
-import OfferRealEstateAssets from "../sections/offer/OfferRealEstateAssets.astro";
-import OfferBondOfferings from "../sections/offer/OfferBondOfferings.astro";
-import OfferFixedYield from "../sections/offer/OfferFixedYield.astro";
-import OfferDigitalStrategy from "../sections/offer/OfferDigitalStrategy.astro";
-import OfferMidCta from "../sections/offer/OfferMidCta.astro";
-import OfferCallToAction from "../sections/offer/OfferCallToAction.astro";
-import OfferNextSteps from "../sections/offer/OfferNextSteps.astro";
-import OfferingDocuments from "../sections/presentation/PresReviewBeforeInvest.astro";
+import OfferCompoundingGrowth from "../sections/offer-v2/OfferCompoundingGrowth.astro";
+import OfferValueProposition from "../sections/offer-v2/OfferValueProposition.astro";
+import OfferFounderVideo from "../sections/offer-v2/OfferFounderVideo.astro";
+import OfferRealEstateAssets from "../sections/offer-v2/OfferRealEstateAssets.astro";
+import OfferBondOfferings from "../sections/offer-v2/OfferBondOfferings.astro";
+import OfferFixedYield from "../sections/offer-v2/OfferFixedYield.astro";
+import OfferDigitalStrategy from "../sections/offer-v2/OfferDigitalStrategy.astro";
+import OfferMidCta from "../sections/offer-v2/OfferMidCta.astro";
+import OfferCallToAction from "../sections/offer-v2/OfferCallToAction.astro";
+import OfferNextSteps from "../sections/offer-v2/OfferNextSteps.astro";
 
 const pageTitle = "Introduction | Robert Ventures";
 const pageDescription =
@@ -64,7 +63,6 @@ const pageDescription =
       <OfferFounderVideo />
       <!-- <OfferCallToAction /> -->
       <OfferNextSteps />
-      <OfferingDocuments trackLocation="offer_documents" />
     </main>
 
     <DisclaimerBlock trackLocation="offer_disclaimer" />
@@ -248,7 +246,7 @@ const pageDescription =
 <style is:global>
   /* Section position indicator (fixed to left edge).
      Global because the dots/lines are generated in JS (see buildIndicator
-     in offer.astro) and JS-created nodes don't get Astro's scope attribute,
+     in offer-v2.astro) and JS-created nodes don't get Astro's scope attribute,
      so scoped selectors would never match them. */
   .slide-indicator {
     position: fixed;

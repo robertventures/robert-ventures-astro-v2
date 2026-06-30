@@ -1,0 +1,455 @@
+---
+// Mid-page CTA for /offer, placed right after the rate options
+// (OfferBondOfferings) and before the compounding section. A lighter,
+// shorter counterpart to the bottom CTA (OfferNextSteps): a primary
+// "Book a 10-min call" button, a secondary "Create your account" link,
+// and a compact, stat-only social-proof line. White background so it reads
+// as a distinct band between the two #f4f6f5 sections around it; reuses the
+// bottom CTA's vocabulary (staircase motif + dark pill button) otherwise.
+//
+// The button carries data-track-cta + data-track-location so the global
+// delegated listener in public/scripts/analytics/ctaTracking.js fires a
+// `cta_click` event (GA4 + PostHog) with button_location = "offer_mid_cta".
+const trackLocation = "offer_mid_cta";
+
+// Live investor count, fetched the same way as OfferNextSteps/OfferCallToAction
+// (via /api/stats, with a static fallback). Stat-only here, so no testimonials.
+let uniqueInvestors = 68;
+
+try {
+  const statsUrl = new URL("/api/stats", Astro.url);
+  const statsResponse = await fetch(statsUrl);
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+    if (typeof statsData.usersWithInvestments === "number") {
+      uniqueInvestors = statsData.usersWithInvestments;
+    }
+  }
+} catch (error) {
+  // Fallback value is already set
+}
+
+const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
+---
+
+<section class="intro-slide intro-slide--spacious" id="offer-mid-cta">
+  <!-- Staircase SVG animation — background element (unique id so its GSAP
+       timeline doesn't collide with the CTA / next-steps staircases). -->
+  <svg
+    class="intro-slide__staircase"
+    width="800"
+    height="800"
+    xmlns="http://www.w3.org/2000/svg"
+    id="offer-mid-cta-staircase-svg"
+  >
+    <rect x="0.5" y="735.5" width="64" height="64"></rect>
+    <rect x="80.5" y="655.5" width="64" height="64"></rect>
+    <rect x="80.5" y="735.5" width="64" height="64"></rect>
+    <rect x="160.5" y="575.5" width="64" height="64"></rect>
+    <rect x="160.5" y="655.5" width="64" height="64"></rect>
+    <rect x="160.5" y="735.5" width="64" height="64"></rect>
+    <rect x="240.5" y="495.5" width="64" height="64"></rect>
+    <rect x="240.5" y="575.5" width="64" height="64"></rect>
+    <rect x="240.5" y="655.5" width="64" height="64"></rect>
+    <rect x="240.5" y="735.5" width="64" height="64"></rect>
+    <rect x="320.5" y="415.5" width="64" height="64"></rect>
+    <rect x="320.5" y="495.5" width="64" height="64"></rect>
+    <rect x="320.5" y="575.5" width="64" height="64"></rect>
+    <rect x="320.5" y="655.5" width="64" height="64"></rect>
+    <rect x="320.5" y="735.5" width="64" height="64"></rect>
+    <rect x="400.5" y="335.5" width="64" height="64"></rect>
+    <rect x="400.5" y="415.5" width="64" height="64"></rect>
+    <rect x="400.5" y="495.5" width="64" height="64"></rect>
+    <rect x="400.5" y="575.5" width="64" height="64"></rect>
+    <rect x="400.5" y="655.5" width="64" height="64"></rect>
+    <rect x="400.5" y="735.5" width="64" height="64"></rect>
+    <rect x="480.5" y="255.5" width="64" height="64"></rect>
+    <rect x="480.5" y="335.5" width="64" height="64"></rect>
+    <rect x="480.5" y="415.5" width="64" height="64"></rect>
+    <rect x="480.5" y="495.5" width="64" height="64"></rect>
+    <rect x="480.5" y="575.5" width="64" height="64"></rect>
+    <rect x="480.5" y="655.5" width="64" height="64"></rect>
+    <rect x="480.5" y="735.5" width="64" height="64"></rect>
+    <rect x="560.5" y="175.5" width="64" height="64"></rect>
+    <rect x="560.5" y="255.5" width="64" height="64"></rect>
+    <rect x="560.5" y="335.5" width="64" height="64"></rect>
+    <rect x="560.5" y="415.5" width="64" height="64"></rect>
+    <rect x="560.5" y="495.5" width="64" height="64"></rect>
+    <rect x="560.5" y="575.5" width="64" height="64"></rect>
+    <rect x="560.5" y="655.5" width="64" height="64"></rect>
+    <rect x="560.5" y="735.5" width="64" height="64"></rect>
+    <rect x="640.5" y="95.5" width="64" height="64"></rect>
+    <rect x="640.5" y="175.5" width="64" height="64"></rect>
+    <rect x="640.5" y="255.5" width="64" height="64"></rect>
+    <rect x="640.5" y="335.5" width="64" height="64"></rect>
+    <rect x="640.5" y="415.5" width="64" height="64"></rect>
+    <rect x="640.5" y="495.5" width="64" height="64"></rect>
+    <rect x="640.5" y="575.5" width="64" height="64"></rect>
+    <rect x="640.5" y="655.5" width="64" height="64"></rect>
+    <rect x="640.5" y="735.5" width="64" height="64"></rect>
+    <rect x="720.5" y="15.5" width="64" height="64"></rect>
+    <rect x="720.5" y="95.5" width="64" height="64"></rect>
+    <rect x="720.5" y="175.5" width="64" height="64"></rect>
+    <rect x="720.5" y="255.5" width="64" height="64"></rect>
+    <rect x="720.5" y="335.5" width="64" height="64"></rect>
+    <rect x="720.5" y="415.5" width="64" height="64"></rect>
+    <rect x="720.5" y="495.5" width="64" height="64"></rect>
+    <rect x="720.5" y="575.5" width="64" height="64"></rect>
+    <rect x="720.5" y="655.5" width="64" height="64"></rect>
+    <rect x="720.5" y="735.5" width="64" height="64"></rect>
+  </svg>
+
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">Let's talk it through.</h2>
+    <p class="intro-slide__subtitle">
+      A 10-minute call with our team to go over your goals, or create your account whenever
+      you're ready.
+    </p>
+
+    <div class="mid-cta-actions">
+      <a
+        class="intro-slide__cta"
+        href="/offer/book-call"
+        data-track-cta="book_call"
+        data-track-location={trackLocation}
+      >
+        Book a 10-min call
+      </a>
+      <span class="mid-cta-or">or</span>
+      <a
+        class="mid-cta-secondary"
+        href="https://invest.robertventures.com/"
+        data-track-cta="create_account"
+        data-track-location={trackLocation}
+      >
+        <span class="mid-cta-secondary__label">Create your account</span>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M5 12h14M13 6l6 6-6 6"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <div class="cta-social-proof">
+      <div class="cta-social-proof__stat">
+        <span class="cta-stars" set:html={starSvg.repeat(5)} />
+        <span class="cta-stat-text">Trusted by {uniqueInvestors}+ Investors</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    /* Solid white so this CTA reads as a distinct band between the two
+       #f4f6f5 sections above (bond options) and below (compounding),
+       instead of blending into them. */
+    background: #ffffff;
+    box-sizing: border-box;
+    /* Kill global.css `section { margin-bottom: 1.5rem }`. */
+    margin-bottom: 0;
+  }
+
+  /* Staircase SVG — background animation (matches OfferCallToAction) */
+  .intro-slide__staircase {
+    position: absolute;
+    bottom: -200px;
+    right: -200px;
+    width: 800px;
+    height: 800px;
+    min-width: 800px;
+    min-height: 800px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .intro-slide__staircase rect {
+    fill: none;
+    stroke: #bbbbbb;
+    stroke-opacity: 0.15;
+    stroke-width: 1;
+  }
+
+  .intro-slide__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 600px;
+    width: 100%;
+    /* Starts hidden; the page-shell GSAP observer in offer.astro fades
+       `.intro-slide__content` in when the section scrolls into view. */
+    opacity: 0;
+  }
+
+  .intro-slide__heading {
+    font-family: "Roboto Serif", serif;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 120%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .intro-slide__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #555555;
+    text-align: center;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .intro-slide__cta {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #152429;
+    border: none;
+    border-radius: 8px;
+    padding: 1.125rem 3rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    box-shadow: 0 6px 18px rgba(21, 36, 41, 0.18);
+  }
+
+  .intro-slide__cta:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(21, 36, 41, 0.24);
+  }
+
+  .intro-slide__cta:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(21, 36, 41, 0.18);
+  }
+
+  /* Primary (create account) + secondary (book a call) stacked, the
+     container owns the vertical rhythm so the buttons read as one pair. */
+  .mid-cta-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.875rem;
+    margin-top: 0.75rem;
+  }
+
+  /* "or" connector between the primary button and the secondary link. */
+  .mid-cta-or {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #999999;
+    line-height: 1;
+  }
+
+  /* Secondary action as a lightweight text link with a trailing arrow:
+     clearly an action (not body text), but visually lighter than the filled
+     primary above it. */
+  .mid-cta-secondary {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #152429;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    line-height: 1.2;
+    transition: color 0.2s ease;
+  }
+
+  /* Persistent underline on the words only (not the arrow), so it reads as
+     a link at a glance. */
+  .mid-cta-secondary__label {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .mid-cta-secondary svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .mid-cta-secondary:hover {
+    color: var(--green-dark);
+  }
+
+  .mid-cta-secondary:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ── Social proof block (stat only) ── */
+  .cta-social-proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 520px;
+    margin-top: 0.5rem;
+  }
+
+  .cta-social-proof__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cta-stars {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .cta-stat-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 100%;
+  }
+
+  /* Medium: 600px+ */
+  @media only screen and (min-width: 600px) {
+    .intro-slide__content {
+      gap: 1.25rem;
+    }
+
+    .intro-slide__heading {
+      font-size: 2.5rem;
+    }
+
+    .intro-slide__subtitle {
+      font-size: 1.125rem;
+    }
+
+    .intro-slide__cta {
+      font-size: 1.1875rem;
+      padding: 1.25rem 3.5rem;
+    }
+
+    .mid-cta-actions {
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .mid-cta-secondary {
+      font-size: 1.0625rem;
+    }
+
+    .cta-stat-text {
+      font-size: 0.9375rem;
+    }
+  }
+
+  /* Large: 1136px+ */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 2.75rem;
+    }
+
+    .intro-slide__subtitle {
+      font-size: 1.25rem;
+    }
+
+    .intro-slide__content {
+      max-width: 700px;
+    }
+  }
+
+  /* Extra Large: 1920px+ */
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__heading {
+      font-size: 3rem;
+    }
+
+    .intro-slide__subtitle {
+      font-size: 1.375rem;
+    }
+
+    .intro-slide__content {
+      max-width: 800px;
+    }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    function initStaircaseAnimation() {
+      if (!window.gsapLoaded || typeof window.gsap === "undefined") return;
+
+      var gsapLib = window.gsap;
+      var svg = document.getElementById("offer-mid-cta-staircase-svg");
+      if (!svg) return;
+
+      var rects = svg.querySelectorAll("rect");
+      if (rects.length === 0) return;
+
+      gsapLib.set(rects, { strokeOpacity: 0.15 });
+
+      var tl = gsapLib.timeline({ repeat: -1 });
+
+      // Pause before shimmer
+      tl.to({}, { duration: 3 });
+
+      // Shimmer forward — rects brighten
+      tl.to(rects, {
+        strokeOpacity: 0.6,
+        duration: 0.2,
+        stagger: { amount: 0.5, from: "start" },
+      });
+
+      // Fade back — rects dim
+      tl.to(rects, {
+        strokeOpacity: 0.15,
+        duration: 0.5,
+        stagger: { amount: 1, from: "start" },
+      });
+    }
+
+    function startAnimation() {
+      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+        } else {
+          initStaircaseAnimation();
+        }
+      } else {
+        window.addEventListener("gsapLoaded", function () {
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initStaircaseAnimation);
+          } else {
+            initStaircaseAnimation();
+          }
+        });
+      }
+    }
+
+    startAnimation();
+  })();
+</script>
