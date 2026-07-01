@@ -1,0 +1,199 @@
+---
+const investUrl = "https://invest.robertventures.com/";
+const trackLocation = "offer_v3_next_steps";
+---
+
+<section class="intro-slide intro-slide--dark" id="intro-slide-next">
+  <div class="intro-slide__content">
+    <p class="ns-eyebrow">You've seen the case</p>
+    <h2 class="ns-heading">Put your money to work.</h2>
+    <p class="ns-body">
+      Open your account and place your first investment in under two minutes, or talk to a real
+      person first. No pressure, no call center.
+    </p>
+
+    <div class="ns-actions">
+      <a
+        class="ns-cta ns-cta--primary"
+        href={investUrl}
+        data-track-cta="create_account"
+        data-track-location={trackLocation}>Create your account</a
+      >
+      <a
+        class="ns-cta ns-cta--ghost"
+        href="/offer/book-call"
+        data-track-cta="book_call"
+        data-track-location={trackLocation}>Book a 10-minute call</a
+      >
+    </div>
+
+    <p class="ns-note">
+      Free to open in about 2 minutes. Choose your terms and fund it when you're ready.
+    </p>
+    <p class="ns-fine">SEC-qualified. 100% on-time. Offering circular public.</p>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #152429;
+    box-sizing: border-box;
+    padding: 3rem 1.25rem 3rem 1.25rem;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+  }
+
+  .ns-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7fd0a4;
+    margin: 0;
+  }
+
+  .ns-heading {
+    font-family: var(--font-heading);
+    color: #ffffff;
+    font-size: 2.25rem;
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+
+  .ns-body {
+    font-family: var(--font-body);
+    color: #bfd1d7;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 30rem;
+  }
+
+  .ns-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 0.75rem;
+  }
+
+  .ns-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.95rem 1.5rem;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .ns-cta--primary {
+    background: var(--green-brand);
+    color: #ffffff;
+    border: none;
+  }
+
+  .ns-cta--primary:hover {
+    background: var(--green-hover);
+  }
+
+  .ns-cta--primary:active {
+    transform: translateY(1px);
+  }
+
+  .ns-cta--ghost {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(191, 209, 215, 0.45);
+    font-weight: 500;
+  }
+
+  .ns-cta--ghost:hover {
+    border-color: rgba(191, 209, 215, 0.8);
+  }
+
+  .ns-note {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #8fb7a4;
+    margin: 0.875rem 0 0;
+  }
+
+  .ns-fine {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: #7e929a;
+    margin: 0.5rem 0 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-slide__content {
+      gap: 1.25rem;
+    }
+    .ns-heading {
+      font-size: 3rem;
+    }
+    .ns-body {
+      font-size: 1.125rem;
+    }
+    .ns-actions {
+      flex-direction: row;
+      justify-content: center;
+      max-width: none;
+    }
+    .ns-cta {
+      width: auto;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .ns-heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  /* Self-contained outer spacing (previously provided by the page shell). */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 4rem 2rem 4rem 2.5rem;
+    }
+  }
+  @media only screen and (min-width: 1136px) {
+    .intro-slide {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  @media only screen and (min-width: 1920px) {
+    .intro-slide {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+</style>

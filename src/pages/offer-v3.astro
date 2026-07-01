@@ -1,0 +1,207 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../components/BaseHead.astro";
+import DisclaimerBlock from "../components/DisclaimerBlock.astro";
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
+import OfferValueProposition from "../sections/offer-v3/OfferValueProposition.astro";
+import OfferDream from "../sections/offer-v3/OfferDream.astro";
+import OfferFounderBio from "../sections/offer-v3/OfferFounderBio.astro";
+import OfferScarcity from "../sections/offer-v3/OfferScarcity.astro";
+import OfferMath from "../sections/offer-v3/OfferMath.astro";
+import OfferReframe from "../sections/offer-v3/OfferReframe.astro";
+import OfferProof from "../sections/offer-v3/OfferProof.astro";
+import OfferFAQ from "../sections/offer-v3/OfferFAQ.astro";
+import OfferNextSteps from "../sections/offer-v3/OfferNextSteps.astro";
+import OfferDocuments from "../sections/offer-v3/OfferDocuments.astro";
+
+const pageTitle = "Offer | Robert Ventures";
+const pageDescription =
+  "Fixed 8 to 10% returns, built on real estate and digital assets. A real alternative to today's CDs.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <ClientRouter />
+  </head>
+  <body>
+    <!-- Floating logo, always visible, links home -->
+    <div class="intro-nav-logo" role="img" aria-label="Robert Ventures">
+      <RvLogo />
+    </div>
+
+    <!-- Each section is self-contained (owns its spacing, styles, and behavior),
+         so this list can be reordered or edited freely to compare variants. -->
+    <main class="offer-v3">
+      <OfferValueProposition />
+      <OfferDream />
+      <OfferFounderBio />
+      <OfferScarcity />
+      <OfferMath />
+      <OfferReframe />
+      <OfferProof />
+      <OfferNextSteps />
+      <OfferFAQ />
+      <OfferDocuments />
+    </main>
+
+    <DisclaimerBlock trackLocation="offer_disclaimer" />
+
+    <script is:inline data-astro-rerun>
+      (function () {
+        document.body.classList.add("reveal-enabled");
+
+        // Reveal-on-scroll: fade each content block in as it enters view.
+        function initReveal() {
+          var sections = Array.from(document.querySelectorAll("section.intro-slide"));
+          if (!("IntersectionObserver" in window)) {
+            sections.forEach(function (s) {
+              var c = s.querySelector(".intro-slide__content");
+              if (c) c.classList.add("in-view");
+            });
+            return;
+          }
+          var revealIo = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  var c = e.target.querySelector(".intro-slide__content");
+                  if (c) c.classList.add("in-view");
+                }
+              });
+            },
+            { threshold: 0, rootMargin: "0px 0px -8% 0px" }
+          );
+          sections.forEach(function (s) {
+            revealIo.observe(s);
+          });
+        }
+
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", initReveal);
+        else initReveal();
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    background-color: #ffffff;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* View-transition slide animation, matches /introduction/book-call so the
+     handoff into the booking flow feels like progressing forward in the funnel. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation-name: ga-old-fwd;
+  }
+  ::view-transition-new(root) {
+    animation-name: ga-new-fwd;
+  }
+  html[data-astro-transition="back"]::view-transition-old(root) {
+    animation-name: ga-old-back;
+  }
+  html[data-astro-transition="back"]::view-transition-new(root) {
+    animation-name: ga-new-back;
+  }
+
+  @keyframes ga-new-fwd {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ga-old-fwd {
+    to {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-new-back {
+    from {
+      transform: translateX(-20%);
+      opacity: 0.6;
+    }
+  }
+  @keyframes ga-old-back {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  html[data-astro-transition="traverse"]::view-transition-old(root),
+  html[data-astro-transition="traverse"]::view-transition-new(root) {
+    animation: none;
+  }
+
+  .offer-v3 {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* global.css sets `section { margin-bottom: 1.5rem }`. These sections own
+     their own spacing and stack edge to edge, so neutralize that default,
+     otherwise a 24px white strip shows between adjacent sections. */
+  .offer-v3 > section {
+    margin: 0;
+  }
+
+  /* Reveal-on-scroll. Activated only after JS adds `.reveal-enabled` to <body>,
+     so a no-JS / slow-JS visitor still sees every section (opacity stays 1).
+     Each section owns its own layout + spacing; this is the only page-level
+     styling that reaches into sections, and it is purely additive. */
+  body.reveal-enabled .intro-slide__content {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+  body.reveal-enabled .intro-slide__content.in-view {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body.reveal-enabled .intro-slide__content {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<style>
+  .intro-nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .intro-nav-logo :global(svg) {
+    display: block;
+    height: 30px;
+    width: auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-nav-logo {
+      padding: 1.5rem 1rem;
+    }
+
+    .intro-nav-logo :global(svg) {
+      height: 48px;
+    }
+  }
+</style>

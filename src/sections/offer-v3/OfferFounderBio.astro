@@ -1,0 +1,559 @@
+---
+// Founder video uses the Mux player via CDN (no npm package), with the same
+// autoplay + unmute-restarts-from-start behavior as the /offer page. Kept
+// self-contained: the section loads the player and runs its own setup, scoped
+// by class so it still works if this section is duplicated as a variant.
+---
+
+<section class="intro-slide" id="intro-slide-founder-bio">
+  <div class="intro-slide__content">
+    <p class="founder-bio__eyebrow">Joe Robert · Founder &amp; Manager</p>
+
+    <h2 class="founder-bio__heading">25 years investing in real assets. Now open to you.</h2>
+
+    <div class="founder-bio__video">
+      <div class="founder-bio__video-container">
+        <mux-player
+          playback-id="zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00"
+          env-key="hr9aevib299lcvfdoip01jd60"
+          preload="metadata"
+          stream-type="on-demand"
+          max-resolution="1080p"
+          rendition-order="desc"
+          poster="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.png?width=800&height=600&time=5"
+          placeholder="https://image.mux.com/zcQwBRwPYkk7H68jKSAKzUtBLukN4yls02dvyVv4TrP00/thumbnail.webp?time=5&width=16"
+          muted
+          playsinline
+          default-show-captions></mux-player>
+        <div class="founder-bio__mux-overlay" role="button" tabindex="0">
+          <div class="founder-bio__mux-overlay-pill">
+            <svg
+              class="founder-bio__mux-overlay-icon founder-bio__mux-overlay-icon--unmute"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                fill="#ffffff"></path>
+            </svg>
+            <svg
+              class="founder-bio__mux-overlay-icon founder-bio__mux-overlay-icon--play"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M8 5v14l11-7z" fill="#ffffff"></path>
+            </svg>
+            <span class="founder-bio__mux-overlay-text founder-bio__mux-overlay-text--unmute">
+              Your video is playing. Click to unmute.
+            </span>
+            <span class="founder-bio__mux-overlay-text founder-bio__mux-overlay-text--play">
+              Click to play
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="founder-bio__body">
+      Joe Robert founded and manages Robert Ventures, and built the company to bring real estate,
+      mortgage, and hard-asset investing to everyday investors.
+    </p>
+
+    <ul class="founder-bio__chips">
+      <li class="founder-bio__chip">100% on-time distributions</li>
+      <li class="founder-bio__chip">SEC-qualified, Reg A+</li>
+      <li class="founder-bio__chip">Independently audited</li>
+      <li class="founder-bio__chip">$150M managed</li>
+    </ul>
+
+    <p class="founder-bio__coinvest">
+      Joe is invested right alongside you, too. $750,000 of his own capital is in the same bonds.
+    </p>
+
+    <p class="founder-bio__foot">
+      Have a question?
+      <a href="/offer/book-call" class="founder-bio__foot-link">Talk to a real person</a>
+    </p>
+  </div>
+</section>
+
+<!-- Mux player custom element (CDN, no npm). Loads once; deduped by URL if the
+     section is ever duplicated on the page. -->
+<script
+  type="module"
+  is:inline
+  src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3/dist/mux-player.mjs"></script>
+
+<script>
+  // Muted autoplay when the section nears view; a one-shot overlay nudges the
+  // user to unmute. Any unmute (pill or native control) restarts the video from
+  // the beginning with sound. Scoped per .founder-bio__video-container so
+  // duplicated instances each run independently.
+  function setupFounderVideos() {
+    const containers = document.querySelectorAll(".founder-bio__video-container");
+
+    containers.forEach(function (container) {
+      const player = container.querySelector("mux-player") as HTMLVideoElement | null;
+      const overlay = container.querySelector(".founder-bio__mux-overlay");
+      if (!player || player.dataset.videoSetup === "1") return;
+      player.dataset.videoSetup = "1";
+
+      let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
+      let isAutoplayPlay = false;
+      let engaged = false;
+
+      function showOverlayUnmuteMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active");
+        overlay.classList.remove("is-play-mode");
+        overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+      }
+
+      function showOverlayPlayMode() {
+        if (!overlay) return;
+        overlay.classList.add("is-active", "is-play-mode");
+        overlay.setAttribute("aria-label", "Click to play");
+      }
+
+      function dismissOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove("is-active");
+      }
+
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        dismissOverlay();
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        isAutoplayPlay = true;
+        const promise = player.play();
+        if (promise && typeof promise.then === "function") {
+          promise
+            .then(function () {
+              autoplayState = "playing";
+              if (!engaged) showOverlayUnmuteMode();
+            })
+            .catch(function () {
+              isAutoplayPlay = false;
+              autoplayState = "failed";
+              if (!engaged) showOverlayPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          if (!engaged) showOverlayUnmuteMode();
+        }
+      }
+
+      function engageFromOverlay(e: Event) {
+        if (!overlay || !overlay.classList.contains("is-active")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          player.muted = false;
+        } catch (err) {}
+        // If autoplay had failed (play-mode), start from the beginning with
+        // sound. In unmute-mode the volumechange handler below does the restart.
+        if (overlay.classList.contains("is-play-mode")) {
+          try {
+            player.currentTime = 0;
+          } catch (err) {}
+          const result = player.play();
+          if (result && typeof result.catch === "function") result.catch(function () {});
+        }
+        dismissOverlay();
+      }
+
+      if (overlay) {
+        overlay.addEventListener("click", engageFromOverlay);
+        overlay.addEventListener("keydown", function (e: KeyboardEvent) {
+          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
+        });
+      }
+
+      player.addEventListener("play", function () {
+        const wasAutoplay = isAutoplayPlay;
+        isAutoplayPlay = false;
+        if (!wasAutoplay) markEngaged();
+      });
+
+      player.addEventListener("volumechange", function () {
+        if (engaged) return;
+        if (player.muted) return;
+        // User just unmuted: replay from the start with sound.
+        try {
+          player.pause();
+          player.currentTime = 0;
+        } catch (e) {}
+        const result = player.play();
+        if (result && typeof result.catch === "function") result.catch(function () {});
+        markEngaged();
+      });
+
+      if ("IntersectionObserver" in window) {
+        const videoIo = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (autoplayState === "playing" && player.paused && !engaged) {
+                  isAutoplayPlay = true;
+                  const result = player.play();
+                  if (result && typeof result.catch === "function") {
+                    result.catch(function () {
+                      isAutoplayPlay = false;
+                    });
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
+            });
+          },
+          { threshold: 0, rootMargin: "0px 0px 40% 0px" }
+        );
+        videoIo.observe(player);
+      }
+    });
+  }
+
+  // Run on first load and after client-side (ClientRouter) navigations. The
+  // dataset guard prevents double-binding when both fire.
+  if (document.readyState !== "loading") setupFounderVideos();
+  else document.addEventListener("DOMContentLoaded", setupFounderVideos);
+  document.addEventListener("astro:page-load", setupFounderVideos);
+</script>
+
+<style>
+  .intro-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: var(--green-tint);
+    box-sizing: border-box;
+    padding: 3rem 1.25rem 3rem 1.25rem;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+  }
+
+  /* Founder video (replaces the old circular photo). Same 4:3 container and
+     overlay treatment as the /offer page, rounded to match this page's media. */
+  .founder-bio__video {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .founder-bio__video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #152429;
+    box-shadow: 0 16px 40px rgba(21, 36, 41, 0.18);
+  }
+
+  .founder-bio__video-container mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --media-object-fit: cover;
+    --media-object-position: center;
+    --time-range: none;
+  }
+
+  .founder-bio__video-container mux-player[mediaisfullscreen] {
+    --time-range: initial;
+  }
+
+  .founder-bio__mux-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  .founder-bio__mux-overlay.is-active {
+    display: flex;
+  }
+
+  .founder-bio__mux-overlay:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: -4px;
+  }
+
+  .founder-bio__mux-overlay-pill {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 0.625rem 1rem 0.625rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    animation: founder-bio-pill-glow 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .founder-bio__mux-overlay-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .founder-bio__mux-overlay-icon--play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  .founder-bio__mux-overlay-text--play {
+    display: none;
+  }
+
+  .founder-bio__mux-overlay.is-play-mode .founder-bio__mux-overlay-icon--unmute,
+  .founder-bio__mux-overlay.is-play-mode .founder-bio__mux-overlay-text--unmute {
+    display: none;
+  }
+
+  .founder-bio__mux-overlay.is-play-mode .founder-bio__mux-overlay-icon--play,
+  .founder-bio__mux-overlay.is-play-mode .founder-bio__mux-overlay-text--play {
+    display: inline-block;
+  }
+
+  @keyframes founder-bio-pill-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(103, 183, 143, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(103, 183, 143, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .founder-bio__mux-overlay-pill {
+      animation: none;
+    }
+  }
+
+  .founder-bio__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4e7a63;
+    margin: 0;
+  }
+
+  .founder-bio__heading {
+    font-family: var(--font-heading);
+    color: #1a1a1a;
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .founder-bio__body {
+    font-family: var(--font-body);
+    color: #555555;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  .founder-bio__chips {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .founder-bio__chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 0.75rem 0.875rem;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: #1a1a1a;
+    line-height: 1.3;
+    box-shadow: 0 1px 2px rgba(21, 36, 41, 0.04);
+  }
+
+  .founder-bio__chip::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green-brand);
+    flex-shrink: 0;
+  }
+
+  .founder-bio__coinvest {
+    font-family: var(--font-body);
+    color: #6b7a72;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 0.25rem 0 0;
+    max-width: 32rem;
+  }
+
+  .founder-bio__foot {
+    font-family: var(--font-body);
+    color: #6b7a72;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0.5rem 0 0;
+  }
+
+  .founder-bio__foot-link {
+    color: var(--green-dark);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .founder-bio__foot-link:hover {
+    text-decoration: underline;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-slide__content {
+      gap: 1.5rem;
+      max-width: 540px;
+    }
+    .founder-bio__video {
+      max-width: 480px;
+    }
+    .founder-bio__mux-overlay-pill {
+      padding: 0.75rem 1.25rem 0.75rem 1rem;
+      font-size: 0.9375rem;
+    }
+    .founder-bio__mux-overlay-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .founder-bio__heading {
+      font-size: 2.5rem;
+    }
+    .founder-bio__body {
+      font-size: 1.0625rem;
+    }
+    .founder-bio__chips {
+      gap: 1rem;
+    }
+    .founder-bio__chip {
+      font-size: 0.875rem;
+      padding: 0.875rem 1rem;
+    }
+  }
+
+  /* Desktop: two columns (text left, video right), vertically centered, so the
+     section reads balanced side by side instead of one tall stack. The markup
+     stays flat and is placed into a grid, so mobile keeps its stacked order
+     (heading above video). */
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      column-gap: 4rem;
+      row-gap: 1rem;
+      max-width: var(--content-max-wide);
+      text-align: left;
+    }
+    .founder-bio__eyebrow {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .founder-bio__heading {
+      grid-column: 1;
+      grid-row: 2;
+      font-size: 2.75rem;
+    }
+    .founder-bio__body {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    .founder-bio__chips {
+      grid-column: 1;
+      grid-row: 4;
+    }
+    .founder-bio__coinvest {
+      grid-column: 1;
+      grid-row: 5;
+    }
+    .founder-bio__foot {
+      grid-column: 1;
+      grid-row: 6;
+    }
+    .founder-bio__video {
+      grid-column: 2;
+      grid-row: 1 / 7;
+      align-self: center;
+      max-width: none;
+    }
+  }
+
+  /* Self-contained outer spacing (previously provided by the page shell). */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 4rem 2rem 4rem 2.5rem;
+    }
+  }
+  @media only screen and (min-width: 1136px) {
+    .intro-slide {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  @media only screen and (min-width: 1920px) {
+    .intro-slide {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+</style>

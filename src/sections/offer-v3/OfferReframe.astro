@@ -1,0 +1,188 @@
+---
+
+---
+
+<section class="intro-slide" id="intro-slide-reframe">
+  <div class="intro-slide__content">
+    <h2 class="intro-slide__heading">
+      Your savings aren't standing still. They're falling behind.
+    </h2>
+
+    <div class="rf-cards">
+      <div class="rf-card">
+        <span class="rf-card__label">Today's CD</span>
+        <span class="rf-card__value">~1.5<span class="rf-card__pct">%</span></span>
+        <span class="rf-card__desc">Average 1-year rate, and falling.</span>
+      </div>
+      <div class="rf-card rf-card--rv">
+        <span class="rf-card__label rf-card__label--rv">Robert Ventures</span>
+        <span class="rf-card__value rf-card__value--rv">8-10<span class="rf-card__pct">%</span></span>
+        <span class="rf-card__desc rf-card__desc--rv">Fixed rate, 1 or 3-year lockup.</span>
+      </div>
+    </div>
+
+    <p class="rf-note">
+      Your 1 or 3-year lockup is the minimum time before you can withdraw, not when the investment
+      ends. The bonds mature in 10 years.
+    </p>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 3rem 1.25rem 3rem 1.25rem;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+  }
+
+  .intro-slide__heading {
+    font-family: var(--font-heading);
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  .rf-cards {
+    display: flex;
+    gap: 0.875rem;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .rf-card {
+    flex: 1;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .rf-card--rv {
+    background: var(--green-tint);
+    border-color: var(--green-brand);
+  }
+
+  .rf-card__label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8a969c;
+    margin-bottom: 0.875rem;
+  }
+
+  .rf-card__label--rv {
+    color: var(--green-dark);
+  }
+
+  .rf-card__value {
+    font-family: var(--font-heading);
+    font-size: 2.875rem;
+    font-weight: 500;
+    color: #8a969c;
+    line-height: 1;
+  }
+
+  .rf-card__value--rv {
+    color: var(--green-dark);
+  }
+
+  .rf-card__pct {
+    font-size: 1.5rem;
+  }
+
+  .rf-card__desc {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: #8a969c;
+    line-height: 1.4;
+    margin-top: 0.875rem;
+  }
+
+  .rf-card__desc--rv {
+    color: #4e7a63;
+  }
+
+  .rf-note {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #8a969c;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-slide__heading {
+      font-size: 2.5rem;
+    }
+    .rf-cards {
+      gap: 1.125rem;
+    }
+    .rf-card {
+      padding: 2.25rem 1.5rem;
+    }
+    .rf-card__value {
+      font-size: 3.5rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .intro-slide__heading {
+      font-size: 2.75rem;
+    }
+    .intro-slide__content {
+      max-width: 640px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .intro-slide__heading {
+      font-size: 3rem;
+    }
+  }
+
+  /* Self-contained outer spacing (previously provided by the page shell). */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 4rem 2rem 4rem 2.5rem;
+    }
+  }
+  @media only screen and (min-width: 1136px) {
+    .intro-slide {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  @media only screen and (min-width: 1920px) {
+    .intro-slide {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+</style>

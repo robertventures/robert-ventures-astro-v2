@@ -1,0 +1,238 @@
+---
+
+---
+
+<section class="intro-slide intro-slide--dark" id="intro-slide-math">
+  <div class="intro-slide__content">
+    <p class="m-eyebrow">Not a projection. Just math.</p>
+    <h2 class="m-heading">10% compounded monthly. Up to 17% a year, on average.</h2>
+    <p class="m-body">
+      A fixed rate, set the day you invest. It does not move when the markets do.
+    </p>
+
+    <div class="m-card">
+      <div class="m-bars" aria-hidden="true">
+        <div class="m-bar-col">
+          <span class="m-bar-cap">Today</span>
+          <div class="m-bar" style="height: 30px; background: #3a5560;"></div>
+        </div>
+        <div class="m-bar-col">
+          <div class="m-bar" style="height: 56px; background: #4e7a63;"></div>
+        </div>
+        <div class="m-bar-col">
+          <div class="m-bar" style="height: 88px; background: #67b78f;"></div>
+        </div>
+        <div class="m-bar-col">
+          <span class="m-bar-cap m-bar-cap--accent">Year 10</span>
+          <div class="m-bar" style="height: 140px; background: #8fe0b4;"></div>
+        </div>
+      </div>
+
+      <div class="m-result">
+        <div class="m-result__side">
+          <span class="m-result__label">You invest</span>
+          <span class="m-result__value">$10,000</span>
+        </div>
+        <span class="m-result__arrow" aria-hidden="true">&rarr;</span>
+        <div class="m-result__side m-result__side--right">
+          <span class="m-result__label">Becomes about</span>
+          <span class="m-result__value m-result__value--accent">$27,070</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="m-disclaimer">
+      For illustrative purposes only. Not APY. Not IRR. Compound interest at the stated rate,
+      monthly, over the bonds' full 10-year maturity.
+    </p>
+  </div>
+</section>
+
+<style>
+  .intro-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #152429;
+    box-sizing: border-box;
+    padding: 3rem 1.25rem 3rem 1.25rem;
+  }
+
+  .intro-slide__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 540px;
+    text-align: center;
+  }
+
+  .m-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7fd0a4;
+    margin: 0;
+  }
+
+  .m-heading {
+    font-family: var(--font-heading);
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .m-body {
+    font-family: var(--font-body);
+    color: #bfd1d7;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 28rem;
+  }
+
+  .m-card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(191, 209, 215, 0.18);
+    border-radius: 16px;
+    padding: 1.5rem 1.375rem;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .m-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.625rem;
+    height: 150px;
+    margin-bottom: 1.125rem;
+  }
+
+  .m-bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .m-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .m-bar-cap {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    color: #7e929a;
+  }
+
+  .m-bar-cap--accent {
+    color: #9dd3b5;
+  }
+
+  .m-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid rgba(191, 209, 215, 0.18);
+    padding-top: 1.125rem;
+  }
+
+  .m-result__side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+  }
+
+  .m-result__side--right {
+    text-align: right;
+  }
+
+  .m-result__label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: #7e929a;
+  }
+
+  .m-result__value {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  .m-result__value--accent {
+    color: #8fe0b4;
+  }
+
+  .m-result__arrow {
+    color: #67b78f;
+    font-size: 1.375rem;
+    align-self: center;
+  }
+
+  .m-disclaimer {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: #5e7780;
+    font-style: italic;
+    margin: 0.875rem 0 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .intro-slide__content {
+      gap: 1.25rem;
+    }
+    .m-heading {
+      font-size: 2.5rem;
+    }
+    .m-body {
+      font-size: 1.125rem;
+    }
+    .m-result__value {
+      font-size: 1.75rem;
+    }
+    .m-disclaimer {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .m-heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  /* Self-contained outer spacing (previously provided by the page shell). */
+  @media only screen and (min-width: 600px) {
+    .intro-slide {
+      padding: 4rem 2rem 4rem 2.5rem;
+    }
+  }
+  @media only screen and (min-width: 1136px) {
+    .intro-slide {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  @media only screen and (min-width: 1920px) {
+    .intro-slide {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+</style>
