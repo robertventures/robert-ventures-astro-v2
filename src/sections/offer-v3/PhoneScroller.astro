@@ -1,0 +1,930 @@
+---
+import { Image } from "astro:assets";
+import phoneHand from "../../assets/offer-v3/phone-hand.png";
+---
+
+<!--
+  PhoneScroller: the signature luffu-style pinned sequence.
+  Tall scroll area with a position:sticky track. As the user scrolls, the phone
+  photo stays FIXED while a single scrubbed GSAP timeline crossfades:
+   - the on-screen content (Scene 1 balance card -> Scene 2 terms table)
+   - the surrounding copy (Scene 1 -> Scene 2)
+   - the 2-dot progress indicator (dot 1 -> dot 2)
+  CSS sticky does the pinning (no ScrollTrigger pin). Reduced-motion degrades to
+  both scenes stacked and fully readable.
+-->
+<section class="rv3-section rv3-phone" id="rv3-phone">
+  <div class="rv3-phone__track">
+    <div class="rv3-phone__inner">
+      <!-- Progress dots -->
+      <div class="rv3-phone__dots" aria-hidden="true">
+        <span class="rv3-phone__dot rv3-phone__dot--1 is-active"></span>
+        <span class="rv3-phone__dot rv3-phone__dot--2"></span>
+      </div>
+
+      <!-- Copy column (crossfaded scenes stacked in one grid cell) -->
+      <div class="rv3-phone__copies">
+        <div class="rv3-phone__copy rv3-phone__copy--1">
+          <p class="rv3-phone__eyebrow">HOW IT WORKS</p>
+          <h2 class="rv3-phone__heading">A fixed return, paid to you monthly.</h2>
+          <p class="rv3-phone__body">
+            Robert Ventures bonds pay a fixed 8% or 10% annual rate. Your money starts earning the
+            day after your funds are confirmed, and interest arrives in your bank account every
+            month, starting the month after you invest. Prefer to grow instead? Choose compounding
+            and your interest earns interest.
+          </p>
+        </div>
+
+        <div class="rv3-phone__copy rv3-phone__copy--2">
+          <p class="rv3-phone__eyebrow">THE TERMS</p>
+          <h2 class="rv3-phone__heading">The terms, in plain language.</h2>
+          <p class="rv3-phone__body">
+            Choose a 1-year bond at a fixed 8%, or a 3-year bond at a fixed 10%. Your principal is
+            committed for the term you choose. When it ends, you can redeem it in full or keep
+            earning at the same rate, month to month. The minimum to start is $1,000, and there are
+            no hidden penalties.
+          </p>
+        </div>
+      </div>
+
+      <!-- Phone photo + two stacked screens -->
+      <div class="rv3-phone__device">
+        <div class="rv3-phone__box">
+          <Image
+            src={phoneHand}
+            alt=""
+            aria-hidden="true"
+            widths={[452, 678, 904]}
+            sizes="(min-width: 1136px) 340px, 226px"
+            format="webp"
+            quality={80}
+            class="rv3-phone__img"
+          />
+
+          <!-- Screen 1: balance UI -->
+          <div class="rv3-phone__screen rv3-phone__screen--1" aria-hidden="true">
+            <div class="scr">
+              <div class="scr__status">
+                <span class="scr__time">9:41</span>
+                <span class="scr__sysicons">
+                  <svg viewBox="0 0 18 12" width="15" height="10" aria-hidden="true">
+                    <rect x="0" y="7" width="2.2" height="5" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="3.4" y="5" width="2.2" height="7" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="6.8" y="3" width="2.2" height="9" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="10.2" y="0.5" width="2.2" height="11.5" rx="0.6" fill="#1a1a1a"></rect>
+                  </svg>
+                  <svg viewBox="0 0 16 12" width="14" height="10" aria-hidden="true">
+                    <path
+                      d="M8 2.2C10 2.2 11.8 3 13.1 4.3l-1.2 1.2C10.9 4.5 9.5 4 8 4S5.1 4.5 4.1 5.5L2.9 4.3C4.2 3 6 2.2 8 2.2z"
+                      fill="#1a1a1a"></path>
+                    <path
+                      d="M8 5.6c1.1 0 2.1.5 2.8 1.2l-1.2 1.2C9.2 7.6 8.6 7.3 8 7.3s-1.2.3-1.6.7L5.2 6.8C5.9 6.1 6.9 5.6 8 5.6z"
+                      fill="#1a1a1a"></path>
+                    <circle cx="8" cy="9.6" r="1.3" fill="#1a1a1a"></circle>
+                  </svg>
+                  <span class="scr__batt"></span>
+                </span>
+              </div>
+
+              <div class="scr__top">
+                <span class="scr__wordmark">
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                    <rect width="24" height="24" rx="6" fill="#152420"></rect>
+                    <path
+                      d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+                      stroke="#7fd0a4"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <b>Robert</b>
+                  <span>Ventures</span>
+                </span>
+                <span class="scr__avatar"></span>
+              </div>
+
+              <div class="scr__balcard">
+                <span class="scr__balcard-label">Total invested</span>
+                <span class="scr__balcard-amount">$10,000.00</span>
+                <span class="scr__balcard-div"></span>
+                <div class="scr__balcard-row">
+                  <span class="scr__bc-col">
+                    <span class="scr__bc-k">Fixed rate</span>
+                    <span class="scr__bc-v scr__bc-v--mint">10%</span>
+                  </span>
+                  <span class="scr__bc-col">
+                    <span class="scr__bc-k">Next payment</span>
+                    <span class="scr__bc-v">Aug 1</span>
+                  </span>
+                </div>
+              </div>
+
+              <span class="scr__section">RECENT ACTIVITY</span>
+
+              <div class="scr__notif">
+                <span class="scr__notif-icon">
+                  <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
+                    <circle cx="10" cy="10" r="10" fill="#ebf5ef"></circle>
+                    <path
+                      d="M6 10.5 9 13.5 14.5 7"
+                      stroke="#2b6b47"
+                      stroke-width="1.8"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="scr__notif-text">
+                  <span class="scr__notif-title">Interest payment received</span>
+                  <span class="scr__notif-meta">Robert Ventures · just now</span>
+                </span>
+                <span class="scr__notif-amt">+$83.33</span>
+              </div>
+
+              <div class="scr__ghost">
+                <span>March · +$83.33</span>
+              </div>
+              <div class="scr__ghost scr__ghost--faint">
+                <span>February · +$83.33</span>
+              </div>
+
+              <span class="scr__home"></span>
+            </div>
+          </div>
+
+          <!-- Screen 2: terms UI -->
+          <div class="rv3-phone__screen rv3-phone__screen--2" aria-hidden="true">
+            <div class="scr scr--terms">
+              <div class="scr__status">
+                <span class="scr__time">9:41</span>
+                <span class="scr__sysicons">
+                  <svg viewBox="0 0 18 12" width="15" height="10" aria-hidden="true">
+                    <rect x="0" y="7" width="2.2" height="5" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="3.4" y="5" width="2.2" height="7" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="6.8" y="3" width="2.2" height="9" rx="0.6" fill="#1a1a1a"></rect>
+                    <rect x="10.2" y="0.5" width="2.2" height="11.5" rx="0.6" fill="#1a1a1a"></rect>
+                  </svg>
+                  <svg viewBox="0 0 16 12" width="14" height="10" aria-hidden="true">
+                    <path
+                      d="M8 2.2C10 2.2 11.8 3 13.1 4.3l-1.2 1.2C10.9 4.5 9.5 4 8 4S5.1 4.5 4.1 5.5L2.9 4.3C4.2 3 6 2.2 8 2.2z"
+                      fill="#1a1a1a"></path>
+                    <path
+                      d="M8 5.6c1.1 0 2.1.5 2.8 1.2l-1.2 1.2C9.2 7.6 8.6 7.3 8 7.3s-1.2.3-1.6.7L5.2 6.8C5.9 6.1 6.9 5.6 8 5.6z"
+                      fill="#1a1a1a"></path>
+                    <circle cx="8" cy="9.6" r="1.3" fill="#1a1a1a"></circle>
+                  </svg>
+                  <span class="scr__batt"></span>
+                </span>
+              </div>
+
+              <div class="scr__top">
+                <span class="scr__wordmark">
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                    <rect width="24" height="24" rx="6" fill="#152420"></rect>
+                    <path
+                      d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+                      stroke="#7fd0a4"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <b>Robert</b>
+                  <span>Ventures</span>
+                </span>
+                <span class="scr__avatar"></span>
+              </div>
+
+              <span class="scr__terms-title">The terms at a glance</span>
+              <span class="scr__terms-sub">Two bonds. Same structure.</span>
+
+              <div class="scr__table">
+                <div class="scr__trow scr__trow--head">
+                  <span class="scr__tc scr__tc--lead"></span>
+                  <span class="scr__tc">1 year</span>
+                  <span class="scr__tc scr__tc--accent">3 years</span>
+                </div>
+                <div class="scr__trow">
+                  <span class="scr__tc scr__tc--lead">Fixed rate</span>
+                  <span class="scr__tc scr__tc--rate">8%</span>
+                  <span class="scr__tc scr__tc--rate scr__tc--accent">10%</span>
+                </div>
+                <div class="scr__trow">
+                  <span class="scr__tc scr__tc--lead">Interest paid</span>
+                  <span class="scr__tc">Monthly</span>
+                  <span class="scr__tc">Monthly</span>
+                </div>
+                <div class="scr__trow">
+                  <span class="scr__tc scr__tc--lead">On $10,000</span>
+                  <span class="scr__tc">$66/mo</span>
+                  <span class="scr__tc">$83/mo</span>
+                </div>
+                <div class="scr__trow scr__trow--wide">
+                  <span class="scr__tc scr__tc--lead">After the term</span>
+                  <span class="scr__tc scr__tc--wideval"
+                    >Redeem, or keep earning at the same rate</span
+                  >
+                </div>
+              </div>
+
+              <div class="scr__note">
+                <span class="scr__note-badge">i</span>
+                <span class="scr__note-text">No hidden penalties. The rate is set by contract.</span
+                >
+              </div>
+
+              <span class="scr__footer">SEC qualified · Regulation A Tier 2 · Minimum $1,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Tall scroll area. Its height drives the scrub distance. */
+  .rv3-phone {
+    position: relative;
+    width: 100%;
+    background: #ffffff;
+    box-sizing: border-box;
+    height: 280svh;
+    overflow: clip; /* guard against any horizontal overflow from the track */
+  }
+
+  /* Sticky track pins to the viewport while the tall section scrolls past. */
+  .rv3-phone__track {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .rv3-phone__inner {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    height: 100%;
+    margin: 0 auto;
+    padding: clamp(2.9rem, 6svh, 3.6rem) 1.25rem 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(1.05rem, 2.2svh, 1.35rem);
+  }
+
+  /* Progress dots */
+  .rv3-phone__dots {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+  .rv3-phone__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.15);
+    transition: background-color 0.2s ease;
+  }
+  .rv3-phone__dot.is-active {
+    background: var(--green-dark);
+  }
+
+  /* Copy column: both scenes stacked in the SAME grid cell so they crossfade
+     in place without shifting layout. */
+  .rv3-phone__copies {
+    position: relative;
+    display: grid;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .rv3-phone__copy {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    will-change: opacity;
+  }
+  /* FOUC guard: Scene 1 visible by default so the section reads even if JS
+     never runs. Scene 2 starts hidden. */
+  .rv3-phone__copy--2 {
+    opacity: 0;
+  }
+
+  .rv3-phone__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0;
+  }
+  .rv3-phone__heading {
+    font-family: var(--font-heading);
+    color: var(--text-heading);
+    font-size: clamp(1.75rem, 7.2vw, 1.95rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .rv3-phone__body {
+    font-family: var(--font-body);
+    color: var(--text-body);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 350px;
+  }
+
+  /* Phone device */
+  .rv3-phone__device {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .rv3-phone__box {
+    position: relative;
+    /* ~205px screen (54.7% of the box) matches how the screen UI is scaled.
+       The phone bleeds off the bottom of the sticky track like the comp. */
+    width: min(82vw, 340px);
+    aspect-ratio: 1130 / 1530;
+    flex-shrink: 0;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+  .rv3-phone__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Screen overlays: same box, stacked, crossfaded. */
+  .rv3-phone__screen {
+    position: absolute;
+    left: 17%;
+    top: 2.7%;
+    width: 54.7%;
+    height: 85.4%;
+    border-radius: 7%;
+    overflow: hidden;
+    background: #f8faf8;
+    transform: translate3d(0, 0, 0);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+  }
+  .rv3-phone__screen--2 {
+    opacity: 0;
+  }
+
+  /* ---- Rebuilt phone-screen UI (scaled to ~205px wide) ---- */
+  .scr {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 7px 0;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    background: #f8faf8;
+  }
+
+  .scr__status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px 4px;
+  }
+  .scr__time {
+    font-size: 8px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .scr__sysicons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .scr__batt {
+    width: 13px;
+    height: 7px;
+    border: 1px solid #1a1a1a;
+    border-radius: 2px;
+    position: relative;
+    display: inline-block;
+  }
+  .scr__batt::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    right: 3px;
+    background: #1a1a1a;
+    border-radius: 1px;
+  }
+  .scr__batt::after {
+    content: "";
+    position: absolute;
+    right: -2px;
+    top: 2px;
+    width: 1.5px;
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 0 1px 1px 0;
+  }
+
+  .scr__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 2px 6px;
+  }
+  .scr__wordmark {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 8.5px;
+    color: #1a1a1a;
+  }
+  .scr__wordmark b {
+    font-weight: 700;
+  }
+  .scr__wordmark span {
+    color: #6a7a72;
+    font-weight: 500;
+  }
+  .scr__avatar {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #67b78f, #2b6b47);
+  }
+
+  /* Balance card */
+  .scr__balcard {
+    display: flex;
+    flex-direction: column;
+    background: #151f20;
+    border-radius: 9px;
+    padding: 8px 9px 9px;
+  }
+  .scr__balcard-label {
+    font-size: 7px;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.02em;
+  }
+  .scr__balcard-amount {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-top: 1px;
+  }
+  .scr__balcard-div {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 7px 0;
+  }
+  .scr__balcard-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .scr__bc-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .scr__bc-k {
+    font-size: 6.5px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .scr__bc-v {
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .scr__bc-v--mint {
+    color: #7fd0a4;
+  }
+
+  .scr__section {
+    font-size: 6.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #999999;
+    margin: 9px 2px 5px;
+  }
+
+  /* Notification card */
+  .scr__notif {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 6px 7px;
+  }
+  .scr__notif-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+  }
+  .scr__notif-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+  .scr__notif-title {
+    font-size: 7.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+  .scr__notif-meta {
+    font-size: 6px;
+    color: #999999;
+    line-height: 1.2;
+  }
+  .scr__notif-amt {
+    font-size: 9px;
+    font-weight: 700;
+    color: #2b6b47;
+    flex-shrink: 0;
+  }
+
+  /* Ghost activity rows */
+  .scr__ghost {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+    padding: 6px 7px;
+    margin-top: 5px;
+    opacity: 0.55;
+  }
+  .scr__ghost--faint {
+    opacity: 0.3;
+  }
+  .scr__ghost span {
+    font-size: 7px;
+    color: #999999;
+  }
+
+  .scr__home {
+    margin: auto auto 4px;
+    width: 44px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.28);
+  }
+
+  /* ---- Terms screen ---- */
+  .scr__terms-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #1a1a1a;
+    padding: 0 2px;
+    margin-top: 2px;
+  }
+  .scr__terms-sub {
+    font-size: 7px;
+    color: #555555;
+    padding: 0 2px;
+    margin: 1px 0 6px;
+  }
+  .scr__table {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 9px;
+    padding: 3px 7px;
+  }
+  .scr__trow {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    column-gap: 8px;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .scr__trow:last-child {
+    border-bottom: 0;
+  }
+  .scr__trow--head {
+    padding-bottom: 4px;
+  }
+  .scr__trow--head .scr__tc {
+    font-size: 7px;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: right;
+  }
+  .scr__tc {
+    font-size: 7px;
+    color: #555555;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .scr__tc--lead {
+    text-align: left;
+    color: #777777;
+    font-size: 6.5px;
+  }
+  .scr__tc--rate {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .scr__tc--accent {
+    color: #2b6b47;
+  }
+  .scr__trow--wide {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+  }
+  .scr__tc--wideval {
+    text-align: right;
+    color: #555555;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .scr__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    background: var(--green-tint);
+    border-radius: 7px;
+    padding: 6px 7px;
+    margin-top: 7px;
+  }
+  .scr__note-badge {
+    flex-shrink: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    background: #2b6b47;
+    color: #ffffff;
+    font-size: 7px;
+    font-weight: 700;
+    font-style: italic;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .scr__note-text {
+    font-size: 7px;
+    color: #2b6b47;
+    line-height: 1.3;
+  }
+  .scr__footer {
+    font-size: 6px;
+    color: #999999;
+    text-align: center;
+    margin: auto 0 6px;
+    padding: 6px 4px 0;
+  }
+
+  /* ---------- Tablet scale-up ---------- */
+  @media only screen and (min-width: 600px) {
+    .rv3-phone__heading {
+      font-size: 2.15rem;
+    }
+    .rv3-phone__body {
+      font-size: 0.9375rem;
+    }
+    .rv3-phone__box {
+      width: min(68vw, 380px);
+    }
+  }
+
+  /* ---------- Desktop: copy LEFT, phone RIGHT, still one sticky track ---------- */
+  @media only screen and (min-width: 1136px) {
+    .rv3-phone {
+      height: 300svh;
+    }
+    .rv3-phone__inner {
+      display: grid;
+      max-width: 1100px;
+      grid-template-rows: none;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "copy phone";
+      align-content: center;
+      align-items: center;
+      justify-items: stretch;
+      column-gap: 4rem;
+      padding: 2rem 3rem;
+    }
+    .rv3-phone__dots {
+      position: absolute;
+      top: 2.5rem;
+      left: 3rem;
+      z-index: 3;
+    }
+    .rv3-phone__copies {
+      grid-area: copy;
+      max-width: 460px;
+      text-align: left;
+      justify-self: start;
+    }
+    .rv3-phone__copy {
+      align-items: flex-start;
+    }
+    .rv3-phone__body {
+      max-width: 420px;
+    }
+    .rv3-phone__heading {
+      font-size: 2.9rem;
+    }
+    .rv3-phone__device {
+      grid-area: phone;
+      justify-self: end;
+      align-items: center;
+    }
+    .rv3-phone__box {
+      width: 400px;
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    .rv3-phone__box {
+      width: 380px;
+    }
+    .rv3-phone__heading {
+      font-size: 3.25rem;
+    }
+  }
+
+  /* ---------- Reduced motion: un-stick, stack both scenes statically ---------- */
+  .rv3-phone.rv3-phone--static {
+    height: auto;
+    overflow: visible;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__track {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__inner {
+    display: block;
+    height: auto;
+    padding: 3rem 1.25rem;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__dots {
+    display: none;
+  }
+  /* Show both copies and both screens, one scene after another. */
+  .rv3-phone.rv3-phone--static .rv3-phone__copies {
+    display: block;
+    margin: 0 auto;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__copy {
+    grid-area: auto;
+    opacity: 1 !important;
+    transform: none !important;
+    margin-bottom: 1.5rem;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__device {
+    margin: 0 auto 3rem;
+    overflow: visible;
+  }
+  /* Scene 1 screen stays overlaid on the phone. Scene 2 screen detaches from
+     the phone frame and flows as a plain card below copy 2, so BOTH scenes are
+     fully readable when stacked. */
+  .rv3-phone.rv3-phone--static .rv3-phone__screen--1 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__screen--2 {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 226px;
+    height: auto;
+    margin: 1rem auto 0;
+    opacity: 1 !important;
+    transform: none !important;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  }
+  .rv3-phone.rv3-phone--static .rv3-phone__screen--2 .scr {
+    position: relative;
+    inset: auto;
+    padding-bottom: 10px;
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    const section = document.getElementById("rv3-phone");
+    if (!section) return;
+
+    const reduce =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Reduced motion: do NOT init the timeline. Un-stick + show everything.
+    if (reduce) {
+      section.classList.add("rv3-phone--static");
+      return;
+    }
+
+    function start() {
+      if (!window.gsapLoaded || !window.gsap) {
+        window.addEventListener("gsapLoaded", start, { once: true });
+        return;
+      }
+      if (!window.scrollTriggerLoaded || !window.ScrollTrigger) {
+        window.addEventListener("scrollTriggerLoaded", start, { once: true });
+        return;
+      }
+      init();
+    }
+
+    function init() {
+      const gsap = window.gsap;
+
+      const copy1 = section.querySelector(".rv3-phone__copy--1");
+      const copy2 = section.querySelector(".rv3-phone__copy--2");
+      const screen1 = section.querySelector(".rv3-phone__screen--1");
+      const screen2 = section.querySelector(".rv3-phone__screen--2");
+      const dot1 = section.querySelector(".rv3-phone__dot--1");
+      const dot2 = section.querySelector(".rv3-phone__dot--2");
+
+      const inactive = "rgba(26,26,26,0.15)";
+      const active = "#2b6b47";
+
+      // matchMedia so we can rebuild cleanly per breakpoint and dispose on cleanup.
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 0px)", () => {
+        // Set explicit starting states (the scrub owns opacity from here).
+        gsap.set([copy1, screen1], { autoAlpha: 1 });
+        gsap.set(copy2, { autoAlpha: 0 });
+        gsap.set(screen1, { xPercent: 0 });
+        gsap.set(screen2, { autoAlpha: 0, xPercent: 8 });
+        gsap.set(dot1, { backgroundColor: active });
+        gsap.set(dot2, { backgroundColor: inactive });
+
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.out", force3D: true },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Hold scene 1, then let the copy dissolve while the app screen glides
+        // horizontally inside a visually locked phone frame.
+        tl.to({}, { duration: 0.42 });
+        tl.to(copy1, { autoAlpha: 0, duration: 0.3 }, 0.42);
+        tl.to(copy2, { autoAlpha: 1, duration: 0.3 }, 0.48);
+        tl.to(screen1, { autoAlpha: 0, xPercent: -8, duration: 0.34 }, 0.42);
+        tl.to(screen2, { autoAlpha: 1, xPercent: 0, duration: 0.34 }, 0.42);
+        tl.to(dot1, { backgroundColor: inactive, duration: 0.24 }, 0.46);
+        tl.to(dot2, { backgroundColor: active, duration: 0.24 }, 0.46);
+        tl.to({}, { duration: 0.42 });
+
+        return () => {
+          if (tl.scrollTrigger) tl.scrollTrigger.kill();
+          tl.kill();
+        };
+      });
+
+      // Recompute start/end after layout settles. ScrollTrigger can measure the
+      // trigger before the hero image/fonts settle its height, which offsets the
+      // whole scrub; refresh on every settle signal so start/end land correctly.
+      const refresh = () => window.ScrollTrigger.refresh();
+      if (document.readyState === "complete") refresh();
+      else window.addEventListener("load", refresh, { once: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+      setTimeout(refresh, 400);
+      setTimeout(refresh, 1200);
+    }
+
+    start();
+  })();
+</script>

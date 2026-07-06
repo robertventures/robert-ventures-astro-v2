@@ -1,23 +1,23 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
 import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
-import OfferCompoundingGrowth from "../sections/offer/OfferCompoundingGrowth.astro";
-import OfferValueProposition from "../sections/offer/OfferValueProposition.astro";
-import OfferFounderVideo from "../sections/offer/OfferFounderVideo.astro";
-import OfferRealEstateAssets from "../sections/offer/OfferRealEstateAssets.astro";
-import OfferBondOfferings from "../sections/offer/OfferBondOfferings.astro";
-import OfferFixedYield from "../sections/offer/OfferFixedYield.astro";
-import OfferDigitalStrategy from "../sections/offer/OfferDigitalStrategy.astro";
-import OfferMidCta from "../sections/offer/OfferMidCta.astro";
-import OfferCallToAction from "../sections/offer/OfferCallToAction.astro";
-import OfferNextSteps from "../sections/offer/OfferNextSteps.astro";
-import OfferingDocuments from "../sections/presentation/PresReviewBeforeInvest.astro";
+// 7-section diligence page for warm investors who booked a call and asked
+// for more information. Rational tone, numbers and filings led, single CTA
+// at the end. Reads as a story: opening, bond, math, assets, trust anchor,
+// investor voices, create account.
+import PresFounder from "../sections/presentation/PresFounder.astro";
+import RationalTerms from "../sections/presentation/rational/Terms.astro";
+import RationalMath from "../sections/presentation/rational/Math.astro";
+import RationalAssets from "../sections/presentation/rational/Assets.astro";
+import RationalTrackRecord from "../sections/presentation/rational/TrackRecord.astro";
+import PresReviewBeforeInvest from "../sections/presentation/PresReviewBeforeInvest.astro";
+import ReviewsV3 from "../sections/ReviewsV3.astro";
+import RationalCta from "../sections/presentation/rational/Cta.astro";
 
-const pageTitle = "Introduction | Robert Ventures";
+const pageTitle = "Presentation | Robert Ventures";
 const pageDescription =
-  "Fixed 8 to 10% returns through real estate and digital assets. An alternative to today's CDs.";
+  "A closer look at the fixed 8 to 10% offering for investors who have already spoken with us.";
 ---
 
 <!doctype html>
@@ -25,7 +25,6 @@ const pageDescription =
   <head>
     <BaseHead title={pageTitle} description={pageDescription} />
     <meta name="robots" content="noindex" />
-    <ClientRouter />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css"
@@ -42,214 +41,122 @@ const pageDescription =
       is:inline></script>
   </head>
   <body>
-    <!-- Floating logo, always visible, links home -->
-    <div class="intro-nav-logo" role="img" aria-label="Robert Ventures">
+    <div class="pres-nav-logo" role="img" aria-label="Robert Ventures">
       <RvLogo />
     </div>
 
-    <!-- Section position indicator: dots + lines on left edge.
-         Dots are generated in JS from the actual number of rendered
-         sections (see buildIndicator) so the count always matches, even
-         when a section is added or commented out. -->
-    <nav class="slide-indicator" aria-label="Section navigation"></nav>
+    <!-- Section position indicator: dots + lines on left edge -->
+    <nav class="slide-indicator" aria-label="Section navigation">
+      <button class="slide-indicator__dot is-active" data-section="0" aria-label="Go to section 1"
+      ></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="1" aria-label="Go to section 2"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="2" aria-label="Go to section 3"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="3" aria-label="Go to section 4"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="4" aria-label="Go to section 5"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="5" aria-label="Go to section 6"></button>
+      <div class="slide-indicator__line"></div>
+      <button class="slide-indicator__dot" data-section="6" aria-label="Go to section 7"></button>
+    </nav>
 
-    <main class="intro-scroll">
-      <OfferValueProposition />
-      <OfferRealEstateAssets />
-      <OfferDigitalStrategy />
-      <OfferFixedYield />
-      <OfferBondOfferings />
-      <OfferMidCta />
-      <OfferCompoundingGrowth />
-      <OfferFounderVideo />
-      <!-- <OfferCallToAction /> -->
-      <OfferNextSteps />
-      <OfferingDocuments trackLocation="offer_documents" />
+    <main>
+      {
+        /* 1. Opening: video 1 + diligence frame, sets the page as the answer to "I want more info" */
+      }
+      <PresFounder />
+
+      {/* 2. The bond in one screen: 8% / 10% terms + monthly distribution examples */}
+      <RationalTerms />
+
+      {/* 3. The math: what 8% and 10% compounded monthly do over 10 years */}
+      <RationalMath />
+
+      {/* 4. Where your capital goes: Outer Banks real estate + Bitcoin reserve, real numbers */}
+      <!-- <RationalAssets /> -->
+
+      {
+        /* 5. Trust anchor: video 2 + Joe's 25-year track record + $750K subordination + SEC + operating record */
+      }
+      <!-- <RationalTrackRecord /> -->
+
+      {/* 7. Final CTA: open an account, with stars + social proof */}
+      <RationalCta />
+
+      {/* 7. Investor voices: theme-tagged testimonials */}
+      <ReviewsV3 />
+
+      {/* 6. Offering documents: publicly available filings, no account needed */}
+      <PresReviewBeforeInvest />
     </main>
 
     <DisclaimerBlock trackLocation="offer_disclaimer" />
-
-    <script is:inline src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"
-    ></script>
   </body>
 </html>
 
 <style is:global>
-  body {
-    background-color: #ffffff;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  /* View-transition slide animation, matches /introduction/book-call so the
-     handoff into the booking flow feels like progressing forward in the funnel. */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 320ms;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  ::view-transition-old(root) {
-    animation-name: ga-old-fwd;
-  }
-  ::view-transition-new(root) {
-    animation-name: ga-new-fwd;
-  }
-  html[data-astro-transition="back"]::view-transition-old(root) {
-    animation-name: ga-old-back;
-  }
-  html[data-astro-transition="back"]::view-transition-new(root) {
-    animation-name: ga-new-back;
-  }
-
-  @keyframes ga-new-fwd {
-    from {
-      transform: translateX(100%);
-    }
-  }
-  @keyframes ga-old-fwd {
-    to {
-      transform: translateX(-20%);
-      opacity: 0.6;
-    }
-  }
-  @keyframes ga-new-back {
-    from {
-      transform: translateX(-20%);
-      opacity: 0.6;
-    }
-  }
-  @keyframes ga-old-back {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
-  html[data-astro-transition="traverse"]::view-transition-old(root),
-  html[data-astro-transition="traverse"]::view-transition-new(root) {
-    animation: none;
-  }
-
-  .intro-scroll {
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Unified vertical rhythm for every intro slide. Section files own
-     background and content layout. They no longer set padding/height/margin
-     on .intro-slide itself, so this block wins by plain specificity, no
-     !important needed. */
-  section.intro-slide {
-    /* Zero out the global `section { margin-bottom: 1.5rem }` from
-       global.css so adjacent intro slides with the same background read
-       as one continuous block (no white body gap bleeding through). */
+  /* Continuous narrative band, no margins between sections */
+  main section {
     margin-bottom: 0;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 2rem;
-    padding-right: 1.5rem;
   }
 
-  /* Modifier: extra breathing room on specific slides. Bumps top + bottom
-     padding by ~50% over the base values at every breakpoint. */
-  section.intro-slide--spacious {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  /* First section sits below the logo block, so just a small lift. */
-  .intro-scroll > section.intro-slide:first-child {
-    padding-top: 3rem;
-  }
-
-  /* Override the site-wide `p { text-wrap: pretty }` from global.css.
-     Safari's `pretty` wraps noticeably narrower than Chrome, which breaks
-     these short subtitles into unnecessary extra lines. */
-  .intro-slide__subtitle,
-  .intro-slide__source,
-  .intro-slide__body,
-  .intro-slide__transition {
-    text-wrap: wrap;
+  /* Unified vertical rhythm for offer page sections. Mirrors .intro-slide
+     on introduction.astro and .wf-slide on webinar.astro. Each section file
+     owns its content layout, but no longer its own outer padding. */
+  section.offer-slide {
+    margin-bottom: 0;
+    padding: 2rem 1.5rem;
   }
 
   @media only screen and (min-width: 600px) {
-    section.intro-slide {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-      padding-left: 2.5rem;
-      padding-right: 2rem;
-    }
-    section.intro-slide--spacious {
-      padding-top: 4.5rem;
-      padding-bottom: 4.5rem;
-    }
-    .intro-scroll > section.intro-slide:first-child {
-      padding-top: 4rem;
+    section.offer-slide {
+      padding: 3rem 2rem;
     }
   }
 
   @media only screen and (min-width: 1136px) {
-    section.intro-slide {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-    section.intro-slide--spacious {
-      padding-top: 6rem;
-      padding-bottom: 6rem;
-    }
-    .intro-scroll > section.intro-slide:first-child {
-      padding-top: 5rem;
+    section.offer-slide {
+      padding: 4rem 2rem;
     }
   }
 
   @media only screen and (min-width: 1920px) {
-    section.intro-slide {
-      padding-top: 5rem;
-      padding-bottom: 5rem;
-    }
-    section.intro-slide--spacious {
-      padding-top: 7.5rem;
-      padding-bottom: 7.5rem;
-    }
-    .intro-scroll > section.intro-slide:first-child {
-      padding-top: 6rem;
+    section.offer-slide {
+      padding: 5rem 2rem;
     }
   }
 </style>
 
 <style>
-  .intro-nav-logo {
+  .pres-nav-logo {
     display: flex;
     justify-content: center;
     padding: 1.25rem 1rem;
     border-bottom: 1px solid var(--border-light);
   }
 
-  .intro-nav-logo :global(svg) {
+  .pres-nav-logo :global(svg) {
     display: block;
     height: 30px;
     width: auto;
   }
 
   @media only screen and (min-width: 600px) {
-    .intro-nav-logo {
+    .pres-nav-logo {
       padding: 1.5rem 1rem;
     }
 
-    .intro-nav-logo :global(svg) {
+    .pres-nav-logo :global(svg) {
       height: 48px;
     }
   }
 </style>
 
-<style is:global>
-  /* Section position indicator (fixed to left edge).
-     Global because the dots/lines are generated in JS (see buildIndicator
-     in offer.astro) and JS-created nodes don't get Astro's scope attribute,
-     so scoped selectors would never match them. */
+<style>
+  /* Section position indicator (fixed to left edge) */
   .slide-indicator {
     position: fixed;
     left: 0.25rem;
@@ -346,11 +253,8 @@ const pageDescription =
   }
 </style>
 
-<script is:inline data-astro-rerun>
+<script is:inline>
   (function () {
-    const animatedSections = {};
-    let sections = [];
-
     function updateIndicator(activeIndex) {
       const dots = document.querySelectorAll(".slide-indicator__dot");
       const lines = document.querySelectorAll(".slide-indicator__line");
@@ -367,57 +271,11 @@ const pageDescription =
       });
     }
 
-    // Build one dot per rendered section (with a connecting line between
-    // dots), so the indicator count always matches however many sections
-    // are on the page. Idempotent: clears and rebuilds on every run.
-    function buildIndicator(count) {
-      const nav = document.querySelector(".slide-indicator");
-      if (!nav) return;
-      nav.innerHTML = "";
-      for (let i = 0; i < count; i++) {
-        if (i > 0) {
-          const line = document.createElement("div");
-          line.className = "slide-indicator__line";
-          nav.appendChild(line);
-        }
-        const dot = document.createElement("button");
-        dot.className = "slide-indicator__dot" + (i === 0 ? " is-active" : "");
-        dot.setAttribute("data-section", String(i));
-        dot.setAttribute("aria-label", "Go to section " + (i + 1));
-        nav.appendChild(dot);
-      }
-    }
-
-    function runSectionAnimation(index, sectionEl) {
-      if (animatedSections[index]) return;
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-        window.addEventListener("gsapLoaded", function () {
-          runSectionAnimation(index, sectionEl);
-        });
-        return;
-      }
-
-      animatedSections[index] = true;
-      const gsap = window.gsap;
-      const content = sectionEl.querySelector(".intro-slide__content");
-
-      if (content) {
-        gsap.fromTo(
-          content,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
-        );
-      }
-    }
-
-    function initScroll() {
-      sections = Array.from(document.querySelectorAll("section.intro-slide"));
+    function initIndicator() {
+      const sections = Array.from(document.querySelectorAll("main > section"));
       sections.forEach(function (section, i) {
         section.setAttribute("data-section-index", String(i));
       });
-
-      // Build the indicator dots to match the real section count.
-      buildIndicator(sections.length);
 
       // Dot nav: click any dot to smooth-scroll to its section
       document.querySelectorAll(".slide-indicator__dot").forEach(function (dot) {
@@ -440,218 +298,15 @@ const pageDescription =
         { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
       );
 
-      const animIo = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              const idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
-              runSectionAnimation(idx, entry.target);
-            }
-          });
-        },
-        { threshold: 0, rootMargin: "0px 0px 5% 0px" }
-      );
-
       sections.forEach(function (section) {
         indicatorIo.observe(section);
-        animIo.observe(section);
-      });
-
-      if (sections[0]) runSectionAnimation(0, sections[0]);
-    }
-
-    // Intro video player: muted autoplay when section approaches view, with a
-    // one-shot overlay nudging the user to unmute. After engagement, Mux's
-    // native UI handles pause/play/replay. Reused across all intro mux-players.
-    function setupIntroVideo(opts) {
-      const player = document.getElementById(opts.playerId);
-      const overlay = document.getElementById(opts.overlayId);
-      const caption = opts.captionSelector ? document.querySelector(opts.captionSelector) : null;
-      const videoId = opts.videoId;
-      if (!player) return;
-
-      let autoplayState = "pending"; // "pending" | "trying" | "playing" | "failed"
-      let isAutoplayPlay = false;
-      let engaged = false;
-
-      function showOverlayUnmuteMode() {
-        if (!overlay) return;
-        overlay.classList.add("is-active");
-        overlay.classList.remove("is-play-mode");
-        overlay.setAttribute("aria-label", "Your video is playing. Click to unmute.");
-      }
-
-      function showOverlayPlayMode() {
-        if (!overlay) return;
-        overlay.classList.add("is-active", "is-play-mode");
-        overlay.setAttribute("aria-label", "Click to play");
-      }
-
-      function dismissOverlay() {
-        if (!overlay) return;
-        overlay.classList.remove("is-active");
-      }
-
-      // The video autoplays muted. The interaction worth tracking is the user
-      // clicking the video (which unmutes it, or restarts it unmuted if it
-      // already ended). We treat that single interaction as the "video_play".
-      function markEngaged() {
-        if (engaged) return;
-        engaged = true;
-        dismissOverlay();
-        if (window.posthogTrack) {
-          window.posthogTrack("video_play", {
-            video_id: videoId,
-            current_time: Math.round(player.currentTime || 0),
-          });
-        }
-      }
-
-      function attemptAutoplay() {
-        if (autoplayState !== "pending") return;
-        autoplayState = "trying";
-        try {
-          player.muted = true;
-        } catch (e) {}
-        isAutoplayPlay = true;
-        const promise = player.play();
-        if (promise && typeof promise.then === "function") {
-          promise
-            .then(function () {
-              autoplayState = "playing";
-              if (!engaged) showOverlayUnmuteMode();
-            })
-            .catch(function () {
-              isAutoplayPlay = false;
-              autoplayState = "failed";
-              if (!engaged) showOverlayPlayMode();
-            });
-        } else {
-          autoplayState = "playing";
-          if (!engaged) showOverlayUnmuteMode();
-        }
-      }
-
-      function engageFromOverlay(e) {
-        if (!overlay || !overlay.classList.contains("is-active")) return;
-        e.preventDefault();
-        e.stopPropagation();
-        try {
-          player.muted = false;
-        } catch (err) {}
-        // If the user clicked while in play-mode (autoplay failed), restart
-        // from the beginning with sound. Otherwise just unmute in place.
-        if (overlay.classList.contains("is-play-mode")) {
-          try {
-            player.currentTime = 0;
-          } catch (err) {}
-          const result = player.play();
-          if (result && typeof result.catch === "function") result.catch(function () {});
-        }
-        dismissOverlay();
-      }
-
-      if (overlay) {
-        overlay.addEventListener("click", engageFromOverlay);
-        overlay.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") engageFromOverlay(e);
-        });
-      }
-
-      player.addEventListener("play", function () {
-        const wasAutoplay = isAutoplayPlay;
-        isAutoplayPlay = false;
-        if (caption) caption.classList.add("is-hidden");
-        // A non-autoplay play means the user clicked the (paused/ended) video.
-        if (!wasAutoplay) markEngaged();
-      });
-
-      player.addEventListener("volumechange", function () {
-        if (engaged) return;
-        if (player.muted) return;
-        try {
-          player.pause();
-          player.currentTime = 0;
-        } catch (e) {}
-        const result = player.play();
-        if (result && typeof result.catch === "function") result.catch(function () {});
-        markEngaged();
-      });
-
-      if ("IntersectionObserver" in window) {
-        const videoIo = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                if (autoplayState === "pending") {
-                  attemptAutoplay();
-                } else if (autoplayState === "playing" && player.paused && !engaged) {
-                  isAutoplayPlay = true;
-                  const result = player.play();
-                  if (result && typeof result.catch === "function") {
-                    result.catch(function () {
-                      isAutoplayPlay = false;
-                    });
-                  }
-                }
-              } else if (!player.paused) {
-                player.pause();
-              }
-            });
-          },
-          { threshold: 0, rootMargin: "0px 0px 40% 0px" }
-        );
-        videoIo.observe(player);
-      }
-    }
-
-    function setupIntroVideos() {
-      setupIntroVideo({
-        playerId: "intro-mux-player-hero",
-        overlayId: "intro-mux-overlay-hero",
-        videoId: "intro-hero",
-      });
-      setupIntroVideo({
-        playerId: "intro-mux-player",
-        overlayId: "intro-mux-overlay",
-        captionSelector: ".intro-slide__photo-caption",
-        videoId: "intro-founder",
       });
     }
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", function () {
-        initScroll();
-        setupIntroVideos();
-      });
+      document.addEventListener("DOMContentLoaded", initIndicator);
     } else {
-      initScroll();
-      setupIntroVideos();
+      initIndicator();
     }
-
-    // Load Splide JS from CDN (for the real-estate carousel inside IntroRealEstateAssets)
-    const splideScript = document.createElement("script");
-    splideScript.src = "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js";
-    splideScript.onload = function () {
-      function initSplide() {
-        new Splide("#re-slideshow", {
-          type: "fade",
-          rewind: true,
-          autoplay: true,
-          interval: 3000,
-          speed: 1000,
-          pauseOnHover: false,
-          arrows: false,
-          pagination: false,
-        }).mount();
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSplide);
-      } else {
-        initSplide();
-      }
-    };
-    document.head.appendChild(splideScript);
   })();
 </script>

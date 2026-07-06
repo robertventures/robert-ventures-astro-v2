@@ -9,6 +9,7 @@ const {
   image = "/images/svg/rv-logo.svg",
   rtkCampaignId = "697c996793ba48f6ba89582f",
   loadScrollTrigger = false,
+  loadSplitText = false,
 } = Astro.props;
 ---
 
@@ -70,7 +71,7 @@ const {
     window.gsapLoaded = false;
     function loadGSAP() {
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+        script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js';
         script.onload = function() {
             window.gsapLoaded = true;
             // Dispatch custom event when GSAP is loaded
@@ -87,7 +88,7 @@ const {
     (function() {
       function loadScrollTriggerPlugin() {
         var st = document.createElement('script');
-        st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+        st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js';
         st.onload = function() {
           window.gsap.registerPlugin(window.ScrollTrigger);
           window.scrollTriggerLoaded = true;
@@ -99,6 +100,29 @@ const {
         loadScrollTriggerPlugin();
       } else {
         window.addEventListener('gsapLoaded', loadScrollTriggerPlugin);
+      }
+    })();
+  </script>
+)}
+
+<!-- SplitText (loaded only on pages that need it; free since GSAP 3.13) -->
+{loadSplitText && (
+  <script is:inline>
+    (function() {
+      function loadSplitTextPlugin() {
+        var sp = document.createElement('script');
+        sp.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js';
+        sp.onload = function() {
+          window.gsap.registerPlugin(window.SplitText);
+          window.splitTextLoaded = true;
+          window.dispatchEvent(new Event('splitTextLoaded'));
+        };
+        document.head.appendChild(sp);
+      }
+      if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
+        loadSplitTextPlugin();
+      } else {
+        window.addEventListener('gsapLoaded', loadSplitTextPlugin);
       }
     })();
   </script>
