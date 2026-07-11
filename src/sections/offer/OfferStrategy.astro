@@ -1,0 +1,382 @@
+---
+import { Image } from "astro:assets";
+import outerBanks1 from "../../assets/outer-banks/outer-banks-1.jpg";
+import outerBanks3 from "../../assets/outer-banks/outer-banks-3.jpg";
+import outerBanks4 from "../../assets/outer-banks/outer-banks-4.jpg";
+import outerBanks5 from "../../assets/outer-banks/outer-banks-5.jpg";
+import outerBanks7 from "../../assets/outer-banks/outer-banks-7.jpg";
+
+const slides = [outerBanks1, outerBanks3, outerBanks4, outerBanks5, outerBanks7];
+---
+
+<style>
+  .offer-strategy {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 32px 24px;
+    /* Cards row bleeds past the 24px side padding to create the peeking
+       neighbors, so clip any horizontal overflow at the section edge. */
+    overflow-x: clip;
+    margin: 0;
+  }
+
+  /* Layout wrapper. Transparent to layout at mobile and tablet (display:
+     contents), so the copy, gallery, and note stay direct flex children of
+     the section. It only becomes a real box at desktop, where it forms the
+     centered 1100px container that the left-aligned layout lives inside. */
+  .offer-strategy__inner {
+    display: contents;
+  }
+
+  /* --- Copy --- */
+  .offer-strategy__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 366px;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .offer-strategy__title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .offer-strategy__eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: normal;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0;
+  }
+
+  .offer-strategy__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .offer-strategy__body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  /* --- Gallery --- */
+  .offer-strategy__gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .offer-strategy__track {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    /* Center the active card while leaving the neighbors peeking on both
+       edges. calc keeps the 322px card centered inside the viewport. */
+    padding: 0 calc(50% - 161px);
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 calc(50% - 161px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .offer-strategy__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .offer-strategy__card {
+    flex: 0 0 auto;
+    width: 322px;
+    height: 262px;
+    border-radius: 16px;
+    overflow: hidden;
+    scroll-snap-align: center;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .offer-strategy__card :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .offer-strategy__dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .offer-strategy__dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.2);
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  .offer-strategy__dot[aria-current="true"] {
+    background: var(--text-heading);
+  }
+
+  /* --- Note --- */
+  .offer-strategy__note {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    text-align: center;
+    width: 100%;
+    max-width: 366px;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  /* --- Tablet (Figma "Offer Page I · Tablet 768"): copy stays centered and
+     grows, the carousel keeps the same 322x262 center-snapped cards with the
+     neighbors bleeding past both viewport edges (no width cap), and the dots
+     stay. --- */
+  @media only screen and (min-width: 600px) {
+    .offer-strategy {
+      padding: 40px 24px;
+    }
+
+    .offer-strategy__copy {
+      max-width: 640px;
+    }
+
+    .offer-strategy__headline {
+      font-size: 32px;
+    }
+
+    .offer-strategy__note {
+      max-width: 720px;
+    }
+  }
+
+  /* --- Desktop (Figma "Offer Page I · Desktop 1440"): the layout shifts into
+     a centered 1100px container. Copy and note go left-aligned at 560px, the
+     carousel becomes a contained three-up row (350x290 cards, 24px gaps,
+     3*350 + 2*24 = 1098) with no peek and no dots. The track stays scrollable
+     with start snapping so photos 4 and 5 remain reachable. --- */
+  @media only screen and (min-width: 1136px) {
+    .offer-strategy {
+      /* Small side gutters so the 1100px container still fits at exactly
+         1136px (1136 - 32 = 1104). Vertical padding matches the 1440 frame. */
+      padding: 64px 16px;
+    }
+
+    .offer-strategy__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .offer-strategy__copy {
+      /* Left-aligned copy column pinned to the container's left edge. */
+      width: 100%;
+      max-width: 560px;
+      align-items: stretch;
+      text-align: left;
+    }
+
+    .offer-strategy__title-block {
+      align-items: stretch;
+    }
+
+    .offer-strategy__headline {
+      font-size: 48px;
+    }
+
+    .offer-strategy__gallery {
+      /* Fill the whole container so the three-up row lands flush left. */
+      align-items: flex-start;
+    }
+
+    .offer-strategy__track {
+      gap: 24px;
+      /* Drop the center-peek inset so the row starts at the container edge. */
+      padding: 0;
+      scroll-padding: 0;
+      /* Snap to the start so scrolling lands the row flush with the left
+         edge instead of centering a single card. */
+      scroll-snap-type: x mandatory;
+    }
+
+    .offer-strategy__card {
+      width: 350px;
+      height: 290px;
+      scroll-snap-align: start;
+    }
+
+    .offer-strategy__dots {
+      /* The desktop design has no dots. Hide the row but leave the track
+         scrollable so photos 4 and 5 stay reachable. The dot-sync JS keeps
+         running harmlessly against these hidden buttons. */
+      display: none;
+    }
+
+    .offer-strategy__note {
+      width: 100%;
+      max-width: 560px;
+      text-align: left;
+    }
+  }
+</style>
+
+<section class="offer-strategy">
+  <div class="offer-strategy__inner">
+    <div class="offer-strategy__copy" data-reveal>
+      <div class="offer-strategy__title-block">
+        <p class="offer-strategy__eyebrow">The Strategy</p>
+        <h2 class="offer-strategy__headline">You hold the contract. We hold the assets.</h2>
+      </div>
+      <p class="offer-strategy__body">
+        Your bond is backed by two kinds of real assets. The first: coastal real estate in Dare
+        County, North Carolina, where 88% of the land is protected from development &mdash; so the
+        little that can be built holds its value. We buy there, build, and sell finished properties.
+      </p>
+    </div>
+
+    <div class="offer-strategy__gallery" data-reveal>
+      <ul class="offer-strategy__track" role="list" id="offer-strategy-track">
+        {
+          slides.map((img, i) => (
+            <li class="offer-strategy__card" data-card-index={i}>
+              <Image
+                src={img}
+                alt="Outer Banks investment property"
+                widths={[322, 644]}
+                sizes="(min-width: 600px) 322px, 322px"
+                format="webp"
+                quality={75}
+              />
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="offer-strategy__dots" id="offer-strategy-dots">
+        {
+          slides.map((_, i) => (
+            <button
+              type="button"
+              class="offer-strategy__dot"
+              aria-label={`Go to photo ${i + 1}`}
+              aria-current={i === 0 ? "true" : "false"}
+              data-dot-index={i}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="offer-strategy__note" data-reveal>
+      The second: digital assets &mdash; held like a vault, not a trade. Bought steadily, custodied
+      at a federally chartered U.S. bank, and held for years, the way institutions hold gold. Prices
+      can swing; your rate can't. It's set by contract.
+    </p>
+  </div>
+</section>
+
+<script>
+  function initOfferStrategy() {
+    const track = document.getElementById("offer-strategy-track");
+    const dotsWrap = document.getElementById("offer-strategy-dots");
+    if (!track || !dotsWrap) return;
+    // Idempotent guard: skip if this instance is already wired up.
+    if (track.dataset.strategyInit === "true") return;
+    track.dataset.strategyInit = "true";
+
+    const cards = Array.prototype.slice.call(track.querySelectorAll(".offer-strategy__card"));
+    const dots = Array.prototype.slice.call(dotsWrap.querySelectorAll(".offer-strategy__dot"));
+    if (!cards.length || !dots.length) return;
+
+    let activeIndex = 0;
+
+    function setActive(index: number) {
+      if (index === activeIndex) return;
+      activeIndex = index;
+      dots.forEach(function (dot: Element, i: number) {
+        dot.setAttribute("aria-current", i === index ? "true" : "false");
+      });
+    }
+
+    // Sync the active dot to whichever card is most centered in the scroller.
+    const observer = new IntersectionObserver(
+      function (entries) {
+        let best = null;
+        entries.forEach(function (entry) {
+          if (!best || entry.intersectionRatio > best.intersectionRatio) {
+            best = entry;
+          }
+        });
+        if (best && best.isIntersecting && best.intersectionRatio > 0.6) {
+          setActive(Number(best.target.getAttribute("data-card-index")));
+        }
+      },
+      { root: track, threshold: [0.6, 0.75, 0.9, 1] }
+    );
+    cards.forEach(function (card: Element) {
+      observer.observe(card);
+    });
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    dots.forEach(function (dot: Element) {
+      dot.addEventListener("click", function () {
+        const idx = Number(dot.getAttribute("data-dot-index"));
+        const card = cards[idx];
+        if (!card) return;
+        card.scrollIntoView({
+          behavior: reduceMotion ? "auto" : "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+        setActive(idx);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initOfferStrategy);
+  } else {
+    initOfferStrategy();
+  }
+  document.addEventListener("astro:page-load", initOfferStrategy);
+</script>

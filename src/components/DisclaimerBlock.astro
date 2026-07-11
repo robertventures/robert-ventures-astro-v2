@@ -5,6 +5,9 @@ interface Props {
   smsConsentName?: string;
   variant?: "standalone" | "embedded";
   paragraphsOnly?: boolean;
+  /** Optional page-specific footnote (e.g. the offer page's asterisked 90-day
+      withdrawal line), rendered as the first paragraph of the block. */
+  footnote?: string;
 }
 
 const {
@@ -13,6 +16,7 @@ const {
   smsConsentName = "sms_consent",
   variant = "standalone",
   paragraphsOnly = false,
+  footnote,
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -40,6 +44,8 @@ const wrapperClass =
         </label>
       )
     }
+
+    {footnote && <p class="rv-disclaimer__body">{footnote}</p>}
 
     <p class="rv-disclaimer__body">
       Important Risk Information: Investing involves risk. There is a potential that Robert Ventures

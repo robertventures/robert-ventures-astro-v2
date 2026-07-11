@@ -1,0 +1,439 @@
+---
+// Founder video section: eyebrow + headline + body, then a rounded Mux video
+// with a dark "click to unmute" pill overlay. Muted-autoplays when scrolled
+// into view; clicking the pill unmutes and restarts from 0.
+//
+// Dependency: this section renders a <mux-player> element but does NOT load
+// the Mux CDN script itself. The page (layout <head>) must load
+// https://cdn.jsdelivr.net/npm/@mux/mux-player before this section's script
+// runs, or the element will render as an unknown tag with no video.
+//
+// Source: Figma node 10048:175 ("Section - Joe Video"), file 5uwYOGoiUbxEw7B8BUv0rv.
+import { Image } from "astro:assets";
+import joeThumb from "../../assets/offer/joe-thumbnail.png";
+---
+
+<section class="offer-joe-video" id="joe-video">
+  <div class="offer-joe-video__content">
+    <div class="offer-joe-video__text-stack" data-reveal>
+      <p class="offer-joe-video__eyebrow">JOE ROBERT &middot; FOUNDER &amp; MANAGER</p>
+      <h2 class="offer-joe-video__headline">25 years investing in real assets. Now open to you.</h2>
+      <p class="offer-joe-video__body">
+        Joe has invested $750,000 of his personal capital in the company. Bondholders are paid
+        before he is.
+      </p>
+    </div>
+
+    <div class="offer-joe-video__media" data-reveal>
+      <div class="offer-joe-video__video-frame">
+        <!-- Fallback poster: always visible so the thumbnail shows immediately;
+             the mux-player renders on top once the CDN script upgrades it. -->
+        <Image
+          src={joeThumb}
+          alt="Joe Robert, founder of Robert Ventures"
+          widths={[400, 800]}
+          sizes="(min-width: 1136px) 600px, 92vw"
+          format="webp"
+          quality={78}
+          class="offer-joe-video__poster"
+        />
+        <mux-player
+          id="offer-joe-video-player"
+          playback-id="f0001008WTnbtX8UDcYUFO3IMcwmMdI1MgFO2KYwH40002vQ"
+          env-key="hr9aevib299lcvfdoip01jd60"
+          preload="metadata"
+          stream-type="on-demand"
+          poster={joeThumb.src}
+          muted
+          playsinline></mux-player>
+        <div class="offer-joe-video__overlay" aria-hidden="false">
+          <button
+            class="offer-joe-video__pill"
+            id="offer-joe-video-pill"
+            type="button"
+            aria-label="Your video is playing. Click to unmute."
+          >
+            <svg
+              class="offer-joe-video__pill-icon offer-joe-video__pill-icon--mute"
+              viewBox="0 0 22 22"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M11 4L6.5 8H3.5C3.22386 8 3 8.22386 3 8.5V13.5C3 13.7761 3.22386 14 3.5 14H6.5L11 18V4Z"
+                fill="#ffffff"></path>
+              <path
+                d="M14.5 8.5L19 13"
+                stroke="#ffffff"
+                stroke-width="1.5"
+                stroke-linecap="round"></path>
+              <path
+                d="M19 8.5L14.5 13"
+                stroke="#ffffff"
+                stroke-width="1.5"
+                stroke-linecap="round"></path>
+            </svg>
+            <svg
+              class="offer-joe-video__pill-icon offer-joe-video__pill-icon--play"
+              viewBox="0 0 22 22"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M7 4.5v13l11-6.5z" fill="#ffffff"></path>
+            </svg>
+            <span class="offer-joe-video__pill-text">Your video is playing. Click to unmute.</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .offer-joe-video {
+    width: 100%;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 32px 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .offer-joe-video__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 366px;
+  }
+
+  .offer-joe-video__text-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .offer-joe-video__eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0;
+  }
+
+  .offer-joe-video__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .offer-joe-video__body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  /* --- Video --- */
+  .offer-joe-video__media {
+    width: 100%;
+  }
+
+  .offer-joe-video__video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #152420;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .offer-joe-video__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .offer-joe-video__video-frame mux-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+    --media-object-fit: cover;
+    --media-object-position: center;
+  }
+
+  .offer-joe-video__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 16px;
+    transition: opacity 0.2s ease;
+  }
+
+  .offer-joe-video__overlay.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .offer-joe-video__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px 10px 12px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: normal;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .offer-joe-video__pill-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Default: muted-speaker icon (video is autoplaying muted). In play-mode
+     (autoplay was blocked, or reduced-motion), swap to a plain play glyph. */
+  .offer-joe-video__pill-icon--play {
+    display: none;
+  }
+
+  .offer-joe-video__overlay.is-play-mode .offer-joe-video__pill-icon--mute {
+    display: none;
+  }
+
+  .offer-joe-video__overlay.is-play-mode .offer-joe-video__pill-icon--play {
+    display: block;
+  }
+
+  /* --- Tablet: Figma node 10178:50 ("Offer Page I · Tablet 768"). Same
+     centered composition as mobile, just wider: copy column grows to 640px
+     and the video gets an explicit cap so it doesn't stretch past ~595px. --- */
+  @media only screen and (min-width: 600px) {
+    .offer-joe-video {
+      padding: 40px 32px;
+    }
+
+    .offer-joe-video__content {
+      max-width: 640px;
+      gap: 20px;
+    }
+
+    .offer-joe-video__body {
+      font-size: 18px;
+    }
+
+    .offer-joe-video__video-frame {
+      max-width: 595px;
+      margin: 0 auto;
+    }
+  }
+
+  /* --- Desktop: Figma node 10179:2 ("Offer Page I · Desktop 1440"). Layout
+     shift to two columns: the existing content column becomes a row, text
+     left-aligned on the left, video fixed at 580x435 (still 4:3) on the
+     right. align-items: center keeps the shorter text block vertically
+     balanced against the taller video, matching the frame. --- */
+  @media only screen and (min-width: 1136px) {
+    .offer-joe-video {
+      padding: 64px 32px;
+    }
+
+    .offer-joe-video__content {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 56px;
+      max-width: 1100px;
+    }
+
+    .offer-joe-video__text-stack {
+      align-items: flex-start;
+      text-align: left;
+      width: 460px;
+      flex-shrink: 0;
+      gap: 16px;
+    }
+
+    .offer-joe-video__headline {
+      font-size: 48px;
+    }
+
+    .offer-joe-video__media {
+      width: 580px;
+      flex-shrink: 0;
+    }
+
+    .offer-joe-video__video-frame {
+      max-width: 580px;
+      margin: 0;
+    }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    function setupOfferJoeVideo() {
+      const section = document.getElementById("joe-video");
+      if (!section) return;
+
+      const player = document.getElementById("offer-joe-video-player");
+      const overlay = section.querySelector(".offer-joe-video__overlay");
+      const pill = document.getElementById("offer-joe-video-pill");
+      const pillText = pill ? pill.querySelector(".offer-joe-video__pill-text") : null;
+      if (!player || !overlay || !pill || !pillText) return;
+      if (pill.dataset.bound === "1") return;
+      pill.dataset.bound = "1";
+
+      const prefersReducedMotion =
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // pending -> trying -> playing, or -> failed (autoplay blocked / reduced motion)
+      let autoplayState = "pending";
+      let engaged = false;
+
+      function showUnmuteMode() {
+        overlay.classList.remove("is-hidden", "is-play-mode");
+        pillText.textContent = "Your video is playing. Click to unmute.";
+        pill.setAttribute("aria-label", "Your video is playing. Click to unmute.");
+      }
+
+      function showPlayMode() {
+        overlay.classList.remove("is-hidden");
+        overlay.classList.add("is-play-mode");
+        pillText.textContent = "Tap to play with sound";
+        pill.setAttribute("aria-label", "Tap to play with sound");
+      }
+
+      function hideOverlay() {
+        overlay.classList.add("is-hidden");
+      }
+
+      // The muted autoplay is intentionally not tracked. The click-to-unmute
+      // (via engage()) is the interaction that counts as a "video_play".
+      function markEngaged() {
+        if (engaged) return;
+        engaged = true;
+        hideOverlay();
+        if (window.posthogTrack) {
+          window.posthogTrack("video_play", {
+            video_id: "offer-founder",
+            current_time: Math.round(player.currentTime || 0),
+          });
+        }
+      }
+
+      function attemptAutoplay() {
+        if (autoplayState !== "pending") return;
+        // Reduced-motion visitors never get autoplay; show a plain play control.
+        if (prefersReducedMotion) {
+          autoplayState = "failed";
+          showPlayMode();
+          return;
+        }
+        autoplayState = "trying";
+        try {
+          player.muted = true;
+        } catch (e) {}
+        const playPromise = player.play();
+        if (playPromise && typeof playPromise.then === "function") {
+          playPromise
+            .then(function () {
+              autoplayState = "playing";
+              showUnmuteMode();
+            })
+            .catch(function () {
+              autoplayState = "failed";
+              showPlayMode();
+            });
+        } else {
+          autoplayState = "playing";
+          showUnmuteMode();
+        }
+      }
+
+      // Clicking the pill unmutes and restarts from the top with sound. If
+      // autoplay never worked, this is also the primary play control.
+      function engage() {
+        try {
+          player.currentTime = 0;
+          player.muted = false;
+        } catch (e) {}
+        const playPromise = player.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(function () {});
+        }
+        markEngaged();
+      }
+
+      pill.addEventListener("click", engage);
+
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.intersectionRatio >= 0.5) {
+                if (autoplayState === "pending") {
+                  attemptAutoplay();
+                } else if (autoplayState === "playing" && player.paused && !engaged) {
+                  const playPromise = player.play();
+                  if (playPromise && typeof playPromise.catch === "function") {
+                    playPromise.catch(function () {});
+                  }
+                }
+              } else if (!player.paused) {
+                player.pause();
+              }
+            });
+          },
+          { threshold: [0, 0.5, 1] }
+        );
+        io.observe(player);
+      } else {
+        // No IntersectionObserver support: fall back to a plain play control
+        // rather than guessing at visibility.
+        autoplayState = "failed";
+        showPlayMode();
+      }
+    }
+
+    function start() {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupOfferJoeVideo);
+      } else {
+        setupOfferJoeVideo();
+      }
+    }
+
+    start();
+    document.addEventListener("astro:page-load", setupOfferJoeVideo);
+  })();
+</script>

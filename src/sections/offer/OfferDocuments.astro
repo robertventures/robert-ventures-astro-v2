@@ -1,71 +1,65 @@
 ---
-// `trackLocation` lets each page report its own analytics location for the
-// document clicks. Defaults to "review_block" so existing callers are unchanged.
-const { trackLocation = "review_block" } = Astro.props;
-
+// Diligence section for /offer: public offering documents, no account needed.
+// Each card is a full-bleed anchor; first three open PDFs, the fourth opens
+// SEC EDGAR. All links open in a new tab.
 const documents = [
   {
     title: "Offering Circular",
-    type: "PDF attachment",
+    meta: "PDF attachment",
     href: "https://l.robertventures.com/OfferingCircular",
     slug: "offering_circular",
     icon: "pdf",
   },
   {
     title: "Sample Bond Agreement",
-    type: "PDF attachment",
+    meta: "PDF attachment",
     href: "/documents/sample-bond-agreement.pdf",
     slug: "sample_bond_agreement",
     icon: "pdf",
   },
   {
     title: "Delaware Initial Filing",
-    type: "PDF attachment",
+    meta: "PDF attachment",
     href: "/documents/delaware-initial-filing.pdf",
     slug: "delaware_initial_filing",
     icon: "pdf",
   },
   {
     title: "Full history of SEC filings",
-    type: "View on SEC.gov",
+    meta: "View on SEC.gov",
     href: "https://www.sec.gov/edgar/browse/?CIK=1991519",
     slug: "sec_filings_history",
     icon: "external",
   },
 ];
+const trackLocation = "offer_documents";
 ---
 
-<section class="pres-review">
-  <div class="pres-review__container">
-    <div class="pres-review__intro">
-      <p class="pres-review__eyebrow">On the public record</p>
-      <h2 class="pres-review__heading">Offering Documents</h2>
-      <p class="pres-review__body">
+<section class="offer-docs" id="offer-documents">
+  <div class="offer-docs__content">
+    <div class="offer-docs__heading-block" data-reveal>
+      <p class="offer-docs__eyebrow">On the public record</p>
+      <h2 class="offer-docs__heading">Offering Documents</h2>
+      <p class="offer-docs__sub">
         No account needed. The core offering documents are publicly available.
       </p>
     </div>
 
-    <ul class="pres-review__list" aria-label="Offering documents">
+    <ul class="offer-docs__list" aria-label="Offering documents" data-reveal>
       {
         documents.map((doc) => (
-          <li class="pres-review__item">
+          <li class="offer-docs__item">
             <a
-              class="pres-review__link"
+              class="offer-doc-card"
               href={doc.href}
               target="_blank"
               rel="noopener"
               data-track-document={doc.slug}
               data-track-location={trackLocation}
             >
-              <span class={`pres-review__icon pres-review__icon--${doc.icon}`} aria-hidden="true">
+              <span class={`offer-doc-card__icon offer-doc-card__icon--${doc.icon}`} aria-hidden="true">
                 {doc.icon === "pdf" ? (
-                  <svg
-                    width="20"
-                    height="24"
-                    viewBox="0 0 20 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M2 0C0.895 0 0 0.895 0 2V22C0 23.105 0.895 24 2 24H18C19.105 24 20 23.105 20 22V7L13 0H2Z"
                       fill="#F5F5F5"
@@ -87,13 +81,7 @@ const documents = [
                     </text>
                   </svg>
                 ) : (
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M14 3H21V10"
                       stroke="#1a1a1a"
@@ -118,9 +106,9 @@ const documents = [
                   </svg>
                 )}
               </span>
-              <span class="pres-review__text">
-                <span class="pres-review__link-title">{doc.title}</span>
-                <span class="pres-review__link-desc">{doc.type}</span>
+              <span class="offer-doc-card__text">
+                <span class="offer-doc-card__title">{doc.title}</span>
+                <span class="offer-doc-card__meta">{doc.meta}</span>
               </span>
             </a>
           </li>
@@ -131,186 +119,159 @@ const documents = [
 </section>
 
 <style>
-  .pres-review {
-    background: var(--bg-secondary);
-    padding: 0;
-    margin: 0;
-  }
-
-  .pres-review__container {
-    max-width: var(--content-max);
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
+  .offer-docs {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 28px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: var(--bg-secondary);
+    padding: 4.875rem 1.5rem;
   }
 
-  .pres-review__intro {
+  .offer-docs__content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
-    max-width: 640px;
-    margin: 0 auto;
     width: 100%;
+    max-width: 366px;
   }
 
-  .pres-review__eyebrow {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
-    line-height: 130%;
-    text-align: center;
-  }
-
-  .pres-review__heading {
-    font-family: "Roboto Serif", serif;
-    font-size: 2rem;
-    font-weight: 500;
-    color: #1a1a1a;
-    line-height: 120%;
-    text-align: center;
-    margin: 0;
-  }
-
-  .pres-review__heading em {
-    color: var(--green-dark);
-    font-style: italic;
-  }
-
-  .pres-review__body {
-    font-family: "Roboto", sans-serif;
-    font-size: 1.125rem;
-    color: #555555;
-    line-height: 150%;
-    text-align: center;
-    margin: 0;
-  }
-
-  .pres-review__heading + .pres-review__body {
-    margin-top: -0.5rem;
-  }
-
-  .pres-review__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .offer-docs__heading-block {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 640px;
+    align-items: center;
+    gap: 1rem;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    text-align: center;
   }
 
-  .pres-review__item {
+  .offer-docs__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.105rem;
+    text-transform: uppercase;
+    color: var(--green-hover);
+    margin: 0;
+  }
+
+  .offer-docs__heading {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1.18;
+    letter-spacing: -0.019rem;
+    color: var(--text-heading);
+    margin: 0;
+  }
+
+  .offer-docs__sub {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .offer-docs__list {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+  }
+
+  .offer-docs__item {
     display: flex;
   }
 
-  .pres-review__link {
-    background: var(--bg-primary);
+  .offer-doc-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    flex: 1;
+    text-align: left;
+    text-decoration: none;
+    background: #ffffff;
     border: 1px solid var(--border-light);
     border-radius: 12px;
-    padding: 16px 18px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex: 1;
+    padding: 0.875rem 1rem;
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease,
       transform 0.2s ease;
   }
 
-  .pres-review__link:hover {
+  .offer-doc-card:hover {
     border-color: var(--green-brand);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transform: translateY(-1px);
   }
 
-  .pres-review__icon {
+  .offer-doc-card__icon {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    background: var(--bg-secondary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: var(--bg-secondary);
   }
 
-  .pres-review__text {
+  .offer-doc-card__text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0.125rem;
     min-width: 0;
   }
 
-  .pres-review__link-title {
-    font-family: "Roboto", sans-serif;
-    font-size: 16px;
+  .offer-doc-card__title {
+    font-family: var(--font-body);
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-heading);
-    line-height: 130%;
+    line-height: 1.3;
   }
 
-  .pres-review__link-desc {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 140%;
+  .offer-doc-card__meta {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: #8a969c;
+    line-height: 1.3;
   }
 
   @media only screen and (min-width: 600px) {
-    .pres-review__container {
-      padding: 4rem 2rem;
-      gap: 36px;
+    .offer-docs {
+      padding: 2.5rem 2rem;
     }
-
-    .pres-review__intro {
-      gap: 1.5rem;
-    }
-
-    .pres-review__heading {
-      font-size: 2.5rem;
-    }
-
-    .pres-review__link {
-      padding: 18px 22px;
-    }
-
-    .pres-review__link-title {
-      font-size: 17px;
-    }
-  }
-
-  @media only screen and (min-width: 1024px) {
-    .pres-review__container {
-      padding: 5rem 2rem;
-    }
-
-    .pres-review__heading {
-      font-size: 2.75rem;
+    .offer-docs__content {
+      max-width: 640px;
     }
   }
 
   @media only screen and (min-width: 1136px) {
-    /* Stacked and centered: heading + subhead on top, document list below */
-    .pres-review__heading {
-      font-size: 2.5rem;
+    .offer-docs {
+      padding: 4rem 2rem;
+    }
+    .offer-docs__content {
+      max-width: 1100px;
+    }
+    .offer-docs__heading-block {
+      max-width: 720px;
+    }
+    .offer-docs__list {
+      max-width: 720px;
     }
   }
 
   @media only screen and (min-width: 1920px) {
-    .pres-review__heading {
-      font-size: 2.625rem;
+    .offer-docs {
+      padding: 7rem 2rem;
     }
   }
 </style>

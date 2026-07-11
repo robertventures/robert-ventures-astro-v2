@@ -1,0 +1,530 @@
+---
+// Closing CTA section for the offer page: heading + sub, three stacked
+// action cards (book a call / join a webinar / create an account), a
+// social-proof row, and a single expandable review card.
+//
+// Investor count mirrors the pattern in components/GetStartedCta.astro: pull
+// the shared, module-cached getSocialProof() helper (lib/socialProof.ts),
+// which already fails open to 68 if /api/stats is unavailable.
+import { getSocialProof } from "../../lib/socialProof";
+
+const { uniqueInvestors } = await getSocialProof(Astro.url);
+
+const reviewQuote =
+  "Robert Ventures is a very firm to deal with. They are very upfront n clear about your investments. They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure. They are easy to contact. Very professional in handling your investments.";
+
+const starSvg = `<svg width="16" height="16" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.30273 0.52603C5.53081 -0.175921 6.52388 -0.175919 6.75196 0.526032L7.6524 3.2973C7.7544 3.61122 8.04693 3.82376 8.37701 3.82376H11.2909C12.029 3.82376 12.3358 4.76823 11.7387 5.20206L9.38135 6.9148C9.11431 7.10881 9.00257 7.45271 9.10457 7.76663L10.005 10.5379C10.2331 11.2398 9.42968 11.8236 8.83256 11.3897L6.47518 9.677C6.20814 9.48298 5.84655 9.48298 5.57951 9.677L3.22213 11.3897C2.62501 11.8236 1.8216 11.2399 2.04968 10.5379L2.95012 7.76663C3.05211 7.45271 2.94038 7.10881 2.67334 6.9148L0.315955 5.20206C-0.28116 4.76823 0.0257183 3.82376 0.763793 3.82376H3.67768C4.00775 3.82376 4.30029 3.61122 4.40229 3.2973L5.30273 0.52603Z" fill="#FBBF24"/></svg>`;
+---
+
+<section class="offer-next-steps">
+  <div class="offer-next-steps__container">
+    <h2 class="offer-next-steps__heading" data-reveal>Let's start a conversation.</h2>
+    <p class="offer-next-steps__sub" data-reveal>
+      A 10-minute call with our team to talk through your goals and find the right fit for you.
+    </p>
+
+    <div class="offer-next-steps__actions" data-reveal>
+      <a
+        class="ons-card ons-card--featured"
+        href="/offer/book-call"
+        data-track-cta="book_call"
+        data-track-location="offer_next_steps"
+      >
+        <span class="ons-card__chip ons-card__chip--dark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5.5 3h2.2c.3 0 .55.2.63.48l.7 2.5c.08.28-.02.58-.25.75l-1.4 1.05c.75 1.68 2.1 3.03 3.78 3.78l1.05-1.4c.17-.23.47-.33.75-.25l2.5.7c.28.08.48.33.48.63V13.5c0 .83-.7 1.5-1.53 1.44C8.9 14.5 5.5 11.1 5.06 6.53 5 5.7 5.67 5 6.5 5"
+              stroke="#ffffff"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </span>
+        <span class="ons-card__text">
+          <span class="ons-card__title ons-card__title--dark">Book a 10-min call</span>
+          <span class="ons-card__sub ons-card__sub--dark">
+            A direct, one-on-one conversation with our team
+          </span>
+        </span>
+        <span class="ons-card__arrow ons-card__arrow--dark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.5 4.5l5 5.5-5 5.5"
+              stroke="#ffffff"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </span>
+      </a>
+
+      <div class="ons-divider" role="presentation">
+        <span class="ons-divider__line"></span>
+        <span class="ons-divider__word">or</span>
+        <span class="ons-divider__line"></span>
+      </div>
+
+      <a
+        class="ons-card"
+        href="/offer/join-webinar"
+        data-track-cta="join_webinar"
+        data-track-location="offer_next_steps"
+      >
+        <span class="ons-card__chip ons-card__chip--light" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect
+              x="2.5"
+              y="6"
+              width="10"
+              height="8"
+              rx="2"
+              stroke="#2b6b47"
+              stroke-width="1.4"
+            ></rect>
+            <path
+              d="M12.5 8.7l4.2-2.4c.5-.3 1.1.1 1.1.7v6l-4.2-2.4-1.1-.6z"
+              stroke="#2b6b47"
+              stroke-width="1.4"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </span>
+        <span class="ons-card__text">
+          <span class="ons-card__title">Join a live webinar</span>
+          <span class="ons-card__sub">Presented by our manager, with live Q&amp;A</span>
+        </span>
+        <span class="ons-card__arrow" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.5 4.5l5 5.5-5 5.5"
+              stroke="#999999"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </span>
+      </a>
+
+      <a
+        class="ons-card"
+        href="/invest"
+        data-track-cta="create_account"
+        data-track-location="offer_next_steps"
+      >
+        <span class="ons-card__chip ons-card__chip--light" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8" cy="7" r="2.75" stroke="#2b6b47" stroke-width="1.4"></circle>
+            <path
+              d="M3 16c0-2.76 2.24-4.5 5-4.5s5 1.74 5 4.5"
+              stroke="#2b6b47"
+              stroke-width="1.4"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.5 6.5v4M13.5 8.5h4"
+              stroke="#2b6b47"
+              stroke-width="1.4"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </span>
+        <span class="ons-card__text">
+          <span class="ons-card__title">Create your account</span>
+          <span class="ons-card__sub">Open your account and start earning passive income</span>
+        </span>
+        <span class="ons-card__arrow" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.5 4.5l5 5.5-5 5.5"
+              stroke="#999999"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="offer-next-steps__social-proof" data-reveal>
+      <span class="ons-stars" set:html={starSvg.repeat(5)} />
+      <span class="ons-social-text">Trusted by {uniqueInvestors}+ Investors</span>
+    </div>
+
+    <div class="ons-review" data-reveal data-review-card>
+      <p class="ons-review__quote" data-review-quote>{reviewQuote}</p>
+      <button
+        type="button"
+        class="ons-review__toggle"
+        data-review-toggle
+        aria-expanded="false"
+      >
+        Read more
+      </button>
+      <div class="ons-review__footer">
+        <span class="ons-review__name">Stephen Romesburg</span>
+        <span class="ons-review__date">Nov 1, 2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .offer-next-steps {
+    background: var(--bg-primary);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 32px 24px;
+  }
+
+  .offer-next-steps__container {
+    max-width: 366px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .offer-next-steps__heading {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text-heading);
+    text-align: center;
+    margin: 0;
+  }
+
+  .offer-next-steps__sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-body);
+    text-align: center;
+    margin: 0;
+  }
+
+  .offer-next-steps__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    padding-top: 8px;
+  }
+
+  /* --- Action cards (shared shell) --- */
+  .ons-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .ons-card:hover {
+    transform: translateY(-1px);
+    border-color: #d5d5d5;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .ons-card:active {
+    transform: translateY(0);
+  }
+
+  /* Featured card: same recipe as OfferCtaMini's featured card (#152429,
+     radius 14px, 18/16 padding, 44px chip) so the two sections match. */
+  .ons-card--featured {
+    background: #152429;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .ons-card--featured:hover {
+    box-shadow: 0 8px 20px rgba(21, 36, 41, 0.24);
+  }
+
+  .ons-card__chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .ons-card__chip--dark {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .ons-card__chip--light {
+    background: var(--green-tint);
+  }
+
+  .ons-card__text {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .ons-card__title {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-heading);
+  }
+
+  .ons-card__title--dark {
+    color: #ffffff;
+  }
+
+  .ons-card__sub {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text-body);
+  }
+
+  .ons-card__sub--dark {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .ons-card__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .ons-card__arrow--dark {
+    opacity: 0.6;
+  }
+
+  /* --- Divider: CSS hairlines + the word "or" (never an em-dash) --- */
+  .ons-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 2px 0;
+  }
+
+  .ons-divider__line {
+    flex: 1 1 auto;
+    height: 1px;
+    background: #e5e5e5;
+  }
+
+  .ons-divider__word {
+    flex-shrink: 0;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #999999;
+    text-transform: lowercase;
+  }
+
+  /* --- Social proof row --- */
+  .offer-next-steps__social-proof {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding-top: 8px;
+  }
+
+  .ons-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .ons-social-text {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-heading);
+    white-space: nowrap;
+  }
+
+  /* --- Review card --- */
+  .ons-review {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+  }
+
+  .ons-review__quote {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-heading);
+    margin: 0;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ons-review__quote.is-expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  .ons-review__toggle {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--green-brand);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .ons-review__toggle:hover {
+    text-decoration: underline;
+  }
+
+  .ons-review__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .ons-review__name {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-heading);
+  }
+
+  .ons-review__date {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: #888888;
+  }
+
+  /* --- Tablet: Figma node 10192:2 ("Offer Page I · Tablet 768"). Same
+     stacked-card recipe as mobile, just widened to a 640px centered column.
+     Card height grows to 76px naturally (44px chip + 16/16 padding) because
+     every sub line now fits on one line at this width; no explicit height
+     rule needed. The "or" divider stays between the featured and light
+     cards, matching the frame. --- */
+  @media only screen and (min-width: 600px) {
+    .offer-next-steps {
+      padding: 48px 32px;
+    }
+
+    .offer-next-steps__container {
+      max-width: 640px;
+    }
+
+    .ons-review {
+      max-width: 560px;
+    }
+  }
+
+  /* --- Desktop: Figma node 10193:2 ("Offer Page I · Desktop 1440"). Layout
+     shift: the three action cards move from a stacked column into one row
+     (340px each, 24px gaps, row naturally 1068px wide and centered inside
+     the 1100px container). The "or" divider is removed here (display: none)
+     but stays in the DOM for mobile/tablet and for any assistive tech that
+     reads the page at this width with different CSS. Card subtext wraps to
+     two lines at 340px width, same content as mobile, just narrower. --- */
+  @media only screen and (min-width: 1136px) {
+    .offer-next-steps {
+      padding: 64px 32px;
+    }
+
+    .offer-next-steps__container {
+      max-width: 1100px;
+    }
+
+    .offer-next-steps__actions {
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: center;
+      gap: 24px;
+      width: auto;
+    }
+
+    .ons-card {
+      width: 340px;
+    }
+
+    .ons-divider {
+      display: none;
+    }
+
+    .ons-review {
+      max-width: 560px;
+    }
+  }
+</style>
+
+<script>
+  // Read more / Read less toggle for the review card. Idempotent (dataset
+  // guard) and initialized on both the first load and every Astro view
+  // transition, matching the astro:page-load pattern used elsewhere in the
+  // codebase (e.g. src/pages/webinar/capital.astro).
+  function initOfferReviewToggle() {
+    const cards = document.querySelectorAll("[data-review-card]");
+    cards.forEach((card) => {
+      if (card instanceof HTMLElement && card.dataset.toggleBound === "1") return;
+      if (card instanceof HTMLElement) card.dataset.toggleBound = "1";
+
+      const quote = card.querySelector("[data-review-quote]");
+      const toggle = card.querySelector("[data-review-toggle]");
+      if (!quote || !toggle) return;
+
+      toggle.addEventListener("click", () => {
+        const isExpanded = quote.classList.toggle("is-expanded");
+        toggle.textContent = isExpanded ? "Read less" : "Read more";
+        toggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initOfferReviewToggle);
+  document.addEventListener("astro:page-load", initOfferReviewToggle);
+</script>

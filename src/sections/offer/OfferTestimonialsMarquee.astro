@@ -1,0 +1,504 @@
+---
+// Testimonials T3 · Marquee (Figma node 10119:38, file 5uwYOGoiUbxEw7B8BUv0rv).
+// Two offset rows of mini review cards, each auto-scrolling in an opposite
+// direction. Seamless loop: repeat the row's cards 8 times (wide enough to
+// fill the desktop viewport with no empty runway), animate the track from
+// 0 to -50%, and it loops without a visible seam.
+//
+// Quotes/names/initials/colors below are read verbatim from the Figma design
+// context (get_design_context on 10119:38), not invented or reworded.
+//
+// Real photo lookup: each hardcoded person below is matched against the live
+// Senja dataset (via /api/testimonials, same SSR proxy ReviewsV3.astro uses)
+// by normalized name (first name + last initial, case-insensitive), so a
+// Senja author like "Michael Francis" matches our "Michael F.". When a match
+// has an avatar URL, it's rendered as an <img> layered over the existing
+// initials circle; the initials stay as the fallback/base layer. No key, no
+// network, or no name match all fall back to initials-only, identical to
+// today's render.
+function normalizeNameKey(fullName: string): string {
+  const parts = fullName.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  const first = parts[0];
+  // Last "word" may already be an initial like "k." -- strip trailing dots
+  // and keep just the leading letter so "k." and "kowalski" both become "k".
+  const last = parts[parts.length - 1].replace(/\./g, "");
+  const lastInitial = last.charAt(0);
+  return `${first}|${lastInitial}`;
+}
+
+async function fetchSenjaAvatarsByName(requestUrl: URL | string): Promise<Map<string, string>> {
+  const avatarsByKey = new Map<string, string>();
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const apiUrl = new URL("/api/testimonials", requestUrl);
+    const response = await fetch(apiUrl, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (!response.ok) return avatarsByKey;
+
+    const payload = await response.json();
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    for (const raw of rawList as any[]) {
+      const name: string = raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "";
+      const avatar: string =
+        raw?.customer_avatar ??
+        raw?.avatar ??
+        raw?.profile_picture ??
+        raw?.profile_pic ??
+        raw?.customer?.avatar ??
+        raw?.user?.avatar ??
+        "";
+      if (!name || !avatar || !avatar.trim()) continue;
+
+      const key = normalizeNameKey(name);
+      if (key && !avatarsByKey.has(key)) {
+        avatarsByKey.set(key, avatar);
+      }
+    }
+  } catch (error) {
+    // Never let a failed/slow Senja fetch break the page render; the
+    // initials circles are a complete fallback on their own.
+    console.error("Failed to fetch Senja avatars for testimonials marquee:", error);
+  }
+
+  return avatarsByKey;
+}
+
+const senjaAvatarsByName = await fetchSenjaAvatarsByName(Astro.url);
+function withAvatarUrl<T extends { name: string }>(person: T): T & { avatarUrl: string } {
+  return { ...person, avatarUrl: senjaAvatarsByName.get(normalizeNameKey(person.name)) || "" };
+}
+
+const rowOne = [
+  {
+    initials: "DK",
+    name: "Darlene K.",
+    quote: "Everything isn't just online with a robot.",
+    avatarBg: "#2b6b47",
+    avatarColor: "#ffffff",
+  },
+  {
+    initials: "MF",
+    name: "Michael F.",
+    quote: "I'm receiving my payments on time and making money every month.",
+    avatarBg: "#152420",
+    avatarColor: "#7fd0a4",
+  },
+  {
+    initials: "AP",
+    name: "Ashesh P.",
+    quote: "My interest shows up like clockwork.",
+    avatarBg: "#cfe8da",
+    avatarColor: "#2b6b47",
+  },
+].map(withAvatarUrl);
+
+const rowTwo = [
+  {
+    initials: "AP",
+    name: "Ashesh P.",
+    quote: "My interest shows up like clockwork.",
+    avatarBg: "#cfe8da",
+    avatarColor: "#2b6b47",
+  },
+  {
+    initials: "RM",
+    name: "Robert M.",
+    quote: "It has performed exactly as promised.",
+    avatarBg: "#ebf5ef",
+    avatarColor: "#2b6b47",
+  },
+  {
+    initials: "DK",
+    name: "Darlene K.",
+    quote: "Everything isn't just online with a robot.",
+    avatarBg: "#2b6b47",
+    avatarColor: "#ffffff",
+  },
+].map(withAvatarUrl);
+
+// Each row's 3-card set is repeated 8 times so the track is wide enough to
+// fill the desktop viewport with no empty runway, and a translateX(-50%)
+// loop still lands exactly back on an identical copy (the second half is
+// itself 4 repeats of the same set). Every card past the first 3 (the
+// original unique set) is aria-hidden; screen readers get every unique
+// testimonial once from the plain list further down.
+const rowOneLoop = Array.from({ length: 8 }).flatMap(() => rowOne);
+const rowTwoLoop = Array.from({ length: 8 }).flatMap(() => rowTwo);
+
+// De-duplicated set (by name) for the visually-hidden screen-reader list.
+const uniqueTestimonials = [rowOne[0], rowOne[1], rowOne[2], rowTwo[1]];
+---
+
+<section class="ofm" id="offer-testimonials-marquee">
+  <div class="ofm__content" data-reveal>
+    <p class="ofm__eyebrow">FROM OUR INVESTORS</p>
+  </div>
+
+  <div class="ofm__marquee" data-reveal>
+    <div class="ofm__fade ofm__fade--left" aria-hidden="true"></div>
+    <div class="ofm__fade ofm__fade--right" aria-hidden="true"></div>
+
+    <div class="ofm__viewport" aria-hidden="true">
+      <ul class="ofm__track ofm__track--row1">
+        {
+          rowOneLoop.map((t, i) => (
+            <li class="ofm__card" aria-hidden={i >= rowOne.length ? "true" : undefined}>
+              <span
+                class="ofm__avatar"
+                style={`background:${t.avatarBg};color:${t.avatarColor};`}
+              >
+                {t.initials}
+                {t.avatarUrl && (
+                  <img
+                    class="ofm__avatar-img"
+                    src={t.avatarUrl}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    onerror="this.remove()"
+                  />
+                )}
+              </span>
+              <span class="ofm__stars">★★★★★</span>
+              <p class="ofm__name">{t.name}</p>
+              <p class="ofm__quote">{t.quote}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="ofm__track ofm__track--row2">
+        {
+          rowTwoLoop.map((t, i) => (
+            <li class="ofm__card" aria-hidden={i >= rowTwo.length ? "true" : undefined}>
+              <span
+                class="ofm__avatar"
+                style={`background:${t.avatarBg};color:${t.avatarColor};`}
+              >
+                {t.initials}
+                {t.avatarUrl && (
+                  <img
+                    class="ofm__avatar-img"
+                    src={t.avatarUrl}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    onerror="this.remove()"
+                  />
+                )}
+              </span>
+              <span class="ofm__stars">★★★★★</span>
+              <p class="ofm__name">{t.name}</p>
+              <p class="ofm__quote">{t.quote}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- Real, de-duplicated content for assistive tech. The rows above are
+         decorative/duplicated so both viewport lists are aria-hidden. -->
+    <ul class="ofm__sr">
+      {
+        uniqueTestimonials.map((t) => (
+          <li>
+            {t.name}, investor, five stars. &ldquo;{t.quote}&rdquo;
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ofm {
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    overflow: hidden;
+    padding: 32px 0;
+  }
+
+  .ofm__content {
+    max-width: 366px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .ofm__eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Marquee: full-bleed so the edge fades reach the viewport edges, even
+     though the eyebrow above stays centered in a max-width column. */
+  .ofm__marquee {
+    position: relative;
+    width: 100vw;
+    margin: 16px calc(50% - 50vw) 0;
+    overflow: hidden;
+  }
+
+  .ofm__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 56px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ofm__fade--left {
+    left: 0;
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  }
+  .ofm__fade--right {
+    right: 0;
+    background: linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  /* Purely decorative strip: no touch scrolling, no pausing, pointer
+     events pass straight through so it never captures a tap or swipe.
+     Reduced-motion visitors get a scrollable version further down. */
+  .ofm__viewport {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    pointer-events: none;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px 0;
+  }
+  .ofm__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ofm__track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    width: max-content;
+    will-change: transform;
+  }
+
+  /* Row 1 drifts left-to-right loop, row 2 drifts the opposite way, matching
+     the offset feel in the Figma comp. Animation runs by default (no JS
+     class needed); reduced-motion visitors get it turned off further down. */
+  .ofm__track--row1 {
+    animation: ofm-scroll-left 190s linear infinite;
+  }
+  .ofm__track--row2 {
+    animation: ofm-scroll-right 215s linear infinite;
+  }
+
+  @keyframes ofm-scroll-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes ofm-scroll-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* Fixed height (Figma values) so every card in the strip is the same size
+     and the two rows line up evenly. The quote below is clamped to 2 lines,
+     which is what keeps its content within this fixed footprint. */
+  /* Spacing lives on each card (not flex gap on the track) so half the
+     track is an exact multiple of one card-plus-space unit; a flex gap
+     leaves no space after the last card, which makes the -50% wrap land
+     half a gap short and produces a visible jump. */
+  .ofm__card {
+    flex: 0 0 auto;
+    margin-right: 12px;
+    width: 250px;
+    height: 96px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+    padding: 11px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 10px;
+    row-gap: 0;
+  }
+
+  .ofm__avatar {
+    position: relative;
+    grid-row: 1 / 3;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  /* Real photo layered over the initials base layer. Initials stay
+     underneath as-is so an onerror-triggered removal of this <img> reveals
+     them again with zero extra logic. */
+  .ofm__avatar-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+  }
+
+  .ofm__stars {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #eba644;
+    line-height: normal;
+    align-self: end;
+  }
+
+  .ofm__name {
+    grid-column: 2;
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #999999;
+    margin: 0;
+    line-height: normal;
+  }
+
+  /* Clamped to 2 lines so quote length can't push the fixed-height card's
+     content taller than it. Full, unclamped quotes remain available in the
+     visually-hidden screen-reader list below and in the faces rotator. */
+  .ofm__quote {
+    grid-column: 1 / -1;
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.4;
+    color: #555555;
+    margin: 8px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Visually-hidden list: gives screen readers the unique testimonials once,
+     since the two marquee rows above are decorative + duplicated. */
+  .ofm__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Reduced-motion visitors get a static, horizontally scrollable row: no
+     animation, duplicates hidden, and scrolling re-enabled just for them
+     (the animated version is otherwise fully non-interactive). */
+  @media (prefers-reduced-motion: reduce) {
+    .ofm__track--row1,
+    .ofm__track--row2 {
+      animation: none;
+    }
+    .ofm__card[aria-hidden="true"] {
+      display: none;
+    }
+    .ofm__viewport {
+      overflow-x: auto;
+      pointer-events: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .ofm {
+      padding: 30px 0;
+    }
+    .ofm__content {
+      max-width: 600px;
+      padding: 0 32px;
+    }
+    .ofm__marquee {
+      margin-top: 16px;
+    }
+    .ofm__fade {
+      width: 64px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .ofm {
+      padding: 64px 0;
+    }
+    .ofm__content {
+      max-width: 1136px;
+      padding: 0 48px;
+    }
+    .ofm__marquee {
+      margin-top: 16px;
+    }
+    .ofm__fade {
+      width: 170px;
+    }
+    .ofm__viewport {
+      gap: 20px;
+    }
+    .ofm__card {
+      margin-right: 16px;
+      width: 325px;
+      height: 125px;
+      padding: 14.3px;
+      column-gap: 13px;
+      grid-template-columns: 36.4px 1fr;
+      border-radius: 15.6px;
+      box-shadow: 0 5.2px 13px rgba(0, 0, 0, 0.07);
+    }
+    .ofm__avatar {
+      width: 36.4px;
+      height: 36.4px;
+      font-size: 13px;
+    }
+    .ofm__stars {
+      font-size: 14.3px;
+    }
+    .ofm__name {
+      font-size: 14.3px;
+    }
+    .ofm__quote {
+      font-size: 15.6px;
+      margin-top: 10px;
+    }
+  }
+</style>
+

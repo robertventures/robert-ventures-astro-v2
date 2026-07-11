@@ -39,3 +39,23 @@
   to = "/invest"
   status = 301
   force = true
+
+# Experimental offer page variants were removed (design iteration moved to
+# Figma). Permanent redirects so any links shared during testing still land.
+[[redirects]]
+  from = "/offer-v1"
+  to = "/offer"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/offer-v2"
+  to = "/offer"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/offer-v3"
+  to = "/offer"
+  status = 301
+  force = true

@@ -1,0 +1,411 @@
+---
+import { Image } from "astro:assets";
+import heroFamilyBeach from "../../assets/offer/hero-family-beach.png";
+---
+
+<style>
+  .offer-hero {
+    position: relative;
+    width: 100%;
+    /* Fill the viewport on short screens, but stop at 660px so tall phones
+       don't spend the extra height on sky and the next section stays in
+       reach. */
+    min-height: min(calc(100svh - 64px), 660px);
+    max-height: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: hidden;
+    padding: 42px 24px 24px;
+    background: #1a1f1f;
+    margin: 0;
+  }
+
+  .offer-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .offer-hero__media :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Bias the crop window downward: the spare image height is mostly sky,
+       so cropping from the top keeps the family and the lit houses in frame
+       while trimming empty sky. */
+    object-position: center 50%;
+  }
+
+  .offer-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 31.228%,
+      rgba(0, 0, 0, 0.45) 50.951%,
+      rgba(0, 0, 0, 0.86) 82.179%
+    );
+  }
+
+  /* Desktop-only left panel. Neutral (removed from layout) until 1136px. */
+  .offer-hero__panel {
+    display: none;
+  }
+
+  .offer-hero__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 366px;
+  }
+
+  .offer-hero__headline {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2;
+    color: #ffffff;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .offer-hero__body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  /* --- Testimonial chip --- */
+  .offer-hero__chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .offer-hero__quote {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    margin: 0;
+    max-width: 300px;
+  }
+
+  .offer-hero__chip-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .offer-hero__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #152420;
+  }
+
+  .offer-hero__avatar span {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 8px;
+    line-height: 1;
+    color: #7fd0a4;
+  }
+
+  .offer-hero__stars {
+    font-family: var(--font-body);
+    font-size: 10px;
+    line-height: 1;
+    color: #eba644;
+    white-space: nowrap;
+  }
+
+  .offer-hero__name {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+  }
+
+  /* --- Scroll cue --- */
+  .offer-hero__cue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .offer-hero__cue-label {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+  }
+
+  .offer-hero__chevron {
+    width: 24px;
+    height: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    animation: offer-hero-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes offer-hero-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(4px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .offer-hero__chevron {
+      animation: none;
+    }
+  }
+
+  /* --- Tablet (Figma "Offer Page I · Tablet 768", node 10177:15) ---
+     Same bottom-anchored centered composition as mobile, scaled up: a wider
+     480px copy column, larger body text, and a scrim that holds off longer
+     before darkening (photo shows more before the copy zone). --- */
+  @media only screen and (min-width: 600px) {
+    .offer-hero {
+      padding: 42px 24px 40px;
+      /* Same idea as mobile: don't let tall tablet viewports stretch the
+         hero into pure sky. */
+      min-height: min(calc(100svh - 64px), 720px);
+    }
+
+    .offer-hero__scrim {
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.6) 62%,
+        rgba(0, 0, 0, 0.94) 100%
+      );
+    }
+
+    .offer-hero__content {
+      max-width: 480px;
+      gap: 16px;
+    }
+
+    /* Headline stays 32px per the tablet frame; only the column widens. */
+    .offer-hero__body {
+      font-size: 18px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .offer-hero__chip {
+      /* Border reads slightly brighter over the lighter tablet backdrop. */
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+  }
+
+  /* --- Desktop (Figma "Offer Page I · Desktop 1440", node 10193:194) ---
+     Real layout shift: a solid dark-green gradient panel on the left holds
+     left-aligned copy; the photo is confined to the right; a soft seam blends
+     the panel color into the photo so there is no hard edge. --- */
+  @media only screen and (min-width: 1136px) {
+    .offer-hero {
+      /* Fixed 720px hero, no min/max viewport sizing on desktop. */
+      min-height: 720px;
+      max-height: 720px;
+      height: 720px;
+      /* Panel inset drives horizontal spacing, so zero the section padding. */
+      padding: 0;
+      /* Copy sits vertically centered and left-aligned inside the panel. */
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      /* Panel gradient shows through the seam beyond the photo edge. */
+      background: #152420;
+      /* Same left edge as the rest of the page's 1100px centered container
+         (never closer than 24px to the viewport edge). */
+      --hero-inset: max(calc((100% - 1100px) / 2), 24px);
+    }
+
+    /* Photo confined to the right region, anchored to the right edge and
+       capped at 900px. Beyond that the dark panel absorbs the extra width
+       instead of the photo, because the source image is only 704px wide and
+       upscaling past 900px gets soft. */
+    .offer-hero__media {
+      left: auto;
+      right: 0;
+      width: min(52%, 900px);
+    }
+
+    /* Match the Figma crop: fill the width, hold the vertical window ~30%
+       down so the grandfather, granddaughter, and dog stay in frame. */
+    .offer-hero__media :global(img) {
+      object-position: center 30%;
+    }
+
+    /* The bottom-darkening scrim is only for text-over-photo on mobile and
+       tablet. Desktop text sits on the panel, so the photo stays clean. */
+    .offer-hero__scrim {
+      display: none;
+    }
+
+    /* Left gradient panel: solid #152420 (top) to #0b1512 (bottom). */
+    .offer-hero__panel {
+      display: block;
+      position: absolute;
+      inset: 0 auto 0 0;
+      /* Exact complement of the photo width so the seam stays glued to the
+         photo's left edge at every viewport width. */
+      width: calc(100% - min(52%, 900px));
+      z-index: 0;
+      background: linear-gradient(180deg, #152420 0%, #0b1512 100%);
+    }
+
+    /* Blend seam: 160px of panel color fading to transparent, laid over the
+       photo's left edge so the panel dissolves into the photo. */
+    .offer-hero__panel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 160px;
+      height: 100%;
+      background: linear-gradient(90deg, #152420 0%, rgba(21, 36, 32, 0) 100%);
+    }
+
+    .offer-hero__content {
+      /* 440px copy column, left edge matched to the page's shared 1100px
+         container inset instead of being centered in the panel. */
+      align-items: flex-start;
+      gap: 24px;
+      width: 440px;
+      max-width: 440px;
+      margin-left: var(--hero-inset);
+    }
+
+    .offer-hero__headline {
+      /* Desktop headline is 48px per the frame; wraps to ~4 lines at 440px. */
+      font-size: 48px;
+      line-height: 1.15;
+      text-align: left;
+    }
+
+    .offer-hero__body {
+      /* Desktop body is regular weight (not the tablet semibold), 420px wide. */
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.85);
+      text-align: left;
+      width: 420px;
+    }
+
+    /* Chip keeps its intrinsic ~332px width and left-aligns in the column. */
+    .offer-hero__chip {
+      width: auto;
+      align-self: flex-start;
+    }
+
+    /* The scroll cue is a mobile/tablet affordance. On desktop the next
+       section already peeks above the fold, and the cue read as stranded
+       text in the panel, so it is hidden entirely. */
+    .offer-hero__cue {
+      display: none;
+    }
+  }
+
+</style>
+
+<section class="offer-hero">
+  <div class="offer-hero__media" aria-hidden="true">
+    <Image
+      src={heroFamilyBeach}
+      alt="A grandfather and granddaughter hold hands while walking a golden retriever along the beach at dusk, with Outer Banks homes in the background"
+      widths={[375, 704]}
+      sizes="100vw"
+      format="webp"
+      quality={80}
+    />
+    <div class="offer-hero__scrim"></div>
+  </div>
+
+  <!-- Desktop-only left panel + blend seam. Hidden below 1136px, so it is
+       styling-neutral on mobile and tablet. -->
+  <div class="offer-hero__panel" aria-hidden="true"></div>
+
+  <div class="offer-hero__content">
+    <div class="offer-hero__headline-block" data-reveal>
+      <h1 class="offer-hero__headline">You did everything right. Your money didn&rsquo;t.</h1>
+      <p class="offer-hero__body">
+        Savings sitting still. A renewal smaller than last year. Money you worked for, earning
+        almost nothing back.
+      </p>
+    </div>
+
+    <div class="offer-hero__chip" data-reveal>
+      <p class="offer-hero__quote">
+        I&rsquo;m receiving my payments on time and making money every month, just as it was
+        explained.
+      </p>
+      <div class="offer-hero__chip-meta">
+        <span class="offer-hero__avatar"><span>MF</span></span>
+        <span class="offer-hero__stars" aria-hidden="true">★★★★★</span>
+        <span class="offer-hero__name">Michael F. &middot; Investor</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="offer-hero__cue" data-reveal>
+    <span class="offer-hero__cue-label">See how it works</span>
+    <svg
+      class="offer-hero__chevron"
+      viewBox="0 0 24 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M2 2L12 10L22 2"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</section>

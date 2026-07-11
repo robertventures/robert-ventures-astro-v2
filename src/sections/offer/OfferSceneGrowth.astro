@@ -1,0 +1,710 @@
+---
+// OfferSceneGrowth (Scene 2 · "No phone" · balance + growth chart)
+// Source: Figma 5uwYOGoiUbxEw7B8BUv0rv node 10076:61.
+// Centered copy above a phone-app-style card built in pure HTML/CSS (no
+// screenshots). Shares identical chrome (card, RV logo lockup, avatar) with
+// OfferSceneDrain so the two read as the same app.
+//
+// The ONLY JavaScript on these two scenes lives here: a one-time, on-enter
+// animation that grows the three bars from zero and counts the $135,352 figure
+// up. It fires once (IntersectionObserver, threshold 0.35), then disconnects.
+// The DEFAULT state (no JS, or prefers-reduced-motion) is the FINAL state, so
+// nothing is ever hidden without JS; the script sets the collapsed initial
+// state itself just before animating.
+---
+
+<section class="scene-growth" aria-labelledby="scene-growth-heading">
+  <!-- Layout wrapper: display:contents on mobile and tablet (neutral, so copy
+       and card behave as direct children of the section), becomes the 1100px
+       two-column flex container only at desktop (1136px+). -->
+  <div class="scene-growth__inner">
+    <!-- Copy block -->
+    <div class="scene-growth__copy" data-reveal>
+    <p class="scene-growth__eyebrow">THE OFFER</p>
+    <h2 id="scene-growth-heading" class="scene-growth__headline">
+      Earn a fixed 8&ndash;10% per year.
+    </h2>
+    <p class="scene-growth__body">
+      Robert Ventures bonds pay a fixed 8&ndash;10% annual return, set by contract. The rate you
+      start with is the rate you keep, for as long as you stay invested. Take your interest as a
+      monthly payout, or let it compound so every month's interest starts earning too.
+    </p>
+  </div>
+
+  <!-- Phone card -->
+  <div class="scene-card" data-reveal>
+    <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
+    <div class="scene-card__chrome">
+      <span class="rv-lockup">
+        <span class="rv-lockup__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="#152429"></rect>
+            <path
+              d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+              stroke="#7fd0a4"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
+      </span>
+      <span class="rv-avatar" aria-hidden="true">
+        <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
+          <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
+          <path
+            d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z"
+            fill="#67b78f"></path>
+        </svg>
+      </span>
+    </div>
+
+    <!-- Content row: below 600px this wrapper is display:contents so the two
+         panels stack as direct children of .scene-card (preserving the 16px
+         card gap); at 600px+ it becomes a horizontal flex row. -->
+    <div class="scene-card__content">
+    <!-- Dark balance card -->
+    <div class="balance-card">
+      <span class="balance-card__label">Portfolio value</span>
+      <span class="balance-card__amount" data-countup data-target="135352" data-prefix="$">$135,352</span>
+      <span class="balance-card__sub">Started with $50,000</span>
+      <span class="balance-card__divider" aria-hidden="true"></span>
+      <div class="balance-card__cols">
+        <span class="balance-card__col">
+          <span class="balance-card__k">Fixed rate</span>
+          <span class="balance-card__v balance-card__v--mint">10%</span>
+        </span>
+        <span class="balance-card__col">
+          <span class="balance-card__k">Interest</span>
+          <span class="balance-card__v">Compounding</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Light growth card with 3-bar chart -->
+    <div class="growth-card">
+      <span class="growth-card__title">Balance over 10 years</span>
+      <div class="growth-card__chart" aria-hidden="true">
+        <div class="growth-bar">
+          <span class="growth-bar__val">$50,000</span>
+          <span class="growth-bar__fill growth-bar__fill--today" style="--h: 39.65px"></span>
+          <span class="growth-bar__year">Today</span>
+        </div>
+        <div class="growth-bar">
+          <span class="growth-bar__val">$82,265</span>
+          <span class="growth-bar__fill growth-bar__fill--mid" style="--h: 64.43px"></span>
+          <span class="growth-bar__year">Year 5</span>
+        </div>
+        <div class="growth-bar">
+          <span class="growth-bar__val growth-bar__val--accent">$135,352</span>
+          <span class="growth-bar__fill growth-bar__fill--peak" style="--h: 105.73px"></span>
+          <span class="growth-bar__year">Year 10</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+
+  <p class="scene-growth__note" data-reveal>
+    Compounding is how $50,000 grows to $135,352 by year 10 &mdash; the bond's maturity. Your
+    minimum commitment is much shorter: 3 years at the fixed 10%, or 1 year at the fixed 8%. After
+    that, withdraw anytime*, or stay to maturity and keep earning the same rate.
+  </p>
+</section>
+
+<style>
+  .scene-growth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding: 32px 24px;
+    background: #ffffff;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  /* Neutral on mobile and tablet: the copy and card stay direct flex children
+     of .scene-growth. This wrapper only takes over as a container on desktop. */
+  .scene-growth__inner {
+    display: contents;
+  }
+
+  /* --- Note (below the card; same treatment as .offer-strategy__note) --- */
+  .scene-growth__note {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    text-align: center;
+    width: 100%;
+    max-width: 366px;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  /* --- Copy --- */
+  .scene-growth__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 366px;
+    text-align: center;
+  }
+
+  .scene-growth__eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0;
+  }
+
+  .scene-growth__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text-heading);
+    margin: 0;
+    font-variant-numeric: lining-nums;
+  }
+
+  .scene-growth__body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    margin: 0;
+    max-width: 340px;
+  }
+
+  /* --- Phone card (shared chrome with OfferSceneDrain) --- */
+  .scene-card {
+    position: relative;
+    width: 340px;
+    max-width: 100%;
+    box-sizing: border-box;
+    background: #f8faf9;
+    border: 1.65px solid #e5e5e5;
+    border-radius: 23px;
+    box-shadow: 0 16.5px 46.3px rgba(0, 0, 0, 0.1);
+    padding: 16px 13px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .scene-card__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 3px 0;
+  }
+
+  .rv-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 6.6px;
+  }
+
+  .rv-lockup__mark {
+    display: inline-flex;
+    width: 26.4px;
+    height: 26.4px;
+    flex-shrink: 0;
+  }
+
+  .rv-lockup__mark svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .rv-lockup__word {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 13.2px;
+    line-height: 1;
+    color: #334a52;
+    white-space: nowrap;
+  }
+
+  .rv-lockup__word b {
+    font-weight: 600;
+  }
+
+  .rv-avatar {
+    display: inline-flex;
+    width: 33px;
+    height: 33px;
+    flex-shrink: 0;
+  }
+
+  .rv-avatar svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* --- Content row wrapper ---
+     Below 600px this box is removed from layout (display: contents) so the two
+     panels stack as direct children of .scene-card, keeping the card's 16px
+     gap between them. It only becomes a real flex row at 600px+. */
+  .scene-card__content {
+    display: contents;
+  }
+
+  /* --- Dark balance card --- */
+  .balance-card {
+    position: relative;
+    background: #152420;
+    border-radius: 23px;
+    box-shadow: 0 4.96px 13.2px rgba(0, 0, 0, 0.18);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .balance-card__label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16.5px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .balance-card__amount {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 43px;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-top: 6px;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .balance-card__sub {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 15.7px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 8px;
+  }
+
+  .balance-card__divider {
+    display: block;
+    height: 1.65px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 16px 0 0;
+  }
+
+  .balance-card__cols {
+    display: flex;
+    margin-top: 16px;
+  }
+
+  .balance-card__col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .balance-card__k {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14.9px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .balance-card__v {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 21.5px;
+    line-height: 1;
+    color: #ffffff;
+    font-variant-numeric: lining-nums;
+  }
+
+  .balance-card__v--mint {
+    color: #7fd0a4;
+  }
+
+  /* --- Light growth card + 3-bar chart --- */
+  .growth-card {
+    background: #ffffff;
+    border: 1.65px solid #e5e5e5;
+    border-radius: 19.8px;
+    box-shadow: 0 4.96px 8.26px rgba(0, 0, 0, 0.08);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .growth-card__title {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 16.5px;
+    line-height: 1;
+    color: #1a1a1a;
+  }
+
+  .growth-card__chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 12px;
+    height: 172px;
+    margin-top: 18px;
+  }
+
+  .growth-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    height: 100%;
+  }
+
+  .growth-bar__val {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14.9px;
+    line-height: 1;
+    color: #555555;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums;
+  }
+
+  .growth-bar__val--accent {
+    font-weight: 500;
+    color: #2b6b47;
+  }
+
+  .growth-bar__fill {
+    width: 46.26px;
+    max-width: 100%;
+    height: var(--h);
+    border-radius: 6.6px;
+    /* Default (no JS / reduced motion) = final height. JS collapses first. */
+    transform-origin: bottom center;
+  }
+
+  .growth-bar__fill--today {
+    background: #cfe8da;
+  }
+
+  .growth-bar__fill--mid {
+    background: #cfe8da;
+  }
+
+  .growth-bar__fill--peak {
+    background: #2b6b47;
+  }
+
+  .growth-bar__year {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14.9px;
+    line-height: 1;
+    color: #999999;
+    margin-top: 12px;
+    white-space: nowrap;
+  }
+
+  /* When JS is present and running the intro, bars scale up from the base. */
+  .scene-card.is-animating .growth-bar__fill {
+    transform: scaleY(var(--s, 1));
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene-card.is-animating .growth-bar__fill {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* ============================================================
+     TABLET (600px+) · Figma "Offer Page I · Tablet 768" (10204:6).
+     Copy stays centered; the card becomes a wide horizontal card with the
+     dark balance panel and the light growth panel side by side, each 235px
+     tall. The balance number steps down from 43px to 30px so it fits the
+     narrower 280px panel.
+     ============================================================ */
+  @media only screen and (min-width: 600px) {
+    .scene-growth {
+      padding: 48px 64px;
+    }
+
+    .scene-growth__copy {
+      max-width: 640px;
+      gap: 16px;
+    }
+
+    .scene-growth__headline {
+      font-size: 34px;
+    }
+
+    .scene-growth__body {
+      font-size: 18px;
+      max-width: none;
+    }
+
+    /* Wide horizontal card, capped at 624px and centered. */
+    .scene-card {
+      width: 624px;
+      max-width: 100%;
+      border-width: 1px;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+      gap: 24px;
+    }
+
+    .scene-card__chrome {
+      padding: 0;
+    }
+
+    /* The wrapper turns into the horizontal row holding both panels. */
+    .scene-card__content {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Both panels sit at their design widths (280 / 256) and shrink together
+       when the card is narrower than 624px. flex-grow 0 keeps them from
+       stretching past those widths; flex-shrink 1 lets them give way in the
+       600-700px squeeze zone. Equal 235px height per the design. */
+    .balance-card,
+    .growth-card {
+      min-width: 0;
+      height: 235px;
+      padding: 24px;
+      border-radius: 16px;
+    }
+
+    /* --- Balance panel (dark): design width + deeper shadow --- */
+    .balance-card {
+      flex: 0 1 280px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .growth-card {
+      flex: 0 1 256px;
+    }
+
+    .balance-card__label {
+      font-size: 16px;
+    }
+
+    .balance-card__amount {
+      font-size: 30px;
+    }
+
+    .balance-card__sub {
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .balance-card__divider {
+      height: 2px;
+      margin-top: 18px;
+    }
+
+    .balance-card__cols {
+      margin-top: 18px;
+    }
+
+    .balance-card__k {
+      font-size: 13px;
+    }
+
+    .balance-card__v {
+      font-size: 20px;
+    }
+
+    /* --- Growth panel (light) tablet internals ---
+       Only two children (title + chart), so gap replaces the chart margin. */
+    .growth-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .growth-card__title {
+      font-size: 15px;
+    }
+
+    /* Bars row: hug height, bars bottom-aligned and spread across the panel. */
+    .growth-card__chart {
+      height: auto;
+      margin-top: 0;
+      gap: 0;
+      justify-content: space-between;
+    }
+
+    /* Each column hugs its content; the row bottom-aligns them. */
+    .growth-bar {
+      flex: 0 0 auto;
+      height: auto;
+      gap: 6px;
+    }
+
+    .growth-bar__val {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
+
+    .growth-bar__year {
+      font-size: 11px;
+      margin-top: 0;
+    }
+
+    /* Narrower 36px bars with the design's tablet heights. The scaleY intro
+       animation composes with these heights, so it still grows from 0 to the
+       full bar. Overriding height here (not --h) beats the base rule by source
+       order at 600px+, while mobile keeps its var(--h) heights untouched. */
+    .growth-bar__fill {
+      width: 36px;
+    }
+
+    .growth-bar__fill--today {
+      height: 42px;
+    }
+
+    .growth-bar__fill--mid {
+      height: 66px;
+    }
+
+    .growth-bar__fill--peak {
+      height: 110px;
+    }
+  }
+
+  /* ============================================================
+     DESKTOP (1136px+) · Figma "Offer Page I · Desktop 1440" (10205:57).
+     Two columns inside a 1100px centered container: copy left (420px,
+     left-aligned, larger headline), the same 624px card right, vertically
+     centered relative to each other. The card keeps its tablet form.
+     ============================================================ */
+  @media only screen and (min-width: 1136px) {
+    .scene-growth {
+      padding: 88px 24px;
+    }
+
+    .scene-growth__inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 64px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .scene-growth__copy {
+      align-items: flex-start;
+      width: 420px;
+      max-width: none;
+      flex-shrink: 0;
+      text-align: left;
+    }
+
+    .scene-growth__headline {
+      font-size: 48px;
+    }
+  }
+</style>
+
+<script>
+  // One-time on-enter animation for the growth scene. Idempotent: guarded by a
+  // dataset flag so re-running (view transitions fire astro:page-load) is safe.
+  function initSceneGrowth() {
+    const cards = document.querySelectorAll<HTMLElement>(".scene-growth .scene-card");
+    cards.forEach((card) => {
+      if (card.dataset.growthInit === "true") return;
+      card.dataset.growthInit = "true";
+
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const countEl = card.querySelector<HTMLElement>("[data-countup]");
+      const bars = card.querySelectorAll<HTMLElement>(".growth-bar__fill");
+
+      // Reduced motion (or no support): leave the final state as-is, done.
+      if (prefersReduced || !("IntersectionObserver" in window)) return;
+
+      // Set the collapsed initial state ONLY now that JS is running, so the
+      // markup's default (final) state is what non-JS users always see.
+      card.classList.add("is-animating");
+      bars.forEach((bar) => {
+        bar.style.setProperty("--s", "0");
+      });
+      const target = countEl ? parseInt(countEl.dataset.target || "0", 10) : 0;
+      const prefix = countEl ? countEl.dataset.prefix || "" : "";
+      if (countEl && target > 0) {
+        countEl.textContent = prefix + "0";
+      }
+
+      const runAnimation = () => {
+        // Grow the bars to their real heights.
+        bars.forEach((bar) => {
+          bar.style.setProperty("--s", "1");
+        });
+
+        // Count the figure up over ~1.2s with an ease-out curve.
+        if (countEl && target > 0) {
+          const duration = 1200;
+          const start = performance.now();
+          const step = (now: number) => {
+            const t = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const value = Math.round(eased * target);
+            countEl.textContent = prefix + value.toLocaleString("en-US");
+            if (t < 1) {
+              requestAnimationFrame(step);
+            } else {
+              countEl.textContent = prefix + target.toLocaleString("en-US");
+            }
+          };
+          requestAnimationFrame(step);
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              runAnimation();
+              obs.disconnect();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      observer.observe(card);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initSceneGrowth);
+  document.addEventListener("astro:page-load", initSceneGrowth);
+</script>

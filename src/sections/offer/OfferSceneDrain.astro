@@ -1,0 +1,582 @@
+---
+// OfferSceneDrain (Scene 1 · S1-C · "Buying-power drain")
+// Source: Figma 5uwYOGoiUbxEw7B8BUv0rv node 10127:134.
+// Centered copy above a phone-app-style card built in pure HTML/CSS (no
+// screenshots). Shares identical chrome (card, RV logo lockup, avatar) with
+// OfferSceneGrowth so the two read as the same app.
+// No JavaScript: this scene is fully static. Charts are hand-authored inline
+// SVGs (aria-hidden); all real copy stays as accessible text.
+---
+
+<section class="scene-drain" aria-labelledby="scene-drain-heading">
+  <!-- Layout wrapper: display:contents on mobile and tablet (neutral, so copy
+       and card behave as direct children of the section), becomes the 1100px
+       two-column flex container only at desktop (1136px+). -->
+  <div class="scene-drain__inner">
+    <!-- Copy block -->
+    <div class="scene-drain__copy" data-reveal>
+    <p class="scene-drain__eyebrow">THE REAL COST OF WAITING</p>
+    <h2 id="scene-drain-heading" class="scene-drain__headline">
+      Idle money isn't resting. It's shrinking.
+    </h2>
+    <p class="scene-drain__body">
+      At a typical 3% inflation rate, $50,000 in savings loses roughly $1,500 of buying power in a
+      year &mdash; and nearly $13,000 over a decade. Not because you did anything wrong. Because
+      your money was left standing still.
+    </p>
+  </div>
+
+  <!-- Phone card -->
+  <div class="scene-card" data-reveal>
+    <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
+    <div class="scene-card__chrome">
+      <span class="rv-lockup">
+        <span class="rv-lockup__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="#152429"></rect>
+            <path
+              d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+              stroke="#7fd0a4"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
+      </span>
+      <span class="rv-avatar" aria-hidden="true">
+        <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
+          <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
+          <path
+            d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z"
+            fill="#67b78f"></path>
+        </svg>
+      </span>
+    </div>
+
+    <!-- Content row: below 600px this wrapper is display:contents so the two
+         panels and chevron stack exactly as before; at 600px+ it becomes a
+         horizontal flex row (panels side by side, chevron between them). -->
+    <div class="scene-card__content">
+      <!-- Panel 1: idle savings (declining) -->
+      <div class="drain-panel">
+        <div class="drain-panel__text">
+          <span class="drain-panel__label">Idle savings</span>
+          <span class="drain-panel__amount">$50,000</span>
+          <span class="drain-panel__warn">&ndash;$1,500 of buying power a year</span>
+        </div>
+        <svg
+          class="drain-panel__chart"
+          viewBox="0 0 130 48"
+          width="130"
+          height="48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M2 8 C 34 14, 64 24, 128 42"
+            stroke="#a2604f"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-dasharray="6 6"></path>
+        </svg>
+      </div>
+
+      <!-- Chevron divider (points down on mobile, rotates to point right at 600px+) -->
+      <span class="scene-card__chevron" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 12"
+          width="24"
+          height="12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 3 L12 9 L20 3"
+            stroke="#152420"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.55"></path>
+        </svg>
+      </span>
+
+      <!-- Panel 2: put to work (rising) -->
+      <div class="work-panel">
+        <div class="work-panel__text">
+          <span class="work-panel__label">Put to work instead</span>
+          <span class="work-panel__amount">Fixed 10%</span>
+          <span class="work-panel__caption">set by contract</span>
+        </div>
+        <svg
+          class="work-panel__chart"
+          viewBox="0 0 120 52"
+          width="120"
+          height="52"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M2 46 C 40 44, 70 30, 118 6"
+            stroke="#7fd0a4"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Trust footer -->
+    <p class="scene-card__trust">SEC qualified &middot; Regulation A Tier 2</p>
+  </div>
+  </div>
+</section>
+
+<style>
+  .scene-drain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding: 32px 24px;
+    background: #ffffff;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  /* Neutral on mobile and tablet: the copy and card stay direct flex children
+     of .scene-drain. This wrapper only takes over as a container on desktop. */
+  .scene-drain__inner {
+    display: contents;
+  }
+
+  /* --- Copy --- */
+  .scene-drain__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 366px;
+    text-align: center;
+  }
+
+  .scene-drain__eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0;
+  }
+
+  .scene-drain__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text-heading);
+    margin: 0;
+    font-variant-numeric: lining-nums;
+  }
+
+  .scene-drain__body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-body);
+    margin: 0;
+    max-width: 340px;
+  }
+
+  /* --- Phone card (shared chrome with OfferSceneGrowth) --- */
+  .scene-card {
+    position: relative;
+    width: 340px;
+    max-width: 100%;
+    box-sizing: border-box;
+    background: #f8faf9;
+    border: 1.65px solid #e5e5e5;
+    border-radius: 23px;
+    box-shadow: 0 16.5px 46.3px rgba(0, 0, 0, 0.1);
+    padding: 16px 13px 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scene-card__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 3px 0;
+    margin-bottom: 18px;
+  }
+
+  .rv-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 6.6px;
+  }
+
+  .rv-lockup__mark {
+    display: inline-flex;
+    width: 26.4px;
+    height: 26.4px;
+    flex-shrink: 0;
+  }
+
+  .rv-lockup__mark svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .rv-lockup__word {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 13.2px;
+    line-height: 1;
+    color: #334a52;
+    white-space: nowrap;
+  }
+
+  .rv-lockup__word b {
+    font-weight: 600;
+  }
+
+  .rv-avatar {
+    display: inline-flex;
+    width: 33px;
+    height: 33px;
+    flex-shrink: 0;
+  }
+
+  .rv-avatar svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* --- Content row wrapper ---
+     Below 600px this box is removed from layout (display: contents) so the two
+     panels and the chevron stack as direct children of .scene-card, exactly as
+     the mobile design does. It only becomes a real flex row at 600px+. */
+  .scene-card__content {
+    display: contents;
+  }
+
+  /* --- Panel 1: idle savings (declining) --- */
+  .drain-panel {
+    position: relative;
+    background: #faf6f4;
+    border-radius: 14px;
+    padding: 14px 16px;
+    height: 118px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .drain-panel__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .drain-panel__label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1;
+    color: #999999;
+  }
+
+  .drain-panel__amount {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.2;
+    color: #1a1a1a;
+    margin-top: 6px;
+    font-variant-numeric: lining-nums;
+  }
+
+  .drain-panel__warn {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1;
+    color: #a2604f;
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+  }
+
+  .drain-panel__chart {
+    position: absolute;
+    right: 16px;
+    top: 30px;
+    width: 130px;
+    height: 48px;
+  }
+
+  /* --- Chevron divider --- */
+  .scene-card__chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12px;
+    margin: 10px 0;
+  }
+
+  /* --- Panel 2: put to work (rising) --- */
+  .work-panel {
+    position: relative;
+    background: #152420;
+    border-radius: 14px;
+    padding: 14px 16px;
+    height: 112px;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  }
+
+  .work-panel__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-panel__label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .work-panel__amount {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.2;
+    color: #7fd0a4;
+    margin-top: 8px;
+    font-variant-numeric: lining-nums;
+  }
+
+  .work-panel__caption {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.55);
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .work-panel__chart {
+    position: absolute;
+    right: 16px;
+    top: 30px;
+    width: 120px;
+    height: 52px;
+  }
+
+  /* --- Trust footer --- */
+  .scene-card__trust {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14.9px;
+    line-height: 1.3;
+    color: #999999;
+    text-align: center;
+    margin: 18px 0 0;
+  }
+
+  /* ============================================================
+     TABLET (600px+) · Figma "Offer Page I · Tablet 768" (10197:6).
+     Copy stays centered; the card becomes a wide horizontal card with the
+     two panels side by side and the chevron between them (rotated to point
+     right). Panel internals restack to a vertical column: label, amount,
+     line chart, caption.
+     ============================================================ */
+  @media only screen and (min-width: 600px) {
+    .scene-drain {
+      padding: 48px 64px;
+    }
+
+    .scene-drain__copy {
+      max-width: 640px;
+      gap: 16px;
+    }
+
+    .scene-drain__headline {
+      font-size: 34px;
+    }
+
+    .scene-drain__body {
+      font-size: 18px;
+      max-width: none;
+    }
+
+    /* Wide horizontal card, capped at 624px and centered. max-width: 100%
+       keeps it from overflowing between 600px and ~700px. */
+    .scene-card {
+      width: 624px;
+      max-width: 100%;
+      border-width: 1px;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+      gap: 24px;
+    }
+
+    .scene-card__chrome {
+      padding: 0;
+      margin-bottom: 0;
+    }
+
+    /* The wrapper turns into the horizontal row holding both panels. */
+    .scene-card__content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Both panels: equal-width flex items that shrink gracefully in the
+       600-700px squeeze zone. Restacked to a vertical column. */
+    .drain-panel,
+    .work-panel {
+      position: static;
+      flex: 1 1 0;
+      width: 250px;
+      min-width: 0;
+      height: auto;
+      padding: 24px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .drain-panel {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Flatten the text clusters so label, amount, chart and caption are all
+       direct children of the panel, then order them per the tablet design:
+       label, amount, chart, caption. */
+    .drain-panel__text,
+    .work-panel__text {
+      display: contents;
+    }
+
+    .drain-panel__label,
+    .work-panel__label {
+      order: 0;
+    }
+
+    .drain-panel__amount,
+    .work-panel__amount {
+      order: 1;
+      margin-top: 0;
+    }
+
+    .drain-panel__chart,
+    .work-panel__chart {
+      order: 2;
+      position: static;
+      top: auto;
+      right: auto;
+      width: 200px;
+      height: 54px;
+      max-width: 100%;
+    }
+
+    .drain-panel__warn,
+    .work-panel__caption {
+      order: 3;
+      position: static;
+      left: auto;
+      bottom: auto;
+    }
+
+    /* Slightly larger label + caption text to match the tablet node. */
+    .drain-panel__label,
+    .work-panel__label,
+    .drain-panel__warn,
+    .work-panel__caption {
+      font-size: 13px;
+    }
+
+    .drain-panel__amount,
+    .work-panel__amount {
+      font-size: 28px;
+    }
+
+    /* Chevron rotates -90deg (counter-clockwise) so the mobile down-pointing
+       chevron becomes a right-pointing one, sitting in a narrow 12x24 slot
+       between the two panels. The transform is visual only; the 24x12 SVG
+       box centers in the slot and the rotated glyph reads as 12 wide. */
+    .scene-card__chevron {
+      width: 12px;
+      height: 24px;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .scene-card__chevron svg {
+      transform: rotate(-90deg);
+    }
+
+    .scene-card__trust {
+      margin: 0;
+    }
+  }
+
+  /* ============================================================
+     DESKTOP (1136px+) · Figma "Offer Page I · Desktop 1440" (10200:44).
+     Two columns inside a 1100px centered container: copy left (420px,
+     left-aligned, larger headline), the same 624px card right, vertically
+     centered relative to each other. The card keeps its tablet form.
+     ============================================================ */
+  @media only screen and (min-width: 1136px) {
+    .scene-drain {
+      padding: 88px 24px;
+    }
+
+    .scene-drain__inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 64px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .scene-drain__copy {
+      align-items: flex-start;
+      width: 420px;
+      max-width: none;
+      flex-shrink: 0;
+      text-align: left;
+    }
+
+    .scene-drain__headline {
+      font-size: 48px;
+    }
+  }
+</style>

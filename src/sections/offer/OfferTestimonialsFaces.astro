@@ -1,0 +1,612 @@
+---
+// Testimonials T1 · Faces rotator (Figma node 10119:3, file 5uwYOGoiUbxEw7B8BUv0rv).
+// A row of 5 avatar circles; every ~5s the active one advances and the quote
+// + name crossfade to that person. Each avatar is also a real <button> that
+// selects a person directly and resets the timer.
+//
+// Every quote is a real curated investor review: Darlene K. from the Figma
+// comp, the rest from the site's shipped review dataset (CtaSocialProof.astro,
+// ReviewsV3.astro). Never invent or reword a testimonial.
+//
+// Real photo lookup: each hardcoded person below is matched against the live
+// Senja dataset (via /api/testimonials, same SSR proxy ReviewsV3.astro uses)
+// by normalized name (first name + last initial, case-insensitive), so a
+// Senja author like "Darlene Kowalski" matches our "Darlene K.". When a match
+// has an avatar URL, it's rendered as an <img> layered over the existing
+// initials circle; the initials stay as the fallback/base layer. No key, no
+// network, or no name match all fall back to initials-only, identical to
+// today's render.
+function normalizeNameKey(fullName: string): string {
+  const parts = fullName.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  const first = parts[0];
+  // Last "word" may already be an initial like "k." -- strip trailing dots
+  // and keep just the leading letter so "k." and "kowalski" both become "k".
+  const last = parts[parts.length - 1].replace(/\./g, "");
+  const lastInitial = last.charAt(0);
+  return `${first}|${lastInitial}`;
+}
+
+async function fetchSenjaAvatarsByName(requestUrl: URL | string): Promise<Map<string, string>> {
+  const avatarsByKey = new Map<string, string>();
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const apiUrl = new URL("/api/testimonials", requestUrl);
+    const response = await fetch(apiUrl, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (!response.ok) return avatarsByKey;
+
+    const payload = await response.json();
+    const rawList = Array.isArray(payload)
+      ? payload
+      : (payload?.testimonials ?? payload?.data ?? payload?.results ?? []);
+
+    for (const raw of rawList as any[]) {
+      const name: string = raw?.customer_name ?? raw?.name ?? raw?.customer?.name ?? "";
+      const avatar: string =
+        raw?.customer_avatar ??
+        raw?.avatar ??
+        raw?.profile_picture ??
+        raw?.profile_pic ??
+        raw?.customer?.avatar ??
+        raw?.user?.avatar ??
+        "";
+      if (!name || !avatar || !avatar.trim()) continue;
+
+      const key = normalizeNameKey(name);
+      if (key && !avatarsByKey.has(key)) {
+        avatarsByKey.set(key, avatar);
+      }
+    }
+  } catch (error) {
+    // Never let a failed/slow Senja fetch break the page render; the
+    // initials circles are a complete fallback on their own.
+    console.error("Failed to fetch Senja avatars for testimonials faces:", error);
+  }
+
+  return avatarsByKey;
+}
+
+const senjaAvatarsByName = await fetchSenjaAvatarsByName(Astro.url);
+
+const people = [
+  {
+    id: "sr",
+    initials: "SR",
+    name: "Stephen Romesburg",
+    quote:
+      "They send you monthly reports on the progress of your investment which makes you feel your investments are safe and secure.",
+    avatarBg: "#cfe8da",
+    avatarColor: "#2b6b47",
+  },
+  {
+    id: "mf",
+    initials: "MF",
+    name: "Michael J Francis",
+    quote:
+      "I like that with Robert Ventures, I can always talk to a real person when I have questions.",
+    avatarBg: "#152420",
+    avatarColor: "#7fd0a4",
+  },
+  {
+    id: "dk",
+    initials: "DK",
+    name: "Darlene K.",
+    quote:
+      "I can always talk to a real person when I have questions. Everything isn't just online with a robot.",
+    avatarBg: "#2b6b47",
+    avatarColor: "#ffffff",
+  },
+  {
+    id: "fl",
+    initials: "FL",
+    name: "Francisco Landaverde",
+    quote:
+      "I really recommended Robert Ventures to invest great company to invest they have excellent customer service the interest is very high at the end of the month you will see your great interest.",
+    avatarBg: "#ebf5ef",
+    avatarColor: "#2b6b47",
+  },
+  {
+    id: "rm",
+    initials: "RM",
+    name: "Robert M.",
+    quote: "I did my due diligence, started small, and it has performed exactly as promised.",
+    avatarBg: "#cfe8da",
+    avatarColor: "#2b6b47",
+  },
+].map((p) => ({ ...p, avatarUrl: senjaAvatarsByName.get(normalizeNameKey(p.name)) || "" }));
+
+// DK is the active state drawn in the Figma comp (larger avatar, dark green
+// fill, full quote shown). No-JS/first-paint default matches that exactly.
+const activeIndex = 2;
+---
+
+<section class="oft" id="offer-testimonials-faces">
+  <div class="oft__content" data-reveal>
+    <p class="oft__eyebrow">FROM OUR INVESTORS</p>
+
+    <div class="oft__faces" role="group" aria-label="Choose an investor review" data-reveal>
+      {
+        people.map((p, i) => (
+          <button
+            type="button"
+            class="oft__avatar"
+            data-face
+            data-index={i}
+            aria-pressed={i === activeIndex ? "true" : "false"}
+            aria-label={`Show review from ${p.name}`}
+            style={`--avatar-bg:${p.avatarBg};--avatar-color:${p.avatarColor};`}
+          >
+            {p.initials}
+            {p.avatarUrl && (
+              <img
+                class="oft__avatar-img"
+                src={p.avatarUrl}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+            )}
+          </button>
+        ))
+      }
+    </div>
+
+    <figure class="oft__quote-block" data-reveal>
+      <span class="oft__stars" aria-hidden="true">★★★★★</span>
+      <div class="oft__quote-wrap" data-quote-wrap aria-live="polite">
+        <blockquote class="oft__quote" data-quote>{people[activeIndex].quote}</blockquote>
+      </div>
+      <button
+        type="button"
+        class="oft__read-more"
+        data-read-more
+        aria-expanded="false"
+      >
+        Read more
+      </button>
+      <figcaption class="oft__name" data-name>
+        <span class="oft__name-main">{people[activeIndex].name}</span>
+        <span class="oft__name-sep" aria-hidden="true">·</span>
+        <span class="oft__name-role">Investor</span>
+      </figcaption>
+    </figure>
+
+    <!-- Plain data for the script below: avoids re-deriving copy in JS and
+         keeps a single source of truth (the `people` array above). is:inline
+         + set:html matches the JSON data-island pattern already used in
+         src/pages/webinar.astro (#ssr-webinar-data), so Astro doesn't try to
+         process this as a module script. -->
+    <script is:inline type="application/json" data-people set:html={JSON.stringify(people)} />
+  </div>
+</section>
+
+<style>
+  .oft {
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    padding: 32px 0;
+  }
+
+  .oft__content {
+    max-width: 366px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .oft__eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    text-align: center;
+    margin: 0;
+  }
+
+  .oft__faces {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .oft__avatar {
+    position: relative;
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: var(--avatar-bg);
+    color: var(--avatar-color);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      width 0.25s ease,
+      height 0.25s ease,
+      font-size 0.25s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .oft__avatar:focus-visible {
+    outline: 2px solid var(--green-dark);
+    outline-offset: 2px;
+  }
+
+  /* Real photo layered over the initials base layer. Initials stay
+     underneath as-is so an onerror-triggered removal of this <img> reveals
+     them again with zero extra logic. */
+  .oft__avatar-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+  }
+
+  .oft__avatar[aria-pressed="true"] {
+    width: 56px;
+    height: 56px;
+    font-size: 19px;
+    box-shadow: 0 0 0 2px var(--green-dark);
+  }
+
+  .oft__quote-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .oft__stars {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: #eba644;
+    line-height: normal;
+  }
+
+  /* Fixed collapsed footprint: exactly 3 lines of the quote's line-height at
+     every breakpoint (font-size/line-height never change across the 600px
+     and 1136px blocks below), so every person's quote takes up the same
+     vertical space and the auto-advancing rotator never shifts the page.
+     Short quotes start at the top of this box (block, not flex/center), and
+     overflow is clipped by both the fixed height and the line-clamp below,
+     so it degrades identically with or without -webkit-line-clamp support. */
+  .oft__quote-wrap {
+    width: 100%;
+    /* min-height (not height) reserves the 3-line footprint so short quotes
+       don't shrink the section, while the quote's own line-clamp is the ONLY
+       thing that truncates long ones. A fixed height here used to compete
+       with the clamp and could slice the last line in half whenever the two
+       computed heights disagreed. font-size must match the quote's 18px so
+       the em math equals real quote lines. */
+    font-size: 18px;
+    min-height: calc(1.45em * 3);
+  }
+
+  .oft__quote-wrap.is-expanded {
+    min-height: 0;
+  }
+
+  .oft__quote {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--text-heading);
+    margin: 0 auto;
+    max-width: 340px;
+    /* Neutralize the global blockquote left-bar + padding from global.css so
+       this reads as a centered display quote, matching the Figma comp. */
+    border-left: 0;
+    padding: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .oft__quote-wrap.is-expanded .oft__quote {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  /* Reserves its own line at all times (visibility, not display) so toggling
+     it on/off for a given quote never changes the section's height. JS shows
+     it only for quotes that actually overflow 3 lines. Styling matches the
+     "Read more" convention in OfferNextSteps.astro's review card. */
+  .oft__read-more {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--green-brand);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: none;
+    visibility: hidden;
+  }
+
+  .oft__read-more.is-visible {
+    visibility: visible;
+  }
+
+  .oft__read-more:hover {
+    text-decoration: underline;
+  }
+
+  .oft__read-more:focus-visible {
+    outline: 2px solid var(--green-dark);
+    outline-offset: 2px;
+  }
+
+  .oft__name {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    margin: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .oft__name-main {
+    font-weight: 500;
+    color: var(--text-heading);
+  }
+
+  .oft__name-sep,
+  .oft__name-role {
+    color: #999999;
+  }
+
+  /* Crossfade state used only while JS is actively swapping content. Kept
+     brief and opt-in via a class so the very first paint (no-JS, or before
+     JS attaches) is always fully visible with zero layout shift. */
+  .oft__quote-block.is-transitioning .oft__quote,
+  .oft__quote-block.is-transitioning .oft__name {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .oft__avatar {
+      transition: none;
+    }
+    .oft__quote,
+    .oft__name {
+      transition: none;
+    }
+    .oft__quote-block.is-transitioning .oft__quote,
+    .oft__quote-block.is-transitioning .oft__name {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .oft {
+      padding: 40px 0;
+    }
+    .oft__content {
+      max-width: 600px;
+      padding: 0 32px;
+      gap: 20px;
+    }
+    .oft__quote {
+      max-width: 560px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .oft {
+      padding: 64px 0;
+    }
+    .oft__content {
+      max-width: 1100px;
+      padding: 0 48px;
+      gap: 20px;
+    }
+    .oft__quote {
+      max-width: 560px;
+    }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    const ADVANCE_MS = 5000;
+
+    // Lives outside init() (module-level, one per script evaluation) so that
+    // if init() runs more than once for the same section -- e.g. a real
+    // DOMContentLoaded firing, plus an astro:page-load rerun -- the second
+    // call can find and clear the first call's timer instead of leaking a
+    // second interval that would double the advance speed.
+    let activeTimer = null;
+
+    function clearActiveTimer() {
+      if (activeTimer) {
+        clearTimeout(activeTimer);
+        activeTimer = null;
+      }
+    }
+
+    function init() {
+      const section = document.getElementById("offer-testimonials-faces");
+      if (!section) return;
+
+      // Timer is always cleared and restarted fresh on every init, whether
+      // this is the first run or a rerun.
+      clearActiveTimer();
+
+      // Idempotent guard: only the click listeners are bind-once. Re-running
+      // init() (e.g. from astro:page-load) must not attach a second set of
+      // click handlers onto the same buttons.
+      const alreadyBound = section.dataset.bound === "1";
+      section.dataset.bound = "1";
+
+      const dataEl = section.querySelector("[data-people]");
+      let people = [];
+      try {
+        people = JSON.parse((dataEl && dataEl.textContent) || "[]");
+      } catch (e) {
+        people = [];
+      }
+      if (!people.length) return;
+
+      const faces = Array.prototype.slice.call(section.querySelectorAll("[data-face]"));
+      const quoteBlock = section.querySelector(".oft__quote-block");
+      const quoteWrapEl = section.querySelector("[data-quote-wrap]");
+      const quoteEl = section.querySelector("[data-quote]");
+      const nameMainEl = section.querySelector(".oft__name-main");
+      const readMoreEl = section.querySelector("[data-read-more]");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      let activeIndex = faces.findIndex((f) => f.getAttribute("aria-pressed") === "true");
+      if (activeIndex < 0) activeIndex = 0;
+
+      // True only while the visitor has the current quote expanded via Read
+      // more. Auto-advance is paused for as long as this is true, since the
+      // person is actively reading.
+      let isExpanded = false;
+
+      function collapseQuote() {
+        isExpanded = false;
+        if (quoteWrapEl) quoteWrapEl.classList.remove("is-expanded");
+        if (readMoreEl) {
+          readMoreEl.textContent = "Read more";
+          readMoreEl.setAttribute("aria-expanded", "false");
+        }
+      }
+
+      // Reveals (or keeps hidden) the Read more button for the quote that is
+      // currently in the DOM. Measured on the quote itself: the line-clamp
+      // caps its clientHeight at 3 lines while scrollHeight reports the full
+      // text, so the comparison detects clamped quotes. Reading scrollHeight
+      // forces layout, which is fine here since it only runs once per render.
+      function updateReadMoreVisibility() {
+        if (!readMoreEl || !quoteEl) return;
+        const overflows = quoteEl.scrollHeight > quoteEl.clientHeight + 1;
+        readMoreEl.classList.toggle("is-visible", overflows);
+      }
+
+      function render(index, opts) {
+        const animate = !reduceMotion && !(opts && opts.skipAnimation);
+        const person = people[index];
+        if (!person) return;
+
+        faces.forEach((f, i) => {
+          f.setAttribute("aria-pressed", i === index ? "true" : "false");
+        });
+
+        function applyContent() {
+          if (quoteEl) quoteEl.textContent = person.quote;
+          if (nameMainEl) nameMainEl.textContent = person.name;
+          // Every render always starts collapsed, whether it came from
+          // auto-advance or an avatar click, so automatic rotation never
+          // changes the section's height.
+          collapseQuote();
+          updateReadMoreVisibility();
+        }
+
+        if (!animate || !quoteBlock) {
+          applyContent();
+          return;
+        }
+
+        quoteBlock.classList.add("is-transitioning");
+        window.setTimeout(() => {
+          applyContent();
+          quoteBlock.classList.remove("is-transitioning");
+        }, 220);
+      }
+
+      function goTo(index, opts) {
+        activeIndex = ((index % people.length) + people.length) % people.length;
+        render(activeIndex, opts);
+      }
+
+      function scheduleNext() {
+        clearActiveTimer();
+        if (reduceMotion || isExpanded) return;
+        activeTimer = window.setTimeout(() => {
+          goTo(activeIndex + 1);
+          scheduleNext();
+        }, ADVANCE_MS);
+      }
+
+      if (!alreadyBound) {
+        faces.forEach((face, i) => {
+          face.addEventListener("click", () => {
+            goTo(i);
+            scheduleNext();
+          });
+        });
+
+        if (readMoreEl) {
+          readMoreEl.addEventListener("click", () => {
+            if (isExpanded) {
+              collapseQuote();
+              scheduleNext();
+            } else {
+              isExpanded = true;
+              if (quoteWrapEl) quoteWrapEl.classList.add("is-expanded");
+              readMoreEl.textContent = "Read less";
+              readMoreEl.setAttribute("aria-expanded", "true");
+              // Pause auto-advance while the visitor is reading; resumes
+              // fresh (via scheduleNext in the branch above) only once they
+              // collapse it again or pick a different avatar.
+              clearActiveTimer();
+            }
+          });
+        }
+      }
+
+      // Sync the Read more button to the quote that's already in the markup
+      // (server-rendered, collapsed by default) before any render() call
+      // happens, so it's correct on first paint without re-touching text
+      // that's already right.
+      updateReadMoreVisibility();
+
+      scheduleNext();
+    }
+
+    // Cover every timing case: the script may execute before or after
+    // DOMContentLoaded has already fired (is:inline scripts run in document
+    // order during parsing), and astro:page-load covers Astro's client-side
+    // view-transition navigations.
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+    document.addEventListener("astro:page-load", init);
+  })();
+</script>
