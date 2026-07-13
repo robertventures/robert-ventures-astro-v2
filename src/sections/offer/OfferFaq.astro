@@ -1,0 +1,442 @@
+---
+// FAQ section for the offer page. Built from the approved Figma design:
+// a centered header, a single-open accordion (first row expanded on load),
+// and a dark "book a call" card below the list.
+//
+// Accordion mechanics (measured max-height, single-open, transitionend
+// cleanup) and the dual GA4 + PostHog fire-on-expand pattern are copied from
+// src/sections/FAQ.astro. The glyph is a plus/minus built from two CSS bars
+// instead of the homepage's caret SVG, per the Figma spec.
+const faqs = [
+  {
+    question: "When do I get my money back?",
+    slug: "money_back",
+    answer:
+      "After your 1-year or 3-year term ends, you can request a withdrawal at any time. Your money arrives within 90 days, with all the interest you earned.",
+  },
+  {
+    question: "How can you pay a fixed 10%?",
+    slug: "how_pay_fixed_10",
+    answer:
+      "The rate is set by contract, not a projection. Your money is put to work in Outer Banks real estate and a long-term digital asset reserve, and we run lean, online-only, with no middlemen taking a cut.",
+  },
+  {
+    question: "How do I get paid?",
+    slug: "how_do_i_get_paid",
+    answer:
+      "It's your choice. Take your interest as a monthly payout, or let it compound so every month's interest starts earning too. Most investors choose compounding.",
+  },
+  {
+    question: "Is this regulated?",
+    slug: "regulated",
+    answer:
+      "Yes. Our offering is SEC-qualified under Regulation A Tier 2, and our financials are audited every year by an independent CPA.",
+  },
+  {
+    question: "What's the minimum to start?",
+    slug: "minimum_to_start",
+    answer:
+      "$1,000. The rate is the same whether you invest $1,000 or $500,000: fixed 8% on the 1-year term, fixed 10% on the 3-year.",
+  },
+];
+---
+
+<section class="offer-faq">
+  <div class="offer-faq__container">
+    <div class="offer-faq__header" data-reveal>
+      <p class="offer-faq__eyebrow">COMMON QUESTIONS</p>
+      <h2 class="offer-faq__headline">The questions everyone asks.</h2>
+    </div>
+
+    <div class="offer-faq__list" data-reveal>
+      {
+        faqs.map((faq, index) => (
+          <div class="offer-faq__item">
+            <button
+              type="button"
+              class:list={["offer-faq__question", { active: index === 0 }]}
+              aria-expanded={index === 0 ? "true" : "false"}
+              aria-controls={`offer-faq-panel-${index}`}
+              id={`offer-faq-button-${index}`}
+              data-faq-slug={faq.slug}
+            >
+              <span class="offer-faq__question-text">{faq.question}</span>
+              <span class="offer-faq__glyph" aria-hidden="true">
+                <span class="offer-faq__glyph-bar offer-faq__glyph-bar--h" />
+                <span class="offer-faq__glyph-bar offer-faq__glyph-bar--v" />
+              </span>
+            </button>
+            <div
+              class:list={["offer-faq__panel", { expanded: index === 0 }]}
+              id={`offer-faq-panel-${index}`}
+              role="region"
+              aria-labelledby={`offer-faq-button-${index}`}
+            >
+              <p class="offer-faq__answer">{faq.answer}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <a
+      class="offer-faq__cta"
+      href="/offer/book-call"
+      data-track-cta="book_call"
+      data-track-location="offer_faq"
+      data-reveal
+    >
+      <span class="offer-faq__cta-chip" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M5.5 3h2.2c.3 0 .55.2.63.48l.7 2.5c.08.28-.02.58-.25.75l-1.4 1.05c.75 1.68 2.1 3.03 3.78 3.78l1.05-1.4c.17-.23.47-.33.75-.25l2.5.7c.28.08.48.33.48.63V13.5c0 .83-.7 1.5-1.53 1.44C8.9 14.5 5.5 11.1 5.06 6.53 5 5.7 5.67 5 6.5 5"
+            stroke="#ffffff"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <span class="offer-faq__cta-text">
+        <span class="offer-faq__cta-title">Still have questions? Book a 10-min call</span>
+        <span class="offer-faq__cta-sub">A real person walks you through everything</span>
+      </span>
+      <span class="offer-faq__cta-arrow" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M7.5 4.5l5 5.5-5 5.5"
+            stroke="#ffffff"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .offer-faq {
+    background: var(--bg-primary);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 32px 24px;
+  }
+
+  .offer-faq__container {
+    max-width: 366px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* --- Header --- */
+  .offer-faq__header {
+    text-align: center;
+  }
+
+  .offer-faq__eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin: 0 0 8px 0;
+  }
+
+  .offer-faq__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--fs-heading-lg);
+    line-height: 1.2;
+    color: var(--text-heading);
+    font-variant-numeric: lining-nums;
+    margin: 0;
+  }
+
+  /* --- Accordion list --- */
+  .offer-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .offer-faq__item {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+
+  .offer-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .offer-faq__question-text {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-heading);
+  }
+
+  /* Plus/minus glyph built from two CSS bars (not the homepage caret SVG).
+     The vertical bar fades and rotates away when the row is open, leaving
+     the horizontal bar behind as a minus sign. */
+  .offer-faq__glyph {
+    position: relative;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+  }
+
+  .offer-faq__glyph-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #555555;
+    border-radius: 1px;
+    transform: translate(-50%, -50%);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .offer-faq__glyph-bar--h {
+    width: 12px;
+    height: 2px;
+  }
+
+  .offer-faq__glyph-bar--v {
+    width: 2px;
+    height: 12px;
+  }
+
+  .offer-faq__question.active .offer-faq__glyph-bar--v {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .offer-faq__panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .offer-faq__answer {
+    margin: 0;
+    padding-top: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-body);
+  }
+
+  /* --- CTA card: same dark-card recipe as OfferNextSteps' featured card
+     (#152429, 14px radius, 16/18 padding, 44px chip) so both sections match. --- */
+  .offer-faq__cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    border-radius: 16px;
+    text-decoration: none;
+    background: #152429;
+    transition: background 0.2s ease;
+  }
+
+  .offer-faq__cta:hover {
+    background: #1c2f35;
+  }
+
+  .offer-faq__cta-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .offer-faq__cta-text {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .offer-faq__cta-title {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+
+  .offer-faq__cta-sub {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .offer-faq__cta-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    opacity: 0.6;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .offer-faq {
+      padding: 48px 32px;
+    }
+
+    .offer-faq__container {
+      max-width: 640px;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .offer-faq {
+      padding: 64px 32px;
+    }
+
+    .offer-faq__container {
+      max-width: 720px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .offer-faq__panel {
+      transition: none;
+    }
+    .offer-faq__glyph-bar {
+      transition: none;
+    }
+    .offer-faq__cta {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Local GA4 helper, matching the inline triggerEvent() pattern used in
+  // FAQ.astro and other components (push straight to window.dataLayer).
+  function triggerEvent(eventName: string, eventData: Record<string, string> = {}) {
+    if ((window as any).dataLayer) {
+      (window as any).dataLayer.push({
+        event: eventName,
+        ...eventData,
+      });
+    } else {
+      console.warn("dataLayer is not defined. Ensure Google Tag Manager is properly initialized.");
+    }
+  }
+
+  function initOfferFaq() {
+    const container = document.querySelector(".offer-faq__list");
+    if (!(container instanceof HTMLElement)) return;
+    // Guard against double-binding on repeat astro:page-load fires, same
+    // approach as the review-card toggle in OfferNextSteps.astro.
+    if (container.dataset.faqBound === "1") return;
+    container.dataset.faqBound = "1";
+
+    // Set the real starting max-height for every panel: "none" for the row
+    // that ships open (index 0), "0" for the rest. This is initial state,
+    // not an animation, so no transitionend handling is needed here.
+    const panels = container.querySelectorAll(".offer-faq__panel");
+    panels.forEach((panel) => {
+      if (!(panel instanceof HTMLElement)) return;
+      panel.style.maxHeight = panel.classList.contains("expanded") ? "none" : "0";
+    });
+
+    container.addEventListener("transitionend", (event) => {
+      const panel = event.target;
+      if (!(panel instanceof HTMLElement) || !panel.classList.contains("offer-faq__panel")) return;
+      if (panel.classList.contains("expanded")) {
+        panel.style.maxHeight = "none";
+      }
+    });
+
+    container.addEventListener("click", (event) => {
+      const target = event.target;
+      const button = target instanceof Element ? target.closest("button.offer-faq__question") : null;
+      if (!button || !container.contains(button)) return;
+
+      const clickedPanel = button.nextElementSibling;
+      if (!(clickedPanel instanceof HTMLElement)) return;
+
+      const isCurrentlyOpen = button.classList.contains("active");
+      const allButtons = container.querySelectorAll("button.offer-faq__question");
+      const allPanels = container.querySelectorAll(".offer-faq__panel");
+
+      // Close every other row (single-open accordion).
+      allButtons.forEach((btn) => {
+        if (btn !== button) {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      allPanels.forEach((panel) => {
+        if (panel !== clickedPanel && panel instanceof HTMLElement && panel.classList.contains("expanded")) {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+          panel.offsetHeight; // force reflow so the browser animates from this height
+          panel.style.maxHeight = "0";
+          panel.classList.remove("expanded");
+        }
+      });
+
+      if (isCurrentlyOpen) {
+        // Collapsing: animate from the current height down to 0. No
+        // analytics event fires on collapse.
+        button.classList.remove("active");
+        button.setAttribute("aria-expanded", "false");
+        clickedPanel.style.maxHeight = clickedPanel.scrollHeight + "px";
+        clickedPanel.offsetHeight; // force reflow
+        clickedPanel.style.maxHeight = "0";
+        clickedPanel.classList.remove("expanded");
+      } else {
+        // Expanding: measure content height and animate to it, then fire
+        // both analytics events.
+        button.classList.add("active");
+        button.setAttribute("aria-expanded", "true");
+        clickedPanel.classList.add("expanded");
+        clickedPanel.style.maxHeight = clickedPanel.scrollHeight + "px";
+
+        const faqSlug = (button as HTMLElement).dataset.faqSlug || "unknown";
+        triggerEvent("faq_clicked", { faq_question: faqSlug });
+        if ((window as any).posthogTrack) {
+          (window as any).posthogTrack("faq_clicked", { faq_slug: faqSlug });
+        }
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initOfferFaq);
+  document.addEventListener("astro:page-load", initOfferFaq);
+</script>
