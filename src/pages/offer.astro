@@ -1,6 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
+import LogoHeader from "../components/LogoHeader.astro";
 import DisclaimerBlock from "../components/DisclaimerBlock.astro";
 // Offer landing page built from the Figma design "Offer Page I - Simplified".
 // Retargeting traffic lands here. Each section is self-contained (owns its
@@ -40,7 +40,8 @@ const pageDescription =
       is:inline></script>
   </head>
   <body>
-    <Header />
+    <!-- Logo only, no menu: retargeting traffic stays on the funnel -->
+    <LogoHeader />
 
     <main class="offer-page">
       <OfferHero />

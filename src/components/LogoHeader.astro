@@ -1,0 +1,27 @@
+---
+// Logo-only header for funnel/landing pages. Same dimensions as the main
+// Header (64px tall, 32px logo, bottom border) but with no menu: visitors
+// leave a landing page only through its explicit in-page CTAs.
+import RvLogo from "../images/brand/logo-horizontal-whitebg.svg";
+---
+
+<div class="logo-header" role="img" aria-label="Robert Ventures">
+  <RvLogo />
+</div>
+
+<style>
+  .logo-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 64px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .logo-header :global(svg) {
+    display: block;
+    height: 32px;
+    width: auto;
+  }
+</style>
