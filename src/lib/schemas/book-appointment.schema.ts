@@ -18,6 +18,10 @@ export const bookAppointmentSchema = z
     ghl_contact_id: z.string().optional(),
     selectedSlot: z.string().min(1, "selectedSlot is required"),
     timezone: z.string().min(1, "timezone is required"),
+    // Optional phone update for an existing ghl_contact_id (e.g. the user
+    // retyped it on the booking form). Ignored when contactInfo is used
+    // instead, since contactInfo.phone already covers that path.
+    phone: z.string().min(7).optional(),
 
     contactInfo: z
       .object({

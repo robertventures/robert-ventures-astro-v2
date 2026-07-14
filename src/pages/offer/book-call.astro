@@ -3,7 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import BaseHead from "../../components/BaseHead.astro";
 import DisclaimerBlock from "../../components/DisclaimerBlock.astro";
 import RvLogo from "../../images/brand/logo-horizontal-whitebg.svg";
-import IntroBookingCalendar from "../../sections/introduction/IntroBookingCalendar.astro";
+import OfferBookCall from "../../sections/offer/OfferBookCall.astro";
 
 const pageTitle = "Book a Call | Robert Ventures";
 const pageDescription = "Pick a time for a quick 10-minute call with our team.";
@@ -23,8 +23,7 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
 
     <main class="book-call">
       <div class="book-call__content">
-        <h1 class="book-call__heading">Get every question answered.</h1>
-        <IntroBookingCalendar redirectUrl="/call-thank-you?src=offer" />
+        <OfferBookCall redirectUrl="/call-thank-you?src=offer" />
 
         {
           import.meta.env.DEV && (
@@ -131,16 +130,6 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
     gap: 1rem;
   }
 
-  .book-call__heading {
-    font-family: "Roboto Serif", serif;
-    color: #1a1a1a;
-    font-size: 1.75rem;
-    font-weight: 500;
-    line-height: 120%;
-    text-align: center;
-    margin: 0;
-  }
-
   @media only screen and (min-width: 600px) {
     .pres-nav-logo {
       padding: 1.5rem 1rem;
@@ -153,19 +142,11 @@ const pageDescription = "Pick a time for a quick 10-minute call with our team.";
     .book-call {
       padding: 3rem 2rem 5rem;
     }
-
-    .book-call__heading {
-      font-size: 2.25rem;
-    }
   }
 
   @media only screen and (min-width: 1136px) {
     .book-call {
       padding: 4rem 2rem 6rem;
-    }
-
-    .book-call__heading {
-      font-size: 2.75rem;
     }
   }
 

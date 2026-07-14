@@ -1,0 +1,1779 @@
+---
+// Offer-funnel booking widget. Forked from
+// src/sections/introduction/IntroBookingCalendar.astro (do not edit that file;
+// the introduction funnel still uses it unchanged).
+//
+// Adds two things on top of the day/time booking flow:
+//   1. An "instant call" entry: a dark card offering a callback in the next
+//      15 minutes, shown only inside the instant-call window (weekdays
+//      10am-5pm ET). It posts to /api/instant-call and ends on an in-widget
+//      success screen (no redirect).
+//   2. A phone-confirmation step in the booking path: known leads confirm
+//      their number before the slot is booked; cold visitors enter their
+//      details (name/email/phone) as before.
+//
+// The intro copy (eyebrow / heading / subtitle) and the footer link live in
+// this component and change per state to match the approved Figma designs.
+//
+// redirectUrl: where to send the visitor after a successful *booking*. The
+// instant-call path never redirects. Defaults to the offer thank-you page.
+const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
+---
+
+<div class="oc" data-call-root>
+  <div class="oc__intro">
+    <p class="oc__eyebrow" data-call-eyebrow>BOOK A CALL</p>
+    <h1 class="oc__heading" data-call-heading>Get every question answered.</h1>
+    <p class="oc__subtitle" data-call-subtitle>
+      A member of our team will call you at the time you select. Please only reserve a slot you can
+      commit to.
+    </p>
+  </div>
+
+  <div
+    class="booking"
+    data-booking-root
+    data-state="loading"
+    data-instant-window="closed"
+    data-redirect-url={redirectUrl}
+  >
+    <!-- Loading state -->
+    <div class="booking__panel" data-panel="loading">
+      <div class="booking__spinner" aria-hidden="true"></div>
+      <p class="booking__muted">Loading available times...</p>
+    </div>
+
+    <!-- Entry: instant-call card (gated) + day picker -->
+    <div class="booking__panel" data-panel="choice">
+      <button
+        type="button"
+        class="oc__instant"
+        data-instant-card
+        aria-label="Get a call in the next 15 minutes"
+      >
+        <span class="oc__instant-main">
+          <span class="oc__instant-badge">
+            <span class="oc__instant-dot" aria-hidden="true"></span>
+            <span class="oc__instant-badge-text">Available now</span>
+          </span>
+          <span class="oc__instant-title">Get a call in the next 15 minutes</span>
+        </span>
+        <span class="oc__instant-chevron" aria-hidden="true">&#8250;</span>
+      </button>
+
+      <div class="oc__or" data-instant-divider aria-hidden="true">
+        <span class="oc__or-line"></span>
+        <span class="oc__or-text">or</span>
+        <span class="oc__or-line"></span>
+      </div>
+
+      <p class="oc__notice" data-instant-notice hidden></p>
+
+      <div class="booking__header">
+        <p class="booking__label">Pick a day</p>
+        <p class="booking__tz-label" data-booking-tz-label></p>
+      </div>
+      <div class="booking__days" data-booking-days></div>
+      <p class="booking__muted booking__empty" data-booking-empty hidden>
+        No slots available today or tomorrow. Please check back soon.
+      </p>
+    </div>
+
+    <!-- Time picker -->
+    <div class="booking__panel" data-panel="picking-time">
+      <button type="button" class="booking__back-inline" data-booking-to-days>
+        &#8249; Back to days
+      </button>
+      <p class="booking__label booking__day-heading" data-booking-day-label></p>
+      <div class="booking__times" data-booking-times></div>
+    </div>
+
+    <!-- Collecting info (cold visitors only) -->
+    <div class="booking__panel" data-panel="collecting-info">
+      <button type="button" class="booking__back-inline" data-booking-info-back>
+        &#8249; Pick a different time
+      </button>
+      <p class="booking__label">Tell us where to call you</p>
+      <p class="booking__muted" data-booking-info-summary></p>
+      <div class="booking__fields">
+        <input
+          type="text"
+          name="full_name"
+          placeholder="Full Name"
+          aria-label="Full name"
+          autocomplete="name"
+          class="oc__input"
+          data-booking-info-name
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          aria-label="Email address"
+          autocomplete="email"
+          class="oc__input"
+          data-booking-info-email
+        />
+        <input
+          type="tel"
+          name="phone_number"
+          placeholder="(555) 555-5555"
+          aria-label="Phone number"
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          class="oc__input"
+          data-booking-info-phone
+        />
+        <input
+          type="text"
+          name="company"
+          tabindex="-1"
+          autocomplete="off"
+          class="oc__honeypot"
+          aria-hidden="true"
+          data-booking-info-honeypot
+        />
+      </div>
+      <p class="booking__error" data-booking-info-error hidden></p>
+      <button type="button" class="oc__cta" data-booking-info-continue> Continue </button>
+    </div>
+
+    <!-- Confirm phone (known lead, booking path) -->
+    <div class="booking__panel" data-panel="confirm-phone">
+      <div class="oc__slot-summary">
+        <span class="oc__slot-day" data-cp-day></span>
+        <span class="oc__slot-time" data-cp-time></span>
+      </div>
+      <div class="oc__field">
+        <label class="oc__field-label" for="oc-cp-phone">Phone number</label>
+        <input
+          id="oc-cp-phone"
+          type="tel"
+          placeholder="(555) 555-5555"
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          class="oc__input"
+          data-cp-phone
+        />
+      </div>
+      <p class="booking__error" data-cp-error hidden></p>
+      <button type="button" class="oc__cta" data-cp-confirm> Confirm and book </button>
+    </div>
+
+    <!-- Instant confirm: name/email/phone inputs, prefilled from any saved
+         data so a recognized lead can still correct their details. -->
+    <div class="booking__panel" data-panel="instant-confirm">
+      <div class="oc__field">
+        <label class="oc__field-label" for="oc-ic-name">Full name</label>
+        <input
+          id="oc-ic-name"
+          type="text"
+          placeholder="Your name"
+          autocomplete="name"
+          class="oc__input"
+          data-ic-input-name
+        />
+      </div>
+      <div class="oc__field">
+        <label class="oc__field-label" for="oc-ic-email">Email</label>
+        <input
+          id="oc-ic-email"
+          type="email"
+          placeholder="you@email.com"
+          autocomplete="email"
+          class="oc__input"
+          data-ic-input-email
+        />
+      </div>
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        class="oc__honeypot"
+        aria-hidden="true"
+        data-ic-honeypot
+      />
+
+      <div class="oc__field">
+        <label class="oc__field-label" for="oc-ic-phone">Phone number</label>
+        <input
+          id="oc-ic-phone"
+          type="tel"
+          placeholder="(555) 000-0000"
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          class="oc__input"
+          data-ic-phone
+        />
+      </div>
+      <p class="booking__error" data-ic-error hidden></p>
+      <button type="button" class="oc__cta" data-ic-submit> Call me now </button>
+    </div>
+
+    <!-- Instant success (stays in-widget, no redirect) -->
+    <div class="booking__panel booking__panel--center" data-panel="instant-success">
+      <div class="oc__success-badge" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg
+        >
+      </div>
+      <p class="oc__success-number" data-is-number></p>
+      <p class="oc__success-hours">Calls come from our team between 10am and 5pm ET.</p>
+    </div>
+  </div>
+
+  <div class="oc__footer" data-call-footer hidden>
+    <button type="button" class="oc__footer-btn" data-call-footer-btn hidden></button>
+    <a class="oc__footer-link" data-call-footer-link href="/offer" hidden></a>
+  </div>
+</div>
+
+<!--
+  Global styles for the custom booking UI. Day/time nodes are built with
+  document.createElement in JS so they never receive Astro's scope attribute;
+  is:global keeps their selectors matching. Class names use `booking__`
+  (reused day/time architecture from the source) and `oc__` (new offer panels).
+-->
+<style is:global>
+  .oc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .oc__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .oc__eyebrow {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #2b6b47;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .oc__heading {
+    font-family: "Roboto Serif", serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 120%;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .oc__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 400;
+    color: #555555;
+    line-height: 150%;
+    margin: 0;
+    max-width: 360px;
+    text-wrap: balance;
+  }
+
+  .booking {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  }
+
+  .booking__panel {
+    display: none;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .booking__panel--center {
+    align-items: center;
+    text-align: center;
+    padding: 0.75rem 0;
+  }
+
+  .booking[data-state="loading"] [data-panel="loading"],
+  .booking[data-state="choice"] [data-panel="choice"],
+  .booking[data-state="picking-time"] [data-panel="picking-time"],
+  .booking[data-state="collecting-info"] [data-panel="collecting-info"],
+  .booking[data-state="confirm-phone"] [data-panel="confirm-phone"],
+  .booking[data-state="instant-confirm"] [data-panel="instant-confirm"],
+  .booking[data-state="instant-success"] [data-panel="instant-success"] {
+    display: flex;
+  }
+
+  /* Instant-call gating: hide the card + "or" divider outside the window. */
+  .booking[data-instant-window="closed"] [data-instant-card],
+  .booking[data-instant-window="closed"] [data-instant-divider] {
+    display: none;
+  }
+
+  /* Instant-call entry card */
+  .oc__instant {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    background: #152420;
+    border: none;
+    border-radius: 10px;
+    padding: 0.875rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    box-sizing: border-box;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .oc__instant:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(21, 36, 32, 0.18);
+  }
+
+  .oc__instant-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+  }
+
+  .oc__instant-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .oc__instant-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #46c47f;
+    flex-shrink: 0;
+  }
+
+  .oc__instant-badge-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: #cfe8da;
+  }
+
+  .oc__instant-title {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 130%;
+  }
+
+  .oc__instant-chevron {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+  }
+
+  /* "or" divider */
+  .oc__or {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+  }
+
+  .oc__or-line {
+    flex: 1 0 0;
+    height: 1px;
+    background: #e5e5e5;
+  }
+
+  .oc__or-text {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #999999;
+  }
+
+  /* Inline notice (window closed / slot taken) */
+  .oc__notice {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    line-height: 140%;
+    margin: 0;
+    padding: 0.75rem 0.875rem;
+    background: #f4f6f5;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .booking__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .oc__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+  }
+
+  .oc__field-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #999999;
+  }
+
+  .oc__input {
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    padding: 0 0.875rem;
+    height: 52px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    color: #1a1a1a;
+    transition: border-color 0.2s ease;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .oc__input:focus {
+    outline: none;
+    border-color: #152420;
+  }
+
+  .oc__input::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+
+  .oc__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .booking__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .booking__label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .booking__day-heading {
+    font-size: 0.875rem;
+  }
+
+  .booking__muted {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #555555;
+    margin: 0;
+    line-height: 150%;
+  }
+
+  .booking__tz-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.75rem;
+    color: #999999;
+    margin: 0;
+  }
+
+  .booking__days {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .booking__day {
+    font-family: "Roboto", sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    min-height: 52px;
+    padding: 0 0.875rem;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.15s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .booking__day:hover {
+    border-color: #152420;
+    background: #f4f6f5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21, 36, 32, 0.08);
+  }
+
+  .booking__day-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .booking__day-weekday {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .booking__day-date {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #777777;
+  }
+
+  .booking__day-chevron {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    color: #999999;
+    flex-shrink: 0;
+  }
+
+  .booking__times {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .booking__period {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .booking__period-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 0.88px;
+    margin: 0;
+  }
+
+  .booking__period-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .booking__time {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    height: 40px;
+    padding: 0 0.35rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .booking__time:hover {
+    border-color: #152420;
+    background: #f4f6f5;
+    box-shadow: 0 2px 6px rgba(21, 36, 32, 0.08);
+  }
+
+  .booking__back-inline {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #2b6b47;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0;
+  }
+
+  .booking__back-inline:hover {
+    color: #1f5233;
+  }
+
+  /* Confirm-phone slot summary */
+  .oc__slot-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    height: 52px;
+    padding: 0 0.875rem;
+    box-sizing: border-box;
+  }
+
+  .oc__slot-day {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .oc__slot-time {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #999999;
+  }
+
+  /* Primary CTA (Call me now / Confirm and book / Continue) */
+  .oc__cta {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #152420;
+    border: none;
+    border-radius: 10px;
+    height: 56px;
+    padding: 0 1.5rem;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .oc__cta:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  .oc__cta:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .booking__error {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    color: #b00020;
+    margin: 0;
+  }
+
+  /* Instant success */
+  .oc__success-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #d9ede3;
+    color: #2b6b47;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .oc__success-number {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .oc__success-hours {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #777777;
+    line-height: 140%;
+    margin: 0;
+  }
+
+  /* Footer link (below the card) */
+  .oc__footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .oc__footer-btn {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #999999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .oc__footer-btn:hover {
+    color: #555555;
+  }
+
+  .oc__footer-link {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #777777;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .oc__footer-link:hover {
+    text-decoration: underline;
+  }
+
+  .booking__spinner {
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    border: 2.5px solid rgba(21, 36, 32, 0.15);
+    border-top-color: #152420;
+    border-radius: 50%;
+    animation: booking-spin 0.8s linear infinite;
+  }
+
+  @keyframes booking-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .booking__spinner {
+      animation: none;
+    }
+    .oc__cta:hover,
+    .oc__instant:hover,
+    .booking__day:hover {
+      transform: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    .oc__heading {
+      font-size: 2.25rem;
+    }
+    .oc__subtitle {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media only screen and (min-width: 1136px) {
+    .oc__heading {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  // Offer-funnel booking + instant-call flow.
+  // Slots come from /api/booking-slots (proxies GHL v2 free-slots). Booking
+  // calls /api/book-appointment; the instant path calls /api/instant-call.
+  // All calendar rules (window, lead time, granularity, no double-booking)
+  // are enforced by GHL.
+  (function () {
+    const root = document.querySelector("[data-booking-root]");
+    if (!root) return;
+
+    const callRoot = document.querySelector("[data-call-root]");
+
+    // Intro / footer (change per state)
+    const eyebrowEl = callRoot.querySelector("[data-call-eyebrow]");
+    const headingEl = callRoot.querySelector("[data-call-heading]");
+    const subtitleEl = callRoot.querySelector("[data-call-subtitle]");
+    const footerWrapEl = callRoot.querySelector("[data-call-footer]");
+    const footerBtnEl = callRoot.querySelector("[data-call-footer-btn]");
+    const footerLinkEl = callRoot.querySelector("[data-call-footer-link]");
+
+    // Day / time
+    const tzLabelEl = root.querySelector("[data-booking-tz-label]");
+    const daysEl = root.querySelector("[data-booking-days]");
+    const emptyEl = root.querySelector("[data-booking-empty]");
+    const timesEl = root.querySelector("[data-booking-times]");
+    const dayLabelEl = root.querySelector("[data-booking-day-label]");
+    const toDaysBtn = root.querySelector("[data-booking-to-days]");
+
+    // Instant entry
+    const instantCardEl = root.querySelector("[data-instant-card]");
+    const noticeEl = root.querySelector("[data-instant-notice]");
+
+    // Collecting info (cold visitors)
+    const infoSummaryEl = root.querySelector("[data-booking-info-summary]");
+    const infoNameEl = root.querySelector("[data-booking-info-name]");
+    const infoEmailEl = root.querySelector("[data-booking-info-email]");
+    const infoPhoneEl = root.querySelector("[data-booking-info-phone]");
+    const infoHoneypotEl = root.querySelector("[data-booking-info-honeypot]");
+    const infoErrorEl = root.querySelector("[data-booking-info-error]");
+    const infoBackBtn = root.querySelector("[data-booking-info-back]");
+    const infoContinueBtn = root.querySelector("[data-booking-info-continue]");
+
+    // Confirm phone (known lead, booking path)
+    const cpDayEl = root.querySelector("[data-cp-day]");
+    const cpTimeEl = root.querySelector("[data-cp-time]");
+    const cpPhoneEl = root.querySelector("[data-cp-phone]");
+    const cpErrorEl = root.querySelector("[data-cp-error]");
+    const cpConfirmBtn = root.querySelector("[data-cp-confirm]");
+
+    // Instant confirm
+    const icInputNameEl = root.querySelector("[data-ic-input-name]");
+    const icInputEmailEl = root.querySelector("[data-ic-input-email]");
+    const icPhoneEl = root.querySelector("[data-ic-phone]");
+    const icHoneypotEl = root.querySelector("[data-ic-honeypot]");
+    const icErrorEl = root.querySelector("[data-ic-error]");
+    const icSubmitBtn = root.querySelector("[data-ic-submit]");
+
+    // Instant success
+    const isNumberEl = root.querySelector("[data-is-number]");
+
+    // Per-state intro copy + footer config. Copy is verbatim from the
+    // approved Figma designs.
+    const VIEW = {
+      loading: {
+        eyebrow: "BOOK A CALL",
+        heading: "Get every question answered.",
+        subtitle:
+          "A member of our team will call you at the time you select. Please only reserve a slot you can commit to.",
+        footer: null,
+      },
+      choice: {
+        eyebrow: "BOOK A CALL",
+        heading: "Get every question answered.",
+        subtitle:
+          "A member of our team will call you at the time you select. Please only reserve a slot you can commit to.",
+        footer: null,
+      },
+      "picking-time": {
+        eyebrow: "BOOK A CALL",
+        heading: "Get every question answered.",
+        subtitle:
+          "A member of our team will call you at the time you select. Please only reserve a slot you can commit to.",
+        footer: null,
+      },
+      "collecting-info": {
+        eyebrow: "BOOK A CALL",
+        heading: "Get every question answered.",
+        subtitle:
+          "A member of our team will call you at the time you select. Please only reserve a slot you can commit to.",
+        footer: null,
+      },
+      "confirm-phone": {
+        eyebrow: "BOOK A CALL",
+        heading: "Confirm your phone number.",
+        subtitle: "So our team can reach you at the time you picked.",
+        footer: { kind: "btn", text: "Change time", action: "to-time" },
+      },
+      "instant-confirm": {
+        eyebrow: "CALL ME NOW",
+        heading: "We'll call you in the next 15 minutes.",
+        subtitle: "Confirm the best number to reach you and keep your phone nearby.",
+        footer: { kind: "btn", text: "Prefer to pick a time instead?", action: "to-choice" },
+      },
+      "instant-success": {
+        eyebrow: "CALL REQUESTED",
+        heading: "Keep your phone nearby.",
+        subtitle: "Our team will call you within the next 15 minutes.",
+        footer: { kind: "link", text: "Back to Robert Ventures", href: "/offer" },
+      },
+    };
+
+    // Default fallback is Eastern (America/New_York) whenever no explicit
+    // timezone is available, so slot times always have a sensible frame.
+    function detectTimezone() {
+      try {
+        const saved = localStorage.getItem("user_timezone");
+        if (saved) return saved;
+      } catch (e) {}
+      try {
+        const session = JSON.parse(localStorage.getItem("webinarSession") || "{}");
+        if (session && session.timeZone) return session.timeZone;
+      } catch (e) {}
+      try {
+        const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (browserTz) return browserTz;
+      } catch (e) {}
+      return "America/New_York";
+    }
+
+    const state = {
+      slotsByDay: {},
+      selectedDate: null,
+      selectedSlot: null,
+      timezone: detectTimezone(),
+      hasLoaded: false,
+      knownIdentity: null,
+      pendingContactInfo: null,
+      instantPhoneDigits: "",
+    };
+
+    // Instant-call window: weekdays 10am-5pm ET. This is a client-side gate
+    // for UI only. The canonical, authoritative copy lives in
+    // src/lib/callWindow.ts and is re-checked server-side in
+    // /api/instant-call (a 409 there is handled the same as a closed window).
+    // Inline scripts cannot import, so the logic is duplicated here.
+    function isInstantCallWindow() {
+      try {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/New_York",
+          hour: "numeric",
+          hour12: false,
+          weekday: "short",
+        }).formatToParts(new Date());
+        let hour = 0;
+        let weekday = "";
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i].type === "hour") hour = parseInt(parts[i].value, 10);
+          if (parts[i].type === "weekday") weekday = parts[i].value;
+        }
+        if (hour === 24) hour = 0;
+        const isWeekday = weekday !== "Sat" && weekday !== "Sun";
+        return isWeekday && hour >= 10 && hour < 17;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function readLs(key) {
+      try {
+        const v = localStorage.getItem(key);
+        return v ? v.trim() : "";
+      } catch (e) {
+        return "";
+      }
+    }
+
+    // Resolve identity in three tiers:
+    //   1. ghl_contact_id (set during registration)
+    //   2. full_name + userEmail + phone_number all present in localStorage
+    //   3. null (caller renders the inline form)
+    function getKnownIdentity() {
+      const contactId = readLs("ghl_contact_id");
+      if (contactId) return { kind: "id", contactId: contactId };
+
+      const name = readLs("full_name");
+      const email = readLs("userEmail");
+      const phone = readLs("phone_number");
+      if (name && email && phone) {
+        return {
+          kind: "info",
+          contactInfo: { name: name, email: email, phone: phone },
+        };
+      }
+      return null;
+    }
+
+    function setFooter(footer) {
+      if (!footer) {
+        footerWrapEl.hidden = true;
+        footerBtnEl.hidden = true;
+        footerLinkEl.hidden = true;
+        return;
+      }
+      footerWrapEl.hidden = false;
+      if (footer.kind === "link") {
+        footerBtnEl.hidden = true;
+        footerLinkEl.hidden = false;
+        footerLinkEl.textContent = footer.text;
+        footerLinkEl.setAttribute("href", footer.href);
+        footerLinkEl.dataset.action = "";
+      } else {
+        footerLinkEl.hidden = true;
+        footerBtnEl.hidden = false;
+        footerBtnEl.textContent = footer.text;
+        footerBtnEl.dataset.action = footer.action;
+      }
+    }
+
+    function goState(s) {
+      root.setAttribute("data-state", s);
+      const view = VIEW[s];
+      if (view) {
+        eyebrowEl.textContent = view.eyebrow;
+        headingEl.textContent = view.heading;
+        subtitleEl.textContent = view.subtitle;
+        setFooter(view.footer);
+      }
+    }
+
+    function showNotice(msg) {
+      if (!noticeEl) return;
+      noticeEl.textContent = msg;
+      noticeEl.hidden = false;
+    }
+
+    function hideNotice() {
+      if (!noticeEl) return;
+      noticeEl.hidden = true;
+      noticeEl.textContent = "";
+    }
+
+    // Returns "YYYY-MM-DD" for a given Date in the user's timezone.
+    function toDateKey(d) {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: state.timezone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).formatToParts(d);
+      let y = "";
+      let m = "";
+      let dd = "";
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i].type === "year") y = parts[i].value;
+        if (parts[i].type === "month") m = parts[i].value;
+        if (parts[i].type === "day") dd = parts[i].value;
+      }
+      return y + "-" + m + "-" + dd;
+    }
+
+    function weekdayIndex(dateKey) {
+      const parts = dateKey.split("-");
+      const d = new Date(
+        Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0)
+      );
+      const wd = new Intl.DateTimeFormat("en-US", {
+        timeZone: state.timezone,
+        weekday: "short",
+      }).format(d);
+      const map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+      return map[wd];
+    }
+
+    // First 2 days from GHL's response with bookable slots, skipping Sunday.
+    function acceptableDateKeys() {
+      const allDates = Object.keys(state.slotsByDay)
+        .filter(function (k) {
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) return false;
+          if (weekdayIndex(k) === 0) return false;
+          const v = state.slotsByDay[k];
+          return v && Array.isArray(v.slots) && v.slots.length > 0;
+        })
+        .sort();
+      return allDates.slice(0, 2);
+    }
+
+    function formatWeekday(dateStr) {
+      const parts = dateStr.split("-");
+      const d = new Date(
+        Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0)
+      );
+      return d.toLocaleDateString("en-US", {
+        timeZone: state.timezone,
+        weekday: "short",
+      });
+    }
+
+    function formatDayNumber(dateStr) {
+      const parts = dateStr.split("-");
+      const d = new Date(
+        Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0)
+      );
+      return d.toLocaleDateString("en-US", {
+        timeZone: state.timezone,
+        month: "short",
+        day: "numeric",
+      });
+    }
+
+    function formatTime(isoString) {
+      const d = new Date(isoString);
+      return d.toLocaleTimeString("en-US", {
+        timeZone: state.timezone,
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    }
+
+    function formatTzAbbrev() {
+      try {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: state.timezone,
+          timeZoneName: "short",
+        }).formatToParts(new Date());
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i].type === "timeZoneName") return parts[i].value;
+        }
+      } catch (e) {}
+      return "";
+    }
+
+    function slotSummaryText(date, iso) {
+      return (
+        relativeDayLabel(date) +
+        ", " +
+        formatDayNumber(date) +
+        " at " +
+        formatTime(iso) +
+        " (" +
+        formatTzAbbrev() +
+        ")"
+      );
+    }
+
+    function renderDays() {
+      daysEl.innerHTML = "";
+
+      const accept = acceptableDateKeys();
+      const acceptSet = {};
+      accept.forEach(function (k) {
+        acceptSet[k] = true;
+      });
+
+      const dates = Object.keys(state.slotsByDay)
+        .filter(function (k) {
+          if (!acceptSet[k]) return false;
+          const v = state.slotsByDay[k];
+          return v && Array.isArray(v.slots) && v.slots.length > 0;
+        })
+        .sort();
+
+      if (dates.length === 0) {
+        emptyEl.hidden = false;
+        return;
+      }
+      emptyEl.hidden = true;
+
+      dates.forEach(function (date) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "booking__day";
+        btn.setAttribute("data-date", date);
+
+        const left = document.createElement("div");
+        left.className = "booking__day-left";
+
+        const weekday = document.createElement("span");
+        weekday.className = "booking__day-weekday";
+        weekday.textContent = relativeDayLabel(date);
+
+        const day = document.createElement("span");
+        day.className = "booking__day-date";
+        day.textContent = formatDayNumber(date);
+
+        left.appendChild(weekday);
+        left.appendChild(day);
+
+        const chevron = document.createElement("span");
+        chevron.className = "booking__day-chevron";
+        chevron.setAttribute("aria-hidden", "true");
+        chevron.textContent = "›";
+
+        btn.appendChild(left);
+        btn.appendChild(chevron);
+
+        btn.addEventListener("click", function () {
+          state.selectedDate = date;
+          renderTimes(date);
+          goState("picking-time");
+        });
+
+        daysEl.appendChild(btn);
+      });
+    }
+
+    // "Today", "Tomorrow", or the weekday name (based on real date math).
+    function relativeDayLabel(dateKey) {
+      const now = new Date();
+      const todayKey = toDateKey(now);
+      const tomorrowKey = toDateKey(new Date(now.getTime() + 24 * 60 * 60 * 1000));
+      if (dateKey === todayKey) return "Today";
+      if (dateKey === tomorrowKey) return "Tomorrow";
+      return formatWeekday(dateKey);
+    }
+
+    // Extract hour (0-23) of an ISO slot in the user's timezone.
+    function hourInTz(iso) {
+      const d = new Date(iso);
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: state.timezone,
+        hour: "2-digit",
+        hour12: false,
+      }).formatToParts(d);
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i].type === "hour") {
+          const h = parseInt(parts[i].value, 10);
+          return h === 24 ? 0 : h;
+        }
+      }
+      return 0;
+    }
+
+    function periodOf(hour) {
+      if (hour < 12) return "Morning";
+      if (hour < 17) return "Afternoon";
+      return "Evening";
+    }
+
+    function renderTimes(date) {
+      timesEl.innerHTML = "";
+      dayLabelEl.textContent =
+        relativeDayLabel(date) + ", " + formatDayNumber(date) + " (" + formatTzAbbrev() + ")";
+
+      const slots = (state.slotsByDay[date] && state.slotsByDay[date].slots) || [];
+
+      const groups = { Morning: [], Afternoon: [], Evening: [] };
+      slots.forEach(function (iso) {
+        groups[periodOf(hourInTz(iso))].push(iso);
+      });
+
+      ["Morning", "Afternoon", "Evening"].forEach(function (label) {
+        const items = groups[label];
+        if (items.length === 0) return;
+
+        const wrap = document.createElement("div");
+        wrap.className = "booking__period";
+
+        const heading = document.createElement("p");
+        heading.className = "booking__period-label";
+        heading.textContent = label;
+        wrap.appendChild(heading);
+
+        const grid = document.createElement("div");
+        grid.className = "booking__period-grid";
+
+        items.forEach(function (iso) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "booking__time";
+          btn.textContent = formatTime(iso);
+          btn.addEventListener("click", function () {
+            selectSlot(date, iso);
+          });
+          grid.appendChild(btn);
+        });
+
+        wrap.appendChild(grid);
+        timesEl.appendChild(wrap);
+      });
+    }
+
+    // Route after a slot is picked: known leads confirm their phone, cold
+    // visitors fill the info form.
+    function selectSlot(date, iso) {
+      state.selectedSlot = iso;
+      state.knownIdentity = getKnownIdentity();
+
+      if (state.knownIdentity) {
+        cpDayEl.textContent = relativeDayLabel(date) + ", " + formatDayNumber(date);
+        cpTimeEl.textContent = formatTime(iso) + " " + formatTzAbbrev();
+        // Prefill from a stored phone (known "info" identity carries one).
+        let prefill = "";
+        if (state.knownIdentity.kind === "info") prefill = state.knownIdentity.contactInfo.phone;
+        if (!prefill) prefill = readLs("phone_number");
+        cpPhoneEl.value = formatPhoneDigits(prefill);
+        hideEl(cpErrorEl);
+        goState("confirm-phone");
+      } else {
+        if (infoSummaryEl) {
+          infoSummaryEl.textContent = "We'll call you about " + slotSummaryText(date, iso) + ".";
+        }
+        hideEl(infoErrorEl);
+        prefillInfoForm();
+        goState("collecting-info");
+      }
+    }
+
+    function updateTzLabel() {
+      if (!tzLabelEl) return;
+      const abbr = formatTzAbbrev();
+      tzLabelEl.textContent = abbr ? "Times shown in " + abbr : "";
+    }
+
+    async function loadSlots() {
+      goState("loading");
+      updateTzLabel();
+      try {
+        const res = await fetch(
+          "/api/booking-slots?timezone=" + encodeURIComponent(state.timezone),
+          { headers: { Accept: "application/json" } }
+        );
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+
+        const clean = {};
+        Object.keys(data || {}).forEach(function (k) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k) && data[k] && Array.isArray(data[k].slots)) {
+            clean[k] = data[k];
+          }
+        });
+        state.slotsByDay = clean;
+        state.hasLoaded = true;
+
+        renderDays();
+        goState("choice");
+      } catch (err) {
+        console.error("Failed to load slots:", err);
+        state.slotsByDay = {};
+        renderDays();
+        goState("choice");
+      }
+    }
+
+    // Phone formatting mirrors /webinar's input mask.
+    function formatPhoneDigits(value) {
+      let digits = (value || "").replace(/\D/g, "");
+      if (digits.length === 11 && digits[0] === "1") digits = digits.slice(1);
+      digits = digits.slice(0, 10);
+      if (!digits) return "";
+      if (digits.length <= 3) return "(" + digits;
+      if (digits.length <= 6) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+      return "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+    }
+
+    function setupPhoneFormatting(el) {
+      if (!el) return;
+      el.addEventListener("input", function (e) {
+        e.target.value = formatPhoneDigits(e.target.value);
+      });
+      el.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      el.addEventListener("paste", function (e) {
+        e.preventDefault();
+        const clip = e.clipboardData || window.clipboardData;
+        const pasted = clip ? clip.getData("text") : "";
+        e.target.value = formatPhoneDigits(pasted);
+      });
+    }
+
+    function prefillInfoForm() {
+      if (state.pendingContactInfo) {
+        if (infoNameEl) infoNameEl.value = state.pendingContactInfo.name || "";
+        if (infoEmailEl) infoEmailEl.value = state.pendingContactInfo.email || "";
+        if (infoPhoneEl) {
+          infoPhoneEl.value = formatPhoneDigits(state.pendingContactInfo.phone || "");
+        }
+      }
+    }
+
+    function showError(el, msg, focusEl) {
+      if (el) {
+        el.textContent = msg;
+        el.hidden = false;
+      }
+      if (focusEl) {
+        try {
+          focusEl.focus({ preventScroll: true });
+        } catch (e) {
+          focusEl.focus();
+        }
+      }
+    }
+
+    function hideEl(el) {
+      if (!el) return;
+      el.hidden = true;
+      el.textContent = "";
+    }
+
+    // ----- Booking submit (shared by known + cold-visitor paths) -----
+    async function submitBooking(phoneDigits, btn, errEl) {
+      if (!state.selectedSlot) return;
+
+      let identity = state.knownIdentity;
+      if (!identity && state.pendingContactInfo) {
+        identity = { kind: "info", contactInfo: state.pendingContactInfo };
+      }
+      if (!identity) identity = getKnownIdentity();
+      if (!identity) {
+        goState("collecting-info");
+        return;
+      }
+
+      btn.disabled = true;
+      hideEl(errEl);
+
+      const payload = {
+        selectedSlot: state.selectedSlot,
+        timezone: state.timezone,
+      };
+      if (identity.kind === "id") {
+        payload.ghl_contact_id = identity.contactId;
+      } else {
+        payload.contactInfo = identity.contactInfo;
+      }
+      if (phoneDigits) payload.phone = phoneDigits;
+
+      try {
+        const res = await fetch("/api/book-appointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (e) {}
+
+        if (res.status === 409) {
+          btn.disabled = false;
+          await loadSlots();
+          showNotice("That slot was just taken. Please pick another time.");
+          return;
+        }
+        if (!res.ok) {
+          showError(errEl, (data && data.error) || "Something went wrong. Please try again.");
+          btn.disabled = false;
+          return;
+        }
+
+        // Analytics: PostHog + GA dataLayer (unchanged from source).
+        try {
+          if (window.posthogTrack) {
+            window.posthogTrack("appointment_booked", {
+              calendar: "webinar_qa_call",
+              slot: state.selectedSlot,
+              timezone: state.timezone,
+              session_page: window.location.pathname,
+            });
+          }
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "appointmentBooked",
+            calendar: "webinar_qa_call",
+            slot: state.selectedSlot,
+            timezone: state.timezone,
+          });
+        } catch (e) {}
+
+        try {
+          localStorage.setItem(
+            "booked_call_slot",
+            JSON.stringify({ slot: state.selectedSlot, timezone: state.timezone })
+          );
+        } catch (e) {}
+
+        // Persist a cold visitor's details so they are recognized next time.
+        if (identity.kind === "info") {
+          try {
+            localStorage.setItem("full_name", identity.contactInfo.name);
+            localStorage.setItem("userEmail", identity.contactInfo.email);
+            localStorage.setItem(
+              "phone_number",
+              identity.contactInfo.phone.replace(/\D/g, "").replace(/^1/, "")
+            );
+          } catch (e) {}
+        } else if (phoneDigits) {
+          try {
+            localStorage.setItem("phone_number", phoneDigits);
+          } catch (e) {}
+        }
+
+        const redirectUrl = root.getAttribute("data-redirect-url") || "/call-thank-you?src=offer";
+        if (window.rvNavigate) window.rvNavigate(redirectUrl);
+        else window.location.href = redirectUrl;
+      } catch (err) {
+        showError(errEl, "Network error. Please try again.");
+        btn.disabled = false;
+      }
+    }
+
+    // ----- Cold-visitor info form -----
+    function handleInfoContinue() {
+      // Honeypot: silently swallow bot submissions.
+      if (infoHoneypotEl && infoHoneypotEl.value && infoHoneypotEl.value.trim() !== "") {
+        return;
+      }
+
+      const name = (infoNameEl && infoNameEl.value.trim()) || "";
+      const email = (infoEmailEl && infoEmailEl.value.trim()) || "";
+      const phoneDigits = infoPhoneEl ? infoPhoneEl.value.replace(/\D/g, "") : "";
+
+      hideEl(infoErrorEl);
+
+      if (!name || name.indexOf("@") !== -1) {
+        showError(infoErrorEl, "Please enter your full name.", infoNameEl);
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError(infoErrorEl, "Please enter a valid email address.", infoEmailEl);
+        return;
+      }
+      if (phoneDigits.length !== 10) {
+        showError(infoErrorEl, "Please enter a valid 10-digit phone number.", infoPhoneEl);
+        return;
+      }
+
+      state.pendingContactInfo = { name: name, email: email, phone: phoneDigits };
+      state.knownIdentity = { kind: "info", contactInfo: state.pendingContactInfo };
+
+      submitBooking(phoneDigits, infoContinueBtn, infoErrorEl);
+    }
+
+    // ----- Confirm phone (known lead, booking path) -----
+    function handleConfirmPhone() {
+      const phoneDigits = cpPhoneEl ? cpPhoneEl.value.replace(/\D/g, "") : "";
+      hideEl(cpErrorEl);
+      if (phoneDigits.length !== 10) {
+        showError(cpErrorEl, "Please enter a valid 10-digit phone number.", cpPhoneEl);
+        return;
+      }
+      // Keep a known "info" identity's phone in sync with the confirmed value.
+      if (state.knownIdentity && state.knownIdentity.kind === "info") {
+        state.knownIdentity.contactInfo.phone = phoneDigits;
+        if (state.pendingContactInfo) state.pendingContactInfo.phone = phoneDigits;
+      }
+      submitBooking(phoneDigits, cpConfirmBtn, cpErrorEl);
+    }
+
+    // ----- Instant call -----
+    function trackInstantCtaClick() {
+      try {
+        if (window.posthogTrack) {
+          window.posthogTrack("cta_click", {
+            cta_text: "instant_call",
+            button_location: "offer_book_call",
+          });
+        }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "cta_click",
+          cta_text: "instant_call",
+          button_location: "offer_book_call",
+        });
+      } catch (e) {}
+    }
+
+    function closeInstantWindow(message) {
+      root.setAttribute("data-instant-window", "closed");
+      goState("choice");
+      showNotice(
+        message || "Our team is available weekdays 10am to 5pm ET. Pick a time below instead."
+      );
+    }
+
+    function openInstantConfirm() {
+      // Prefill every field from any saved details. All three stay editable
+      // so the lead can correct their info before requesting the call.
+      if (icInputNameEl) icInputNameEl.value = readLs("full_name");
+      if (icInputEmailEl) icInputEmailEl.value = readLs("userEmail");
+      if (icPhoneEl) icPhoneEl.value = formatPhoneDigits(readLs("phone_number"));
+      hideEl(icErrorEl);
+      goState("instant-confirm");
+    }
+
+    function handleInstantCardClick() {
+      if (!isInstantCallWindow()) {
+        closeInstantWindow();
+        return;
+      }
+      trackInstantCtaClick();
+      openInstantConfirm();
+    }
+
+    async function handleInstantSubmit() {
+      // Honeypot
+      if (icHoneypotEl && icHoneypotEl.value && icHoneypotEl.value.trim() !== "") {
+        return;
+      }
+
+      // Re-check the window right before submitting.
+      if (!isInstantCallWindow()) {
+        closeInstantWindow();
+        return;
+      }
+
+      hideEl(icErrorEl);
+
+      // Always submit what is on screen, so any edit the lead makes to a
+      // prefilled value wins over what localStorage remembers.
+      const name = (icInputNameEl && icInputNameEl.value.trim()) || "";
+      const email = (icInputEmailEl && icInputEmailEl.value.trim()) || "";
+      const phoneDigits = icPhoneEl ? icPhoneEl.value.replace(/\D/g, "") : "";
+
+      if (!name || name.indexOf("@") !== -1) {
+        showError(icErrorEl, "Please enter your full name.", icInputNameEl);
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError(icErrorEl, "Please enter a valid email address.", icInputEmailEl);
+        return;
+      }
+      if (phoneDigits.length !== 10) {
+        showError(icErrorEl, "Please enter a valid 10-digit phone number.", icPhoneEl);
+        return;
+      }
+
+      const payload = { phone: phoneDigits, company: "", full_name: name, email: email };
+      // Whether this visitor was already recognized when they submitted
+      // (read before the persist below overwrites localStorage).
+      const hasKnownIdentity = !!getKnownIdentity();
+
+      icSubmitBtn.disabled = true;
+
+      try {
+        const res = await fetch("/api/instant-call", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (e) {}
+
+        if (res.status === 409) {
+          icSubmitBtn.disabled = false;
+          if (data && data.error === "team_busy") {
+            closeInstantWindow("Our team is on a call right now. Pick a time below instead.");
+          } else {
+            closeInstantWindow();
+          }
+          return;
+        }
+        if (!res.ok || !data || data.ok !== true) {
+          showError(icErrorEl, (data && data.error) || "Something went wrong. Please try again.");
+          icSubmitBtn.disabled = false;
+          return;
+        }
+
+        state.instantPhoneDigits = phoneDigits;
+
+        // Persist collected details so a return visitor is recognized.
+        try {
+          if (payload.full_name) localStorage.setItem("full_name", payload.full_name);
+          if (payload.email) localStorage.setItem("userEmail", payload.email);
+          localStorage.setItem("phone_number", phoneDigits);
+        } catch (e) {}
+
+        // Analytics: instant_call_requested to PostHog + GA dataLayer.
+        try {
+          if (window.posthogTrack) {
+            window.posthogTrack("instant_call_requested", {
+              has_known_identity: hasKnownIdentity,
+            });
+          }
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "instant_call_requested",
+            has_known_identity: hasKnownIdentity,
+          });
+        } catch (e) {}
+
+        if (isNumberEl) {
+          isNumberEl.textContent = "We'll call " + formatPhoneDigits(phoneDigits);
+        }
+        icSubmitBtn.disabled = false;
+        goState("instant-success");
+      } catch (err) {
+        showError(icErrorEl, "Network error. Please try again.");
+        icSubmitBtn.disabled = false;
+      }
+    }
+
+    // ----- Wire events -----
+    setupPhoneFormatting(infoPhoneEl);
+    setupPhoneFormatting(cpPhoneEl);
+    setupPhoneFormatting(icPhoneEl);
+
+    if (instantCardEl) instantCardEl.addEventListener("click", handleInstantCardClick);
+    if (icSubmitBtn) icSubmitBtn.addEventListener("click", handleInstantSubmit);
+    if (cpConfirmBtn) cpConfirmBtn.addEventListener("click", handleConfirmPhone);
+
+    toDaysBtn.addEventListener("click", function () {
+      hideNotice();
+      goState("choice");
+    });
+
+    if (infoBackBtn) {
+      infoBackBtn.addEventListener("click", function () {
+        if (state.selectedDate) {
+          renderTimes(state.selectedDate);
+          goState("picking-time");
+        } else {
+          goState("choice");
+        }
+      });
+    }
+
+    if (infoContinueBtn) infoContinueBtn.addEventListener("click", handleInfoContinue);
+
+    // Footer link/button behavior (per current state).
+    if (footerBtnEl) {
+      footerBtnEl.addEventListener("click", function () {
+        const action = footerBtnEl.dataset.action;
+        if (action === "to-time") {
+          if (state.selectedDate) {
+            renderTimes(state.selectedDate);
+            goState("picking-time");
+          } else {
+            goState("choice");
+          }
+        } else if (action === "to-choice") {
+          hideNotice();
+          goState("choice");
+        }
+      });
+    }
+
+    // Establish the instant-call window before the first paint of "choice".
+    root.setAttribute("data-instant-window", isInstantCallWindow() ? "open" : "closed");
+
+    // Load slots immediately on page load.
+    loadSlots();
+  })();
+</script>

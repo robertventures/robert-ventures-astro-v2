@@ -95,6 +95,50 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
       if (verifyRes.ok) {
         resolvedContactId = body.ghl_contact_id;
+
+        // If the user supplied (or retyped) a phone number alongside an
+        // existing contact_id, push it to GHL so the sales team calls the
+        // right number. Reuses the same v1 upsert-by-email pattern as the
+        // contactInfo path below: GHL v1 /contacts/ keys off email, so we
+        // need the contact's email first.
+        if (body.phone) {
+          try {
+            const verifyText = await verifyRes.text();
+            const verifyJson = JSON.parse(verifyText);
+            const contactEmail = verifyJson?.contact?.email;
+
+            if (contactEmail) {
+              // E.164 (+1XXXXXXXXXX), same normalization as webinar-registration
+              // and instant-call, so GHL never has to infer the country code.
+              const digitsOnly = body.phone.replace(/\D/g, "").replace(/^1/, "");
+              const phoneE164 = `+1${digitsOnly}`;
+              const phoneUpdateRes = await fetch("https://rest.gohighlevel.com/v1/contacts/", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${ghlApiKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: contactEmail,
+                  phone: phoneE164,
+                }),
+              });
+
+              if (!phoneUpdateRes.ok) {
+                const text = await phoneUpdateRes.text();
+                await notifySlack(
+                  "Book Appointment",
+                  "Phone update failed",
+                  `Status ${phoneUpdateRes.status}: ${text.slice(0, 300)}`
+                );
+              }
+            }
+          } catch (err) {
+            // Non-fatal: the appointment can still be booked without the
+            // phone update, so log and move on instead of failing the request.
+            await notifySlack("Book Appointment", "Phone update error", String(err));
+          }
+        }
       } else if (verifyRes.status !== 404) {
         const text = await verifyRes.text();
         await notifySlack(
@@ -122,6 +166,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // email as a natural key, so posting the same email twice reuses the
       // existing contact rather than duplicating.
       const digitsOnly = body.contactInfo.phone.replace(/\D/g, "").replace(/^1/, "");
+      const phoneE164 = `+1${digitsOnly}`;
       const upsertRes = await fetch("https://rest.gohighlevel.com/v1/contacts/", {
         method: "POST",
         headers: {
@@ -131,7 +176,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         body: JSON.stringify({
           name: body.contactInfo.name,
           email: body.contactInfo.email,
-          phone: digitsOnly,
+          phone: phoneE164,
           tags: ["Presentation_Booking_Fallback"],
         }),
       });

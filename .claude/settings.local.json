@@ -16,7 +16,8 @@
       "Bash(node -e ' *)",
       "mcp__paper__get_screenshot",
       "mcp__paper__get_node_info",
-      "mcp__paper__get_computed_styles"
+      "mcp__paper__get_computed_styles",
+      "mcp__gohighlevel__contacts_get-contacts"
     ]
   }
 }
