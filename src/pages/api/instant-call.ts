@@ -44,6 +44,10 @@ const GHL_TIMEOUT_MS = 5000;
 const CALENDAR_ID = "xNXEISjf314X2BFZvdaZ";
 const ASSIGNED_USER_ID = "VsY9oLMBB3S4u9Nh9NjW";
 
+// Slack member id for Guillermo (investor relations). Rendered as <@id> in
+// the team alert so he gets pinged on every instant-call request.
+const SLACK_IR_REP_ID = "U0A6U5B04EN";
+
 // How long an instant call occupies the calendar: up to 15 min until the rep
 // dials, a 15-min call, and the calendar's 10-min buffer.
 const INSTANT_CALL_HOLD_MINUTES = 40;
@@ -334,6 +338,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Step 4: alert the sales team. notifySlackTeam never throws, so a Slack
     // outage never prevents us from returning success to the lead.
     await notifySlackTeam("Instant Call Requested", {
+      Rep: `<@${SLACK_IR_REP_ID}>`,
       Name: name,
       Email: email,
       Phone: phoneE164,
