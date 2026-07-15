@@ -21,6 +21,7 @@
             '/webinar': 'webinar',
             '/offer': 'offer',
             '/offer/book-call': 'offer_book_call',
+            '/offer/join-webinar': 'offer_join_webinar',
             '/webinar-follow-up': 'webinar_follow_up',
             '/privacy-policy': 'privacy_policy',
             '/terms-of-use': 'terms_of_use',

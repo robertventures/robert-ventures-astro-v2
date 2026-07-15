@@ -319,6 +319,7 @@ import joeThumb from "../../assets/offer/joe-thumbnail.png";
       // pending -> trying -> playing, or -> failed (autoplay blocked / reduced motion)
       let autoplayState = "pending";
       let engaged = false;
+      const progressFired = {};
 
       function showUnmuteMode() {
         overlay.classList.remove("is-hidden", "is-play-mode");
@@ -348,6 +349,15 @@ import joeThumb from "../../assets/offer/joe-thumbnail.png";
             video_id: "offer-founder",
             current_time: Math.round(player.currentTime || 0),
           });
+        }
+      }
+
+      // Quartile progress tracking, only for engaged (unmuted) viewing.
+      function fireProgress(percent) {
+        if (progressFired[percent]) return;
+        progressFired[percent] = true;
+        if (window.posthogTrack) {
+          window.posthogTrack("video_progress", { video_id: "offer-founder", percent: percent });
         }
       }
 
@@ -395,6 +405,20 @@ import joeThumb from "../../assets/offer/joe-thumbnail.png";
       }
 
       pill.addEventListener("click", engage);
+
+      player.addEventListener("timeupdate", function () {
+        if (!engaged) return;
+        const duration = player.duration;
+        if (!duration || !isFinite(duration)) return;
+        const percent = (player.currentTime / duration) * 100;
+        if (percent >= 25) fireProgress(25);
+        if (percent >= 50) fireProgress(50);
+        if (percent >= 75) fireProgress(75);
+      });
+
+      player.addEventListener("ended", function () {
+        if (engaged) fireProgress(100);
+      });
 
       if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver(

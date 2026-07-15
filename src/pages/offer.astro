@@ -122,6 +122,42 @@ const pageDescription =
         }
       })();
     </script>
+
+    <!-- Fires a PostHog milestone the first time each key section scrolls into view -->
+    <script is:inline data-astro-rerun>
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+
+        const sections = [
+          ["joe_video", "#joe-video"],
+          ["next_steps", ".offer-next-steps"],
+          ["faq", ".offer-faq"],
+          ["documents", "#offer-documents"],
+        ];
+        const names = new Map();
+
+        const io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              io.unobserve(entry.target);
+              const name = names.get(entry.target);
+              if (window.posthogTrack) {
+                window.posthogTrack("section_viewed", { section: name });
+              }
+            });
+          },
+          { threshold: 0.25 }
+        );
+
+        sections.forEach(function (pair) {
+          const el = document.querySelector(pair[1]);
+          if (!el) return;
+          names.set(el, pair[0]);
+          io.observe(el);
+        });
+      })();
+    </script>
   </body>
 </html>
 

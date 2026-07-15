@@ -970,6 +970,22 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
       instantPhoneDigits: "",
     };
 
+    // Fire booking_options_shown once per pageview when choice first appears.
+    let optionsShownTracked = false;
+    function trackOptionsShown(slotsLoaded) {
+      if (optionsShownTracked) return;
+      optionsShownTracked = true;
+      try {
+        if (window.posthogTrack) {
+          window.posthogTrack("booking_options_shown", {
+            instant_available: root.getAttribute("data-instant-window") === "open",
+            slots_loaded: slotsLoaded,
+            session_page: window.location.pathname,
+          });
+        }
+      } catch (e) {}
+    }
+
     // Instant-call window: weekdays 10am-5pm ET. This is a client-side gate
     // for UI only. The canonical, authoritative copy lives in
     // src/lib/callWindow.ts and is re-checked server-side in
@@ -1365,11 +1381,13 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
 
         renderDays();
         goState("choice");
+        trackOptionsShown(true);
       } catch (err) {
         console.error("Failed to load slots:", err);
         state.slotsByDay = {};
         renderDays();
         goState("choice");
+        trackOptionsShown(false);
       }
     }
 
@@ -1470,12 +1488,14 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
         } catch (e) {}
 
         if (res.status === 409) {
+          trackBookingFailed("slot_taken");
           btn.disabled = false;
           await loadSlots();
           showNotice("That slot was just taken. Please pick another time.");
           return;
         }
         if (!res.ok) {
+          trackBookingFailed("error");
           showError(errEl, (data && data.error) || "Something went wrong. Please try again.");
           btn.disabled = false;
           return;
@@ -1527,9 +1547,23 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
         if (window.rvNavigate) window.rvNavigate(redirectUrl);
         else window.location.href = redirectUrl;
       } catch (err) {
+        trackBookingFailed("network");
         showError(errEl, "Network error. Please try again.");
         btn.disabled = false;
       }
+    }
+
+    // Fire appointment_booking_failed to PostHog only.
+    function trackBookingFailed(reason) {
+      try {
+        if (window.posthogTrack) {
+          window.posthogTrack("appointment_booking_failed", {
+            reason: reason,
+            calendar: "webinar_qa_call",
+            session_page: window.location.pathname,
+          });
+        }
+      } catch (e) {}
     }
 
     // ----- Cold-visitor info form -----
@@ -1677,6 +1711,7 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
         } catch (e) {}
 
         if (res.status === 409) {
+          trackInstantCallFailed(data && data.error === "team_busy" ? "team_busy" : "error");
           icSubmitBtn.disabled = false;
           if (data && data.error === "team_busy") {
             closeInstantWindow("Our team is on a call right now. Pick a time below instead.");
@@ -1686,6 +1721,7 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
           return;
         }
         if (!res.ok || !data || data.ok !== true) {
+          trackInstantCallFailed("error");
           showError(icErrorEl, (data && data.error) || "Something went wrong. Please try again.");
           icSubmitBtn.disabled = false;
           return;
@@ -1720,9 +1756,22 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
         icSubmitBtn.disabled = false;
         goState("instant-success");
       } catch (err) {
+        trackInstantCallFailed("network");
         showError(icErrorEl, "Network error. Please try again.");
         icSubmitBtn.disabled = false;
       }
+    }
+
+    // Fire instant_call_failed to PostHog only.
+    function trackInstantCallFailed(reason) {
+      try {
+        if (window.posthogTrack) {
+          window.posthogTrack("instant_call_failed", {
+            reason: reason,
+            session_page: window.location.pathname,
+          });
+        }
+      } catch (e) {}
     }
 
     // ----- Wire events -----
