@@ -68,6 +68,40 @@
         console.log('PostHog setPersonProperties:', properties);
     }
 
+    // Identify returning visitors arriving from our own GHL emails/SMS.
+    // Links in GHL templates append ?ph_id={{contact.id}} (the GHL contact
+    // id — opaque, no PII in the URL). This is what recognizes a lead on a
+    // NEW device or browser, which ad clicks can never do. PostHog loads
+    // async via GTM, so poll until it's ready (up to ~10s, then give up).
+    function identifyFromUrlParam() {
+        var phId;
+        try {
+            phId = new URLSearchParams(window.location.search).get('ph_id');
+        } catch (e) {
+            return;
+        }
+        // GHL contact ids are 18-24 char alphanumeric; ignore anything else.
+        if (!phId || !/^[A-Za-z0-9]{18,24}$/.test(phId)) return;
+
+        // Mirror to localStorage so posthogTrack() enriches events with it
+        // and the booking/registration flows recognize the visitor.
+        try {
+            localStorage.setItem('ghl_contact_id', phId);
+        } catch (e) {}
+
+        var tries = 0;
+        var timer = setInterval(function () {
+            if (isReady()) {
+                clearInterval(timer);
+                window.posthog.identify(phId);
+                console.log('PostHog identify from ph_id URL param');
+            } else if (++tries >= 100) {
+                clearInterval(timer);
+            }
+        }, 100);
+    }
+    identifyFromUrlParam();
+
     window.posthogTrack = posthogTrack;
     window.posthogIdentify = posthogIdentify;
     window.posthogSetPerson = posthogSetPerson;
