@@ -1501,6 +1501,28 @@ const { redirectUrl = "/call-thank-you?src=offer" } = Astro.props;
           return;
         }
 
+        // Identify the booker by GHL contact id (same identity key as webinar
+        // registration) so this visit stitches into their PostHog person. The
+        // API returns the contact it resolved or created; fall back to the id
+        // we already had. Never identify by email — see posthogTracking.js.
+        try {
+          const bookedContactId =
+            (data && data.contactId) || (identity.kind === "id" ? identity.contactId : null);
+          if (bookedContactId) {
+            try {
+              localStorage.setItem("ghl_contact_id", bookedContactId);
+            } catch (e) {}
+            if (window.posthogIdentify) {
+              const idProps = { ghl_contact_id: bookedContactId };
+              if (identity.kind === "info") {
+                idProps.name = identity.contactInfo.name;
+                idProps.email = identity.contactInfo.email;
+              }
+              window.posthogIdentify(bookedContactId, idProps);
+            }
+          }
+        } catch (e) {}
+
         // Analytics: PostHog + GA dataLayer (unchanged from source).
         try {
           if (window.posthogTrack) {

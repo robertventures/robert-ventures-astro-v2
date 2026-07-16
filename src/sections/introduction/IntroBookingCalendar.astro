@@ -969,6 +969,27 @@ const { redirectUrl = "/webinar/confirmation" } = Astro.props;
           ")";
         setState("booked");
 
+        // Identify the booker by GHL contact id (same identity key as webinar
+        // registration) so this visit stitches into their PostHog person.
+        // Never identify by email — see posthogTracking.js.
+        try {
+          var bookedContactId =
+            (data && data.contactId) || (identity.kind === "id" ? identity.contactId : null);
+          if (bookedContactId) {
+            try {
+              localStorage.setItem("ghl_contact_id", bookedContactId);
+            } catch (e) {}
+            if (window.posthogIdentify) {
+              var idProps = { ghl_contact_id: bookedContactId };
+              if (identity.kind === "info") {
+                idProps.name = identity.contactInfo.name;
+                idProps.email = identity.contactInfo.email;
+              }
+              window.posthogIdentify(bookedContactId, idProps);
+            }
+          }
+        } catch (e) {}
+
         // Analytics: PostHog + GA dataLayer
         try {
           if (window.posthogTrack) {

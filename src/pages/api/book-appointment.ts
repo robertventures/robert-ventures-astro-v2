@@ -275,6 +275,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       JSON.stringify({
         ok: true,
         appointment: createJson,
+        // Returned so the browser can store it and identify the booker in
+        // PostHog — mirrors /api/webinar-registration returning ghl_contact_id.
+        contactId: resolvedContactId,
       }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
