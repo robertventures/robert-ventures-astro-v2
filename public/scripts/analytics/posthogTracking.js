@@ -20,13 +20,12 @@
 //                                                    property-only updates (e.g.
 //                                                    capital_source).
 //
-// On every page load this script also self-identifies the visitor when possible:
-//   1. From a ?ph_id= URL param (the GHL contact id, appended by GHL email/SMS
-//      links). The id is resolved to an email server-side via
-//      /api/resolve-contact so the email itself never appears in a URL
-//      (Meta/GA/RedTrack capture full page URLs).
-//   2. From localStorage.userEmail (set by every form), which recovers users
-//      whose PostHog cookie was purged (e.g. Safari ITP) on the same device.
+// On page load this script also self-identifies visitors arriving from a GHL
+// email/SMS link: those links carry ?ph_id= (the GHL contact id), which is
+// resolved to an email server-side via /api/resolve-contact so the email
+// itself never appears in a URL (Meta/GA/RedTrack capture full page URLs).
+// Same-device returns need no fallback: PostHog persists the identified
+// distinct id in its own localStorage+cookie storage.
 
 (function () {
     'use strict';
@@ -115,20 +114,9 @@
         console.log('PostHog setPersonProperties:', properties);
     }
 
-    function identifyFromStorage() {
-        let email = null;
-        try {
-            email = normalizeEmail(localStorage.getItem('userEmail'));
-        } catch (e) {
-            /* storage unavailable, ignore */
-        }
-        if (email) posthogIdentifyByEmail(email);
-    }
-
-    // Identify returning/linked visitors on page load, in priority order:
-    // a ?ph_id= GHL contact id (fresh signal from a GHL email/SMS link) wins
-    // over localStorage. The id is swapped for the contact's email by
-    // /api/resolve-contact so the email never rides in the URL.
+    // Identify visitors arriving from a GHL email/SMS link: the ?ph_id= GHL
+    // contact id is swapped for the contact's email by /api/resolve-contact
+    // so the email never rides in the URL. Any failure is a silent no-op.
     function identifyOnPageLoad() {
         let contactId = null;
         try {
@@ -138,11 +126,7 @@
         } catch (e) {
             /* malformed URL, ignore */
         }
-
-        if (!contactId) {
-            identifyFromStorage();
-            return;
-        }
+        if (!contactId) return;
 
         fetch('/api/resolve-contact?id=' + encodeURIComponent(contactId))
             .then(function (res) {
@@ -150,10 +134,7 @@
             })
             .then(function (data) {
                 const email = data ? normalizeEmail(data.email) : null;
-                if (!email) {
-                    identifyFromStorage();
-                    return;
-                }
+                if (!email) return;
                 try {
                     localStorage.setItem('userEmail', email);
                 } catch (e) {
@@ -162,7 +143,7 @@
                 posthogIdentifyByEmail(email);
             })
             .catch(function () {
-                identifyFromStorage();
+                /* resolver unreachable, stay anonymous */
             });
     }
 
