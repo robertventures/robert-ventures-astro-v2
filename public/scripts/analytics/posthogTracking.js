@@ -21,7 +21,10 @@
 //                                                    capital_source).
 //
 // On every page load this script also self-identifies the visitor when possible:
-//   1. From a ?ph_email= URL param (appended by GHL email/SMS links), or
+//   1. From a ?ph_id= URL param (the GHL contact id, appended by GHL email/SMS
+//      links). The id is resolved to an email server-side via
+//      /api/resolve-contact so the email itself never appears in a URL
+//      (Meta/GA/RedTrack capture full page URLs).
 //   2. From localStorage.userEmail (set by every form), which recovers users
 //      whose PostHog cookie was purged (e.g. Safari ITP) on the same device.
 
@@ -112,35 +115,55 @@
         console.log('PostHog setPersonProperties:', properties);
     }
 
-    // Identify returning/linked visitors on page load, in priority order:
-    // URL param (fresh signal from a GHL link) wins over localStorage.
-    function identifyOnPageLoad() {
+    function identifyFromStorage() {
         let email = null;
-
         try {
-            const raw = new URLSearchParams(window.location.search).get('ph_email');
-            // URLSearchParams decodes '+' as a space; emails cannot contain
-            // spaces, so any space here was originally a '+' (name+tag@gmail.com)
-            if (raw) email = normalizeEmail(raw.replace(/ /g, '+'));
+            email = normalizeEmail(localStorage.getItem('userEmail'));
+        } catch (e) {
+            /* storage unavailable, ignore */
+        }
+        if (email) posthogIdentifyByEmail(email);
+    }
+
+    // Identify returning/linked visitors on page load, in priority order:
+    // a ?ph_id= GHL contact id (fresh signal from a GHL email/SMS link) wins
+    // over localStorage. The id is swapped for the contact's email by
+    // /api/resolve-contact so the email never rides in the URL.
+    function identifyOnPageLoad() {
+        let contactId = null;
+        try {
+            const raw = new URLSearchParams(window.location.search).get('ph_id');
+            // Same shape check as the API route; skips junk without a request
+            if (raw && /^[A-Za-z0-9]{15,32}$/.test(raw)) contactId = raw;
         } catch (e) {
             /* malformed URL, ignore */
         }
 
-        if (email) {
-            try {
-                localStorage.setItem('userEmail', email);
-            } catch (e) {
-                /* storage unavailable, ignore */
-            }
-        } else {
-            try {
-                email = normalizeEmail(localStorage.getItem('userEmail'));
-            } catch (e) {
-                /* storage unavailable, ignore */
-            }
+        if (!contactId) {
+            identifyFromStorage();
+            return;
         }
 
-        if (email) posthogIdentifyByEmail(email);
+        fetch('/api/resolve-contact?id=' + encodeURIComponent(contactId))
+            .then(function (res) {
+                return res.ok ? res.json() : null;
+            })
+            .then(function (data) {
+                const email = data ? normalizeEmail(data.email) : null;
+                if (!email) {
+                    identifyFromStorage();
+                    return;
+                }
+                try {
+                    localStorage.setItem('userEmail', email);
+                } catch (e) {
+                    /* storage unavailable, ignore */
+                }
+                posthogIdentifyByEmail(email);
+            })
+            .catch(function () {
+                identifyFromStorage();
+            });
     }
 
     window.posthogTrack = posthogTrack;
