@@ -21,7 +21,12 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
   before it starts.
 </p>
 
-<div class="booking" data-webinar-register-root data-state="loading" data-redirect-url={redirectUrl}>
+<div
+  class="booking"
+  data-webinar-register-root
+  data-state="loading"
+  data-redirect-url={redirectUrl}
+>
   <!-- Loading state -->
   <div class="booking__panel" data-panel="loading">
     <div class="booking__spinner" aria-hidden="true"></div>
@@ -547,15 +552,7 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
 
     // ── Date helpers (mirrors /webinar) ──────────────────────────────────────
     function calculateNextSessionDate(details) {
-      var weekdays = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ];
+      var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       var targetDay = weekdays.indexOf(details.day);
       var timeParts = details.time.split(":").map(Number);
       var hour24 = timeParts[0];
@@ -601,7 +598,8 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
       var relative;
       if (dayKey(date) === dayKey(now)) relative = "Today";
       else if (dayKey(date) === dayKey(tomorrow)) relative = "Tomorrow";
-      else relative = new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: tz }).format(date);
+      else
+        relative = new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: tz }).format(date);
       var monthDay = new Intl.DateTimeFormat("en-US", {
         month: "short",
         day: "numeric",
@@ -713,7 +711,9 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
         .map(function (session) {
           try {
             var details = JSON.parse(session.id);
-            var nextDate = session.date ? new Date(session.date) : calculateNextSessionDate(details);
+            var nextDate = session.date
+              ? new Date(session.date)
+              : calculateNextSessionDate(details);
             return { session: session, details: details, nextDate: nextDate };
           } catch (e) {
             return null;
@@ -972,12 +972,18 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
 
       var urlParams = new URLSearchParams(window.location.search);
       var utmData = {};
-      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "utm_adgroup"].forEach(
-        function (param) {
-          var val = urlParams.get(param) || getCookie(param);
-          if (val) utmData[param] = val;
-        }
-      );
+      [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+        "utm_id",
+        "utm_adgroup",
+      ].forEach(function (param) {
+        var val = urlParams.get(param) || getCookie(param);
+        if (val) utmData[param] = val;
+      });
 
       var payload = {
         session: sel.sessionId,
@@ -1029,8 +1035,10 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
           } catch (e) {}
 
           try {
-            if (window.posthogSetPerson) {
-              window.posthogSetPerson({
+            // Identify by normalized email, the site-wide distinct id (merges
+            // the anonymous journey; matches the investor portal's identify key)
+            if (window.posthogIdentifyByEmail) {
+              window.posthogIdentifyByEmail(contact.email, {
                 name: contact.name,
                 email: contact.email,
                 phone: phoneDigits,

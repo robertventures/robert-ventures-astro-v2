@@ -1223,12 +1223,11 @@ try {
               })
             );
 
-            // Attach registrant details as person properties on the anonymous
-            // PostHog profile. We deliberately do NOT identify(email) here: the
-            // real stable user id only exists once they sign up on the investor
-            // portal, which calls identify(user.id) and merges this journey in.
-            if (window.posthogSetPerson) {
-              window.posthogSetPerson({
+            // Identify by normalized email, the site-wide distinct id. This
+            // merges the anonymous pre-registration journey into one person and
+            // matches the investor portal, which identifies with the same key.
+            if (window.posthogIdentifyByEmail) {
+              window.posthogIdentifyByEmail(emailStr, {
                 name: nameStr,
                 email: emailStr,
                 phone: phoneStr,

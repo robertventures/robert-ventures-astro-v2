@@ -659,19 +659,20 @@ const { showLogin = true } = Astro.props;
         // Success! Redirect to confirmation page with email and user_id
         const userId = data.user?.id || data.pendingUserId || data.id;
 
-        // POSTHOG: signup_completed + attach email/phone as person properties.
-        // We do NOT identify(email) here, the real stable user id only exists
-        // once the investor portal creates the account, and its identify(user.id)
-        // merges this anonymous pre-signup journey into the real profile.
+        // POSTHOG: identify by normalized email (the site-wide distinct id,
+        // shared with the investor portal), then capture signup_completed so
+        // the event lands on the identified person. The portal user id is kept
+        // as a person property, never as the distinct id.
+        if ((window as any).posthogIdentifyByEmail) {
+          (window as any).posthogIdentifyByEmail(email, {
+            email: email,
+            phone: normalizedPhone,
+            portal_user_id: userId || undefined,
+          });
+        }
         if ((window as any).posthogTrack) {
           (window as any).posthogTrack("signup_completed", { email_domain: emailDomain });
           signupTracked = true;
-        }
-        if ((window as any).posthogSetPerson) {
-          (window as any).posthogSetPerson({
-            email: email,
-            phone: normalizedPhone,
-          });
         }
 
         const confirmationUrl = new URL("https://invest.robertventures.com/confirmation");

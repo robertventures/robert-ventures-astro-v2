@@ -969,6 +969,26 @@ const { redirectUrl = "/webinar/confirmation" } = Astro.props;
           ")";
         setState("booked");
 
+        // Identify by email before capturing, so the booking lands on the
+        // identified person. Cold visitors typed their email in the inline
+        // form; known visitors have it in localStorage from registration.
+        try {
+          const knownEmail =
+            identity.kind === "info" ? identity.contactInfo.email : readLs("userEmail");
+          if (knownEmail && window.posthogIdentifyByEmail) {
+            window.posthogIdentifyByEmail(
+              knownEmail,
+              identity.kind === "info"
+                ? {
+                    name: identity.contactInfo.name,
+                    email: identity.contactInfo.email,
+                    phone: identity.contactInfo.phone,
+                  }
+                : undefined
+            );
+          }
+        } catch (e) {}
+
         // Analytics: PostHog + GA dataLayer
         try {
           if (window.posthogTrack) {
