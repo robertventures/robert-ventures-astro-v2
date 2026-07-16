@@ -220,6 +220,11 @@ const activeIndex = 2;
     display: flex;
     align-items: center;
     gap: 14px;
+    /* Fixed at the active avatar's size so the row never changes height
+       while one avatar shrinks (56 to 44) and another grows (44 to 56) at
+       the same time; mid-transition both are ~50px, and without this the
+       row dips ~6px and the whole page below jumps on every advance. */
+    height: 56px;
   }
 
   .oft__avatar {
