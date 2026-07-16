@@ -1029,16 +1029,23 @@ const { redirectUrl = "/webinar/capital" } = Astro.props;
           } catch (e) {}
 
           try {
-            if (window.posthogSetPerson) {
-              window.posthogSetPerson({
-                name: contact.name,
-                email: contact.email,
-                phone: phoneDigits,
-                ghl_contact_id: result ? result.ghl_contact_id : undefined,
-                invest_intent: investIntent,
-                session_type: "live",
-                registration_page: "offer_join_webinar",
-              });
+            // Identify by the stable GHL contact id (same identity key as the
+            // main webinar page) so return visits stitch into one person.
+            // Never identify by email — see posthogTracking.js header.
+            var registrantProps = {
+              name: contact.name,
+              email: contact.email,
+              phone: phoneDigits,
+              ghl_contact_id: result ? result.ghl_contact_id : undefined,
+              invest_intent: investIntent,
+              session_type: "live",
+              registration_page: "offer_join_webinar",
+            };
+            if (result && result.ghl_contact_id && window.posthogIdentify) {
+              window.posthogIdentify(result.ghl_contact_id, registrantProps);
+            } else if (window.posthogSetPerson) {
+              // No contact id came back — fall back to the previous behavior.
+              window.posthogSetPerson(registrantProps);
             }
             if (window.posthogTrack) {
               window.posthogTrack("webinar_registered", {

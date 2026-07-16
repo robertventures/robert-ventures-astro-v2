@@ -1223,20 +1223,27 @@ try {
               })
             );
 
-            // Attach registrant details as person properties on the anonymous
-            // PostHog profile. We deliberately do NOT identify(email) here: the
-            // real stable user id only exists once they sign up on the investor
-            // portal, which calls identify(user.id) and merges this journey in.
-            if (window.posthogSetPerson) {
-              window.posthogSetPerson({
-                name: nameStr,
-                email: emailStr,
-                phone: phoneStr,
-                ghl_contact_id: result ? result.ghl_contact_id : undefined,
-                invest_intent: payload.invest_intent,
-                session_type: "live",
-                registration_page: window.location.pathname,
-              });
+            // Identify the registrant by their stable GHL contact id so this
+            // browser's history — and every later visit that identifies the
+            // same id — becomes ONE PostHog person. Never identify by email:
+            // the investor portal identifies by user.id and bridges
+            // contact-id ↔ user.id at account creation, so the pre-signup
+            // journey survives (see posthogTracking.js header).
+            const registrantProps = {
+              name: nameStr,
+              email: emailStr,
+              phone: phoneStr,
+              ghl_contact_id: result ? result.ghl_contact_id : undefined,
+              invest_intent: payload.invest_intent,
+              session_type: "live",
+              registration_page: window.location.pathname,
+            };
+            if (result && result.ghl_contact_id && window.posthogIdentify) {
+              window.posthogIdentify(result.ghl_contact_id, registrantProps);
+            } else if (window.posthogSetPerson) {
+              // No contact id came back — fall back to stamping properties on
+              // the anonymous profile (previous behavior).
+              window.posthogSetPerson(registrantProps);
             }
             if (window.posthogTrack) {
               window.posthogTrack("webinar_registered", {
