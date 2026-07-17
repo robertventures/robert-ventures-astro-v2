@@ -239,6 +239,12 @@ export const prerender = false;
         opacity: 0;
       }
 
+      /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+         so content hidden for the entry animation still becomes visible. */
+      :global(html.gsap-off) .wt-slide__content {
+        opacity: 1;
+      }
+
       .wt-slide__tag {
         font-family: "Roboto", sans-serif;
         font-size: 0.75rem;
@@ -787,6 +793,8 @@ export const prerender = false;
         function runFadeIn() {
           var content = document.querySelector(".wt-slide__content");
           if (!content) return;
+          // GSAP failed to load: the html.gsap-off CSS already revealed the content.
+          if (document.documentElement.classList.contains("gsap-off")) return;
           if (!window.gsapLoaded || typeof window.gsap === "undefined") {
             window.addEventListener(
               "gsapLoaded",

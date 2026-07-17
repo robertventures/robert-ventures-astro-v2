@@ -238,6 +238,16 @@
     transform-origin: left;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .wf-slide__content {
+    opacity: 1;
+  }
+
+  :global(html.gsap-off) .wf-slide__underline {
+    transform: scaleX(1);
+  }
+
   /* Founder video, sits between the heading and the subtitle */
   .wf-slide__media {
     width: 100%;

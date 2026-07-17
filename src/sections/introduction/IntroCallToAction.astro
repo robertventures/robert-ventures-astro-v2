@@ -281,6 +281,12 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     opacity: 0;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .intro-slide__content {
+    opacity: 1;
+  }
+
   .intro-slide__heading {
     font-family: "Roboto Serif", serif;
     color: #1a1a1a;

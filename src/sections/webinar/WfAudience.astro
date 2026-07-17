@@ -70,6 +70,12 @@
     opacity: 0;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .wf-slide__content {
+    opacity: 1;
+  }
+
   .wf-slide__tag {
     font-family: "Roboto", sans-serif;
     font-size: 0.75rem;

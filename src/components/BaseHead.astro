@@ -57,29 +57,55 @@ const {
 
 <!-- Fonts are self-hosted via @font-face in global.css -->
 
-<!-- Preconnect to CDN used by GSAP and Splide -->
+<!-- Preconnect to CDN used by Splide -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
-<!-- GSAP -->
+<!-- GSAP (self-hosted; see public/vendor/) -->
 <script>
     declare global {
         interface Window {
             gsapLoaded: boolean;
+            gsapFailed: boolean;
         }
     }
     window.gsapLoaded = false;
+    window.gsapFailed = false;
     function loadGSAP() {
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js';
+        script.src = '/vendor/gsap.min.js';
+        // Failsafe: pages hide content in CSS and reveal it with GSAP animations.
+        // If GSAP errors or takes longer than 3s, the .gsap-off class on <html>
+        // reveals everything via CSS, and page scripts skip their animations.
+        const failTimer = setTimeout(markFailed, 3000);
+        function markFailed() {
+            if (window.gsapLoaded) return;
+            clearTimeout(failTimer);
+            window.gsapFailed = true;
+            document.documentElement.classList.add('gsap-off');
+            window.dispatchEvent(new Event('gsapFailed'));
+        }
         script.onload = function() {
+            // Failure is terminal: if the failsafe already revealed the page,
+            // a late-arriving GSAP must not start animating (and re-hiding) it.
+            if (window.gsapFailed) return;
+            clearTimeout(failTimer);
             window.gsapLoaded = true;
             // Dispatch custom event when GSAP is loaded
             window.dispatchEvent(new Event('gsapLoaded'));
         };
+        script.onerror = markFailed;
         document.head.appendChild(script);
     }
     loadGSAP();
+    // The ClientRouter swaps <html> attributes on client-side navigation, which
+    // wipes the gsap-off class. Re-add it before the new page's scripts run so
+    // the CSS failsafe keeps revealing content on every page after a failure.
+    document.addEventListener('astro:after-swap', function() {
+        if (window.gsapFailed) {
+            document.documentElement.classList.add('gsap-off');
+        }
+    });
 </script>
 
 <!-- ScrollTrigger (loaded only on pages that need it) -->

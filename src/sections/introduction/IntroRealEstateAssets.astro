@@ -100,6 +100,12 @@ const widths = [600, 1000, 1400];
     opacity: 0;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .intro-slide__content {
+    opacity: 1;
+  }
+
   .intro-slide__heading {
     font-family: "Roboto Serif", serif;
     color: #1a1a1a;

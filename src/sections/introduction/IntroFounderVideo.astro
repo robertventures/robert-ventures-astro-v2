@@ -106,6 +106,12 @@
     opacity: 0;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .intro-slide__content {
+    opacity: 1;
+  }
+
   /* Photo wrapper */
   .intro-slide__media {
     width: 100%;

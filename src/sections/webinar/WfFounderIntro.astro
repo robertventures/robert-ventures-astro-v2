@@ -65,6 +65,12 @@
     opacity: 0;
   }
 
+  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
+     so content hidden for the entry animation still becomes visible. */
+  :global(html.gsap-off) .wf-slide__content {
+    opacity: 1;
+  }
+
   /* Text & stats */
   .wf-slide__text {
     width: 100%;
