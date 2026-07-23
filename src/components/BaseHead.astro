@@ -84,6 +84,14 @@ const {
             window.gsapFailed = true;
             document.documentElement.classList.add('gsap-off');
             window.dispatchEvent(new Event('gsapFailed'));
+            // Report how often real visitors hit the no-animation fallback.
+            // posthogTrack may not exist yet if this fired on an instant
+            // onerror; fall back to the raw client (GTM stub queues it).
+            if ((window as any).posthogTrack) {
+                (window as any).posthogTrack('gsap_failsafe_triggered');
+            } else if ((window as any).posthog) {
+                (window as any).posthog.capture('gsap_failsafe_triggered');
+            }
         }
         script.onload = function() {
             // Failure is terminal: if the failsafe already revealed the page,
