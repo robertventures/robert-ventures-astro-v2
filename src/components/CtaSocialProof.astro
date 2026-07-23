@@ -152,12 +152,14 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     <span class="cta-stars" set:html={starSvg.repeat(5)} />
     <span class="cta-stat-text">Trusted by {uniqueInvestors}+ Investors</span>
   </div>
+  <!-- First review is server-rendered so the card has content even without JS;
+       the script cycles through the rest as an enhancement. -->
   <div class="cta-review-card" data-card="0">
-    <p class="cta-quote"></p>
+    <p class="cta-quote">{displayReviews[0].text}</p>
     <a class="cta-read-more" href="javascript:void(0)">Read more</a>
     <div class="cta-footer">
-      <p class="cta-name"></p>
-      <p class="cta-date"></p>
+      <p class="cta-name">{displayReviews[0].name}</p>
+      <p class="cta-date">{displayReviews[0].date}</p>
     </div>
   </div>
 </div>
@@ -204,7 +206,6 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     flex-direction: column;
     gap: 0.625rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    opacity: 0;
     transition: opacity 0.6s ease-in-out;
     width: 100%;
     box-sizing: border-box;
@@ -214,8 +215,9 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
     text-align: left;
   }
 
-  .cta-review-card.visible {
-    opacity: 1;
+  /* Fades the card out only while swapping to the next testimonial */
+  .cta-review-card.is-fading {
+    opacity: 0;
   }
 
   .cta-quote {
@@ -342,6 +344,20 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
         return review;
       }
 
+      function syncReadMore() {
+        const quoteEl = card.querySelector(".cta-quote");
+        const readMoreEl = card.querySelector(".cta-read-more");
+        if (!readMoreEl) return;
+        readMoreEl.textContent = "Read more";
+        requestAnimationFrame(function () {
+          if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
+            readMoreEl.style.display = "none";
+          } else {
+            readMoreEl.style.display = "";
+          }
+        });
+      }
+
       function populateCard(review) {
         var quoteEl = card.querySelector(".cta-quote");
         var nameEl = card.querySelector(".cta-name");
@@ -351,29 +367,21 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
         quoteEl.classList.remove("expanded");
         nameEl.textContent = review.name;
         dateEl.textContent = review.date || "";
-
-        var readMoreEl = card.querySelector(".cta-read-more");
-        if (readMoreEl) {
-          readMoreEl.textContent = "Read more";
-          requestAnimationFrame(function () {
-            if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
-              readMoreEl.style.display = "none";
-            } else {
-              readMoreEl.style.display = "";
-            }
-          });
-        }
+        syncReadMore();
       }
 
       function cycleCard() {
-        card.classList.remove("visible");
+        card.classList.add("is-fading");
         setTimeout(function () {
           populateCard(getNextReview());
           setTimeout(function () {
-            card.classList.add("visible");
+            card.classList.remove("is-fading");
           }, 50);
         }, 600);
       }
+
+      // The first review is server-rendered; only its read-more state needs syncing.
+      syncReadMore();
 
       var timers = [];
       var isRunning = false;
@@ -382,9 +390,6 @@ const starSvg = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xml
       function startCycling() {
         if (isRunning) return;
         isRunning = true;
-
-        populateCard(getNextReview());
-        card.classList.add("visible");
 
         if (prefersReducedMotion) return;
 

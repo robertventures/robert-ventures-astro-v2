@@ -353,7 +353,6 @@ const pageDescription =
 
 <script is:inline data-astro-rerun>
   (function () {
-    const animatedSections = {};
     let sections = [];
 
     function updateIndicator(activeIndex) {
@@ -370,34 +369,6 @@ const pageDescription =
         line.classList.remove("is-passed");
         if (i < activeIndex) line.classList.add("is-passed");
       });
-    }
-
-    function runSectionAnimation(index, sectionEl) {
-      if (animatedSections[index]) return;
-      // GSAP failed to load in time: content is already revealed by the
-      // html.gsap-off CSS failsafe, so animating now would hide it again.
-      if (document.documentElement.classList.contains("gsap-off")) {
-        animatedSections[index] = true;
-        return;
-      }
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-        window.addEventListener("gsapLoaded", function () {
-          runSectionAnimation(index, sectionEl);
-        });
-        return;
-      }
-
-      animatedSections[index] = true;
-      const gsap = window.gsap;
-      const content = sectionEl.querySelector(".intro-slide__content");
-
-      if (content) {
-        gsap.fromTo(
-          content,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
-        );
-      }
     }
 
     function initScroll() {
@@ -427,24 +398,9 @@ const pageDescription =
         { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
       );
 
-      const animIo = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              const idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
-              runSectionAnimation(idx, entry.target);
-            }
-          });
-        },
-        { threshold: 0, rootMargin: "0px 0px 5% 0px" }
-      );
-
       sections.forEach(function (section) {
         indicatorIo.observe(section);
-        animIo.observe(section);
       });
-
-      if (sections[0]) runSectionAnimation(0, sections[0]);
     }
 
     // Intro video player: muted autoplay when section approaches view, with a
@@ -453,9 +409,7 @@ const pageDescription =
     function setupIntroVideo(opts) {
       const player = document.getElementById(opts.playerId);
       const overlay = document.getElementById(opts.overlayId);
-      const caption = opts.captionSelector
-        ? document.querySelector(opts.captionSelector)
-        : null;
+      const caption = opts.captionSelector ? document.querySelector(opts.captionSelector) : null;
       const videoId = opts.videoId;
       if (!player) return;
 

@@ -164,13 +164,6 @@ export const prerender = false;
         gap: 1.25rem;
         width: 100%;
         max-width: 480px;
-        opacity: 0;
-      }
-
-      /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
-         so content hidden for the entry animation still becomes visible. */
-      :global(html.gsap-off) .wc-slide__content {
-        opacity: 1;
       }
 
       .wc-slide__heading {
@@ -557,32 +550,8 @@ export const prerender = false;
           });
         }
 
-        function runFadeIn() {
-          var content = document.querySelector(".wc-slide__content");
-          if (!content) return;
-          // GSAP failed to load: the html.gsap-off CSS already revealed the content.
-          if (document.documentElement.classList.contains("gsap-off")) return;
-          if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-            window.addEventListener(
-              "gsapLoaded",
-              function () {
-                runFadeIn();
-              },
-              { once: true }
-            );
-            return;
-          }
-          var gsap = window.gsap;
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
-          );
-        }
-
         function boot() {
           setupOpenEmail();
-          runFadeIn();
         }
 
         if (document.readyState === "loading") {

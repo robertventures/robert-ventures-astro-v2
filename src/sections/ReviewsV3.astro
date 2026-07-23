@@ -269,12 +269,12 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
     flex-direction: column;
     gap: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    opacity: 0;
     transition: opacity 0.6s ease-in-out;
   }
 
-  .review-card.visible {
-    opacity: 1;
+  /* Fades the card out only while swapping to the next testimonial */
+  .review-card.is-fading {
+    opacity: 0;
   }
 
   .card-stars {
@@ -501,15 +501,21 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
         <div class="face-card" data-face="4"></div>
       </div>
 
-      <!-- Right: testimonial card -->
+      <!-- Right: testimonial card. First review is server-rendered so the card
+           has content even without JS; the script cycles through the rest. -->
       <div class="testimonial-side">
         <div class="review-card" data-card="0">
-          <div class="card-stars"></div>
-          <p class="card-quote"></p>
+          <div
+            class="card-stars"
+            set:html={starSvg.repeat(
+              Math.min(Math.max(Math.round(displayReviews[0].rating || 5), 1), 5)
+            )}
+          />
+          <p class="card-quote">{displayReviews[0].text}</p>
           <a class="read-more" href="javascript:void(0)">Read more</a>
           <div class="card-footer">
-            <p class="card-name"></p>
-            <p class="card-date"></p>
+            <p class="card-name">{displayReviews[0].name}</p>
+            <p class="card-date">{displayReviews[0].date}</p>
           </div>
         </div>
       </div>
@@ -561,6 +567,22 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
       return review;
     }
 
+    // Show/hide read more based on whether text is truncated
+    function syncReadMore() {
+      const quoteEl = card.querySelector(".card-quote");
+      const readMoreEl = card.querySelector(".read-more");
+      if (!readMoreEl) return;
+      readMoreEl.textContent = "Read more";
+      // Check after render if text is actually truncated
+      requestAnimationFrame(function () {
+        if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
+          readMoreEl.style.display = "none";
+        } else {
+          readMoreEl.style.display = "";
+        }
+      });
+    }
+
     function populateCard(review) {
       var starsEl = card.querySelector(".card-stars");
       var quoteEl = card.querySelector(".card-quote");
@@ -575,31 +597,21 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
       quoteEl.classList.remove("expanded");
       nameEl.textContent = review.name;
       dateEl.textContent = review.date || "";
-
-      // Show/hide read more based on whether text is truncated
-      var readMoreEl = card.querySelector(".read-more");
-      if (readMoreEl) {
-        readMoreEl.textContent = "Read more";
-        // Check after render if text is actually truncated
-        requestAnimationFrame(function () {
-          if (quoteEl.scrollHeight <= quoteEl.clientHeight + 2) {
-            readMoreEl.style.display = "none";
-          } else {
-            readMoreEl.style.display = "";
-          }
-        });
-      }
+      syncReadMore();
     }
 
     function cycleCard() {
-      card.classList.remove("visible");
+      card.classList.add("is-fading");
       setTimeout(function () {
         populateCard(getNextReview());
         setTimeout(function () {
-          card.classList.add("visible");
+          card.classList.remove("is-fading");
         }, 50);
       }, 600);
     }
+
+    // The first review is server-rendered; only its read-more state needs syncing.
+    syncReadMore();
 
     // --- Face card cycling (no duplicates on screen) ---
     var faceCards = stage.querySelectorAll(".face-card");
@@ -679,10 +691,6 @@ const faceUrls = displayReviews.map((r) => r.avatar).filter((url) => url && url.
     function startCycling() {
       if (isRunning) return;
       isRunning = true;
-
-      // Show the testimonial card
-      populateCard(getNextReview());
-      card.classList.add("visible");
 
       // Show face cards with stagger
       if (faceUrls.length > 0) {

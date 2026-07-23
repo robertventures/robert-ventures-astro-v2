@@ -196,7 +196,6 @@
     gap: 1.5rem;
     max-width: 480px;
     width: 100%;
-    opacity: 0;
   }
 
   .wf-slide__tag {
@@ -234,18 +233,6 @@
     width: 100%;
     height: 5px;
     background: var(--green-brand);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
-     so content hidden for the entry animation still becomes visible. */
-  :global(html.gsap-off) .wf-slide__content {
-    opacity: 1;
-  }
-
-  :global(html.gsap-off) .wf-slide__underline {
-    transform: scaleX(1);
   }
 
   /* Founder video, sits between the heading and the subtitle */

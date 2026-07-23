@@ -62,13 +62,6 @@
     gap: 1rem;
     max-width: 600px;
     width: 100%;
-    opacity: 0;
-  }
-
-  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
-     so content hidden for the entry animation still becomes visible. */
-  :global(html.gsap-off) .intro-slide__content {
-    opacity: 1;
   }
 
   .intro-slide__heading {

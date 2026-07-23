@@ -8,8 +8,6 @@ const {
   description,
   image = "/images/svg/rv-logo.svg",
   rtkCampaignId = "697c996793ba48f6ba89582f",
-  loadScrollTrigger = false,
-  loadSplitText = false,
 } = Astro.props;
 ---
 
@@ -74,16 +72,14 @@ const {
     function loadGSAP() {
         const script = document.createElement('script');
         script.src = '/vendor/gsap.min.js';
-        // Failsafe: pages hide content in CSS and reveal it with GSAP animations.
-        // If GSAP errors or takes longer than 3s, the .gsap-off class on <html>
-        // reveals everything via CSS, and page scripts skip their animations.
+        // Failsafe: no content is ever hidden behind GSAP; animations are
+        // decorative only. If GSAP errors or takes longer than 3s, page
+        // scripts skip their animations and we report the failure.
         const failTimer = setTimeout(markFailed, 3000);
         function markFailed() {
             if (window.gsapLoaded) return;
             clearTimeout(failTimer);
             window.gsapFailed = true;
-            document.documentElement.classList.add('gsap-off');
-            window.dispatchEvent(new Event('gsapFailed'));
             // Report how often real visitors hit the no-animation fallback.
             // posthogTrack may not exist yet if this fired on an instant
             // onerror; fall back to the raw client (GTM stub queues it).
@@ -106,61 +102,7 @@ const {
         document.head.appendChild(script);
     }
     loadGSAP();
-    // The ClientRouter swaps <html> attributes on client-side navigation, which
-    // wipes the gsap-off class. Re-add it before the new page's scripts run so
-    // the CSS failsafe keeps revealing content on every page after a failure.
-    document.addEventListener('astro:after-swap', function() {
-        if (window.gsapFailed) {
-            document.documentElement.classList.add('gsap-off');
-        }
-    });
 </script>
-
-<!-- ScrollTrigger (loaded only on pages that need it) -->
-{loadScrollTrigger && (
-  <script is:inline>
-    (function() {
-      function loadScrollTriggerPlugin() {
-        var st = document.createElement('script');
-        st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js';
-        st.onload = function() {
-          window.gsap.registerPlugin(window.ScrollTrigger);
-          window.scrollTriggerLoaded = true;
-          window.dispatchEvent(new Event('scrollTriggerLoaded'));
-        };
-        document.head.appendChild(st);
-      }
-      if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
-        loadScrollTriggerPlugin();
-      } else {
-        window.addEventListener('gsapLoaded', loadScrollTriggerPlugin);
-      }
-    })();
-  </script>
-)}
-
-<!-- SplitText (loaded only on pages that need it; free since GSAP 3.13) -->
-{loadSplitText && (
-  <script is:inline>
-    (function() {
-      function loadSplitTextPlugin() {
-        var sp = document.createElement('script');
-        sp.src = 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js';
-        sp.onload = function() {
-          window.gsap.registerPlugin(window.SplitText);
-          window.splitTextLoaded = true;
-          window.dispatchEvent(new Event('splitTextLoaded'));
-        };
-        document.head.appendChild(sp);
-      }
-      if (window.gsapLoaded && typeof window.gsap !== 'undefined') {
-        loadSplitTextPlugin();
-      } else {
-        window.addEventListener('gsapLoaded', loadSplitTextPlugin);
-      }
-    })();
-  </script>
-)}
 
 <link rel="preload" href="/images/svg/waves.svg" as="image" />
 

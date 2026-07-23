@@ -79,20 +79,12 @@ try {
     color: var(--text-heading);
     line-height: 100%;
     font-variant-numeric: lining-nums;
-    opacity: 0;
   }
 
   .description {
     font-size: 16px;
     color: var(--text-body);
     line-height: 100%;
-    opacity: 0;
-  }
-
-  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load */
-  :global(html.gsap-off) .stat-value,
-  :global(html.gsap-off) .description {
-    opacity: 1;
   }
 
   .results-label {
@@ -159,136 +151,21 @@ try {
 
     <div class="columns-container">
       <div class="column">
-        <span class="stat-value" data-value="100" data-suffix="%" data-decimals="0">0</span>
+        <span class="stat-value">100%</span>
         <span class="description">On-Time Distributions</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value={reinvestmentRate} data-suffix="%" data-decimals="0"
-          >0</span
-        >
+        <span class="stat-value">{reinvestmentRate}%</span>
         <span class="description">Reinvestment Rate</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value={uniqueInvestors} data-suffix="" data-decimals="0"
-          >0</span
-        >
+        <span class="stat-value">{uniqueInvestors}</span>
         <span class="description">Unique Investors</span>
       </div>
       <div class="column">
-        <span class="stat-value" data-value="150" data-prefix="$" data-suffix="M" data-decimals="0"
-          >0</span
-        >
+        <span class="stat-value">$150M</span>
         <span class="description">Managed by founder Joe Robert</span>
       </div>
     </div>
   </div>
 </section>
-
-<script is:inline>
-  (function () {
-    let hasAnimated = false;
-
-    function initAnimation() {
-      // Check if GSAP is loaded
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-        return;
-      }
-
-      const gsapLib = window.gsap;
-
-      const section = document.querySelector(".columns-container");
-      const statValues = document.querySelectorAll(".stat-value");
-      const descriptions = document.querySelectorAll(".column .description");
-
-      if (!section || statValues.length === 0) {
-        return;
-      }
-
-      // Intersection Observer to trigger animation on scroll
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !hasAnimated) {
-              hasAnimated = true;
-
-              // Animate each stat value with counter effect
-              statValues.forEach((stat, index) => {
-                const finalValue = parseFloat(stat.getAttribute("data-value"));
-                const suffix = stat.getAttribute("data-suffix") || "";
-                const prefix = stat.getAttribute("data-prefix") || "";
-                const decimals = parseInt(stat.getAttribute("data-decimals") || "0", 10);
-
-                gsapLib.to(stat, {
-                  innerHTML: finalValue,
-                  duration: 0.8,
-                  delay: index * 0.1,
-                  opacity: 1,
-                  ease: "power2.out",
-                  snap: { innerHTML: decimals > 0 ? 0.01 : 1 },
-                  onUpdate: function () {
-                    const currentValue = parseFloat(stat.innerHTML);
-                    stat.innerHTML = prefix + currentValue.toFixed(decimals) + suffix;
-                  },
-                });
-              });
-
-              // Fade in descriptions with stagger
-              gsapLib.to(descriptions, {
-                opacity: 1,
-                duration: 0.5,
-                stagger: 0.1,
-                delay: 0.2,
-                ease: "power2.out",
-              });
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-        }
-      );
-
-      observer.observe(section);
-    }
-
-    // Failsafe: if GSAP never loads, the html.gsap-off CSS reveals the stats,
-    // but the counters would still read "0". Write the final values directly.
-    function showFinalValues() {
-      hasAnimated = true;
-      document.querySelectorAll(".stat-value").forEach(function (stat) {
-        const finalValue = parseFloat(stat.getAttribute("data-value"));
-        const suffix = stat.getAttribute("data-suffix") || "";
-        const prefix = stat.getAttribute("data-prefix") || "";
-        const decimals = parseInt(stat.getAttribute("data-decimals") || "0", 10);
-        stat.innerHTML = prefix + finalValue.toFixed(decimals) + suffix;
-      });
-    }
-
-    if (window.gsapFailed) {
-      showFinalValues();
-    } else {
-      window.addEventListener("gsapFailed", showFinalValues);
-    }
-
-    // Wait for GSAP to load, then initialize animation
-    function startAnimation() {
-      if (window.gsapLoaded && typeof window.gsap !== "undefined") {
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", initAnimation);
-        } else {
-          initAnimation();
-        }
-      } else {
-        window.addEventListener("gsapLoaded", function () {
-          if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initAnimation);
-          } else {
-            initAnimation();
-          }
-        });
-      }
-    }
-
-    startAnimation();
-  })();
-</script>

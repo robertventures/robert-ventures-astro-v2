@@ -37,7 +37,7 @@ const trackLocation = "offer_documents";
 
 <section class="offer-docs" id="offer-documents">
   <div class="offer-docs__content">
-    <div class="offer-docs__heading-block" data-reveal>
+    <div class="offer-docs__heading-block">
       <p class="offer-docs__eyebrow">On the public record</p>
       <h2 class="offer-docs__heading">Offering Documents</h2>
       <p class="offer-docs__sub">
@@ -45,7 +45,7 @@ const trackLocation = "offer_documents";
       </p>
     </div>
 
-    <ul class="offer-docs__list" aria-label="Offering documents" data-reveal>
+    <ul class="offer-docs__list" aria-label="Offering documents">
       {
         documents.map((doc) => (
           <li class="offer-docs__item">
@@ -57,9 +57,18 @@ const trackLocation = "offer_documents";
               data-track-document={doc.slug}
               data-track-location={trackLocation}
             >
-              <span class={`offer-doc-card__icon offer-doc-card__icon--${doc.icon}`} aria-hidden="true">
+              <span
+                class={`offer-doc-card__icon offer-doc-card__icon--${doc.icon}`}
+                aria-hidden="true"
+              >
                 {doc.icon === "pdf" ? (
-                  <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="24"
+                    viewBox="0 0 20 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M2 0C0.895 0 0 0.895 0 2V22C0 23.105 0.895 24 2 24H18C19.105 24 20 23.105 20 22V7L13 0H2Z"
                       fill="#F5F5F5"
@@ -81,7 +90,13 @@ const trackLocation = "offer_documents";
                     </text>
                   </svg>
                 ) : (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M14 3H21V10"
                       stroke="#1a1a1a"

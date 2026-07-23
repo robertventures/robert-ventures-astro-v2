@@ -14,125 +14,123 @@
        two-column flex container only at desktop (1136px+). -->
   <div class="scene-drain__inner">
     <!-- Copy block -->
-    <div class="scene-drain__copy" data-reveal>
-    <p class="scene-drain__eyebrow">THE REAL COST OF WAITING</p>
-    <h2 id="scene-drain-heading" class="scene-drain__headline">
-      Idle money isn't resting. It's shrinking.
-    </h2>
-    <p class="scene-drain__body">
-      At a typical 3% inflation rate, $50,000 in savings loses roughly $1,500 of buying power in a
-      year. Over a decade, that's nearly $13,000. Not because you did anything wrong. Because
-      your money was left standing still.
-    </p>
-  </div>
+    <div class="scene-drain__copy">
+      <p class="scene-drain__eyebrow">THE REAL COST OF WAITING</p>
+      <h2 id="scene-drain-heading" class="scene-drain__headline">
+        Idle money isn't resting. It's shrinking.
+      </h2>
+      <p class="scene-drain__body">
+        At a typical 3% inflation rate, $50,000 in savings loses roughly $1,500 of buying power in a
+        year. Over a decade, that's nearly $13,000. Not because you did anything wrong. Because your
+        money was left standing still.
+      </p>
+    </div>
 
-  <!-- Phone card -->
-  <div class="scene-card" data-reveal>
-    <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
-    <div class="scene-card__chrome">
-      <span class="rv-lockup">
-        <span class="rv-lockup__mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="6" fill="#152429"></rect>
+    <!-- Phone card -->
+    <div class="scene-card">
+      <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
+      <div class="scene-card__chrome">
+        <span class="rv-lockup">
+          <span class="rv-lockup__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+              <rect width="24" height="24" rx="6" fill="#152429"></rect>
+              <path
+                d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+                stroke="#7fd0a4"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
+        </span>
+        <span class="rv-avatar" aria-hidden="true">
+          <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
+            <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
+            <path d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z" fill="#67b78f"></path>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Content row: below 600px this wrapper is display:contents so the two
+         panels and chevron stack exactly as before; at 600px+ it becomes a
+         horizontal flex row (panels side by side, chevron between them). -->
+      <div class="scene-card__content">
+        <!-- Panel 1: idle savings (declining) -->
+        <div class="drain-panel">
+          <div class="drain-panel__text">
+            <span class="drain-panel__label">Idle savings</span>
+            <span class="drain-panel__amount">$50,000</span>
+            <span class="drain-panel__warn">&ndash;$1,500 of buying power a year</span>
+          </div>
+          <svg
+            class="drain-panel__chart"
+            viewBox="0 0 130 48"
+            width="130"
+            height="48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
             <path
-              d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+              d="M2 8 C 34 14, 64 24, 128 42"
+              stroke="#a2604f"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-dasharray="6 6"></path>
+          </svg>
+        </div>
+
+        <!-- Chevron divider (points down on mobile, rotates to point right at 600px+) -->
+        <span class="scene-card__chevron" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 12"
+            width="24"
+            height="12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 3 L12 9 L20 3"
+              stroke="#152420"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              opacity="0.55"></path>
+          </svg>
+        </span>
+
+        <!-- Panel 2: put to work (rising) -->
+        <div class="work-panel">
+          <div class="work-panel__text">
+            <span class="work-panel__label">Put to work instead</span>
+            <span class="work-panel__amount">Fixed 10%</span>
+            <span class="work-panel__caption">set by contract</span>
+          </div>
+          <svg
+            class="work-panel__chart"
+            viewBox="0 0 120 52"
+            width="120"
+            height="52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M2 46 C 40 44, 70 30, 118 6"
               stroke="#7fd0a4"
-              stroke-width="1.7"
+              stroke-width="2.4"
               stroke-linecap="round"
               stroke-linejoin="round"></path>
           </svg>
-        </span>
-        <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
-      </span>
-      <span class="rv-avatar" aria-hidden="true">
-        <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
-          <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
-          <path
-            d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z"
-            fill="#67b78f"></path>
-        </svg>
-      </span>
-    </div>
-
-    <!-- Content row: below 600px this wrapper is display:contents so the two
-         panels and chevron stack exactly as before; at 600px+ it becomes a
-         horizontal flex row (panels side by side, chevron between them). -->
-    <div class="scene-card__content">
-      <!-- Panel 1: idle savings (declining) -->
-      <div class="drain-panel">
-        <div class="drain-panel__text">
-          <span class="drain-panel__label">Idle savings</span>
-          <span class="drain-panel__amount">$50,000</span>
-          <span class="drain-panel__warn">&ndash;$1,500 of buying power a year</span>
         </div>
-        <svg
-          class="drain-panel__chart"
-          viewBox="0 0 130 48"
-          width="130"
-          height="48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M2 8 C 34 14, 64 24, 128 42"
-            stroke="#a2604f"
-            stroke-width="2.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-dasharray="6 6"></path>
-        </svg>
       </div>
 
-      <!-- Chevron divider (points down on mobile, rotates to point right at 600px+) -->
-      <span class="scene-card__chevron" aria-hidden="true">
-        <svg
-          viewBox="0 0 24 12"
-          width="24"
-          height="12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4 3 L12 9 L20 3"
-            stroke="#152420"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            opacity="0.55"></path>
-        </svg>
-      </span>
-
-      <!-- Panel 2: put to work (rising) -->
-      <div class="work-panel">
-        <div class="work-panel__text">
-          <span class="work-panel__label">Put to work instead</span>
-          <span class="work-panel__amount">Fixed 10%</span>
-          <span class="work-panel__caption">set by contract</span>
-        </div>
-        <svg
-          class="work-panel__chart"
-          viewBox="0 0 120 52"
-          width="120"
-          height="52"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M2 46 C 40 44, 70 30, 118 6"
-            stroke="#7fd0a4"
-            stroke-width="2.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </div>
+      <!-- Trust footer -->
+      <p class="scene-card__trust">SEC qualified &middot; Regulation A Tier 2</p>
     </div>
-
-    <!-- Trust footer -->
-    <p class="scene-card__trust">SEC qualified &middot; Regulation A Tier 2</p>
-  </div>
   </div>
 </section>
 

@@ -356,7 +356,6 @@ try {
 
 <script is:inline data-astro-rerun>
   (function () {
-    const animatedSections = {};
     let hasPlayedFounderVideo = false;
     let sections = [];
 
@@ -375,75 +374,6 @@ try {
         line.classList.remove("is-passed");
         if (i < activeIndex) line.classList.add("is-passed");
       });
-    }
-
-    // GSAP entry animations, one-shot per section
-    function runSectionAnimation(index, sectionEl) {
-      if (animatedSections[index]) return;
-      // GSAP failed to load in time: content is already revealed by the
-      // html.gsap-off CSS failsafe, so animating now would hide it again.
-      if (document.documentElement.classList.contains("gsap-off")) {
-        animatedSections[index] = true;
-        return;
-      }
-      if (!window.gsapLoaded || typeof window.gsap === "undefined") {
-        window.addEventListener("gsapLoaded", function () {
-          runSectionAnimation(index, sectionEl);
-        });
-        return;
-      }
-
-      animatedSections[index] = true;
-      const gsap = window.gsap;
-
-      if (index === 0) {
-        const introContent = sectionEl.querySelector(".wf-slide__content");
-        const introUnderline = sectionEl.querySelector(".wf-slide__underline");
-        if (introContent) {
-          const introTl = gsap.timeline({ delay: 0.2 });
-          introTl.fromTo(
-            introContent,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-          );
-          if (introUnderline) {
-            introTl.fromTo(
-              introUnderline,
-              { scaleX: 0 },
-              { scaleX: 1, duration: 0.6, ease: "power2.out" },
-              "-=0.2"
-            );
-          }
-        }
-      } else if (index === 2) {
-        const text = sectionEl.querySelector(".wf-slide__text");
-        const underline = sectionEl.querySelector(".wf-slide__underline");
-        if (text) {
-          const tl = gsap.timeline({ delay: 0.1 });
-          tl.fromTo(
-            text,
-            { opacity: 0, y: 60 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-          );
-          if (underline) {
-            tl.fromTo(
-              underline,
-              { scaleX: 0 },
-              { scaleX: 1, duration: 0.6, ease: "power2.out" },
-              "-=0.2"
-            );
-          }
-        }
-      } else {
-        const content = sectionEl.querySelector(".wf-slide__content");
-        if (content) {
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.1 }
-          );
-        }
-      }
     }
 
     // Form validation (gate submission only)
@@ -1315,28 +1245,9 @@ try {
         { threshold: 0, rootMargin: "-50% 0px -50% 0px" }
       );
 
-      // Animation IO: fires entry animation as soon as the section starts
-      // entering the viewport (rootMargin extends the bottom edge by 5%),
-      // so the next slide doesn't feel empty while the user is scrolling in.
-      const animIo = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              const idx = parseInt(entry.target.getAttribute("data-section-index"), 10);
-              runSectionAnimation(idx, entry.target);
-            }
-          });
-        },
-        { threshold: 0, rootMargin: "0px 0px 5% 0px" }
-      );
-
       sections.forEach(function (section) {
         indicatorIo.observe(section);
-        animIo.observe(section);
       });
-
-      // Trigger first-section animation immediately if it's already in view on load
-      if (sections[0]) runSectionAnimation(0, sections[0]);
     }
 
     // Invest dropdown

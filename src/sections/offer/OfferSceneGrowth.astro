@@ -19,98 +19,98 @@
        two-column flex container only at desktop (1136px+). -->
   <div class="scene-growth__inner">
     <!-- Copy block -->
-    <div class="scene-growth__copy" data-reveal>
-    <p class="scene-growth__eyebrow">THE OFFER</p>
-    <h2 id="scene-growth-heading" class="scene-growth__headline">
-      Earn a fixed 8&ndash;10% per year.
-    </h2>
-    <p class="scene-growth__body">
-      Robert Ventures bonds pay a fixed 8&ndash;10% annual return, set by contract. The rate you
-      start with is the rate you keep, for as long as you stay invested. Take your interest as a
-      monthly payout, or let it compound so every month's interest starts earning too.
-    </p>
-  </div>
+    <div class="scene-growth__copy">
+      <p class="scene-growth__eyebrow">THE OFFER</p>
+      <h2 id="scene-growth-heading" class="scene-growth__headline">
+        Earn a fixed 8&ndash;10% per year.
+      </h2>
+      <p class="scene-growth__body">
+        Robert Ventures bonds pay a fixed 8&ndash;10% annual return, set by contract. The rate you
+        start with is the rate you keep, for as long as you stay invested. Take your interest as a
+        monthly payout, or let it compound so every month's interest starts earning too.
+      </p>
+    </div>
 
-  <!-- Phone card -->
-  <div class="scene-card" data-reveal>
-    <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
-    <div class="scene-card__chrome">
-      <span class="rv-lockup">
-        <span class="rv-lockup__mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="6" fill="#152429"></rect>
-            <path
-              d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
-              stroke="#7fd0a4"
-              stroke-width="1.7"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
+    <!-- Phone card -->
+    <div class="scene-card">
+      <!-- Shared chrome: RV logo lockup (left) + avatar (right) -->
+      <div class="scene-card__chrome">
+        <span class="rv-lockup">
+          <span class="rv-lockup__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+              <rect width="24" height="24" rx="6" fill="#152429"></rect>
+              <path
+                d="M8 15.5 15.5 8M15.5 8H9.7M15.5 8v5.8"
+                stroke="#7fd0a4"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
+        </span>
+        <span class="rv-avatar" aria-hidden="true">
+          <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
+            <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
+            <path d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z" fill="#67b78f"></path>
           </svg>
         </span>
-        <span class="rv-lockup__word"><b>Robert</b>&nbsp;Ventures</span>
-      </span>
-      <span class="rv-avatar" aria-hidden="true">
-        <svg viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16.5" cy="16.5" r="16.5" fill="#e6f3ec"></circle>
-          <circle cx="16.5" cy="13" r="4.6" fill="#67b78f"></circle>
-          <path
-            d="M8.4 26.5c0-4.3 3.6-7.4 8.1-7.4s8.1 3.1 8.1 7.4z"
-            fill="#67b78f"></path>
-        </svg>
-      </span>
-    </div>
+      </div>
 
-    <!-- Content row: below 600px this wrapper is display:contents so the two
+      <!-- Content row: below 600px this wrapper is display:contents so the two
          panels stack as direct children of .scene-card (preserving the 16px
          card gap); at 600px+ it becomes a horizontal flex row. -->
-    <div class="scene-card__content">
-    <!-- Dark balance card -->
-    <div class="balance-card">
-      <span class="balance-card__label">Portfolio value</span>
-      <span class="balance-card__amount" data-countup data-target="135352" data-prefix="$">$135,352</span>
-      <span class="balance-card__sub">Started with $50,000</span>
-      <span class="balance-card__divider" aria-hidden="true"></span>
-      <div class="balance-card__cols">
-        <span class="balance-card__col">
-          <span class="balance-card__k">Fixed rate</span>
-          <span class="balance-card__v balance-card__v--mint">10%</span>
-        </span>
-        <span class="balance-card__col">
-          <span class="balance-card__k">Interest</span>
-          <span class="balance-card__v">Compounding</span>
-        </span>
+      <div class="scene-card__content">
+        <!-- Dark balance card -->
+        <div class="balance-card">
+          <span class="balance-card__label">Portfolio value</span>
+          <span class="balance-card__amount" data-countup data-target="135352" data-prefix="$"
+            >$135,352</span
+          >
+          <span class="balance-card__sub">Started with $50,000</span>
+          <span class="balance-card__divider" aria-hidden="true"></span>
+          <div class="balance-card__cols">
+            <span class="balance-card__col">
+              <span class="balance-card__k">Fixed rate</span>
+              <span class="balance-card__v balance-card__v--mint">10%</span>
+            </span>
+            <span class="balance-card__col">
+              <span class="balance-card__k">Interest</span>
+              <span class="balance-card__v">Compounding</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Light growth card with 3-bar chart -->
+        <div class="growth-card">
+          <span class="growth-card__title">Balance over 10 years</span>
+          <div class="growth-card__chart" aria-hidden="true">
+            <div class="growth-bar">
+              <span class="growth-bar__val">$50,000</span>
+              <span class="growth-bar__fill growth-bar__fill--today" style="--h: 39.65px"></span>
+              <span class="growth-bar__year">Today</span>
+            </div>
+            <div class="growth-bar">
+              <span class="growth-bar__val">$82,265</span>
+              <span class="growth-bar__fill growth-bar__fill--mid" style="--h: 64.43px"></span>
+              <span class="growth-bar__year">Year 5</span>
+            </div>
+            <div class="growth-bar">
+              <span class="growth-bar__val growth-bar__val--accent">$135,352</span>
+              <span class="growth-bar__fill growth-bar__fill--peak" style="--h: 105.73px"></span>
+              <span class="growth-bar__year">Year 10</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Light growth card with 3-bar chart -->
-    <div class="growth-card">
-      <span class="growth-card__title">Balance over 10 years</span>
-      <div class="growth-card__chart" aria-hidden="true">
-        <div class="growth-bar">
-          <span class="growth-bar__val">$50,000</span>
-          <span class="growth-bar__fill growth-bar__fill--today" style="--h: 39.65px"></span>
-          <span class="growth-bar__year">Today</span>
-        </div>
-        <div class="growth-bar">
-          <span class="growth-bar__val">$82,265</span>
-          <span class="growth-bar__fill growth-bar__fill--mid" style="--h: 64.43px"></span>
-          <span class="growth-bar__year">Year 5</span>
-        </div>
-        <div class="growth-bar">
-          <span class="growth-bar__val growth-bar__val--accent">$135,352</span>
-          <span class="growth-bar__fill growth-bar__fill--peak" style="--h: 105.73px"></span>
-          <span class="growth-bar__year">Year 10</span>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
   </div>
 
-  <p class="scene-growth__note" data-reveal>
-    Compounding is how $50,000 grows to $135,352 by year 10, the bond's maturity. Your
-    minimum commitment is much shorter: 3 years at the fixed 10%, or 1 year at the fixed 8%. After
-    that, withdraw anytime*, or stay to maturity and keep earning the same rate.
+  <p class="scene-growth__note">
+    Compounding is how $50,000 grows to $135,352 by year 10, the bond's maturity. Your minimum
+    commitment is much shorter: 3 years at the fixed 10%, or 1 year at the fixed 8%. After that,
+    withdraw anytime*, or stay to maturity and keep earning the same rate.
   </p>
 </section>
 

@@ -63,66 +63,6 @@ const pageDescription =
       footnote="*After the minimum commitment period, withdrawals are processed within 90 days of your request."
     />
 
-    <!-- Page-level reveal engine. Sections opt in by putting `data-reveal` on
-         their major blocks; nothing is hidden by CSS, so without JS (or with
-         reduced motion, or if GSAP fails to load) everything stays visible.
-         Blocks already on screen at init are left alone to avoid a flash. -->
-    <script is:inline data-astro-rerun>
-      (function () {
-        const reduce =
-          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduce || !("IntersectionObserver" in window)) return;
-
-        function start() {
-          if (!window.gsap) return;
-          const els = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
-          const pending = els.filter(function (el) {
-            if (el.dataset.revealDone === "1") return false;
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.9) {
-              el.dataset.revealDone = "1";
-              return false;
-            }
-            return true;
-          });
-          if (!pending.length) return;
-
-          pending.forEach(function (el) {
-            window.gsap.set(el, { autoAlpha: 0, y: 24 });
-          });
-
-          const io = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                const el = entry.target;
-                io.unobserve(el);
-                el.dataset.revealDone = "1";
-                window.gsap.to(el, {
-                  autoAlpha: 1,
-                  y: 0,
-                  duration: 0.7,
-                  ease: "power2.out",
-                  clearProps: "transform,opacity,visibility",
-                });
-              });
-            },
-            { threshold: 0.12 }
-          );
-
-          pending.forEach(function (el) {
-            io.observe(el);
-          });
-        }
-
-        if (window.gsapLoaded && window.gsap) {
-          start();
-        } else {
-          window.addEventListener("gsapLoaded", start, { once: true });
-        }
-      })();
-    </script>
-
     <!-- Fires a PostHog milestone the first time each key section scrolls into view -->
     <script is:inline data-astro-rerun>
       (function () {

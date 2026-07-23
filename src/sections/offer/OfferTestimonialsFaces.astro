@@ -126,10 +126,10 @@ const activeIndex = 2;
 ---
 
 <section class="oft" id="offer-testimonials-faces">
-  <div class="oft__content" data-reveal>
+  <div class="oft__content">
     <p class="oft__eyebrow">FROM OUR INVESTORS</p>
 
-    <div class="oft__faces" role="group" aria-label="Choose an investor review" data-reveal>
+    <div class="oft__faces" role="group" aria-label="Choose an investor review">
       {
         people.map((p, i) => (
           <button
@@ -157,17 +157,12 @@ const activeIndex = 2;
       }
     </div>
 
-    <figure class="oft__quote-block" data-reveal>
+    <figure class="oft__quote-block">
       <span class="oft__stars" aria-hidden="true">★★★★★</span>
       <div class="oft__quote-wrap" data-quote-wrap aria-live="polite">
         <blockquote class="oft__quote" data-quote>{people[activeIndex].quote}</blockquote>
       </div>
-      <button
-        type="button"
-        class="oft__read-more"
-        data-read-more
-        aria-expanded="false"
-      >
+      <button type="button" class="oft__read-more" data-read-more aria-expanded="false">
         Read more
       </button>
       <figcaption class="oft__name" data-name>

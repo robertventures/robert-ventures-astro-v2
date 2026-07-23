@@ -138,11 +138,11 @@ const uniqueTestimonials = [rowOne[0], rowOne[1], rowOne[2], rowTwo[1]];
 ---
 
 <section class="ofm" id="offer-testimonials-marquee">
-  <div class="ofm__content" data-reveal>
+  <div class="ofm__content">
     <p class="ofm__eyebrow">FROM OUR INVESTORS</p>
   </div>
 
-  <div class="ofm__marquee" data-reveal>
+  <div class="ofm__marquee">
     <div class="ofm__fade ofm__fade--left" aria-hidden="true"></div>
     <div class="ofm__fade ofm__fade--right" aria-hidden="true"></div>
 
@@ -151,10 +151,7 @@ const uniqueTestimonials = [rowOne[0], rowOne[1], rowOne[2], rowTwo[1]];
         {
           rowOneLoop.map((t, i) => (
             <li class="ofm__card" aria-hidden={i >= rowOne.length ? "true" : undefined}>
-              <span
-                class="ofm__avatar"
-                style={`background:${t.avatarBg};color:${t.avatarColor};`}
-              >
+              <span class="ofm__avatar" style={`background:${t.avatarBg};color:${t.avatarColor};`}>
                 {t.initials}
                 {t.avatarUrl && (
                   <img
@@ -178,10 +175,7 @@ const uniqueTestimonials = [rowOne[0], rowOne[1], rowOne[2], rowTwo[1]];
         {
           rowTwoLoop.map((t, i) => (
             <li class="ofm__card" aria-hidden={i >= rowTwo.length ? "true" : undefined}>
-              <span
-                class="ofm__avatar"
-                style={`background:${t.avatarBg};color:${t.avatarColor};`}
-              >
+              <span class="ofm__avatar" style={`background:${t.avatarBg};color:${t.avatarColor};`}>
                 {t.initials}
                 {t.avatarUrl && (
                   <img
@@ -501,4 +495,3 @@ const uniqueTestimonials = [rowOne[0], rowOne[1], rowOne[2], rowTwo[1]];
     }
   }
 </style>
-

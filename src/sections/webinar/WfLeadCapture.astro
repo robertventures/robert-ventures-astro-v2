@@ -7,7 +7,9 @@ import usFlag from "../../images/icons/usflag.png";
   <div class="wf-slide__content">
     <div class="wf-slide__text">
       <h1 class="wf-slide__heading">
-        Join the <span class="wf-slide__accent">Webinar.<span class="wf-slide__underline"></span></span>
+        Join the <span class="wf-slide__accent"
+          >Webinar.<span class="wf-slide__underline"></span></span
+        >
       </h1>
       <p class="wf-slide__subtitle">
         Watch how investors are earning fixed 10%, built on real estate and bitcoin.
@@ -147,7 +149,6 @@ import usFlag from "../../images/icons/usflag.png";
   }
 
   .wf-slide__text {
-    opacity: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,18 +190,6 @@ import usFlag from "../../images/icons/usflag.png";
     width: 100%;
     height: 4px;
     background: var(--green-brand);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  /* Failsafe: BaseHead adds .gsap-off to <html> if GSAP fails to load,
-     so content hidden for the entry animation still becomes visible. */
-  :global(html.gsap-off) .wf-slide__text {
-    opacity: 1;
-  }
-
-  :global(html.gsap-off) .wf-slide__underline {
-    transform: scaleX(1);
   }
 
   .wf-slide__subtitle {
